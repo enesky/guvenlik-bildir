@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -59,7 +60,13 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.0'
 
+    implementation 'com.google.firebase:firebase-core:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-firestore:21.3.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
