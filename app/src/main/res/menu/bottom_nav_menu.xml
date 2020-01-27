@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/latest_earthquakes"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/label_son_depremler" />
-
-    <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_thumbs_up_down"
         android:title="@string/label_latest_earthquakes" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/notify"
+        android:icon="@drawable/ic_thumbs_up_down"
+        android:title="@string/label_notify" />
+
+    <item
+        android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/label_settings" />
 

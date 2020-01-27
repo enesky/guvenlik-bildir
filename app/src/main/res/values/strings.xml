@@ -1,5 +1,7 @@
 <resources>
+
     <string name="app_name">Güvenlik Bildir</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -13,7 +15,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="label_son_depremler">Son Depremler</string>
-    <string name="label_latest_earthquakes">Güvenliğini Bildir</string>
+
+    <string name="label_latest_earthquakes">Son Depremler</string>
+    <string name="label_notify">Güvenliğini Bildir</string>
     <string name="label_settings">Ayarlar</string>
+
 </resources>
