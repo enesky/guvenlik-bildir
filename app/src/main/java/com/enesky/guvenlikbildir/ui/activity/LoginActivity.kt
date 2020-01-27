@@ -19,6 +19,7 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.data.model.LoggedInUserView
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,11 +29,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
-
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel = ViewModelProviders.of(this,
             LoginViewModelFactory()
@@ -99,6 +95,11 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
+
+        tv_continue.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
     }
 
     override fun onStart() {
