@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.activity.ui.notifications
+package com.enesky.guvenlikbildir.ui.fragment.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater

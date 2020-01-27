@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.activity.ui.dashboard
+package com.enesky.guvenlikbildir.ui.fragment.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater

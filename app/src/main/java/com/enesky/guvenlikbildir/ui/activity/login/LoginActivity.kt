@@ -1,38 +1,38 @@
-package com.enesky.guvenlikbildir.ui.activity
+package com.enesky.guvenlikbildir.ui.activity.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.data.model.LoggedInUserView
+import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
+import com.enesky.guvenlikbildir.ui.activity.BaseActivity
+import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
+import com.enesky.guvenlikbildir.utils.getViewModel
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var binding: ActivityLoginBinding
+
+    private val loginViewModel by lazy {
+        getViewModel { LoginActivityVM() }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_login)
-
-        loginViewModel = ViewModelProviders.of(this,
-            LoginViewModelFactory()
-        ).get(LoginViewModel::class.java)
+        binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login).apply {
+            viewModel = loginViewModel
+        }
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -46,22 +46,6 @@ class LoginActivity : AppCompatActivity() {
             if (loginState.passwordError != null) {
                 password.error = getString(loginState.passwordError)
             }
-        })
-
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
-            val loginResult = it ?: return@Observer
-
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            startActivity(Intent(this, MainActivity::class.java))
         })
 
         username.afterTextChanged {
@@ -107,17 +91,6 @@ class LoginActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser: FirebaseUser? = App.managerAuth.currentUser //todo:
         // updateUI(currentUser)
-    }
-
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

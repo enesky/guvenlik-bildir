@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.activity.ui.home
+package com.enesky.guvenlikbildir.ui.fragment.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

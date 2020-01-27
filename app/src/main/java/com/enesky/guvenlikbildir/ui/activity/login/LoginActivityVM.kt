@@ -1,30 +1,23 @@
-package com.enesky.guvenlikbildir.ui.activity
+package com.enesky.guvenlikbildir.ui.activity.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.enesky.guvenlikbildir.data.LoginRepository
-import com.enesky.guvenlikbildir.data.Result
 
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.data.model.LoggedInUserView
 import com.enesky.guvenlikbildir.data.model.LoginFormState
-import com.enesky.guvenlikbildir.data.model.LoginResult
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginActivityVM : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
-
     fun login(username: String, password: String) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        //val result = loginRepository.login(username, password)
 
-        if (result is Result.Success) {
+        /*if (result is Result.Success) {
             _loginResult.value =
                 LoginResult(
                     success = LoggedInUserView(
@@ -34,7 +27,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         } else {
             _loginResult.value =
                 LoginResult(error = R.string.login_failed)
-        }
+        }*/
     }
 
     fun loginDataChanged(username: String, password: String) {

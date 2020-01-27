@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.activity
+package com.enesky.guvenlikbildir.ui.activity.main
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -8,8 +8,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
