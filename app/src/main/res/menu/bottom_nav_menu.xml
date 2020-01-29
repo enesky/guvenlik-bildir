@@ -12,8 +12,8 @@
         android:title="@string/label_notify" />
 
     <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/label_settings" />
+        android:id="@+id/options"
+        android:icon="@drawable/ic_options"
+        android:title="@string/label_options" />
 
 </menu>

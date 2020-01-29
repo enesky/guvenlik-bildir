@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#232f34</color>
     <color name="colorSecondary">#f9aa33</color>
     <color name="colorAccent">#4a6572</color>
+    <color name="colorShade">#f2f5f5</color>
+    <color name="lineShade">#66ababab</color>
+    <color name="black56">#8f000000</color>
 </resources>

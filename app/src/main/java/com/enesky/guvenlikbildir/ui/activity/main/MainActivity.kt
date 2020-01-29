@@ -7,7 +7,7 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
-import com.enesky.guvenlikbildir.ui.fragment.settings.SettingsFragment
+import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
@@ -20,7 +20,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         listOf(
             { LatestEarthquakesFragment() },
             { NotifyFragment() },
-            { SettingsFragment() }
+            { OptionsFragment() }
         )
 
     private val navigator: MultipleStackNavigator =
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
                 navigator.switchTab(1)
                 return true
             }
-            R.id.settings -> {
+            R.id.options -> {
                 navigator.switchTab(2)
                 return true
             }
@@ -76,7 +76,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         when (tabIndex) {
             0 -> bottom_nav.selectedItemId = R.id.latest_earthquakes
             1 -> bottom_nav.selectedItemId = R.id.notify
-            2 -> bottom_nav.selectedItemId = R.id.settings
+            2 -> bottom_nav.selectedItemId = R.id.options
         }
     }
 
