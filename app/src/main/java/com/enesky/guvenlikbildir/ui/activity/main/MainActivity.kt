@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
     Navigator.NavigatorListener {
 
-    private val rootFragmentProvider: List<() -> Fragment> =
-        listOf(
+    private val rootFragmentProvider: List<() -> Fragment> = listOf(
             { LatestEarthquakesFragment() },
             { NotifyFragment() },
             { OptionsFragment() }
