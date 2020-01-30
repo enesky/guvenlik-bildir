@@ -25,14 +25,6 @@ class NotifyFragment : BaseFragment() {
             //text_home.text = it
         })
 
-        (activity as MainActivity).mainVM.isOnline.observe(viewLifecycleOwner, Observer { isOnline ->
-            notifyFragmentVM.setOnline(isOnline)
-            if (isOnline)
-                requireContext().showToast("Online")
-            else
-                requireContext().showToast("Offline")
-        })
-
         return root
     }
 

@@ -7,11 +7,13 @@ import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
+import com.enesky.guvenlikbildir.utils.ConnectionLiveData
 import com.enesky.guvenlikbildir.utils.NetworkChecker
 import com.enesky.guvenlikbildir.utils.getViewModel
 import com.enesky.guvenlikbildir.utils.showToast
@@ -50,9 +52,13 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         navigator.start(NotifyFragment(),1)
         bottom_nav.setOnNavigationItemSelectedListener(this)
 
-        networkChecker = NetworkChecker(this)
-        registerReceiver(networkChecker, IntentFilter(CONNECTIVITY_ACTION))
-        //TODO:CONNECTIVITY_ACTION is deprecated. Update this
+        val connectionLiveData = ConnectionLiveData(this)
+        connectionLiveData.observe(this, Observer {
+            if (it)
+                showToast("Online")
+            else
+                showToast("Offline")
+        })
     }
 
     override fun onDestroy() {
@@ -63,15 +69,6 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     override fun onSaveInstanceState(outState: Bundle) {
         navigator.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onNetworkStatusChange(isOnline: Boolean) {
-        mainVM.setOnline(isOnline)
-
-        if (isOnline)
-            showToast("Online")
-        else
-            showToast("Offline")
     }
 
     override fun onBackPressed() {

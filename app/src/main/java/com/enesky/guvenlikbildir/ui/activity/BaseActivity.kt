@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.utils.NetworkStatusChangeListener
 
-abstract class BaseActivity : AppCompatActivity(), NetworkStatusChangeListener {
+abstract class BaseActivity : AppCompatActivity() {
 
     fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()

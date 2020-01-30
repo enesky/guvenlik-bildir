@@ -152,6 +152,14 @@ class LoginActivity : BaseActivity() {
             }
         }
 
+        val connectionLiveData = ConnectionLiveData(this)
+        connectionLiveData.observe(this, Observer {
+            if (it)
+                showToast("Online")
+            else
+                showToast("Offline")
+        })
+
     }
 
     override fun onStart() {
@@ -217,15 +225,6 @@ class LoginActivity : BaseActivity() {
                     //updateUI(STATE_SIGNIN_FAILED)
                 }
             }
-    }
-
-    override fun onNetworkStatusChange(isOnline: Boolean) {
-        loginViewModel.setOnline(isOnline)
-
-        if (isOnline)
-            showToast("Online")
-        else
-            showToast("Offline")
     }
 
 }
