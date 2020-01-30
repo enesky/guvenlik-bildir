@@ -8,13 +8,14 @@ import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
+import com.enesky.guvenlikbildir.utils.getViewModel
+import com.enesky.guvenlikbildir.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
-    Navigator.NavigatorListener {
+class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener, Navigator.NavigatorListener {
 
     private val rootFragmentProvider: List<() -> Fragment> = listOf(
             { LatestEarthquakesFragment() },
@@ -30,6 +31,10 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             this
         )
 
+    val mainVM by lazy {
+        getViewModel { MainActivityVM() }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -42,6 +47,15 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     override fun onSaveInstanceState(outState: Bundle) {
         navigator.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onNetworkStatusChange(isOnline: Boolean) {
+        mainVM.setOnline(isOnline)
+
+        if (isOnline)
+            showToast("Online")
+        else
+            showToast("Offline")
     }
 
     override fun onBackPressed() {

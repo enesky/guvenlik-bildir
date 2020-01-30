@@ -3,6 +3,7 @@ package com.enesky.guvenlikbildir.utils
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
+import android.net.ConnectivityManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -15,11 +16,8 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.R
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.temporal.WeekFields
-import java.util.*
-
 
 /**
  * Created by Enes Kamil YILMAZ on 09.01.2020
@@ -68,6 +66,23 @@ fun Context.showToast(text: String?) {
     toast.view = layout
     toast.setGravity(Gravity.BOTTOM, 0, 200)
     toast.show()
+}
+
+fun Context.checkInternet(): Boolean {
+    val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val networkInfo = cm.activeNetworkInfo
+    return networkInfo != null && networkInfo.isConnected
+}
+
+fun View.showSnackbar(text: String) {
+    Snackbar.make(rootView, text, Snackbar.LENGTH_LONG).apply {
+        duration = 5000
+        setAction("Tamam") { dismiss() }
+        setBackgroundTint(resources.getColor(R.color.colorPrimaryDark))
+        setActionTextColor(resources.getColor(android.R.color.white))
+        view.findViewById<View>(R.id.snackbar_action).background = null
+        view.setPadding(0,0,0,0)
+    }.show()
 }
 
 internal fun getScreenHeight(): Int {

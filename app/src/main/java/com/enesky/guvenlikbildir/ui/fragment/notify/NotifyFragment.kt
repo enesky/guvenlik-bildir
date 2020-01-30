@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.enesky.guvenlikbildir.utils.getColorCompat
 import com.enesky.guvenlikbildir.utils.getViewModel
+import com.enesky.guvenlikbildir.utils.showToast
 import kotlinx.android.synthetic.main.fragment_notify.*
 
 class NotifyFragment : BaseFragment() {
@@ -21,6 +24,16 @@ class NotifyFragment : BaseFragment() {
         notifyFragmentVM.text.observe(viewLifecycleOwner, Observer {
             //text_home.text = it
         })
+
+        (activity as MainActivity).mainVM.isOnline.observe(viewLifecycleOwner, Observer { isOnline ->
+            notifyFragmentVM.setOnline(isOnline)
+            if (isOnline)
+                requireContext().showToast("Online")
+            else
+                requireContext().showToast("Offline")
+        })
+
         return root
     }
+
 }

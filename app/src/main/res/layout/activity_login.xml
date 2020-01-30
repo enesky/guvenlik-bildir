@@ -4,21 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.enesky.guvenlikbildir.ui.activity.login.LoginActivityVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
+        android:id="@+id/cl_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/activity_horizontal_margin"
         tools:context=".ui.activity.LoginActivity">
 
         <ImageView
-            android:id="@+id/ivicon"
+            android:id="@+id/iv_icon"
             android:layout_width="@dimen/toolbar_height"
             android:layout_height="@dimen/toolbar_height"
             android:src="@drawable/ic_thumbs_up_down"

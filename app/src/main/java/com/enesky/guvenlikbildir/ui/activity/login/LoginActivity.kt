@@ -12,9 +12,7 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
-import com.enesky.guvenlikbildir.utils.afterTextChanged
-import com.enesky.guvenlikbildir.utils.getViewModel
-import com.enesky.guvenlikbildir.utils.showToast
+import com.enesky.guvenlikbildir.utils.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -53,7 +51,7 @@ class LoginActivity : BaseActivity() {
                 showToast(getString(it.phoneNumberError!!))
         })
 
-        val listener = MaskedTextChangedListener("+90 ([000]) [000]-[00]-[00]", et_phone_number)
+        val listener = MaskedTextChangedListener("+90 ([000]) [000] [00] [00]", et_phone_number)
 
         et_phone_number.apply {
             afterTextChanged {
@@ -66,9 +64,7 @@ class LoginActivity : BaseActivity() {
 
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
-                    EditorInfo.IME_ACTION_DONE -> {
-                        startPhoneNumberVerification(et_phone_number.text.toString())
-                    }
+                    EditorInfo.IME_ACTION_DONE -> startPhoneNumberVerification(et_phone_number.text.toString())
                 }
                 false
             }
@@ -79,7 +75,8 @@ class LoginActivity : BaseActivity() {
         }
 
         tv_continue.setOnClickListener {
-            App.managerAuth.signInAnonymously().addOnCompleteListener(this) { task ->
+            if (checkInternet()) {
+                App.managerAuth.signInAnonymously().addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Log.d("Login", "signInAnonymously:success")
                         val user = App.managerAuth.currentUser
@@ -88,11 +85,16 @@ class LoginActivity : BaseActivity() {
                         //updateUI(user)
                     } else {
                         Log.w("Login", "signInAnonymously:failure", task.exception)
-                        Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                        showToast("Authentication failed.")
                         //updateUI(null)
                     }
                     // ...
                 }
+            } else {
+                showToast("Internet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
         }
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -161,7 +163,7 @@ class LoginActivity : BaseActivity() {
             finish()
         }
         // updateUI(currentUser)
-}
+    }
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -216,4 +218,14 @@ class LoginActivity : BaseActivity() {
                 }
             }
     }
+
+    override fun onNetworkStatusChange(isOnline: Boolean) {
+        loginViewModel.setOnline(isOnline)
+
+        if (isOnline)
+            showToast("Online")
+        else
+            showToast("Offline")
+    }
+
 }
