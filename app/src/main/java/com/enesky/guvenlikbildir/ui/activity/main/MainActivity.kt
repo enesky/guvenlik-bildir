@@ -49,8 +49,8 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         setContentView(R.layout.activity_main)
 
         navigator.initialize(savedInstanceState)
-        navigator.start(NotifyFragment(),1)
         bottom_nav.setOnNavigationItemSelectedListener(this)
+        bottom_nav.selectedItemId = R.id.notify
 
         val connectionLiveData = ConnectionLiveData(this)
         connectionLiveData.observe(this, Observer {

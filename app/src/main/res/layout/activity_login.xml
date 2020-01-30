@@ -13,11 +13,10 @@
         android:id="@+id/cl_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/activity_horizontal_margin"
         tools:context=".ui.activity.LoginActivity">
 
         <ImageView
-            android:id="@+id/iv_icon"
+            android:id="@+id/icon"
             android:layout_width="@dimen/toolbar_height"
             android:layout_height="@dimen/toolbar_height"
             android:src="@drawable/ic_thumbs_up_down"
@@ -43,8 +42,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin_16"
                 app:boxBackgroundColor="@color/colorShade"
-                app:boxCornerRadiusTopEnd="8dp"
-                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="@dimen/default_margin_8"
+                app:boxCornerRadiusTopStart="@dimen/default_margin_8"
+                app:boxCornerRadiusBottomEnd="@dimen/default_margin_8"
+                app:boxCornerRadiusBottomStart="@dimen/default_margin_8"
                 app:layout_constraintTop_toTopOf="parent"
                 app:startIconDrawable="@drawable/ic_phone"
                 app:startIconTint="@color/colorPrimary">

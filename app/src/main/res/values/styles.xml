@@ -12,6 +12,16 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="ToolbarMenu" parent="AppTheme">
+        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
 </resources>

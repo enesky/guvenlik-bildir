@@ -10,22 +10,7 @@ import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 class LoginActivityVM : BaseViewModel() {
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    fun loginDataChanged(phoneNumber: String) {
-        if (!isPhoneNumberValid(phoneNumber))
-            _loginForm.value = LoginFormState(phoneNumberError = R.string.invalid_phone_number)
-        else
-            _loginForm.value = LoginFormState(isDataValid = true)
 
-    }
-
-    private fun isPhoneNumberValid(username: String): Boolean {
-        return if (username.length > 15)
-            Patterns.PHONE.matcher(username).matches()
-        else
-            username.isNotBlank()
-    }
 
 }

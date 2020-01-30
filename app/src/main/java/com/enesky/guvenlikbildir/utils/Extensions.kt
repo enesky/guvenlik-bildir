@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -83,6 +84,10 @@ fun View.showSnackbar(text: String) {
         view.findViewById<View>(R.id.snackbar_action).background = null
         view.setPadding(0,0,0,0)
     }.show()
+}
+
+fun isPhoneNumberValid(username: String): Boolean {
+    return Patterns.PHONE.matcher(username).matches()
 }
 
 internal fun getScreenHeight(): Int {

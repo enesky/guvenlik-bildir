@@ -11,18 +11,18 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-
+        <activity android:name=".ui.activity.login.verify.VerifyCodeActivity"></activity>
         <activity
             android:name=".ui.activity.login.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Launcher"
             android:launchMode="singleInstance"
             android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme.Launcher"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,13 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ui.activity.login.verify.VerifyCodeActivity" />
         <activity
             android:name=".ui.activity.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme"
             android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <service android:name=".FcmService">
@@ -44,7 +44,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

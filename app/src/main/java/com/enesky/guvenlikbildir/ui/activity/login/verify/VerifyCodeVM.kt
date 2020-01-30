@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.fragment.login
+package com.enesky.guvenlikbildir.ui.activity.login.verify
 
 import androidx.lifecycle.ViewModel
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activity.login.verify.VerifyCodeActivity">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_verify_code"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_16"
+            app:boxBackgroundColor="@color/colorShade"
+            app:boxCornerRadiusTopEnd="@dimen/default_margin_8"
+            app:boxCornerRadiusTopStart="@dimen/default_margin_8"
+            app:boxCornerRadiusBottomEnd="@dimen/default_margin_8"
+            app:boxCornerRadiusBottomStart="@dimen/default_margin_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Doğrulama kodunu giriniz"
+                android:inputType="number"
+                android:selectAllOnFocus="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_16"
+            android:text="Giriş Yap"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@+id/til_verify_code" />
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/til_verify_code"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_countdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="60"
+            android:textSize="@dimen/default_text_18"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/til_verify_code"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_timeup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Süre doldu."
+            android:textSize="@dimen/default_text_18"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/default_margin_24"
+            app:layout_constraintTop_toBottomOf="@+id/pb_loading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
