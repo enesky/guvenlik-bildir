@@ -1,5 +1,9 @@
 package com.enesky.guvenlikbildir.ui.activity.main
 
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
@@ -8,6 +12,7 @@ import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
+import com.enesky.guvenlikbildir.utils.NetworkChecker
 import com.enesky.guvenlikbildir.utils.getViewModel
 import com.enesky.guvenlikbildir.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,6 +21,8 @@ import com.trendyol.medusalib.navigator.Navigator
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener, Navigator.NavigatorListener {
+
+    private lateinit var networkChecker: BroadcastReceiver
 
     private val rootFragmentProvider: List<() -> Fragment> = listOf(
             { LatestEarthquakesFragment() },
@@ -42,6 +49,15 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         navigator.initialize(savedInstanceState)
         navigator.start(NotifyFragment(),1)
         bottom_nav.setOnNavigationItemSelectedListener(this)
+
+        networkChecker = NetworkChecker(this)
+        registerReceiver(networkChecker, IntentFilter(CONNECTIVITY_ACTION))
+        //TODO:CONNECTIVITY_ACTION is deprecated. Update this
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(networkChecker)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
