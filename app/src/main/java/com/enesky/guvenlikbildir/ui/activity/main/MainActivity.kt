@@ -24,8 +24,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener, Navigator.NavigatorListener {
 
-    private lateinit var networkChecker: BroadcastReceiver
-
     private val rootFragmentProvider: List<() -> Fragment> = listOf(
             { LatestEarthquakesFragment() },
             { NotifyFragment() },
@@ -59,11 +57,6 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             else
                 showToast("Offline")
         })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(networkChecker)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

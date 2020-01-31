@@ -3,6 +3,7 @@ package com.enesky.guvenlikbildir.utils
 import android.annotation.SuppressLint
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -33,6 +34,7 @@ fun isOnlineBackground(view: View, isOnline: Boolean) {
 fun bindStatefulRecyclerViewAdapter(view: StatefulRecyclerView, adapter: RecyclerView.Adapter<*>) {
     view.setHasFixedSize(true)
     view.layoutManager = LinearLayoutManager(view.context)
+    view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
     view.adapter = adapter
 }
 
@@ -40,6 +42,7 @@ fun bindStatefulRecyclerViewAdapter(view: StatefulRecyclerView, adapter: Recycle
 fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
     view.setHasFixedSize(true)
     view.layoutManager = LinearLayoutManager(view.context)
+    view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
     view.adapter = adapter
 }
 

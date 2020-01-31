@@ -1,6 +1,7 @@
 package com.enesky.guvenlikbildir.ui.activity.login
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
@@ -13,9 +14,13 @@ import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.enesky.guvenlikbildir.utils.*
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 import kotlinx.android.synthetic.main.activity_login.*
+import java.util.concurrent.TimeUnit
 
 class LoginActivity : BaseActivity() {
 
@@ -23,6 +28,7 @@ class LoginActivity : BaseActivity() {
     private val loginViewModel by lazy {
         getViewModel { LoginActivityVM() }
     }
+    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,21 +39,40 @@ class LoginActivity : BaseActivity() {
 
         val listener = MaskedTextChangedListener("+90 ([000]) [000] [00] [00]", et_phone_number)
 
-        et_phone_number.apply {
+        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                Log.d("Login", "onVerificationCompleted:$credential")
+                signInWithPhoneAuthCredential(credential)
+            }
 
+            override fun onVerificationFailed(e: FirebaseException) {
+                showToast(e.message)
+                pb_loading.makeItGone()
+            }
+
+            override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+                Log.d("Login", "onCodeSent:$verificationId")
+
+                startVerifyCodeActivity(et_phone_number.text.toString(),
+                                        verificationId,
+                                        token)
+            }
+        }
+
+        et_phone_number.apply {
             addTextChangedListener(listener)
             onFocusChangeListener = listener
 
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
-                    EditorInfo.IME_ACTION_DONE -> startVerifyCodeActivity(et_phone_number.text.toString())
+                    EditorInfo.IME_ACTION_DONE -> startPhoneNumberVerification(et_phone_number.text.toString())
                 }
                 false
             }
         }
 
         btn_send_code.setOnClickListener {
-            startVerifyCodeActivity(et_phone_number.text.toString())
+            startPhoneNumberVerification(et_phone_number.text.toString())
         }
 
         tv_continue.setOnClickListener {
@@ -70,14 +95,6 @@ class LoginActivity : BaseActivity() {
             }
         }
 
-        val connectionLiveData = ConnectionLiveData(this)
-        connectionLiveData.observe(this, Observer {
-            if (it)
-                showToast("Online")
-            else
-                showToast("Offline")
-        })
-
     }
 
     override fun onStart() {
@@ -89,15 +106,37 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    fun startVerifyCodeActivity(phoneNumber: String) {
+    fun startVerifyCodeActivity(phoneNumber: String,
+                                verificationId: String,
+                                token: PhoneAuthProvider.ForceResendingToken) {
+
         if (isPhoneNumberValid(phoneNumber)) {
             val intent = Intent(this, VerifyCodeActivity::class.java)
             intent.putExtra("phoneNumber", phoneNumber)
+            intent.putExtra("verificationId", verificationId)
+            intent.putExtra("token", token)
             startActivity(intent)
             finish()
         } else {
-            showToast("Geçersiz telefon numarası")
+            til_phone_number.error = "Geçersiz telefon numarası"
+            til_phone_number.isErrorEnabled = true
+            pb_loading.makeItGone()
         }
+    }
+
+    private fun startPhoneNumberVerification(phoneNumber: String) {
+        if (isPhoneNumberValid(phoneNumber)) {
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber, 60, TimeUnit.SECONDS, this, callbacks
+            )
+            pb_loading.makeItVisible()
+        } else {
+            til_phone_number.error = "Geçersiz telefon numarası"
+            til_phone_number.isErrorEnabled = true
+            pb_loading.makeItGone()
+        }
+
+
     }
 
 }

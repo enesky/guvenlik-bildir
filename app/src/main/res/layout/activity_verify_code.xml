@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_phone_number"
+                android:id="@+id/et_verify_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Doğrulama kodunu giriniz"
@@ -38,7 +38,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_send_code"
+            android:id="@+id/btn_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_16"
@@ -63,7 +63,6 @@
             android:text="60"
             android:textSize="@dimen/default_text_18"
             android:gravity="center"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/til_verify_code"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -46,9 +46,11 @@
                 app:boxCornerRadiusTopStart="@dimen/default_margin_8"
                 app:boxCornerRadiusBottomEnd="@dimen/default_margin_8"
                 app:boxCornerRadiusBottomStart="@dimen/default_margin_8"
-                app:layout_constraintTop_toTopOf="parent"
                 app:startIconDrawable="@drawable/ic_phone"
-                app:startIconTint="@color/colorPrimary">
+                app:startIconTint="@color/colorPrimary"
+                app:errorEnabled="true"
+                app:boxStrokeErrorColor="@color/colorSecondary"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_phone_number"
@@ -116,12 +118,12 @@
             android:id="@+id/tv_continue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/bottom_navigation_menu_height"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
             android:text="Giriş yapmadan devam et"
             android:textSize="16sp"
+            android:layout_marginBottom="@dimen/default_margin_32"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
