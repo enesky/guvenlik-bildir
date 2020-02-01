@@ -88,7 +88,6 @@ class LoginActivity: BaseActivity() {
                     }
                 }
             } else {
-                showToast("Internet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
                 this.openMainActivity()
             }
         }

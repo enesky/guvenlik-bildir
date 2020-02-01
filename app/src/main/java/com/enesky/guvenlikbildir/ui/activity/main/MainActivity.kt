@@ -1,9 +1,5 @@
 package com.enesky.guvenlikbildir.ui.activity.main
 
-import android.content.BroadcastReceiver
-import android.content.IntentFilter
-import android.net.ConnectivityManager
-import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
@@ -16,8 +12,8 @@ import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakes
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
 import com.enesky.guvenlikbildir.utils.ConnectionLiveData
-import com.enesky.guvenlikbildir.utils.NetworkChecker
 import com.enesky.guvenlikbildir.utils.getViewModel
+import com.enesky.guvenlikbildir.utils.setBackground
 import com.enesky.guvenlikbildir.utils.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
@@ -45,7 +41,6 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     }
     private lateinit var binding: ActivityMainBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main).apply {
@@ -59,11 +54,9 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         bottom_nav.selectedItemId = R.id.notify
 
         val connectionLiveData = ConnectionLiveData(this)
-        connectionLiveData.observe(this, Observer {
-            if (it)
-                showToast("Online")
-            else
-                showToast("Offline")
+        connectionLiveData.observe(this, Observer { isOnline ->
+            if (!isOnline)
+                showToast("Internet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
         })
     }
 

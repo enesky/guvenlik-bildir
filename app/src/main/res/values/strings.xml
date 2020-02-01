@@ -21,6 +21,6 @@
     <string name="hint_enter_code">Doğrulama kodunu giriniz</string>
     <string name="label_max_time">60</string>
     <string name="label_resend_code">Kodu tekrar gönder</string>
-    <string name="label_waiting_info">Doğrulama kodu bekleniyor...</string>
+    <string name="label_waiting_info">Doğrulama kodu bekleniyor…</string>
 
 </resources>
