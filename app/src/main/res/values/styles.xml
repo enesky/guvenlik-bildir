@@ -20,8 +20,4 @@
         <item name="contentInsetStart">0dp</item>
     </style>
 
-    <style name="ToolbarMenu" parent="AppTheme">
-        <item name="android:textColorSecondary">@android:color/white</item>
-    </style>
-
 </resources>

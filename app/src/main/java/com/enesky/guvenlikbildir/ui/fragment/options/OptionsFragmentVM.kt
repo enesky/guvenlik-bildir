@@ -1,13 +1,12 @@
 package com.enesky.guvenlikbildir.ui.fragment.options
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
+import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
-class OptionsFragmentVM : ViewModel() {
+class OptionsFragmentVM : BaseViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is settings Fragment"
+    fun init(binding: FragmentOptionsBinding) {
+        setViewDataBinding(binding)
     }
-    val text: LiveData<String> = _text
+
 }

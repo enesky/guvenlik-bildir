@@ -1,13 +1,12 @@
 package com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
+import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
-class LatestEarthquakesFragmentVM : ViewModel() {
+class LatestEarthquakesFragmentVM : BaseViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is LatestEarthquakes Fragment"
+    fun init(binding: FragmentLastestEarthquakesBinding) {
+        setViewDataBinding(binding)
     }
-    val text: LiveData<String> = _text
+
 }

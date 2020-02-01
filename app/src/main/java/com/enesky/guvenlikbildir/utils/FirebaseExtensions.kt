@@ -38,3 +38,17 @@ fun addUserInfo2Database(firebaseUser: FirebaseUser){
             Log.w("Firestore", "Error adding document", e)
         }
 }
+
+fun checkIfNumberisRegistered(phoneNumber: String) {
+    App.managerFirestore.collection(Constants.usersCollection)
+        .whereEqualTo(Constants.usersCollectionPhoneNumber, phoneNumber)
+        .get()
+        .addOnSuccessListener { documents ->
+            for (document in documents) {
+                Log.d("Firestore", "${document.id} => ${document.data}")
+            }
+        }
+        .addOnFailureListener { exception ->
+            Log.w("Firestore", "Error getting documents: ", exception)
+        }
+}

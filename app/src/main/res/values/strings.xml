@@ -1,7 +1,5 @@
 <resources>
 
-    <string name="app_name">Güvenlik Bildir</string>
-
     <string name="action_sign_in_short">Giriş Yap</string>
     <string name="welcome">"Hoşgeldin !"</string>
     <string name="invalid_phone_number">Geçersiz telefon numarası</string>
