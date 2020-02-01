@@ -19,7 +19,6 @@
         <activity
             android:name=".ui.activity.login.LoginActivity"
             android:label="@string/app_name"
-            android:launchMode="singleInstance"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.Launcher"
             android:windowSoftInputMode="adjustResize|stateHidden">
@@ -33,7 +32,7 @@
         <activity
             android:name=".ui.activity.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />

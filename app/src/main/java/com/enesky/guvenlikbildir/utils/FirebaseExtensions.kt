@@ -19,7 +19,7 @@ fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
             val user = task.result?.user
             showToast("signInWithCredential:success")
             startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            finishAffinity()
 
             //TODO: Database'e bilgileri ekle.
 
@@ -27,7 +27,6 @@ fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
             Log.w("Login", "signInWithCredential:failure", task.exception)
             if (task.exception is FirebaseAuthInvalidCredentialsException)
                 showToast("Hatalı kod")
-
         }
     }
 }

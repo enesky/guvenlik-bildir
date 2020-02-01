@@ -12,5 +12,15 @@
     <string name="label_latest_earthquakes">Son Depremler</string>
     <string name="label_notify">Güvenliğini Bildir</string>
     <string name="label_options">Seçenekler</string>
+    <string name="label_time_up">Süre doldu.</string>
+    <string name="hint_phone_number">Telefon numarası</string>
+    <string name="hint_password">Parola</string>
+    <string name="label_send_code">Doğrulama Kodu Gönder</string>
+    <string name="label_signin_without_verify">Giriş yapmadan devam et</string>
+    <string name="label_sign_in">Giriş Yap</string>
+    <string name="hint_enter_code">Doğrulama kodunu giriniz</string>
+    <string name="label_max_time">60</string>
+    <string name="label_resend_code">Kodu tekrar gönder</string>
+    <string name="label_waiting_info">Doğrulama kodu bekleniyor...</string>
 
 </resources>

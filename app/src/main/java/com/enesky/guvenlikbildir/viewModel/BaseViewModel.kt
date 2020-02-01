@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModel
 open class BaseViewModel : ViewModel(){
 
     init {
-        Log.e(this.javaClass.simpleName, " ${this.javaClass.simpleName} created.")
+        Log.d(this.javaClass.simpleName, " ${this.javaClass.simpleName} created.")
     }
 
     private var dataViewBinding: ViewDataBinding? = null
@@ -24,7 +24,7 @@ open class BaseViewModel : ViewModel(){
 
     override fun onCleared() {
         super.onCleared()
-        Log.e(this.javaClass.simpleName, " ${this.javaClass.simpleName} destroyed.")
+        Log.d(this.javaClass.simpleName, " ${this.javaClass.simpleName} destroyed.")
         dataViewBinding?.unbind()
         dataViewBinding = null
     }

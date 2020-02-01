@@ -25,6 +25,7 @@
             app:boxCornerRadiusTopStart="@dimen/default_margin_8"
             app:boxCornerRadiusBottomEnd="@dimen/default_margin_8"
             app:boxCornerRadiusBottomStart="@dimen/default_margin_8"
+            android:enabled="@{viewModel.inputsEnabled}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -32,7 +33,7 @@
                 android:id="@+id/et_verify_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Doğrulama kodunu giriniz"
+                android:hint="@string/hint_enter_code"
                 android:inputType="number"
                 android:selectAllOnFocus="true" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -42,8 +43,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_16"
-            android:text="Giriş Yap"
+            android:text="@string/label_sign_in"
             android:textAllCaps="false"
+            android:enabled="@{viewModel.inputsEnabled}"
             app:layout_constraintTop_toBottomOf="@+id/til_verify_code" />
 
         <ProgressBar
@@ -51,6 +53,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
+            isVisible="@{viewModel.inputsEnabled}"
             app:layout_constraintBottom_toTopOf="@+id/til_verify_code"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +63,7 @@
             android:id="@+id/tv_countdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="60"
+            android:text="@string/label_max_time"
             android:textSize="@dimen/default_text_18"
             android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/til_verify_code"
@@ -72,14 +75,27 @@
             android:id="@+id/tv_timeup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Süre doldu."
+            android:text="@string/label_time_up"
             android:textSize="@dimen/default_text_18"
             android:gravity="center"
-            android:visibility="gone"
+            isVisible="@{!viewModel.inputsEnabled}"
             android:layout_marginTop="@dimen/default_margin_24"
             app:layout_constraintTop_toBottomOf="@+id/pb_loading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_resend_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_resend_code"
+            android:textAllCaps="false"
+            isVisible="@{!viewModel.inputsEnabled}"
+            android:layout_marginTop="@dimen/default_margin_8"
+            app:layout_constraintTop_toBottomOf="@id/tv_timeup"
+            app:layout_constraintStart_toStartOf="@id/tv_timeup"
+            app:layout_constraintEnd_toEndOf="@id/tv_timeup"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

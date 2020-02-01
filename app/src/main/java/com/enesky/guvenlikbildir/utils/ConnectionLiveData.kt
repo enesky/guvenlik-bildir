@@ -20,16 +20,15 @@ import androidx.lifecycle.LiveData
  * Created by Enes Kamil YILMAZ on 30.01.2020
  */
 
-class ConnectionLiveData(val context: Context) : LiveData<Boolean>(){
+class ConnectionLiveData(private val context: Context) : LiveData<Boolean>(){
 
     var  intentFilter = IntentFilter(CONNECTIVITY_ACTION)
     private var  connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     private lateinit var networkCallback : NetworkCallback
 
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             networkCallback = NetworkCallback(this)
-        }
     }
 
     override fun onActive() {
@@ -49,11 +48,10 @@ class ConnectionLiveData(val context: Context) : LiveData<Boolean>(){
 
     override fun onInactive() {
         super.onInactive()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             connectivityManager.unregisterNetworkCallback(networkCallback)
-        } else{
+        else
             context.unregisterReceiver(networkReceiver)
-        }
     }
 
 

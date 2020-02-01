@@ -16,7 +16,6 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.customView.StatefulRecyclerView
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Created by Enes Kamil YILMAZ on 08.11.2019

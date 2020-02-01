@@ -1,16 +1,20 @@
 package com.enesky.guvenlikbildir.utils
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.format.DateUtils
 import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
@@ -19,11 +23,19 @@ import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
+import org.threeten.bp.DayOfWeek
+import org.threeten.bp.temporal.WeekFields
+import java.io.IOException
+import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Enes Kamil YILMAZ on 09.01.2020
  */
 
+// View Extensions
 fun View.makeItVisible() {
     visibility = View.VISIBLE
 }
@@ -36,43 +48,35 @@ fun View.makeItGone() {
     visibility = View.GONE
 }
 
-internal fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
+fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
 
-internal fun View.setBackground(@ColorRes color: Int) = setBackgroundColor(context.getColorCompat(color))
+fun View.setBackground(@ColorRes color: Int) = setBackgroundColor(context.getColorCompat(color))
 
-internal fun View.setBackgroundTint(@ColorRes color: Int) {
+fun View.setBackgroundTint(@ColorRes color: Int) {
     backgroundTintList = ContextCompat.getColorStateList(context, context.getColorCompat(color))
 }
 
-internal fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
-
-fun TextInputEditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
-}
-
-fun Context.showToast(text: String?) {
-    val inflater = LayoutInflater.from(this)
-    val layout: View = inflater.inflate(R.layout.default_toast, null, false)
-    val textView: TextView = layout.findViewById(R.id.toast_tv)
-    textView.gravity = Gravity.CENTER
-    textView.text = text
-    val toast = Toast(this)
-    toast.duration = Toast.LENGTH_LONG
-    toast.view = layout
-    toast.setGravity(Gravity.BOTTOM, 0, 200)
-    toast.show()
-}
+// Context Extensions
+fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 
 fun Context.checkInternet(): Boolean {
     val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo = cm.activeNetworkInfo
     return networkInfo != null && networkInfo.isConnected
+}
+
+fun Context.showToast(message: String?) {
+    val layout = LayoutInflater.from(this).inflate(R.layout.default_toast, null, false)
+    val textView = layout.findViewById<TextView>(R.id.toast_tv).apply {
+        gravity = Gravity.CENTER
+        text = message
+    }
+    val toast = Toast(this).apply {
+        duration = Toast.LENGTH_LONG
+        view = layout
+        setGravity(Gravity.BOTTOM, 0, 200)
+        show()
+    }
 }
 
 fun View.showSnackbar(text: String) {
@@ -86,14 +90,19 @@ fun View.showSnackbar(text: String) {
     }.show()
 }
 
-fun isPhoneNumberValid(username: String): Boolean {
-    return Patterns.PHONE.matcher(username).matches()
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-internal fun getScreenHeight(): Int {
-    return Resources.getSystem().displayMetrics.heightPixels
+fun Context.showKeyboard() {
+    (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
+        InputMethodManager.SHOW_FORCED,
+        InputMethodManager.HIDE_IMPLICIT_ONLY
+    )
 }
 
+// Activity-Fragment Extensions
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
 }
@@ -102,14 +111,9 @@ fun Activity.hideKeyboard() {
     hideKeyboard(currentFocus ?: View(this))
 }
 
-fun Context.hideKeyboard(view: View) {
-    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-}
+// Extensions
+fun getScreenHeight(): Int = Resources.getSystem().displayMetrics.heightPixels
 
-fun showKeyboard(context: Context) {
-    (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
-        InputMethodManager.SHOW_FORCED,
-        InputMethodManager.HIDE_IMPLICIT_ONLY
-    )
+fun String.isPhoneNumberValid(): Boolean {
+    return Patterns.PHONE.matcher(this).matches()
 }

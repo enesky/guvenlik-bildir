@@ -21,13 +21,13 @@
             android:layout_height="@dimen/toolbar_height"
             android:src="@drawable/ic_thumbs_up_down"
             android:tint="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@id/cv_login"
+            app:layout_constraintBottom_toTopOf="@id/cl_inputs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cv_login"
+            android:id="@+id/cl_inputs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
@@ -48,15 +48,14 @@
                 app:boxCornerRadiusBottomStart="@dimen/default_margin_8"
                 app:startIconDrawable="@drawable/ic_phone"
                 app:startIconTint="@color/colorPrimary"
-                app:errorEnabled="true"
-                app:boxStrokeErrorColor="@color/colorSecondary"
+                android:enabled="@{viewModel.inputsEnabled}"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Telefon numarası"
+                    android:hint="@string/hint_phone_number"
                     android:inputType="number"
                     android:digits="1234567890+-() "
                     android:selectAllOnFocus="true" />
@@ -83,7 +82,7 @@
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Parola"
+                    android:hint="@string/hint_password"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
@@ -95,9 +94,10 @@
                 android:id="@+id/btn_send_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin_16"
-                android:text="Doğrulama Kodu Gönder"
+                android:text="@string/label_send_code"
                 android:textAllCaps="false"
+                android:enabled="@{viewModel.inputsEnabled}"
+                android:layout_margin="@dimen/default_margin_16"
                 app:layout_constraintTop_toBottomOf="@+id/til_password" />
 
             <ProgressBar
@@ -105,7 +105,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
-                android:visibility="gone"
+                isVisible="@{!viewModel.inputsEnabled}"
                 android:layout_marginBottom="@dimen/default_margin_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -115,13 +115,25 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/tv_waiting_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/label_waiting_info"
+            android:textSize="16sp"
+            isVisible="@{!viewModel.inputsEnabled}"
+            app:layout_constraintTop_toBottomOf="@id/cl_inputs"
+            app:layout_constraintBottom_toTopOf="@id/tv_continue"
+            />
+
+        <TextView
             android:id="@+id/tv_continue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Giriş yapmadan devam et"
+            android:text="@string/label_signin_without_verify"
             android:textSize="16sp"
             android:layout_marginBottom="@dimen/default_margin_32"
             app:layout_constraintBottom_toBottomOf="parent" />

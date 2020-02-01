@@ -2,15 +2,22 @@ package com.enesky.guvenlikbildir.ui.activity.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.util.Patterns
-
-import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.data.model.LoginFormState
+import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 class LoginActivityVM : BaseViewModel() {
 
+    private val _inputsEnabled = MutableLiveData<Boolean>().apply {
+        value = true
+    }
+    val inputsEnabled: LiveData<Boolean> = _inputsEnabled
 
+    fun init(binding: ActivityLoginBinding) {
+        setViewDataBinding(binding)
+    }
 
+    fun setInputsEnabled(enable: Boolean) {
+        _inputsEnabled.value = enable
+    }
 
 }
