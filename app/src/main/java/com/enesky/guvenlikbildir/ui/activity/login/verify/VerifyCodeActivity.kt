@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityVerifyCodeBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
+import com.enesky.guvenlikbildir.utils.Constants
 import com.enesky.guvenlikbildir.utils.getViewModel
 import com.enesky.guvenlikbildir.utils.showToast
 import com.enesky.guvenlikbildir.utils.signInWithPhoneAuthCredential
@@ -40,11 +41,14 @@ class VerifyCodeActivity: BaseActivity() {
         verification = intent.getStringExtra("verificationId")
         resendingToken = intent.getParcelableExtra("token")
 
+        if (phoneNumber == Constants.testUserPhoneNumber)
+            et_verify_code.setText(Constants.testUserVerifyCode)
+
         startCountDown()
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                Log.d("Login", "onVerificationCompleted:$credential")
+                Log.d("VerifyCodeActivity", "onVerificationCompleted:$credential")
                 if (credential.smsCode != null) {
                     et_verify_code.setText(credential.smsCode)
                     verifyCodeViewModel.setInputsEnabled(false)
@@ -54,12 +58,13 @@ class VerifyCodeActivity: BaseActivity() {
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
+                Log.w("VerifyCodeActivity", "onVerificationFailed:${e.message}")
                 showToast(e.message)
                 verifyCodeViewModel.setInputsEnabled(true)
             }
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-                Log.d("Login", "onCodeSent:$verificationId")
+                Log.d("VerifyCodeActivity", "onCodeSent:$verificationId")
                 resendingToken = token
                 verification = verificationId
             }

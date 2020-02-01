@@ -33,6 +33,7 @@ class OptionsFragment : BaseFragment() {
         btn_sign_out.setOnClickListener {
             App.managerAuth.signOut()
             startActivity(Intent(activity, LoginActivity::class.java))
+            activity!!.finishAffinity()
         }
 
     }

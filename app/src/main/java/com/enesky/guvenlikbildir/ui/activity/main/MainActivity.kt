@@ -6,9 +6,11 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
@@ -41,10 +43,16 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     val mainVM by lazy {
         getViewModel { MainActivityVM() }
     }
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main).apply {
+            viewModel = mainVM
+            lifecycleOwner = this@MainActivity
+        }
+        mainVM.init(binding)
 
         navigator.initialize(savedInstanceState)
         bottom_nav.setOnNavigationItemSelectedListener(this)

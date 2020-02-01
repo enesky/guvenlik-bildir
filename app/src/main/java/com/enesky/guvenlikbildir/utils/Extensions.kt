@@ -1,35 +1,25 @@
 package com.enesky.guvenlikbildir.utils
 
 import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.net.ConnectivityManager
-import android.text.Editable
-import android.text.TextWatcher
-import android.text.format.DateUtils
 import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
+import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.gson.Gson
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.temporal.WeekFields
-import java.io.IOException
-import java.lang.reflect.Type
-import java.text.SimpleDateFormat
-import java.util.*
+import com.google.firebase.auth.PhoneAuthProvider
 
 /**
  * Created by Enes Kamil YILMAZ on 09.01.2020
@@ -109,6 +99,21 @@ fun Fragment.hideKeyboard() {
 
 fun Activity.hideKeyboard() {
     hideKeyboard(currentFocus ?: View(this))
+}
+
+fun Activity.openMainActivity() {
+    startActivity(Intent(this, MainActivity::class.java))
+    finishAffinity()
+}
+
+fun Activity.openVerifyCodeActivity(phoneNumber: String,
+                                   verificationId: String,
+                                   token: PhoneAuthProvider.ForceResendingToken) {
+    val intent = Intent(this, VerifyCodeActivity::class.java)
+    intent.putExtra("phoneNumber", phoneNumber)
+    intent.putExtra("verificationId", verificationId)
+    intent.putExtra("token", token)
+    startActivity(intent)
 }
 
 // Extensions

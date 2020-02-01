@@ -9,7 +9,6 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
-import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.enesky.guvenlikbildir.utils.*
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseUser
@@ -42,7 +41,7 @@ class LoginActivity: BaseActivity() {
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                Log.d("Login", "onVerificationCompleted:$credential")
+                Log.d("LoginActivity", "onVerificationCompleted:$credential")
 
                 if (credential.smsCode != null)
                     signInWithPhoneAuthCredential(credential)
@@ -53,15 +52,18 @@ class LoginActivity: BaseActivity() {
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                Log.d("Login", "onVerificationFailed:${e.message}")
+                Log.w("LoginActivity", "onVerificationFailed:${e.message}")
                 showToast(e.message)
                 loginViewModel.setInputsEnabled(true)
             }
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-                Log.d("Login", "onCodeSent:$verificationId")
+                Log.d("LoginActivity", "onCodeSent:$verificationId")
                 verification = verificationId
                 resendingToken = token
+
+                if (et_phone_number.text.toString() == Constants.testUserPhoneNumber)
+                    openVerifyCodeActivity(Constants.testUserPhoneNumber, verificationId, token)
             }
         }
 
@@ -78,19 +80,16 @@ class LoginActivity: BaseActivity() {
             if (checkInternet()) {
                 App.managerAuth.signInAnonymously().addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Log.d("Login", "signInAnonymously:success")
-                        val user = App.managerAuth.currentUser
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finishAffinity()
+                        Log.d("LoginActivity", "signInAnonymously:success")
+                        this.openMainActivity()
                     } else {
-                        Log.w("Login", "signInAnonymously:failure", task.exception)
-                        showToast("Authentication failed.")
+                        Log.d("LoginActivity", "signInAnonymously:failure", task.exception)
+                        showToast("Giriş başarısız.")
                     }
                 }
             } else {
                 showToast("Internet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
-                startActivity(Intent(this, MainActivity::class.java))
-                finishAffinity()
+                this.openMainActivity()
             }
         }
 
@@ -101,8 +100,7 @@ class LoginActivity: BaseActivity() {
         val currentUser: FirebaseUser? = App.managerAuth.currentUser
         if (currentUser != null) {
             loginViewModel.setInputsEnabled(false)
-            startActivity(Intent(this, MainActivity::class.java))
-            finishAffinity()
+            this.openMainActivity()
         }
     }
 
@@ -111,11 +109,7 @@ class LoginActivity: BaseActivity() {
                                 token: PhoneAuthProvider.ForceResendingToken) {
         if (phoneNumber.isPhoneNumberValid()) {
             loginViewModel.setInputsEnabled(false)
-            val intent = Intent(this, VerifyCodeActivity::class.java)
-            intent.putExtra("phoneNumber", phoneNumber)
-            intent.putExtra("verificationId", verificationId)
-            intent.putExtra("token", token)
-            startActivity(intent)
+            openVerifyCodeActivity(phoneNumber, verificationId, token)
         } else {
             til_phone_number.error = "Geçersiz telefon numarası"
             til_phone_number.isErrorEnabled = true
