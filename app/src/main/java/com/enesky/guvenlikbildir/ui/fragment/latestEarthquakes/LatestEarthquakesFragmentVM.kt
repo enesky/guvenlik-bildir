@@ -15,6 +15,9 @@ class LatestEarthquakesFragmentVM : BaseViewModel() {
 
     fun init(binding: FragmentLastestEarthquakesBinding) {
         setViewDataBinding(binding)
+    }
+
+    init {
         GlobalScope.launch {
             getLastEarthquakes("10")
         }
