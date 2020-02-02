@@ -14,5 +14,4 @@ data class Result<out T>(val status: Status, val data: T) {
             return Result(Status.EXCEPTION, exceptionMessage)
         }
     }
-
 }

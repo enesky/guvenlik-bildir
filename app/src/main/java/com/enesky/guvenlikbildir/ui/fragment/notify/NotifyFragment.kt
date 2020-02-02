@@ -21,7 +21,7 @@ class NotifyFragment: BaseFragment() {
     private lateinit var notifyFragmentVM: NotifyFragmentVM
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_options, container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notify, container,false)
         return binding.root
     }
 

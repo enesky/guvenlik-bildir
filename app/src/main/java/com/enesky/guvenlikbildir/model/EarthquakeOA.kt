@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class EarthquakeOA(
-    val mag: Int,
+    val mag: Float,
     val lng: Float,
     val lat: Float,
     val lokasyon: String,

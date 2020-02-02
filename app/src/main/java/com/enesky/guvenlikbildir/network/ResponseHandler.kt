@@ -29,10 +29,10 @@ open class ResponseHandler : Observable() {
             is HttpException -> Result.exception(getErrorMessage(e.code()))
             is SocketTimeoutException -> Result.exception(getErrorMessage(1))
             else -> {
-                if (e.localizedMessage!!.contains("proxy"))
+                if (e.localizedMessage != null && e.localizedMessage!!.contains("proxy"))
                     Result.exception(getErrorMessage(2))
                 else
-                    Result.exception(getErrorMessage(Int.MAX_VALUE))
+                    Result.exception(getErrorMessage(Int.MAX_VALUE, e))
             }
         }
 
@@ -41,13 +41,20 @@ open class ResponseHandler : Observable() {
         return resource
     }
 
-    private fun getErrorMessage(code: Int): String {
-        return when (code) {
+    private fun getErrorMessage(code: Int?, e: Exception? = null): String {
+        lateinit var errorMessage: String
+
+        errorMessage = when (code) {
             1 -> "Timeout"
             2 -> "Failed to authenticate with proxy"
             401 -> "Unauthorized"
             404 -> "Not found"
             else -> "Something went wrong"
         }
+
+        if (e != null && e.localizedMessage != null)
+            errorMessage = e.localizedMessage!!
+
+        return errorMessage
     }
 }
