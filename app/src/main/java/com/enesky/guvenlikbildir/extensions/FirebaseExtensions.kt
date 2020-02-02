@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.utils
+package com.enesky.guvenlikbildir.extensions
 
 import android.app.Activity
 import android.util.Log

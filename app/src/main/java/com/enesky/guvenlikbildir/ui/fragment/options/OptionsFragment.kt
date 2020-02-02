@@ -6,19 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
-import com.enesky.guvenlikbildir.utils.getViewModel
+import com.enesky.guvenlikbildir.extensions.getViewModel
 import kotlinx.android.synthetic.main.fragment_options.*
 
 class OptionsFragment: BaseFragment() {
 
     private lateinit var binding: FragmentOptionsBinding
-    private lateinit var optionsFragmentVM: OptionsFragmentVM
+    private lateinit var optionsVM: OptionsVM
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_options, container,false)
@@ -27,12 +26,12 @@ class OptionsFragment: BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        optionsFragmentVM = getViewModel()
+        optionsVM = getViewModel()
         binding.apply {
-            viewModel = optionsFragmentVM
+            viewModel = optionsVM
             lifecycleOwner = this@OptionsFragment
         }
-        optionsFragmentVM.init(binding)
+        optionsVM.init(binding)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

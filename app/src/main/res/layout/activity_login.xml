@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.enesky.guvenlikbildir.ui.activity.login.LoginActivityVM" />
+            type="com.enesky.guvenlikbildir.ui.activity.login.LoginVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

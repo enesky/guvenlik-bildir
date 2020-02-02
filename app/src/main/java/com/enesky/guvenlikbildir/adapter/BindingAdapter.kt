@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.utils
+package com.enesky.guvenlikbildir.adapter
 
 import android.annotation.SuppressLint
 import android.text.TextWatcher
@@ -14,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.customView.StatefulRecyclerView
+import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.extensions.makeItGone
+import com.enesky.guvenlikbildir.extensions.makeItVisible
+import com.enesky.guvenlikbildir.extensions.setBackground
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 

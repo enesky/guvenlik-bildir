@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.utils
+package com.enesky.guvenlikbildir.extensions
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

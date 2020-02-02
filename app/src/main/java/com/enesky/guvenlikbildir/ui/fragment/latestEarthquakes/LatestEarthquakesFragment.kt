@@ -10,8 +10,8 @@ import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
-import com.enesky.guvenlikbildir.utils.getViewModel
-import com.enesky.guvenlikbildir.utils.showToast
+import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 class LatestEarthquakesFragment: BaseFragment() {
 
     private lateinit var binding: FragmentLastestEarthquakesBinding
-    private lateinit var latestEarthquakesFragmentVM: LatestEarthquakesFragmentVM
+    private lateinit var latestEarthquakesVM: LatestEarthquakesVM
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_lastest_earthquakes, container,false)
@@ -29,14 +29,14 @@ class LatestEarthquakesFragment: BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        latestEarthquakesFragmentVM = getViewModel()
+        latestEarthquakesVM = getViewModel()
         binding.apply {
-            viewModel = latestEarthquakesFragmentVM
+            viewModel = latestEarthquakesVM
             lifecycleOwner = this@LatestEarthquakesFragment
         }
-        latestEarthquakesFragmentVM.init(binding)
+        latestEarthquakesVM.init(binding)
 
-        latestEarthquakesFragmentVM.responseHandler.addObserver{_, it ->
+        latestEarthquakesVM.responseHandler.addObserver{ _, it ->
             GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     if (it != null && it is Result<*>) {

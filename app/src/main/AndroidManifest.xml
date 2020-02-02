@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".App"
@@ -28,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.login.verify.VerifyCodeActivity"/>
         <activity
             android:name=".ui.activity.main.MainActivity"
             android:label="@string/title_activity_main"
@@ -37,11 +37,14 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
-        <service android:name=".FcmService">
+        <activity android:name=".ui.activity.login.verify.VerifyCodeActivity"/>
+
+        <service android:name=".service.FcmService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

@@ -1,6 +1,5 @@
 package com.enesky.guvenlikbildir.ui.activity.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
@@ -8,8 +7,7 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
-import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
-import com.enesky.guvenlikbildir.utils.*
+import com.enesky.guvenlikbildir.extensions.*
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
@@ -24,18 +22,18 @@ class LoginActivity: BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
     private var verification: String? = null
     private var resendingToken: PhoneAuthProvider.ForceResendingToken? = null
-    private val loginViewModel by lazy {
-        getViewModel { LoginActivityVM() }
+    private val loginVM by lazy {
+        getViewModel { LoginVM() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login).apply {
-                    viewModel = loginViewModel
+                    viewModel = loginVM
                     lifecycleOwner = this@LoginActivity
                 }
-        loginViewModel.init(binding)
+        loginVM.init(binding)
 
         val listener = MaskedTextChangedListener("+90 ([000]) [000] [00] [00]", et_phone_number)
 
@@ -54,7 +52,7 @@ class LoginActivity: BaseActivity() {
             override fun onVerificationFailed(e: FirebaseException) {
                 Log.w("LoginActivity", "onVerificationFailed:${e.message}")
                 showToast(e.message)
-                loginViewModel.setInputsEnabled(true)
+                loginVM.setInputsEnabled(true)
             }
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -98,7 +96,7 @@ class LoginActivity: BaseActivity() {
         super.onStart()
         val currentUser: FirebaseUser? = App.managerAuth.currentUser
         if (currentUser != null) {
-            loginViewModel.setInputsEnabled(false)
+            loginVM.setInputsEnabled(false)
             this.openMainActivity()
         }
     }
@@ -107,12 +105,12 @@ class LoginActivity: BaseActivity() {
                                 verificationId: String,
                                 token: PhoneAuthProvider.ForceResendingToken) {
         if (phoneNumber.isPhoneNumberValid()) {
-            loginViewModel.setInputsEnabled(false)
+            loginVM.setInputsEnabled(false)
             openVerifyCodeActivity(phoneNumber, verificationId, token)
         } else {
             til_phone_number.error = "Geçersiz telefon numarası"
             til_phone_number.isErrorEnabled = true
-            loginViewModel.setInputsEnabled(true)
+            loginVM.setInputsEnabled(true)
         }
     }
 
@@ -121,11 +119,11 @@ class LoginActivity: BaseActivity() {
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber, 60, TimeUnit.SECONDS, this, callbacks
             )
-            loginViewModel.setInputsEnabled(false)
+            loginVM.setInputsEnabled(false)
         } else {
             til_phone_number.error = "Geçersiz telefon numarası"
             til_phone_number.isErrorEnabled = true
-            loginViewModel.setInputsEnabled(true)
+            loginVM.setInputsEnabled(true)
         }
 
     }

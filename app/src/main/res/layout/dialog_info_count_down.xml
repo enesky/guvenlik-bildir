@@ -1,0 +1,73 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aranıyor"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/default_text_20"
+        android:lineHeight="@dimen/default_text_24"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/default_margin_16"
+        android:layout_marginStart="@dimen/default_margin_24"
+        android:layout_marginEnd="@dimen/default_margin_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="@dimen/toolbar_height"
+        android:layout_height="@dimen/toolbar_height"
+        android:visibility="visible"
+        android:layout_margin="@dimen/default_margin_8"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
+        app:layout_constraintBottom_toTopOf="@id/bottom_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textSize="@dimen/default_text_16"
+        android:lineHeight="@dimen/default_text_24"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
+        app:layout_constraintBottom_toTopOf="@id/bottom_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lineShade"
+        android:layout_marginTop="@dimen/default_margin_8"
+        app:layout_constraintTop_toBottomOf="@id/pb_loading" />
+
+    <TextView
+        android:id="@+id/tv_okey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin_16"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:lineHeight="@dimen/default_text_18"
+        android:lineSpacingExtra="4sp"
+        android:padding="@dimen/default_margin_16"
+        android:text="İptal"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/default_text_16"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/bottom_line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

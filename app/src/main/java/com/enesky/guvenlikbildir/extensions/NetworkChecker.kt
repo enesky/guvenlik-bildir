@@ -1,9 +1,8 @@
-package com.enesky.guvenlikbildir.utils
+package com.enesky.guvenlikbildir.extensions
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 
 /**
  * Created by Enes Kamil YILMAZ on 29.01.2020

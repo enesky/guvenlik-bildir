@@ -13,9 +13,9 @@ import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
-import com.enesky.guvenlikbildir.utils.ConnectionLiveData
-import com.enesky.guvenlikbildir.utils.getViewModel
-import com.enesky.guvenlikbildir.utils.showToast
+import com.enesky.guvenlikbildir.extensions.ConnectionLiveData
+import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.showToast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
@@ -40,7 +40,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         )
 
     private val mainVM by lazy {
-        getViewModel { MainActivityVM() }
+        getViewModel { MainVM() }
     }
     private lateinit var binding: ActivityMainBinding
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
-class LoginActivityVM : BaseViewModel() {
+class LoginVM : BaseViewModel() {
 
     private val _inputsEnabled = MutableLiveData<Boolean>().apply {
         value = true

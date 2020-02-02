@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir
+package com.enesky.guvenlikbildir.service
 
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService

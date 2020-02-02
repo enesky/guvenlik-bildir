@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragmentVM" />
+            type="com.enesky.guvenlikbildir.ui.fragment.notify.NotifyVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,67 +33,202 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <LinearLayout
-            android:id="@+id/ll_safe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:orientation="vertical"
-            android:padding="@dimen/default_margin_32"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintVertical_bias="0.52">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.45" />
 
-            <ImageView
-                android:id="@+id/iv_safe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_thumb_up" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="@dimen/default_margin_24"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/guideline">
 
             <TextView
-                android:id="@+id/tv_safe"
+                android:id="@+id/tv_title_acil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/default_margin_16"
-                android:text="Güvendeyim."
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/default_text_16" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_unsafe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:orientation="vertical"
-            android:padding="@dimen/default_margin_32"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintVertical_bias="0.823">
-
-            <ImageView
-                android:id="@+id/iv_unsafe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_thumb_down" />
-
-            <TextView
-                android:id="@+id/tv_unsafe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Güvende değilim."
-                android:textColor="@android:color/black"
+                android:text="@string/label_title_acil"
                 android:textSize="@dimen/default_text_16"
-                android:layout_marginTop="@dimen/default_margin_16"/>
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/default_margin_16"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/ll_polis"/>
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_polis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ll_yardım"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_acil"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_polis"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:src="@drawable/ic_polis"
+                    android:layout_margin="@dimen/default_text_16"/>
+
+                <TextView
+                    android:id="@+id/tv_polis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_polis"
+                    android:textSize="@dimen/default_text_14"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_yardım"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintStart_toEndOf="@id/ll_polis"
+                app:layout_constraintEnd_toStartOf="@id/ll_iftaiye"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_acil"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_yardım"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:src="@drawable/ic_ilk_yardim"
+                    android:layout_margin="@dimen/default_text_16"/>
+
+                <TextView
+                    android:id="@+id/tv_yardım"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_acil_yardim"
+                    android:textSize="@dimen/default_text_14"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_iftaiye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintStart_toEndOf="@id/ll_yardım"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_acil"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_itfaiye"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:src="@drawable/ic_iftaiye"
+                    android:layout_margin="@dimen/default_text_16"/>
+
+                <TextView
+                    android:id="@+id/tv_itfaiye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_itfaiye"
+                    android:textSize="@dimen/default_text_14"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_diagonal_line"
+            app:layout_constraintTop_toBottomOf="@id/guideline"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ll_safe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/default_margin_24"
+                android:layout_margin="@dimen/default_margin_16"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_safe"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/safe_hi_res_512"
+                    app:civ_border_color="@color/colorAccent"
+                    app:civ_border_width="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"/>
+
+                <TextView
+                    android:id="@+id/tv_safe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/default_margin_16"
+                    android:text="@string/label_im_safe"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/default_text_16" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_unsafe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/default_margin_24"
+                android:layout_margin="@dimen/default_margin_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_unsafe"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/unsafe_hi_res_512"
+                    app:civ_border_color="@color/colorAccent"
+                    app:civ_border_width="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground" />
+
+                <TextView
+                    android:id="@+id/tv_unsafe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/default_margin_16"
+                    android:text="@string/label_im_not_safe"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/default_text_16" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragmentVM" />
+            type="com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

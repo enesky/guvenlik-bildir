@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <rotate
+            android:fromDegrees="135"
+            android:toDegrees="0">
+            <shape
+                android:shape="line"
+                android:top="2dip">
+                <stroke
+                    android:width="2dp"
+                    android:color="@color/colorPrimary" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

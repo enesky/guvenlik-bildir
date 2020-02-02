@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.enesky.guvenlikbildir.ui.activity.main.MainActivityVM" />
+            type="com.enesky.guvenlikbildir.ui.activity.main.MainVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

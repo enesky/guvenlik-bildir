@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.utils
+package com.enesky.guvenlikbildir.extensions
 
 object Constants {
 
@@ -23,5 +23,10 @@ object Constants {
     const val usersCollection = "users"
     const val usersCollectionUid = "uid"
     const val usersCollectionPhoneNumber = "phoneNumber"
+
+    //Numbers
+    const val polis = "155"
+    const val acilYardım = "112"
+    const val itfaiye = "110"
 
 }

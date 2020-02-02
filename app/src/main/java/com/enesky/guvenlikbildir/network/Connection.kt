@@ -1,7 +1,7 @@
 package com.enesky.guvenlikbildir.network
 
 import com.enesky.guvenlikbildir.BuildConfig
-import com.enesky.guvenlikbildir.utils.Constants
+import com.enesky.guvenlikbildir.extensions.Constants
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

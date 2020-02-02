@@ -20,5 +20,15 @@
     <string name="label_max_time">60</string>
     <string name="label_resend_code">Kodu tekrar gönder</string>
     <string name="label_waiting_info">Doğrulama kodu bekleniyor…</string>
+    <string name="label_calling_155">155 - Polis Aranıyor...</string>
+    <string name="label_calling_112">112 - Acil Aranıyor...</string>
+    <string name="label_calling_110">110 - İftaiye Aranıyor...</string>
+    <string name="label_sending_sms">Sms gönderiliyor...</string>
+    <string name="label_itfaiye">110 - İtfaiye</string>
+    <string name="label_acil_yardim">112 - Acil Yardım</string>
+    <string name="label_polis">155 - Polis</string>
+    <string name="label_title_acil">Acil Durum Telefon Numaraları</string>
+    <string name="label_im_safe">Güvendeyim.</string>
+    <string name="label_im_not_safe">Güvende değilim.</string>
 
 </resources>

@@ -8,10 +8,10 @@ import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityVerifyCodeBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
-import com.enesky.guvenlikbildir.utils.Constants
-import com.enesky.guvenlikbildir.utils.getViewModel
-import com.enesky.guvenlikbildir.utils.showToast
-import com.enesky.guvenlikbildir.utils.signInWithPhoneAuthCredential
+import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.showToast
+import com.enesky.guvenlikbildir.extensions.signInWithPhoneAuthCredential
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider

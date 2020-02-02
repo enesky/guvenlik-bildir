@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class LatestEarthquakesFragmentVM : BaseViewModel() {
+class LatestEarthquakesVM : BaseViewModel() {
 
     private val _responseHandler = ResponseHandler()
     val responseHandler: ResponseHandler = _responseHandler

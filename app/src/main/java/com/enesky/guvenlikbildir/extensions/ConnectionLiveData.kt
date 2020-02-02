@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.utils
+package com.enesky.guvenlikbildir.extensions
 
 import android.content.BroadcastReceiver
 import android.content.Context
