@@ -31,13 +31,11 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             { OptionsFragment() }
         )
 
-    private val navigator: MultipleStackNavigator =
-        MultipleStackNavigator(
-            supportFragmentManager,
-            R.id.container,
-            rootFragmentProvider,
-            this
-        )
+    companion object {
+        private lateinit var navigator: MultipleStackNavigator
+        val managerNavigator: MultipleStackNavigator
+            get() = navigator
+    }
 
     private val mainVM by lazy {
         getViewModel { MainVM() }
@@ -51,6 +49,13 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             lifecycleOwner = this@MainActivity
         }
         mainVM.init(binding)
+
+        navigator = MultipleStackNavigator(
+            supportFragmentManager,
+            R.id.container,
+            rootFragmentProvider,
+            this
+        )
 
         vp_home.adapter = ViewPagerAdapter(
             supportFragmentManager,

@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.customView.StatefulRecyclerView
+import com.enesky.guvenlikbildir.custom.StatefulRecyclerView
 import com.enesky.guvenlikbildir.extensions.Constants
 import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
@@ -104,4 +105,9 @@ fun dismiss(view: EditText, dismiss: Boolean) {
     view.setOnClickListener {
         //TODO: dismiss() ?
     }
+}
+
+@BindingAdapter("setImage")
+fun setImage(view: ImageView, imageId: Int) {
+    view.setImageResource(imageId)
 }

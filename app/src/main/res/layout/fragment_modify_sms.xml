@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySmsVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,33 +14,118 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.options.modifySms.ModifySMSFragment">
 
-        <TextView
-            android:id="@+id/tv_title_safe_sms"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:theme="@style/ToolbarStyle"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Sms'leri Düzenle"
+                android:gravity="center"
+                android:lineHeight="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/default_text_20" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <LinearLayout
+            android:id="@+id/ll_safe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Güvendeysen gönderilecek SMS :"
-            android:layout_marginStart="@dimen/default_margin_16"
-            android:layout_marginTop="@dimen/default_margin_16"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/cv_safe_sms" />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_safe_sms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:cardCornerRadius="@dimen/default_radius"
-            android:layout_margin="@dimen/default_margin_16"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_safe_sms">
-
-            <EditText
+            <TextView
+                android:id="@+id/tv_title_safe_sms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_marginTop="@dimen/default_margin_16"
+                android:text="Güvendeysen gönderilecek SMS :"
+                android:textSize="@dimen/default_text_16" />
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_safe_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin_16"
+                android:background="@color/colorAccent"
+                app:cardCornerRadius="@dimen/default_radius">
 
-                />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web|map"
+                    android:background="@android:color/transparent"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/default_margin_16"
+                    android:text="Güvendeyim.
+                 Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
 
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <LinearLayout
+            android:id="@+id/ll_unsafe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/materialButton"
+            app:layout_constraintTop_toBottomOf="@+id/guideline">
+
+            <TextView
+                android:id="@+id/tv_title_unsafe_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_marginTop="@dimen/default_margin_16"
+                android:text="Güvende değilsen gönderilecek SMS :"
+                android:textSize="@dimen/default_text_16" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_unsafe_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin_16"
+                android:background="@color/colorAccent"
+                app:cardCornerRadius="@dimen/default_radius">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web|map"
+                    android:background="@android:color/transparent"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/default_margin_16"
+                    android:text="Güvende değilim.
+                 Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_24"
+            android:text="Kaydet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

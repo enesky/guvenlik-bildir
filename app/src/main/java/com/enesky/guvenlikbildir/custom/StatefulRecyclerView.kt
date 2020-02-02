@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.customView
+package com.enesky.guvenlikbildir.custom
 
 import android.content.Context
 import android.os.Bundle

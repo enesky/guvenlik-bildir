@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="optionItem"
+            type="com.enesky.guvenlikbildir.model.OptionItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_option_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/line_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lineShade"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin_16"
+            tools:src="@drawable/ic_sms"
+            setImage="@{optionItem.imageId}"
+            app:layout_constraintBottom_toBottomOf="@id/line_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line_top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{optionItem.optionText}"
+            tools:text="Gönderilecek SMS'leri düzenle."
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/default_text_16"
+            app:layout_constraintBottom_toBottomOf="@id/line_bottom"
+            app:layout_constraintStart_toEndOf="@id/iv_option"
+            app:layout_constraintTop_toBottomOf="@id/line_top" />
+
+        <View
+            android:id="@+id/line_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lineShade"
+            app:layout_constraintTop_toBottomOf="@id/iv_option" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

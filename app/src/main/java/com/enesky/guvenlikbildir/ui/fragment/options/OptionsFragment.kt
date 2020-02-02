@@ -6,15 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
-import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
-import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
+import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
+import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySMSFragment
+import com.trendyol.medusalib.navigator.Navigator
 import kotlinx.android.synthetic.main.fragment_options.*
 
-class OptionsFragment: BaseFragment() {
+class OptionsFragment: BaseFragment(), Navigator.NavigatorListener {
 
     private lateinit var binding: FragmentOptionsBinding
     private lateinit var optionsVM: OptionsVM
@@ -32,6 +36,17 @@ class OptionsFragment: BaseFragment() {
             lifecycleOwner = this@OptionsFragment
         }
         optionsVM.init(binding)
+
+        optionsVM.whereTo.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                0 -> {
+                    val modifySMSFragment = ModifySMSFragment()
+                    modifySMSFragment.setTargetFragment(this, 1)
+                    modifySMSFragment.show(this.parentFragmentManager, "modifySMSFragment")
+                }
+            }
+        })
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,6 +58,10 @@ class OptionsFragment: BaseFragment() {
             activity!!.finishAffinity()
         }
 
+    }
+
+    override fun onTabChanged(tabIndex: Int) {
+        //ignored
     }
 
 }
