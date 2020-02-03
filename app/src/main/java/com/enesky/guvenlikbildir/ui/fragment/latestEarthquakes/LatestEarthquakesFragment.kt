@@ -56,22 +56,33 @@ class LatestEarthquakesFragment: BaseFragment() {
         }
 
         fab_synchronize.setOnClickListener {
-            val objectAnimator = ObjectAnimator
-                .ofFloat(fab_synchronize, "rotation", 360f, 0f)
-                .setDuration(700)
-            objectAnimator.repeatCount = 2
-            objectAnimator.start()
-
-            pb_loading.makeItVisible()
-
-            Handler().apply {
-                postDelayed({
-                    fab_synchronize.setImageResource(R.drawable.ic_sync)
-                    pb_loading.makeItGone()
-                }, 2100)
-            }
+            refresh()
         }
 
+        srl_refresh.setOnRefreshListener {
+            refresh()
+        }
+
+    }
+
+    fun refresh() {
+        val objectAnimator = ObjectAnimator
+            .ofFloat(fab_synchronize, "rotation", 360f, 0f)
+            .setDuration(700)
+        objectAnimator.repeatCount = 2
+
+        objectAnimator.start()
+        srl_refresh.isRefreshing = true
+        pb_loading.makeItVisible()
+        //TODO: new request + adapter.update
+
+        Handler().apply {
+            postDelayed({
+                fab_synchronize.setImageResource(R.drawable.ic_sync)
+                pb_loading.makeItGone()
+                srl_refresh.isRefreshing = false
+            }, 2100)
+        }
     }
 
 }

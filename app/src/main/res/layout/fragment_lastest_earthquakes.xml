@@ -34,33 +34,39 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <ProgressBar
-            android:id="@+id/pb_loading"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <LinearLayout
+            android:id="@+id/view_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateTint="@color/colorPrimary"
-            android:indeterminateTintMode="src_atop"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/sv_earthquake"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/bg_radius"
-            app:iconifiedByDefault="false"
-            app:queryHint="Filtrele..."
-            app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/sv_earthquake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_radius"
+                app:iconifiedByDefault="false"
+                app:queryHint="Filtrele..."/>
 
-        <com.enesky.guvenlikbildir.custom.StatefulRecyclerView
+        </LinearLayout>
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srl_refresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/default_margin_10"
-            app:layout_constraintTop_toBottomOf="@id/sv_earthquake"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/view_search"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_earthquakes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_synchronize"
@@ -74,8 +80,18 @@
             app:fab_size="normal"
             android:layout_margin="@dimen/default_margin_16"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

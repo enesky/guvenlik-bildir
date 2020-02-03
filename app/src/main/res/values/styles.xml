@@ -23,7 +23,7 @@
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="dialogCornerRadius">@dimen/default_margin_16</item>
+        <item name="dialogCornerRadius">@dimen/default_radius</item>
     </style>
 
 </resources>

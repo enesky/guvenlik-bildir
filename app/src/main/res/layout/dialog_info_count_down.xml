@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_radius">
 
     <TextView
         android:id="@+id/tv_dialog_title"
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:text="3"
         android:textSize="@dimen/default_text_16"
+        android:textColor="@color/colorPrimary"
         android:lineHeight="@dimen/default_text_24"
         app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
         app:layout_constraintBottom_toTopOf="@id/bottom_line"
@@ -48,7 +50,7 @@
         android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lineShade"
+        android:background="@color/colorPrimary"
         android:layout_marginTop="@dimen/default_margin_8"
         app:layout_constraintTop_toBottomOf="@id/pb_loading" />
 
