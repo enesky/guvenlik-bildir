@@ -13,7 +13,12 @@ class OptionsVM : BaseViewModel(), OptionListAdapter.OptionListListener {
 
     private val _optionListAdapter = MutableLiveData<OptionListAdapter>().apply {
         value = OptionListAdapter(
-            listOf(OptionItem(R.drawable.ic_sms, "Gönderilecek SMS'leri düzenle.")), this@OptionsVM)
+            listOf(OptionItem(R.drawable.ic_contact, "Kimlere SMS göndereceğini seç"),
+                    OptionItem(R.drawable.ic_sms, "Gönderilecek SMS'leri düzenle"),
+                    OptionItem(R.drawable.ic_sms, "Afetler Hakkında Bilgilendirmeler"),
+                    OptionItem(R.drawable.ic_sms, "Acil Durum Telefon Numaraları"),
+                    OptionItem(R.drawable.ic_about, "Uygulama Hakkında"),
+                    OptionItem(R.drawable.ic_about, "Çıkış Yap")), this@OptionsVM)
     }
     val optionListAdapter: LiveData<OptionListAdapter> = _optionListAdapter
 

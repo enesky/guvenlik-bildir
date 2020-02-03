@@ -52,7 +52,7 @@ open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
 
             if (frameLayout != null) {
-                frameLayout.layoutParams.height = ViewGroup.LayoutParams.FILL_PARENT
+                frameLayout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
                 bottomSheetBehavior = BottomSheetBehavior.from(frameLayout)
                 bottomSheetBehavior!!.skipCollapsed = true
                 bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED

@@ -12,7 +12,6 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
 import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
-import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySMSFragment
 import com.trendyol.medusalib.navigator.Navigator
@@ -37,12 +36,17 @@ class OptionsFragment: BaseFragment(), Navigator.NavigatorListener {
         }
         optionsVM.init(binding)
 
-        optionsVM.whereTo.observe(viewLifecycleOwner, Observer {
-            when(it) {
-                0 -> {
+        optionsVM.whereTo.observe(viewLifecycleOwner, Observer { whereTo ->
+            when(whereTo) {
+                0 -> { //TODO: 2 Kere çalışıyor gibi ???
                     val modifySMSFragment = ModifySMSFragment()
                     modifySMSFragment.setTargetFragment(this, 1)
                     modifySMSFragment.show(this.parentFragmentManager, "modifySMSFragment")
+                }
+                5 -> {
+                    App.managerAuth.signOut()
+                    startActivity(Intent(activity, LoginActivity::class.java))
+                    activity!!.finishAffinity()
                 }
             }
         })
@@ -51,12 +55,6 @@ class OptionsFragment: BaseFragment(), Navigator.NavigatorListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        btn_sign_out.setOnClickListener {
-            App.managerAuth.signOut()
-            startActivity(Intent(activity, LoginActivity::class.java))
-            activity!!.finishAffinity()
-        }
 
     }
 

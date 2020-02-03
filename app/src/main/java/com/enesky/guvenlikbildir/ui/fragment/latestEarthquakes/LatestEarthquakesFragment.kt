@@ -1,17 +1,22 @@
 package com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
+import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.makeItGone
+import com.enesky.guvenlikbildir.extensions.makeItVisible
+import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.showToast
+import kotlinx.android.synthetic.main.fragment_lastest_earthquakes.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -47,6 +52,23 @@ class LatestEarthquakesFragment: BaseFragment() {
                         }
                     }
                 }
+            }
+        }
+
+        fab_synchronize.setOnClickListener {
+            val objectAnimator = ObjectAnimator
+                .ofFloat(fab_synchronize, "rotation", 360f, 0f)
+                .setDuration(700)
+            objectAnimator.repeatCount = 2
+            objectAnimator.start()
+
+            pb_loading.makeItVisible()
+
+            Handler().apply {
+                postDelayed({
+                    fab_synchronize.setImageResource(R.drawable.ic_sync)
+                    pb_loading.makeItGone()
+                }, 2100)
             }
         }
 
