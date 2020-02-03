@@ -59,10 +59,6 @@ class LatestEarthquakesFragment: BaseFragment() {
             refresh()
         }
 
-        srl_refresh.setOnRefreshListener {
-            refresh()
-        }
-
     }
 
     fun refresh() {
@@ -72,7 +68,6 @@ class LatestEarthquakesFragment: BaseFragment() {
         objectAnimator.repeatCount = 2
 
         objectAnimator.start()
-        srl_refresh.isRefreshing = true
         pb_loading.makeItVisible()
         //TODO: new request + adapter.update
 
@@ -80,8 +75,7 @@ class LatestEarthquakesFragment: BaseFragment() {
             postDelayed({
                 fab_synchronize.setImageResource(R.drawable.ic_sync)
                 pb_loading.makeItGone()
-                srl_refresh.isRefreshing = false
-            }, 2100)
+            }, 2000)
         }
     }
 

@@ -14,10 +14,9 @@ import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySMSFragment
-import com.trendyol.medusalib.navigator.Navigator
-import kotlinx.android.synthetic.main.fragment_options.*
+import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
 
-class OptionsFragment: BaseFragment(), Navigator.NavigatorListener {
+class OptionsFragment: BaseFragment() {
 
     private lateinit var binding: FragmentOptionsBinding
     private lateinit var optionsVM: OptionsVM
@@ -38,10 +37,8 @@ class OptionsFragment: BaseFragment(), Navigator.NavigatorListener {
 
         optionsVM.whereTo.observe(viewLifecycleOwner, Observer { whereTo ->
             when(whereTo) {
-                0 -> { //TODO: 2 Kere çalışıyor gibi ???
-                    val modifySMSFragment = ModifySMSFragment()
-                    modifySMSFragment.setTargetFragment(this, 1)
-                    modifySMSFragment.show(this.parentFragmentManager, "modifySMSFragment")
+                0 -> {
+                    multipleStackNavigator!!.start(ModifySMSFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 }
                 5 -> {
                     App.managerAuth.signOut()
@@ -56,10 +53,6 @@ class OptionsFragment: BaseFragment(), Navigator.NavigatorListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-    }
-
-    override fun onTabChanged(tabIndex: Int) {
-        //ignored
     }
 
 }

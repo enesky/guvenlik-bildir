@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.enesky.guvenlikbildir.ui.activity.main.MainVM" />
@@ -13,31 +14,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_home"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottom_nav">
-
-            <FrameLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </androidx.viewpager.widget.ViewPager>
+            app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:menu="@menu/bottom_nav_menu"
-            app:itemTextColor="@android:color/white"
-            app:itemIconTint="@android:color/white"
-            app:itemBackground="@drawable/bottom_nav_item"
             android:background="@color/colorPrimary"
+            app:itemBackground="@drawable/bottom_nav_item"
+            app:itemIconTint="@android:color/white"
+            app:itemTextColor="@android:color/white"
             app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/bottom_nav_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -7,4 +7,6 @@
     <color name="colorShade">#f2f5f5</color>
     <color name="lineShade">#66ababab</color>
     <color name="black56">#8f000000</color>
+    <color name="transparent">#00000000</color>
+
 </resources>

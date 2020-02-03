@@ -59,13 +59,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/ll_polis"/>
 
+            <View
+                android:id="@+id/line_top"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/lineShade"
+                app:layout_constraintStart_toStartOf="@id/tv_title_acil"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_acil"
+                app:layout_constraintEnd_toEndOf="@id/tv_title_acil"/>
+
             <LinearLayout
                 android:id="@+id/ll_polis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:clickable="true"
-                android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/ll_yardım"
@@ -95,8 +102,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:clickable="true"
-                android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintStart_toEndOf="@id/ll_polis"
                 app:layout_constraintEnd_toStartOf="@id/ll_iftaiye"
@@ -126,8 +131,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:clickable="true"
-                android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintStart_toEndOf="@id/ll_yardım"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -179,8 +182,6 @@
                     android:src="@drawable/safe_hi_res_512"
                     app:civ_border_color="@color/colorAccent"
                     app:civ_border_width="2dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"/>
 
                 <TextView
@@ -212,8 +213,6 @@
                     android:src="@drawable/unsafe_hi_res_512"
                     app:civ_border_color="@color/colorAccent"
                     app:civ_border_width="2dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground" />
 
                 <TextView

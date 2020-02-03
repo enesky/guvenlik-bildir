@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.custom.BaseBottomSheetDialogFragment
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 
-class ModifySMSFragment: BaseBottomSheetDialogFragment() {
+class ModifySMSFragment: BaseFragment() {
 
     private lateinit var modifySmsVM: ModifySmsVM
     private lateinit var binding: FragmentModifySmsBinding
