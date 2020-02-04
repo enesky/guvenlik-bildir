@@ -10,9 +10,9 @@ import com.enesky.guvenlikbildir.model.OptionItem
  * Created by Enes Kamil YILMAZ on 02.02.2020
  */
 
-class OptionListAdapter(private var optionItemList: List<OptionItem>,
-                        private val optionListListener: OptionListListener)
-    : RecyclerView.Adapter<OptionListAdapter.OptionListViewHolder>() {
+class OptionAdapter(private var optionItemList: List<OptionItem>,
+                    private val optionListListener: OptionListListener)
+    : RecyclerView.Adapter<OptionAdapter.OptionListViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

@@ -21,6 +21,7 @@ import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.extensions.setBackground
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Enes Kamil YILMAZ on 08.11.2019
@@ -37,7 +38,6 @@ fun isOnlineBackground(view: View, isOnline: Boolean) {
 @BindingAdapter("setAdapter")
 fun bindStatefulRecyclerViewAdapter(view: StatefulRecyclerView, adapter: RecyclerView.Adapter<*>) {
     view.setHasFixedSize(true)
-    view.layoutManager = LinearLayoutManager(view.context)
     view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
     view.adapter = adapter
 }
@@ -77,16 +77,24 @@ fun beGoneIfListEmpty(view: View, list: List<Any>) {
 }
 
 @SuppressLint("SimpleDateFormat")
-@BindingAdapter("formattedDateText")
-fun bindFormattedDate(view: TextView, formattedDate: String) {
+@BindingAdapter("shortenedDateText")
+fun bindShortenedDate(view: TextView, formattedDate: String) {
     val p = PrettyTime()
-    val simpleDateFormat = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT)
+    p.locale = Locale("tr")
+    val simpleDateFormat = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT)
     val date = simpleDateFormat.parse(formattedDate)
     view.text = p.format(date)
 }
 
+@SuppressLint("SimpleDateFormat")
+@BindingAdapter("formattedDateText")
+fun bindFormattedDate(view: TextView, formattedDate: String) {
+    val date = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT).parse(formattedDate)
+    view.text = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
+}
+
 @BindingAdapter("text")
-fun setText(view: TextView, text: Int) {
+fun setText(view: TextView, text: Number) {
     view.text = text.toString()
 }
 

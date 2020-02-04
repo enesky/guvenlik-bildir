@@ -43,7 +43,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_options"
-            setAdapter="@{viewModel.optionListAdapter}"
+            setAdapter="@{viewModel.optionAdapter}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"

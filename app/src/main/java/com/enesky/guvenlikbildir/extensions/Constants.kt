@@ -13,7 +13,7 @@ object Constants {
     //Formats
     const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy HH:mm:ss"
     const val EARTHQUAKE_SHORT_DATE_FORMAT = "yyyy-MM-dd"
-    const val EARTHQUAKE_LONG_DATE_FORMAT = "yyyy.dd.MM HH:mm:ss"
+    const val EARTHQUAKE_LONG_DATE_FORMAT = "yyyy.MM.dd HH:mm:ss"
 
     //FirebaseAuthentication
     const val testUserPhoneNumber = "+90 (555) 555 55 55"
@@ -28,5 +28,7 @@ object Constants {
     const val polis = "155"
     const val acilYardım = "112"
     const val itfaiye = "110"
+
+    const val map = "map"
 
 }

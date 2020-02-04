@@ -37,7 +37,7 @@ class OptionsFragment: BaseFragment() {
 
         optionsVM.whereTo.observe(viewLifecycleOwner, Observer { whereTo ->
             when(whereTo) {
-                0 -> {
+                in 0..4 -> {
                     multipleStackNavigator!!.start(ModifySMSFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 }
                 5 -> {
@@ -47,11 +47,6 @@ class OptionsFragment: BaseFragment() {
                 }
             }
         })
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
     }
 

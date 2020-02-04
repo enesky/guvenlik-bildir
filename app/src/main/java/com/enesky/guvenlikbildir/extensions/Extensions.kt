@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -73,8 +74,8 @@ fun View.showSnackbar(text: String) {
     Snackbar.make(rootView, text, Snackbar.LENGTH_LONG).apply {
         duration = 5000
         setAction("Tamam") { dismiss() }
-        setBackgroundTint(resources.getColor(R.color.colorPrimaryDark))
-        setActionTextColor(resources.getColor(android.R.color.white))
+        setBackgroundTint(view.context.getColorCompat(R.color.colorPrimaryDark))
+        setActionTextColor(view.context.getColorCompat(android.R.color.white))
         view.findViewById<View>(R.id.snackbar_action).background = null
         view.setPadding(0,0,0,0)
     }.show()
@@ -104,6 +105,15 @@ fun Activity.hideKeyboard() {
 fun Activity.openMainActivity() {
     startActivity(Intent(this, MainActivity::class.java))
     finishAffinity()
+}
+
+fun Fragment.openGoogleMaps(latlng: String, title: String) {
+    val query = "$latlng($title)"
+    val encodedQuery = Uri.encode(query)
+    val gmmIntentUri: Uri = Uri.parse("geo:$latlng?q=$encodedQuery&z=5")
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+    mapIntent.setPackage("com.google.android.apps.maps")
+    startActivity(mapIntent)
 }
 
 fun Activity.openVerifyCodeActivity(phoneNumber: String,

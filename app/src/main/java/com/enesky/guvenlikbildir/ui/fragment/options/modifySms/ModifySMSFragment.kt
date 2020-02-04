@@ -10,6 +10,7 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import kotlinx.android.synthetic.main.fragment_modify_sms.*
 
 class ModifySMSFragment: BaseFragment() {
 
@@ -29,6 +30,14 @@ class ModifySMSFragment: BaseFragment() {
             lifecycleOwner = this@ModifySMSFragment
         }
         modifySmsVM.init(binding)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        et_safe_sms.setText("Güvendeyim.\nBulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283")
+        et_unsafe_sms.setText("Güvende değilim.\nBulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283")
+
     }
 
 }

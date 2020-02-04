@@ -26,7 +26,7 @@ abstract class BaseFragment: Fragment() {
             multipleStackNavigator = context.navigator
     }
 
-    fun callPhone(tag: String) {
+    fun openInfoCountDownDialog(tag: String) {
         InfoCountDownDialog().show(childFragmentManager, tag)
     }
 

@@ -30,5 +30,6 @@
     <string name="label_title_acil">Acil Durum Telefon Numaraları</string>
     <string name="label_im_safe">Güvendeyim.</string>
     <string name="label_im_not_safe">Güvende değilim.</string>
+    <string name="label_google_maps">Google Maps\'e Yönlendiriliyorsunuz...</string>
 
 </resources>

@@ -40,6 +40,11 @@ class NotifyFragment : BaseFragment() {
         }
         notifyVM.init(binding)
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         ll_polis.setOnClickListener {
             phoneNumber = Constants.polis
             checkPhoneCallPermission()
@@ -56,11 +61,11 @@ class NotifyFragment : BaseFragment() {
         }
 
         iv_safe.setOnClickListener {
-            callPhone("1")
+            openInfoCountDownDialog("1")
         }
 
         iv_unsafe.setOnClickListener {
-            callPhone("1")
+            openInfoCountDownDialog("1")
         }
 
     }
@@ -84,7 +89,7 @@ class NotifyFragment : BaseFragment() {
             }
         } else {
             // Permission has already been granted
-            callPhone(phoneNumber)
+            openInfoCountDownDialog(phoneNumber)
         }
     }
 
@@ -95,7 +100,7 @@ class NotifyFragment : BaseFragment() {
     ) {
         if (requestCode == 42) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
-                callPhone(phoneNumber)
+                openInfoCountDownDialog(phoneNumber)
             else
                 // permission denied, boo! Disable the functionality
             return

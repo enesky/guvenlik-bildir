@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesVM" />
@@ -23,29 +22,45 @@
             android:theme="@style/ToolbarStyle"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:lineHeight="24sp"
-                android:text="@string/label_latest_earthquakes"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/default_text_20"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:lineHeight="24sp"
+                    android:text="@string/label_latest_earthquakes"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/default_text_20"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/default_margin_16"
+                    android:src="@drawable/ic_filter"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            android:animateLayoutChanges="true"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/pb_loading">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:expanded="false">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
@@ -73,33 +88,17 @@
                             app:queryHint="Filtrele..." />
 
                     </LinearLayout>
-
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
-
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nsv"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_earthquakes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_earthquakes"
-                        android:layout_width="match_parent"
-                        android:layout_height="1000dp"
-                        android:nestedScrollingEnabled="false"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </androidx.core.widget.NestedScrollView>
+                android:layout_height="match_parent"
+                setAdapter="@{viewModel.earthquakeAdapter}"
+                tools:listitem="@layout/item_earthquake"
+                tools:itemCount="5"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -123,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTint="@color/colorAccent"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />

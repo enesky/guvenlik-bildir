@@ -5,12 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.extensions.openGoogleMaps
 import kotlinx.android.synthetic.main.dialog_info_count_down.*
 
 /**
@@ -22,10 +24,7 @@ class InfoCountDownDialog: DialogFragment() {
     private lateinit var timer: CountDownTimer
     private var phoneNumber: String = Constants.polis
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, p0: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_info_count_down, container, false)
     }
 
@@ -50,6 +49,10 @@ class InfoCountDownDialog: DialogFragment() {
                 phoneNumber = Constants.itfaiye
                 tv_dialog_title.text = getString(R.string.label_calling_110)
             }
+            tag!!.contains(Constants.map) -> {
+                phoneNumber = Constants.map
+                tv_dialog_title.text = getString(R.string.label_google_maps)
+            }
             else -> {
                 phoneNumber = "1"
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
@@ -67,6 +70,7 @@ class InfoCountDownDialog: DialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         timer.cancel()
+        Log.d("InfoCountDownDialog", "onDismiss(): $phoneNumber")
     }
 
     private fun startCountDown() {
@@ -76,11 +80,16 @@ class InfoCountDownDialog: DialogFragment() {
             }
 
             override fun onFinish() {
-                if (phoneNumber != "1") {
-                    val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
-                    startActivity(intent)
-                } else {
-                    //TODO: Sms gönder
+                when(phoneNumber) {
+                    Constants.polis, Constants.acilYardım, Constants.itfaiye -> {
+                        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+                        startActivity(intent)
+                    }
+                    Constants.map -> {
+                        val splitTag = tag!!.split(delimiters = *arrayOf("map"))
+                        openGoogleMaps(splitTag[1], splitTag[2])
+                    }
+                    else -> ""
                 }
                 dismiss()
             }
