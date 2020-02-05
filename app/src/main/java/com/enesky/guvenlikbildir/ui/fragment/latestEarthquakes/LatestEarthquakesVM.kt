@@ -39,7 +39,6 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
             if (response.isSuccessful) {
                 GlobalScope.launch(Dispatchers.Main) {
                     _responseHandler.handleSuccess(response)
-                    delay(100)
                     earthquakeAdapter.value!!.update(response.body()!!.result as MutableList<EarthquakeOA>)
                 }
             } else {
@@ -51,7 +50,7 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
     }
 
     override fun onItemClick(pos: Int, earthquakeOA: EarthquakeOA) {
-        //TODO: Show map
+        //TODO: Maybe open detail???
     }
 
     override fun onMapClick(latlng: LatLng, header: String) {

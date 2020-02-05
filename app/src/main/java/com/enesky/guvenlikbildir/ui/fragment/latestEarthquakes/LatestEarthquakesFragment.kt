@@ -88,17 +88,29 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
         iv_filter.setOnClickListener {
             if (!isAppBarExpanded) {
-                app_bar_layout.setExpanded(true, true)
+                if (app_bar_layout.isVisible)
+                    app_bar_layout.setExpanded(true, true)
+                else {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        app_bar_layout.makeItVisible()
+                        delay(50)
+                        app_bar_layout.setExpanded(true, true)
+                    }
+                }
             } else {
-                //TODO: kapandıktan sonra scrolla açılmasın
                 app_bar_layout.setExpanded(false, true)
+                GlobalScope.launch(Dispatchers.Main) {
+                    delay(500)
+                    app_bar_layout.makeItGone()
+                }
             }
         }
 
         sv_earthquake.viewTreeObserver.addOnGlobalLayoutListener(this)
         sv_earthquake.setOnQueryTextListener(this)
 
-        refresh() //init yenilemesi
+        /**init yenilemesi*/
+        refresh()
     }
 
     fun refresh() {

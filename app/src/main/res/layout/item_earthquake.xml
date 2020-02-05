@@ -38,12 +38,12 @@
                     text="@{earthquake.mag}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_32"
-                    android:textStyle="bold"
                     android:background="@drawable/bg_circle"
                     android:gravity="center"
                     android:padding="@dimen/default_margin_10"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/default_text_32"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/tv_date"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -141,10 +141,10 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="5 saat önce" />
 
-                <com.google.android.material.card.MaterialCardView
+                <com.enesky.guvenlikbildir.custom.CollapsibleCardView
                     android:id="@+id/cv_map"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin_8"
                     android:backgroundTint="@color/colorPrimary"
                     app:cardCornerRadius="@dimen/default_margin_16"
@@ -156,12 +156,12 @@
                             android:id="@+id/map"
                             android:name="com.google.android.gms.maps.MapFragment"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="100dp"
                             app:cameraZoom="7"
                             app:liteMode="true"
-                            app:mapType="normal"/>
+                            app:mapType="normal" />
 
-                </com.google.android.material.card.MaterialCardView>
+                </com.enesky.guvenlikbildir.custom.CollapsibleCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
