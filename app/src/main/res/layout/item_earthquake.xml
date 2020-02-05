@@ -149,7 +149,8 @@
                     android:backgroundTint="@color/colorPrimary"
                     app:cardCornerRadius="@dimen/default_margin_16"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_date">
+                    app:layout_constraintTop_toBottomOf="@id/tv_date"
+                    android:visibility="gone">
 
                         <com.google.android.gms.maps.MapView
                             android:id="@+id/map"

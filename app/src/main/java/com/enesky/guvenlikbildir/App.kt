@@ -1,9 +1,15 @@
 package com.enesky.guvenlikbildir
 
 import android.app.Application
+import android.util.Log
+import com.enesky.guvenlikbildir.extensions.getResponseFromJson
+import com.enesky.guvenlikbildir.model.EarthquakeOA
+import com.enesky.guvenlikbildir.model.GenericResponse
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.reflect.TypeToken
+import com.jakewharton.threetenabp.AndroidThreeTen
 
 /**
  * Created by Enes Kamil YILMAZ on 26.01.2020
@@ -11,8 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class App : Application() {
 
-    companion object {
+    lateinit var mockEarthquakeList : GenericResponse<EarthquakeOA>
 
+    companion object {
         private lateinit var instance: App
         val managerInstance: App
             get() = instance
@@ -28,7 +35,6 @@ class App : Application() {
         private lateinit var mFirestore: FirebaseFirestore
         val managerFirestore: FirebaseFirestore
             get() = mFirestore
-
     }
 
     override fun onCreate() {
@@ -37,6 +43,15 @@ class App : Application() {
         mAuth = FirebaseAuth.getInstance()
         mAnalytics = FirebaseAnalytics.getInstance(this)
         mFirestore = FirebaseFirestore.getInstance()
+        AndroidThreeTen.init(this)
+
+        if (BuildConfig.DEBUG) {
+            val earthquakeResponseTypeToken = object : TypeToken<GenericResponse<EarthquakeOA>>() {}.type
+            val earthquakeResponse = getResponseFromJson<GenericResponse<EarthquakeOA>>("mockservices/orhanaydogduMock.json", earthquakeResponseTypeToken)
+            mockEarthquakeList = earthquakeResponse
+            Log.d("mockEarthquakeList", earthquakeResponse.toString())
+        }
+
     }
 
 }

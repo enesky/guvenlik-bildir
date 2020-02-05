@@ -1,0 +1,1805 @@
+{
+  "status":true,
+  "result":[
+    {
+      "mag":2,
+      "lng":27.8845,
+      "lat":38.977,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":2.9,
+      "coordinates":[
+        27.8845,
+        38.977
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580878026,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 07:47:06",
+      "hash":"9f40b485989e50498385d718c57fa772",
+      "hash2":"81e7906c3755e24f68c40761a0372dac"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8402,
+      "lat":39.023,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":2.9,
+      "coordinates":[
+        27.8402,
+        39.023
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580877342,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 07:35:42",
+      "hash":"0c14b95c26cb68ed2bd5f8f06f429839",
+      "hash2":"a74ebccbe67c685377a60ffbf26ed1ba"
+    },
+    {
+      "mag":1.9,
+      "lng":27.8653,
+      "lat":38.9827,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":11.6,
+      "coordinates":[
+        27.8653,
+        38.9827
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580877123,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 07:32:03",
+      "hash":"476e3cb3d0ddf33cec9eeba41e72090e",
+      "hash2":"cf81a9bf2277a2934d5a0b782eced9d6"
+    },
+    {
+      "mag":1.5,
+      "lng":27.86,
+      "lat":39.002,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":2.4,
+      "coordinates":[
+        27.86,
+        39.002
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580876795,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 07:26:35",
+      "hash":"6641f764cbe8d2b563515081b358545a",
+      "hash2":"1c38935ba91c2f65ea86211cba9f4364"
+    },
+    {
+      "mag":3.1,
+      "lng":27.8672,
+      "lat":39.0055,
+      "lokasyon":"DINGILLER-AKHISAR (MANISA)",
+      "depth":9.4,
+      "coordinates":[
+        27.8672,
+        39.0055
+      ],
+      "title":"DINGILLER-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580876011,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 07:13:31",
+      "hash":"ff895c85038216af001dc5ae85202c39",
+      "hash2":"84df96a8edee8f05416926c085eb193e"
+    },
+    {
+      "mag":1.7,
+      "lng":27.8715,
+      "lat":38.9803,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":3.3,
+      "coordinates":[
+        27.8715,
+        38.9803
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580875924,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 07:12:04",
+      "hash":"a50d9c53294bd4bc4f09e609779ef05e",
+      "hash2":"c9d8c77d73cf03262b1f39c2b6c6028b"
+    },
+    {
+      "mag":1.5,
+      "lng":27.8668,
+      "lat":38.9748,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":3.2,
+      "coordinates":[
+        27.8668,
+        38.9748
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580874849,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:54:09",
+      "hash":"2775a2b5710b0fbb84b02d046ad36b63",
+      "hash2":"1c3b2271e5a75b2e25882dab71e0c826"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8917,
+      "lat":38.991,
+      "lokasyon":"DINGILLER-AKHISAR (MANISA)",
+      "depth":1.9,
+      "coordinates":[
+        27.8917,
+        38.991
+      ],
+      "title":"DINGILLER-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580874656,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:50:56",
+      "hash":"fbc8a18ba3cff95ecbb1750b0e8625d9",
+      "hash2":"0d4b10dd662ccc77e006b55a8968465c"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8433,
+      "lat":39.0155,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":20.6,
+      "coordinates":[
+        27.8433,
+        39.0155
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580874612,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:50:12",
+      "hash":"0d815454601e4099659b9459be995e51",
+      "hash2":"da6dd94188a75d69a7d2d4d5ac8ae6e4"
+    },
+    {
+      "mag":2.5,
+      "lng":27.8603,
+      "lat":38.9965,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":3.2,
+      "coordinates":[
+        27.8603,
+        38.9965
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580874051,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:40:51",
+      "hash":"455b1f578dd0e50d38e457d2b9121cc0",
+      "hash2":"ccea630787a39430bb20e90c7f97420d"
+    },
+    {
+      "mag":2.7,
+      "lng":27.9323,
+      "lat":35.0912,
+      "lokasyon":"AKDENIZ",
+      "depth":6.3,
+      "coordinates":[
+        27.9323,
+        35.0912
+      ],
+      "title":"AKDENIZ",
+      "rev":null,
+      "timestamp":1580873680,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:34:40",
+      "hash":"fcd18cd54dc0abc8255542dbbd0d0cef",
+      "hash2":"93a58b2a57a9fa80fa59e1a73383c477"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8775,
+      "lat":38.9853,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":6,
+      "coordinates":[
+        27.8775,
+        38.9853
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580873361,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:29:21",
+      "hash":"d590593a24462b08892e1cbcb675b850",
+      "hash2":"e8873310c2ecbca07f51b089a03ae92e"
+    },
+    {
+      "mag":1.9,
+      "lng":27.8782,
+      "lat":38.9868,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":6.1,
+      "coordinates":[
+        27.8782,
+        38.9868
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580873323,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:28:43",
+      "hash":"5ea58f237702d07db675aa7d194e171b",
+      "hash2":"12d04883432325673ec3875c2f2157f7"
+    },
+    {
+      "mag":1.5,
+      "lng":42.985,
+      "lat":38.628,
+      "lokasyon":"VAN GOLU",
+      "depth":6.9,
+      "coordinates":[
+        42.985,
+        38.628
+      ],
+      "title":"VAN GOLU",
+      "rev":null,
+      "timestamp":1580872835,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:20:35",
+      "hash":"f8d52a9e7eeda9c25976918d54eeeb09",
+      "hash2":"53fb379d8b882808a1520caabb8d7cf8"
+    },
+    {
+      "mag":1.7,
+      "lng":27.8658,
+      "lat":38.982,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":5,
+      "coordinates":[
+        27.8658,
+        38.982
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580872517,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:15:17",
+      "hash":"a095b30933341ce5fc43a8ffe1b44254",
+      "hash2":"37b69fa0343c4247e70dac846a2eafc7"
+    },
+    {
+      "mag":2.6,
+      "lng":39.1082,
+      "lat":38.433,
+      "lokasyon":"KAMISLIK-SIVRICE (ELAZIG)",
+      "depth":5,
+      "coordinates":[
+        39.1082,
+        38.433
+      ],
+      "title":"KAMISLIK-SIVRICE (ELAZIG)",
+      "rev":null,
+      "timestamp":1580872136,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:08:56",
+      "hash":"994c65a8ddb5f14519cc531e968dbeae",
+      "hash2":"b50db837149321cece9762b67d52133e"
+    },
+    {
+      "mag":1.9,
+      "lng":27.8327,
+      "lat":39.0167,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":10.4,
+      "coordinates":[
+        27.8327,
+        39.0167
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580871708,
+      "date_stamp":"2020-02-05",
+      "date":"2020.02.05 06:01:48",
+      "hash":"3a82f43ed9fce433ae54f967432cfa76",
+      "hash2":"b621f378b974a0dde450cab049d4831b"
+    },
+    {
+      "mag":1.5,
+      "lng":27.8752,
+      "lat":39.0348,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":10.7,
+      "coordinates":[
+        27.8752,
+        39.0348
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580871487,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:58:07",
+      "hash":"fdaca97fbcaaa7efce0d71fe3348a44d",
+      "hash2":"d4687393087f5c0fdeefd273e44b1aa8"
+    },
+    {
+      "mag":2.3,
+      "lng":27.8147,
+      "lat":39.0903,
+      "lokasyon":"ILYASLAR-KIRKAGAC (MANISA)",
+      "depth":13.1,
+      "coordinates":[
+        27.8147,
+        39.0903
+      ],
+      "title":"ILYASLAR-KIRKAGAC (MANISA)",
+      "rev":null,
+      "timestamp":1580871221,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:53:41",
+      "hash":"4ec302578c6a7ecf4384d5d314313b54",
+      "hash2":"9860a09ef8701f04f555ba2b2e490cd5"
+    },
+    {
+      "mag":1.7,
+      "lng":38.7992,
+      "lat":38.2767,
+      "lokasyon":"KARSIYAKA-PUTURGE (MALATYA)",
+      "depth":5.2,
+      "coordinates":[
+        38.7992,
+        38.2767
+      ],
+      "title":"KARSIYAKA-PUTURGE (MALATYA)",
+      "rev":null,
+      "timestamp":1580870544,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:42:24",
+      "hash":"8841f26dfec0862591126c2716a76d59",
+      "hash2":"646a95765a2faacb48471b1574403b2b"
+    },
+    {
+      "mag":1.8,
+      "lng":39.0725,
+      "lat":38.3673,
+      "lokasyon":"DOGANBAGI-SIVRICE (ELAZIG)",
+      "depth":10.4,
+      "coordinates":[
+        39.0725,
+        38.3673
+      ],
+      "title":"DOGANBAGI-SIVRICE (ELAZIG)",
+      "rev":null,
+      "timestamp":1580870400,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:40:00",
+      "hash":"d7070c12486564d85c7c7534e2c27707",
+      "hash2":"b73a0b0f478809c6167f9e9641f8fcdf"
+    },
+    {
+      "mag":2,
+      "lng":38.9578,
+      "lat":38.4868,
+      "lokasyon":"KOCHARMANI-(ELAZIG)",
+      "depth":13.9,
+      "coordinates":[
+        38.9578,
+        38.4868
+      ],
+      "title":"KOCHARMANI-(ELAZIG)",
+      "rev":null,
+      "timestamp":1580869725,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:28:45",
+      "hash":"52fd064b81e599c61bb3a9b182126078",
+      "hash2":"b6c324ae4bee7a32a90c58fba02e04e0"
+    },
+    {
+      "mag":2.1,
+      "lng":38.9167,
+      "lat":38.2938,
+      "lokasyon":"TOSUNLU-PUTURGE (MALATYA)",
+      "depth":5,
+      "coordinates":[
+        38.9167,
+        38.2938
+      ],
+      "title":"TOSUNLU-PUTURGE (MALATYA)",
+      "rev":null,
+      "timestamp":1580869201,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:20:01",
+      "hash":"97f60dcf87494a6f9f3922031c2d52aa",
+      "hash2":"c80c82a411b5b7b04ff055e53d6ea9cd"
+    },
+    {
+      "mag":1.9,
+      "lng":27.8417,
+      "lat":39.097,
+      "lokasyon":"KARAKURT-KIRKAGAC (MANISA)",
+      "depth":6.7,
+      "coordinates":[
+        27.8417,
+        39.097
+      ],
+      "title":"KARAKURT-KIRKAGAC (MANISA)",
+      "rev":null,
+      "timestamp":1580868700,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:11:40",
+      "hash":"6f0868f9ccbb36bed4b6d33801225a6f",
+      "hash2":"dbf1d7f6e3825bd271f7cb6e52cc8581"
+    },
+    {
+      "mag":1.5,
+      "lng":27.841,
+      "lat":38.9675,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":19.6,
+      "coordinates":[
+        27.841,
+        38.9675
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580868307,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 05:05:07",
+      "hash":"451001f8e11a777effa645e084d4ff43",
+      "hash2":"3641fbe1f4b6fc9863e369c85f37e6d7"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8228,
+      "lat":39.0557,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":2.7,
+      "coordinates":[
+        27.8228,
+        39.0557
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580867311,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:48:31",
+      "hash":"3fa45312d931cca459751b3f9267f249",
+      "hash2":"092cbc120d676d3c8969604aac4dab17"
+    },
+    {
+      "mag":1.9,
+      "lng":39.1012,
+      "lat":38.3792,
+      "lokasyon":"KALABA-SIVRICE (ELAZIG)",
+      "depth":5.7,
+      "coordinates":[
+        39.1012,
+        38.3792
+      ],
+      "title":"KALABA-SIVRICE (ELAZIG)",
+      "rev":null,
+      "timestamp":1580867152,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:45:52",
+      "hash":"b64f789e331cc50208edf35b7b37bbcc",
+      "hash2":"ad127f4596ccc29e50693d027863935b"
+    },
+    {
+      "mag":1.4,
+      "lng":27.8798,
+      "lat":38.9708,
+      "lokasyon":"CAMONU-AKHISAR (MANISA)",
+      "depth":3.6,
+      "coordinates":[
+        27.8798,
+        38.9708
+      ],
+      "title":"CAMONU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580867033,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:43:53",
+      "hash":"7001ab2e4b720c18368aa783084b14ac",
+      "hash2":"e43f5183b29bd0f0654ee28a0e76616d"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8473,
+      "lat":38.9765,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":9.5,
+      "coordinates":[
+        27.8473,
+        38.9765
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580866721,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:38:41",
+      "hash":"ca50ee80563985850af5dc9dcdd10ac8",
+      "hash2":"2a8962bc0f7b2603fed03d88a45e8c47"
+    },
+    {
+      "mag":2,
+      "lng":27.8462,
+      "lat":39.0183,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":3.1,
+      "coordinates":[
+        27.8462,
+        39.0183
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580866072,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:27:52",
+      "hash":"b86e3ab9854f5a7a745f2452f9e57d27",
+      "hash2":"67a8314c92ad8a6b12c543f4c5a213cc"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8653,
+      "lat":38.9565,
+      "lokasyon":"CAMONU-AKHISAR (MANISA)",
+      "depth":14.6,
+      "coordinates":[
+        27.8653,
+        38.9565
+      ],
+      "title":"CAMONU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580865969,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:26:09",
+      "hash":"be878281832d253afb307a6f45fb9afb",
+      "hash2":"e5e42e9c15129023614f78c3005781d9"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8977,
+      "lat":39.0477,
+      "lokasyon":"ZEYTINLIBAG-AKHISAR (MANISA)",
+      "depth":9.7,
+      "coordinates":[
+        27.8977,
+        39.0477
+      ],
+      "title":"ZEYTINLIBAG-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580865412,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:16:52",
+      "hash":"4695701f3656d7472d9813f82fa8ff6e",
+      "hash2":"1659842579ac733445a87e1758c403e2"
+    },
+    {
+      "mag":2.3,
+      "lng":39.2592,
+      "lat":38.4932,
+      "lokasyon":"BEKCITEPE-SIVRICE (ELAZIG)",
+      "depth":5,
+      "coordinates":[
+        39.2592,
+        38.4932
+      ],
+      "title":"BEKCITEPE-SIVRICE (ELAZIG)",
+      "rev":null,
+      "timestamp":1580865256,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:14:16",
+      "hash":"3fe4b2fe9155cea25e72a15ccb1e7a20",
+      "hash2":"8ec5e272224fd00d0fed7caec2af52da"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8203,
+      "lat":39.0538,
+      "lokasyon":"TUTENLI-AKHISAR (MANISA)",
+      "depth":5,
+      "coordinates":[
+        27.8203,
+        39.0538
+      ],
+      "title":"TUTENLI-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580864979,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:09:39",
+      "hash":"d8c0284207845ea7eb34feda4e9d97ac",
+      "hash2":"09d57907a0938bddc3b44df9bd73908b"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8775,
+      "lat":38.9948,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":3.1,
+      "coordinates":[
+        27.8775,
+        38.9948
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580864639,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:03:59",
+      "hash":"ae61725a26a25331ba8e3f33edc73342",
+      "hash2":"4cdfc13a6f361cd153d2b3f4e856de0a"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8173,
+      "lat":39.0483,
+      "lokasyon":"TUTENLI-AKHISAR (MANISA)",
+      "depth":4.2,
+      "coordinates":[
+        27.8173,
+        39.0483
+      ],
+      "title":"TUTENLI-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580864421,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 04:00:21",
+      "hash":"d387b4ee89476bdeca43bfc55499569f",
+      "hash2":"ae2d492380b6dee52752bf6c689d87f4"
+    },
+    {
+      "mag":2.5,
+      "lng":39.3107,
+      "lat":38.5193,
+      "lokasyon":"ACIPAYAM-(ELAZIG)",
+      "depth":5,
+      "coordinates":[
+        39.3107,
+        38.5193
+      ],
+      "title":"ACIPAYAM-(ELAZIG)",
+      "rev":null,
+      "timestamp":1580863559,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:45:59",
+      "hash":"5985b71a241568b3a849d3b47c9b7c41",
+      "hash2":"59d6550e6c88e14a9587bd4d198fb2ce"
+    },
+    {
+      "mag":1.4,
+      "lng":27.8145,
+      "lat":38.964,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":8.8,
+      "coordinates":[
+        27.8145,
+        38.964
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580863169,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:39:29",
+      "hash":"a9c8ad44e30f8ce1b7357527c1fa3dd7",
+      "hash2":"0c4ba979a462185d421214b8b220719c"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8505,
+      "lat":38.9998,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":4,
+      "coordinates":[
+        27.8505,
+        38.9998
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580862214,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:23:34",
+      "hash":"e3406ce31a380acf124eecc948bb5296",
+      "hash2":"21727c6b76ba4d5b938057a54eeb8fe2"
+    },
+    {
+      "mag":2,
+      "lng":27.8372,
+      "lat":39.0345,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":5.3,
+      "coordinates":[
+        27.8372,
+        39.0345
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580861893,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:18:13",
+      "hash":"0662f7910826f67fb8ecb2f2df0dc2c9",
+      "hash2":"5d50df52398172c6c821166941a861fe"
+    },
+    {
+      "mag":2.8,
+      "lng":27.8543,
+      "lat":39.053,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":4.8,
+      "coordinates":[
+        27.8543,
+        39.053
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580861847,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:17:27",
+      "hash":"09b1227700a4649badcbbb21e83e885c",
+      "hash2":"03779886d2c859307b1e1062427395fe"
+    },
+    {
+      "mag":1.7,
+      "lng":27.8145,
+      "lat":38.9622,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":12.4,
+      "coordinates":[
+        27.8145,
+        38.9622
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580861121,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:05:21",
+      "hash":"780ccf95d79e04ca0a58e39404db0fa0",
+      "hash2":"27d3bc229761dd80f1ea1b52e804dd1d"
+    },
+    {
+      "mag":1.4,
+      "lng":27.8592,
+      "lat":39.0332,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":4.7,
+      "coordinates":[
+        27.8592,
+        39.0332
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580861064,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:04:24",
+      "hash":"4a5659bd466dfe147e89c72c52ba45ba",
+      "hash2":"50f62f0d19fa1ee6cd4453b38349366d"
+    },
+    {
+      "mag":1,
+      "lng":27.9112,
+      "lat":39.0113,
+      "lokasyon":"YENICE-AKHISAR (MANISA)",
+      "depth":5,
+      "coordinates":[
+        27.9112,
+        39.0113
+      ],
+      "title":"YENICE-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580860905,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 03:01:45",
+      "hash":"b428844ab9bb07eaac7deca708074f74",
+      "hash2":"5450d92c6afba22b61270ffaca506059"
+    },
+    {
+      "mag":1.5,
+      "lng":27.8763,
+      "lat":38.9965,
+      "lokasyon":"DINGILLER-AKHISAR (MANISA)",
+      "depth":2.9,
+      "coordinates":[
+        27.8763,
+        38.9965
+      ],
+      "title":"DINGILLER-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580860682,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:58:02",
+      "hash":"dfcb3cf87199cb0ce0c44d551a44c829",
+      "hash2":"2d5b80eda52ba995a50b76a9cfc1f632"
+    },
+    {
+      "mag":2.3,
+      "lng":27.8577,
+      "lat":38.9878,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":7.5,
+      "coordinates":[
+        27.8577,
+        38.9878
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580860641,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:57:21",
+      "hash":"857168b594835f9d4cdd1ebb158dc2d2",
+      "hash2":"82158366c020dcd0f77fe4c5bb4bd092"
+    },
+    {
+      "mag":2.4,
+      "lng":27.8602,
+      "lat":39.0093,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":2.6,
+      "coordinates":[
+        27.8602,
+        39.0093
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580860290,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:51:30",
+      "hash":"7fe88cdde0bd5ceff576a4293bef571d",
+      "hash2":"9653b1fc1575e5a5092c8c742345008a"
+    },
+    {
+      "mag":1.4,
+      "lng":27.8255,
+      "lat":39.077,
+      "lokasyon":"ILYASLAR-KIRKAGAC (MANISA)",
+      "depth":4.9,
+      "coordinates":[
+        27.8255,
+        39.077
+      ],
+      "title":"ILYASLAR-KIRKAGAC (MANISA)",
+      "rev":null,
+      "timestamp":1580860106,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:48:26",
+      "hash":"278082ea5e8fe1285f529703e3dc4c2d",
+      "hash2":"53289f6eee01df27cecaa192054291c4"
+    },
+    {
+      "mag":1.3,
+      "lng":27.8587,
+      "lat":39.0732,
+      "lokasyon":"SELCIKLI-AKHISAR (MANISA)",
+      "depth":5.3,
+      "coordinates":[
+        27.8587,
+        39.0732
+      ],
+      "title":"SELCIKLI-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580859911,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:45:11",
+      "hash":"5b8e34375e893a29e2c3b61aadcec0fb",
+      "hash2":"c464a24af2b2afc0434a2308912ab546"
+    },
+    {
+      "mag":2,
+      "lng":27.8938,
+      "lat":39.0038,
+      "lokasyon":"DINGILLER-AKHISAR (MANISA)",
+      "depth":3.6,
+      "coordinates":[
+        27.8938,
+        39.0038
+      ],
+      "title":"DINGILLER-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580859637,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:40:37",
+      "hash":"c1c76c442ea8a23a0f8d84367f3f308d",
+      "hash2":"ac2ab8f21db2fc33a1b269402bf262f9"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8143,
+      "lat":39.0445,
+      "lokasyon":"TUTENLI-AKHISAR (MANISA)",
+      "depth":13.4,
+      "coordinates":[
+        27.8143,
+        39.0445
+      ],
+      "title":"TUTENLI-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580859528,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:38:48",
+      "hash":"b76988cd3711da4b1ab04643f37c675c",
+      "hash2":"005c41666031874a8a3b3296ed342055"
+    },
+    {
+      "mag":1.9,
+      "lng":27.8657,
+      "lat":38.9983,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":5,
+      "coordinates":[
+        27.8657,
+        38.9983
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580859489,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:38:09",
+      "hash":"3fe3035aa9e263e669c568ade9cb894d",
+      "hash2":"1102b0e266e6d915c5300263b1f7edf4"
+    },
+    {
+      "mag":3.5,
+      "lng":27.8617,
+      "lat":38.9868,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":9.7,
+      "coordinates":[
+        27.8617,
+        38.9868
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580859151,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:32:31",
+      "hash":"1bdc4625615ac23121477ab31876d55e",
+      "hash2":"f1b64c14ede0204716cd42be54e8c7b4"
+    },
+    {
+      "mag":1.7,
+      "lng":27.8632,
+      "lat":38.9453,
+      "lokasyon":"AKHISAR (MANISA)",
+      "depth":9.8,
+      "coordinates":[
+        27.8632,
+        38.9453
+      ],
+      "title":"AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580858964,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:29:24",
+      "hash":"4ec57028e6731abba8c6c460ed2373b9",
+      "hash2":"18618d0593713d006ed2f901b9e23d4b"
+    },
+    {
+      "mag":1.5,
+      "lng":27.8812,
+      "lat":39.0025,
+      "lokasyon":"DINGILLER-AKHISAR (MANISA)",
+      "depth":2.4,
+      "coordinates":[
+        27.8812,
+        39.0025
+      ],
+      "title":"DINGILLER-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580858387,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:19:47",
+      "hash":"a5db477c0e77f70c1ad44d4ff73c012f",
+      "hash2":"f2f6e6ef9ef1b4b4c168684c4aa4a301"
+    },
+    {
+      "mag":1.5,
+      "lng":27.8487,
+      "lat":38.9808,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":4.2,
+      "coordinates":[
+        27.8487,
+        38.9808
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580858065,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:14:25",
+      "hash":"97762b907cf1a726cc16779b626e69de",
+      "hash2":"44828e42e2e5836981b03e164358f093"
+    },
+    {
+      "mag":2.3,
+      "lng":27.858,
+      "lat":38.9908,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":10,
+      "coordinates":[
+        27.858,
+        38.9908
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580857899,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:11:39",
+      "hash":"acecb08d17296f852cd7a86c3dbcf6ff",
+      "hash2":"0f6c777a0f011f10172ed16880518db9"
+    },
+    {
+      "mag":2.4,
+      "lng":27.8512,
+      "lat":39.0205,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":8.2,
+      "coordinates":[
+        27.8512,
+        39.0205
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580857385,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:03:05",
+      "hash":"33cd03abb5db3b383ae11209a043487c",
+      "hash2":"d2343bf258005c47d025c12fd375a2b9"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8672,
+      "lat":39.0007,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":2.7,
+      "coordinates":[
+        27.8672,
+        39.0007
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580857236,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 02:00:36",
+      "hash":"3eb2ccfbbc7eb5dbbb880ac310fdedff",
+      "hash2":"73cbc63741e2e8a3f5fcfec124ebee3a"
+    },
+    {
+      "mag":1.6,
+      "lng":27.854,
+      "lat":38.9898,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":7.7,
+      "coordinates":[
+        27.854,
+        38.9898
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580857194,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:59:54",
+      "hash":"95bc14181e764558f87ec48224cb2731",
+      "hash2":"90ddd71ad8e99d624695f49f41a28585"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8337,
+      "lat":39.0283,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":5,
+      "coordinates":[
+        27.8337,
+        39.0283
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580856727,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:52:07",
+      "hash":"d4ad68d0dc3fb3abcb199678e6189ee0",
+      "hash2":"408cbc2c5c33a5510bd199caf6be1534"
+    },
+    {
+      "mag":1.5,
+      "lng":27.8245,
+      "lat":39.0272,
+      "lokasyon":"KADIDAGI-AKHISAR (MANISA)",
+      "depth":22.8,
+      "coordinates":[
+        27.8245,
+        39.0272
+      ],
+      "title":"KADIDAGI-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580856613,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:50:13",
+      "hash":"d3121c9ffad9aeb6bd29286e776252ad",
+      "hash2":"31d7acd89a2353bb6689c0cd257211a7"
+    },
+    {
+      "mag":2.2,
+      "lng":27.8575,
+      "lat":38.9967,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":1.6,
+      "coordinates":[
+        27.8575,
+        38.9967
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580856307,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:45:07",
+      "hash":"c5cdc1d1ae3dc7d77f00b295547db3e2",
+      "hash2":"0ad1a50332c826a228f8531e51b8cf00"
+    },
+    {
+      "mag":1.5,
+      "lng":27.84,
+      "lat":39.1103,
+      "lokasyon":"KARAKURT-KIRKAGAC (MANISA)",
+      "depth":5,
+      "coordinates":[
+        27.84,
+        39.1103
+      ],
+      "title":"KARAKURT-KIRKAGAC (MANISA)",
+      "rev":null,
+      "timestamp":1580856215,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:43:35",
+      "hash":"3c17e10171d4b81405a2bb8f66476ca2",
+      "hash2":"f3136ec21aa8d045fe8d3f8c1165e9dc"
+    },
+    {
+      "mag":1.3,
+      "lng":27.8332,
+      "lat":38.9845,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":4.6,
+      "coordinates":[
+        27.8332,
+        38.9845
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580856064,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:41:04",
+      "hash":"06be8e2e3f61397394b73bcc4e33c8b2",
+      "hash2":"3064dd3be16eaa92262a7effabb6ce21"
+    },
+    {
+      "mag":1.3,
+      "lng":27.8145,
+      "lat":38.9755,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":4.7,
+      "coordinates":[
+        27.8145,
+        38.9755
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580855941,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:39:01",
+      "hash":"7f22b07c5d3ffdb58593b4373ad82153",
+      "hash2":"e4058df7f8423eddea784701ce594165"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8487,
+      "lat":38.967,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":4.7,
+      "coordinates":[
+        27.8487,
+        38.967
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580855758,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:35:58",
+      "hash":"240657fa4134f4d33a90612e813f4d3b",
+      "hash2":"b01246a2cf8c43987acfb43e73c76f8e"
+    },
+    {
+      "mag":2.4,
+      "lng":27.8587,
+      "lat":38.9757,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":9.2,
+      "coordinates":[
+        27.8587,
+        38.9757
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580855562,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:32:42",
+      "hash":"e64afaa57bdc95057e832a02661e18dc",
+      "hash2":"8da7cdf48b2383ddca7f3d37c8b48e71"
+    },
+    {
+      "mag":1.4,
+      "lng":27.8697,
+      "lat":38.9452,
+      "lokasyon":"CAMONU-AKHISAR (MANISA)",
+      "depth":4.4,
+      "coordinates":[
+        27.8697,
+        38.9452
+      ],
+      "title":"CAMONU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580855248,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:27:28",
+      "hash":"1a0623a93cf4cc67276f24576bf9d8d6",
+      "hash2":"f37843d99d1034bfdcf74dbe8cc167b9"
+    },
+    {
+      "mag":3,
+      "lng":27.83,
+      "lat":39.1015,
+      "lokasyon":"KARAKURT-KIRKAGAC (MANISA)",
+      "depth":8.9,
+      "coordinates":[
+        27.83,
+        39.1015
+      ],
+      "title":"KARAKURT-KIRKAGAC (MANISA)",
+      "rev":null,
+      "timestamp":1580854870,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:21:10",
+      "hash":"874c61d5a1812eda31da6144a16c54f0",
+      "hash2":"f3d341e0b9f9e94c0263df877ffb5efe"
+    },
+    {
+      "mag":2.8,
+      "lng":27.8655,
+      "lat":39.0227,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":5,
+      "coordinates":[
+        27.8655,
+        39.0227
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580854185,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:09:45",
+      "hash":"3198e75eb7b116e8b4832410f6c0c51a",
+      "hash2":"21c5ddc3eea4c60620ef3ec2a97e0291"
+    },
+    {
+      "mag":2,
+      "lng":27.849,
+      "lat":39.0382,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":1.7,
+      "coordinates":[
+        27.849,
+        39.0382
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580853912,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 01:05:12",
+      "hash":"46950de5014b8176ce33046903fafddb",
+      "hash2":"cf282b46963b3021b93e005321982ff7"
+    },
+    {
+      "mag":2.6,
+      "lng":27.8375,
+      "lat":38.988,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":16.7,
+      "coordinates":[
+        27.8375,
+        38.988
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580853096,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:51:36",
+      "hash":"36fcceb2ecd80aa1f622094856e40a2d",
+      "hash2":"20b20c7fc3aa582c73ba3a9351864532"
+    },
+    {
+      "mag":3.6,
+      "lng":27.9413,
+      "lat":35.1512,
+      "lokasyon":"AKDENIZ",
+      "depth":5,
+      "coordinates":[
+        27.9413,
+        35.1512
+      ],
+      "title":"AKDENIZ",
+      "rev":null,
+      "timestamp":1580852920,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:48:40",
+      "hash":"1d24cbd5fba1e99c3ef525c8d0cd6645",
+      "hash2":"02d578726d377e3e31460f8eb9672759"
+    },
+    {
+      "mag":2.1,
+      "lng":27.8683,
+      "lat":39.0208,
+      "lokasyon":"MUSALAR-AKHISAR (MANISA)",
+      "depth":5.4,
+      "coordinates":[
+        27.8683,
+        39.0208
+      ],
+      "title":"MUSALAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580852852,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:47:32",
+      "hash":"b6d96fee659bd6fd93605d3617ece8ec",
+      "hash2":"0cc9845ec41a78f845c7d7517dfd8695"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8677,
+      "lat":39.0093,
+      "lokasyon":"DINGILLER-AKHISAR (MANISA)",
+      "depth":11.4,
+      "coordinates":[
+        27.8677,
+        39.0093
+      ],
+      "title":"DINGILLER-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580852673,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:44:33",
+      "hash":"f84abf0573d78a483383820e41e2ed5c",
+      "hash2":"3c13b37acb214867e854defa7a3f3fa3"
+    },
+    {
+      "mag":1.6,
+      "lng":27.8773,
+      "lat":39.048,
+      "lokasyon":"SELCIKLI-AKHISAR (MANISA)",
+      "depth":4.9,
+      "coordinates":[
+        27.8773,
+        39.048
+      ],
+      "title":"SELCIKLI-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580852513,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:41:53",
+      "hash":"dea2e8b00b25057c5d1436a1cdb2db64",
+      "hash2":"26380d72d9db3198916ed4c4695a391a"
+    },
+    {
+      "mag":2.1,
+      "lng":27.842,
+      "lat":38.977,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":3.6,
+      "coordinates":[
+        27.842,
+        38.977
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580852026,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:33:46",
+      "hash":"03b51ef6236fd26803c2737a37c9c792",
+      "hash2":"b4ff2a91abd37a8922bfad52d084986e"
+    },
+    {
+      "mag":1.7,
+      "lng":27.8355,
+      "lat":39.0038,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":16.3,
+      "coordinates":[
+        27.8355,
+        39.0038
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580851926,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:32:06",
+      "hash":"f94324ad40c3f915293e26daf175d867",
+      "hash2":"5f42000d24b8b774318fda96b597c179"
+    },
+    {
+      "mag":2.7,
+      "lng":27.8522,
+      "lat":38.9908,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":10.8,
+      "coordinates":[
+        27.8522,
+        38.9908
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580851788,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:29:48",
+      "hash":"08487f5e833b3d9b5e5f8b04fa470bc9",
+      "hash2":"a45d8bd2b56ebb29888372d179aab732"
+    },
+    {
+      "mag":2.4,
+      "lng":27.8398,
+      "lat":39.1042,
+      "lokasyon":"KARAKURT-KIRKAGAC (MANISA)",
+      "depth":9,
+      "coordinates":[
+        27.8398,
+        39.1042
+      ],
+      "title":"KARAKURT-KIRKAGAC (MANISA)",
+      "rev":null,
+      "timestamp":1580851705,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:28:25",
+      "hash":"9e2d48699dc7535ac031b5ae184b495e",
+      "hash2":"2828549c15226eb2fa93e7da8a1954fc"
+    },
+    {
+      "mag":1.7,
+      "lng":27.8955,
+      "lat":38.9955,
+      "lokasyon":"DINGILLER-AKHISAR (MANISA)",
+      "depth":3.3,
+      "coordinates":[
+        27.8955,
+        38.9955
+      ],
+      "title":"DINGILLER-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580850877,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:14:37",
+      "hash":"6a30ac1a8b0307c62b6f89dd5deef4a5",
+      "hash2":"f5f0d833cf55b9b43f72deae4746fe9a"
+    },
+    {
+      "mag":1.7,
+      "lng":27.8525,
+      "lat":38.9873,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":3.6,
+      "coordinates":[
+        27.8525,
+        38.9873
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580850776,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:12:56",
+      "hash":"d07ed8c782a85c0cfdfba36fc4ff2a95",
+      "hash2":"f3f7c440b9c71dc4128accf96dad5b71"
+    },
+    {
+      "mag":2.6,
+      "lng":27.847,
+      "lat":39.0178,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":2.9,
+      "coordinates":[
+        27.847,
+        39.0178
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580850680,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:11:20",
+      "hash":"f0017f7b2154a9cea82607cbf9f42046",
+      "hash2":"c42cebe15f5d37311d0dfdd2cb648710"
+    },
+    {
+      "mag":1.9,
+      "lng":27.8602,
+      "lat":39.0045,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":10.6,
+      "coordinates":[
+        27.8602,
+        39.0045
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580850590,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.05 00:09:50",
+      "hash":"0a393e30198aaef88f67e27be0d23f5c",
+      "hash2":"cfd66a61b7f54b2fb5f001def282bdbc"
+    },
+    {
+      "mag":1.5,
+      "lng":27.8447,
+      "lat":38.9598,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":16.5,
+      "coordinates":[
+        27.8447,
+        38.9598
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580849686,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:54:46",
+      "hash":"191bbffdc2dc08c929a3f6662d5849c4",
+      "hash2":"8cf572708aed985d776f06772d63ada5"
+    },
+    {
+      "mag":2,
+      "lng":27.8555,
+      "lat":39.01,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":10.1,
+      "coordinates":[
+        27.8555,
+        39.01
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580849349,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:49:09",
+      "hash":"a4f02ab2b244f180fed6247f82f31952",
+      "hash2":"9a26f6b63108c926b6f7335223692f27"
+    },
+    {
+      "mag":1.4,
+      "lng":27.8958,
+      "lat":39.0107,
+      "lokasyon":"YENICE-AKHISAR (MANISA)",
+      "depth":12.3,
+      "coordinates":[
+        27.8958,
+        39.0107
+      ],
+      "title":"YENICE-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580849215,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:46:55",
+      "hash":"a1043c0a92d913f64aefaa0f13c9330f",
+      "hash2":"d1608e8c85f4a3eb5bc97aa869d6610c"
+    },
+    {
+      "mag":1.8,
+      "lng":27.8673,
+      "lat":38.9808,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":15.1,
+      "coordinates":[
+        27.8673,
+        38.9808
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580849134,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:45:34",
+      "hash":"8ac0e4d6951fe30daa53b9187cc6ba8a",
+      "hash2":"f2fc017c5bed6d717ec8ee22cc2baa26"
+    },
+    {
+      "mag":1.2,
+      "lng":27.8327,
+      "lat":39.009,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA) REVIZE01 (2020.02.04 23:44:06)",
+      "depth":3.1,
+      "coordinates":[
+        27.8327,
+        39.009
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":"REVIZE01 (2020.02.04 23:44:06)",
+      "timestamp":1580849039,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:43:59",
+      "hash":"d48f89a91a6c627bc7886c1d97bba7bd",
+      "hash2":"9e2d6fada003ed5e939a0dcb3f4d4f94"
+    },
+    {
+      "mag":2.9,
+      "lng":27.8587,
+      "lat":38.9955,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":1.9,
+      "coordinates":[
+        27.8587,
+        38.9955
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580848992,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:43:12",
+      "hash":"36bca98789c83aa9d404e4ca268450e9",
+      "hash2":"61bfb642a66ba8e1ef18b8a4137b6f39"
+    },
+    {
+      "mag":2.9,
+      "lng":27.8398,
+      "lat":39.0105,
+      "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
+      "depth":7.3,
+      "coordinates":[
+        27.8398,
+        39.0105
+      ],
+      "title":"GOKCEAHMET-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580848808,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:40:08",
+      "hash":"274526b467cf0fd721ae2369c04e71f6",
+      "hash2":"4901eae5eb9120586fa4c50355bd4366"
+    },
+    {
+      "mag":3.4,
+      "lng":27.86,
+      "lat":39.03,
+      "lokasyon":"AKHISAR-MANISA REVIZE01 (2020.02.04 23:38:40)",
+      "depth":9.1,
+      "coordinates":[
+        27.86,
+        39.03
+      ],
+      "title":"AKHISAR-MANISA REVIZE01 (2020.02.04 23:38:40)",
+      "rev":null,
+      "timestamp":1580848720,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:38:40",
+      "hash":"0d5e1bdb8f16423ccf4f4a4cd10d78c4",
+      "hash2":"5fbb1f22a101187df2066fee95fccf23"
+    },
+    {
+      "mag":3.9,
+      "lng":39.0388,
+      "lat":38.3143,
+      "lokasyon":"DOGANYOL (MALATYA)",
+      "depth":1.4,
+      "coordinates":[
+        39.0388,
+        38.3143
+      ],
+      "title":"DOGANYOL (MALATYA)",
+      "rev":null,
+      "timestamp":1580848631,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:37:11",
+      "hash":"e685c14298a4c229e4b0cda854f39b98",
+      "hash2":"361093ed0fa20d64ce2ee3cf78f2cdec"
+    },
+    {
+      "mag":2.8,
+      "lng":39.2692,
+      "lat":38.5255,
+      "lokasyon":"YEDIGOZE-(ELAZIG)",
+      "depth":5.9,
+      "coordinates":[
+        39.2692,
+        38.5255
+      ],
+      "title":"YEDIGOZE-(ELAZIG)",
+      "rev":null,
+      "timestamp":1580848447,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:34:07",
+      "hash":"83774a0cc893ec777052a61a410b5591",
+      "hash2":"20f060024f3fd899f3d789bc31c6bace"
+    },
+    {
+      "mag":2.9,
+      "lng":27.8675,
+      "lat":38.9805,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":6.4,
+      "coordinates":[
+        27.8675,
+        38.9805
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580848146,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:29:06",
+      "hash":"f8d5a9df0a6f15424d97b061994ec9c6",
+      "hash2":"e0598739b0bbc3f58c3291d20f43cd34"
+    },
+    {
+      "mag":2.7,
+      "lng":27.8522,
+      "lat":38.99,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":10.2,
+      "coordinates":[
+        27.8522,
+        38.99
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580848070,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:27:50",
+      "hash":"35f75446e7d7586040e13aa699265c6e",
+      "hash2":"38392c87d50fbd461fd2973ac2b156c6"
+    },
+    {
+      "mag":2.3,
+      "lng":27.8558,
+      "lat":38.9672,
+      "lokasyon":"MEDAR-AKHISAR (MANISA)",
+      "depth":12.3,
+      "coordinates":[
+        27.8558,
+        38.9672
+      ],
+      "title":"MEDAR-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580847825,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:23:45",
+      "hash":"b45aa25f2f510a16e9e2bc8386d18c87",
+      "hash2":"a9627e9c5d5fce85e38c505427689714"
+    },
+    {
+      "mag":2.6,
+      "lng":27.8665,
+      "lat":38.9995,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":3.5,
+      "coordinates":[
+        27.8665,
+        38.9995
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580847582,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:19:42",
+      "hash":"633be095b7c8cf6e5eb822105f8bbc0c",
+      "hash2":"5ea240443cf91066609621a5893bb54c"
+    },
+    {
+      "mag":3,
+      "lng":27.8603,
+      "lat":38.994,
+      "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
+      "depth":4,
+      "coordinates":[
+        27.8603,
+        38.994
+      ],
+      "title":"KARABORKLU-AKHISAR (MANISA)",
+      "rev":null,
+      "timestamp":1580847476,
+      "date_stamp":"2020-02-04",
+      "date":"2020.02.04 23:17:56",
+      "hash":"4ff71fc3e209efe40c2c9a49a94b5029",
+      "hash2":"9298932c4ddc9fcebdee401b83414809"
+    }
+  ]
+}

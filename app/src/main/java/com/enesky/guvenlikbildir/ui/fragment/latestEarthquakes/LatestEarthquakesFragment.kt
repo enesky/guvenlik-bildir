@@ -10,6 +10,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.enesky.guvenlikbildir.App
+import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -32,6 +34,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
     private lateinit var binding: FragmentLastestEarthquakesBinding
     private lateinit var latestEarthquakesVM: LatestEarthquakesVM
     private var isAppBarExpanded: Boolean = false
+    private var listExpand: Int = 5
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_lastest_earthquakes, container,false)
@@ -106,7 +109,13 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         pb_loading.makeItVisible()
         GlobalScope.launch(Dispatchers.Main) {
             delay(100)
-            latestEarthquakesVM.getLastEarthquakes("7")
+
+            if (BuildConfig.DEBUG) {
+                latestEarthquakesVM.earthquakeAdapter.value!!.update(App.managerInstance.mockEarthquakeList.result.subList(0,listExpand) as MutableList<EarthquakeOA>)
+                listExpand += 5
+            } else {
+                latestEarthquakesVM.getLastEarthquakes("7")
+            }
 
             delay(2000)
             objectAnimator.cancel()

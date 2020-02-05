@@ -21,6 +21,9 @@ import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.gson.Gson
+import java.io.IOException
+import java.lang.reflect.Type
 
 /**
  * Created by Enes Kamil YILMAZ on 09.01.2020
@@ -131,4 +134,22 @@ fun getScreenHeight(): Int = Resources.getSystem().displayMetrics.heightPixels
 
 fun String.isPhoneNumberValid(): Boolean {
     return Patterns.PHONE.matcher(this).matches()
+}
+
+inline fun <reified T> Context.getResponseFromJson(
+    fileName: String,
+    typeToken: Type
+): T {
+    var json: String? = null
+    try {
+        val inputStream = this.assets.open(fileName)
+        val buffer = ByteArray(inputStream.available())
+        inputStream.read(buffer)
+        inputStream.close()
+        json = String(buffer, Charsets.UTF_8)
+    } catch (e: IOException) {
+        e.printStackTrace()
+    } finally {
+        return Gson().fromJson<T>(json, typeToken)
+    }
 }
