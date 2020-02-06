@@ -27,11 +27,6 @@ class OptionAdapter(private var optionItemList: List<OptionItem>,
 
     override fun onBindViewHolder(holder: OptionListViewHolder, pos: Int) = holder.bind(pos, optionItemList[pos])
 
-    fun update(items: List<OptionItem>) {
-        this.optionItemList = items
-        notifyDataSetChanged()
-    }
-
     inner class OptionListViewHolder(private val binding: ItemOptionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(pos: Int, optionItem: OptionItem) {
             binding.optionItem = optionItem

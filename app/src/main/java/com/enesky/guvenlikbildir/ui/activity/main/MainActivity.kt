@@ -8,6 +8,7 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.extensions.ConnectionLiveData
 import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.requireAllPermissions
 import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
@@ -18,15 +19,22 @@ import com.trendyol.medusalib.navigator.Navigator
 import com.trendyol.medusalib.navigator.NavigatorConfiguration
 import com.trendyol.medusalib.navigator.transaction.NavigatorTransaction
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : BaseActivity(), Navigator.NavigatorListener{
 
-    private lateinit var rootFragmentProvider: List<() -> Fragment>
-    lateinit var navigator: MultipleStackNavigator
+    private var rootFragmentProvider: List<() -> Fragment> = listOf(
+        { LatestEarthquakesFragment() },
+        { NotifyFragment() },
+        { OptionsFragment() }
+    )
+    var navigator: MultipleStackNavigator = MultipleStackNavigator(
+        supportFragmentManager,
+        R.id.container,
+        rootFragmentProvider,
+        this,
+        NavigatorConfiguration(defaultNavigatorTransaction = NavigatorTransaction.SHOW_HIDE)
+        //TODO: Hız için show-hide kullanıldı. Ancak ram kullanımı 250 mb ları gördü :OOO
+    )
 
     private val mainVM by lazy {
         getViewModel { MainVM() }
@@ -36,6 +44,9 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        //TODO: Ask just for first time. Then just ask it when it needed.
+        requireAllPermissions()
 
         //GlobalScope.launch(Dispatchers.Main) {
             start(savedInstanceState)
@@ -50,21 +61,6 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener{
             viewModel = mainVM
             lifecycleOwner = this@MainActivity
         }
-
-        rootFragmentProvider  = listOf(
-            { LatestEarthquakesFragment() },
-            { NotifyFragment() },
-            { OptionsFragment() }
-        )
-
-        navigator = MultipleStackNavigator(
-                supportFragmentManager,
-                R.id.container,
-                rootFragmentProvider,
-                this,
-                NavigatorConfiguration(defaultNavigatorTransaction = NavigatorTransaction.SHOW_HIDE)
-                //TODO: Hız için show-hide kullanıldı. Ancak ram kullanımı 250 mb ları gördü :OOO
-        )
 
         mainVM.init(binding)
 

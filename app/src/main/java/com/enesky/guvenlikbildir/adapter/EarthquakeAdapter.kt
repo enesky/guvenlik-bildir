@@ -52,15 +52,12 @@ class EarthquakeAdapter(
             mEarthquakeOA = earthquakeOA
             binding.cvEarthquake.setOnClickListener {
                 earthquakeListener.onItemClick(pos, earthquakeOA)
-
                 if (binding.cvMap.isVisible) {
                     ObjectAnimator.ofFloat(binding.ivShowMap, "rotation", 180f, 0f).apply {
                         duration = Constants.defaultAnimationDuration
                         this.addListener(object: Animator.AnimatorListener{
                             override fun onAnimationEnd(p0: Animator?) {
                                 binding.cvMap.makeItInvisible()
-                                map!!.clear()
-                                map!!.mapType = GoogleMap.MAP_TYPE_NONE
                             }
                             override fun onAnimationRepeat(p0: Animator?) {}
                             override fun onAnimationCancel(p0: Animator?) {}
@@ -71,21 +68,17 @@ class EarthquakeAdapter(
                     binding.cvMap.collapseView()
 
                 } else {
+                    binding.cvMap.makeItVisible()
                     ObjectAnimator.ofFloat(binding.ivShowMap, "rotation", 0f, 180f)
                         .setDuration(Constants.defaultAnimationDuration)
                         .start()
-
-                    setupMap(map!!, earthquakeOA)
-
-                    binding.cvMap.makeItVisible()
                     binding.cvMap.expandView(250)
                 }
 
             }
 
-            if (map != null) {
-               setupMap(map!!, earthquakeOA)
-            }
+            if (map != null)
+                setupMap(map!!, earthquakeOA)
 
             binding.map.onCreate(null)
             binding.map.onResume()
@@ -96,6 +89,7 @@ class EarthquakeAdapter(
         override fun onMapReady(googleMap: GoogleMap?) {
             MapsInitializer.initialize(binding.root.context)
             map = googleMap
+            map!!.mapType = GoogleMap.MAP_TYPE_NONE
             setupMap(map!!, mEarthquakeOA!!)
         }
     }
@@ -114,6 +108,8 @@ class EarthquakeAdapter(
             else
                 LatLng(earthquake.coordinates[0].toDouble(), earthquake.coordinates[1].toDouble())
 
+        map.mapType = GoogleMap.MAP_TYPE_NORMAL
+
         map.setOnMapClickListener {
             earthquakeListener.onMapClick(loc!!, earthquake.title)
         }
@@ -121,8 +117,6 @@ class EarthquakeAdapter(
         map.addMarker(MarkerOptions().position(loc!!))
         map.moveCamera(CameraUpdateFactory.newLatLng(loc))
         map.uiSettings.isMapToolbarEnabled = false
-        map.uiSettings.isScrollGesturesEnabled = false
-        map.mapType = GoogleMap.MAP_TYPE_NORMAL
     }
 
     override fun getFilter(): Filter {

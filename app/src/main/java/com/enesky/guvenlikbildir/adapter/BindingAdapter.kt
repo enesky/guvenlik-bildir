@@ -46,7 +46,7 @@ fun bindStatefulRecyclerViewAdapter(view: StatefulRecyclerView, adapter: Recycle
 fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
     view.setHasFixedSize(true)
     view.layoutManager = LinearLayoutManager(view.context)
-    view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
+    //view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
     view.adapter = adapter
 }
 

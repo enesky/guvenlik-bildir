@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.OptionAdapter
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
+import com.enesky.guvenlikbildir.extensions.getString
 import com.enesky.guvenlikbildir.model.OptionItem
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 import com.hadilq.liveevent.LiveEvent
@@ -13,14 +14,18 @@ class OptionsVM : BaseViewModel(), OptionAdapter.OptionListListener {
 
     private val _optionListAdapter = MutableLiveData<OptionAdapter>().apply {
         value = OptionAdapter(
-            listOf(OptionItem(R.drawable.ic_contact, "Kimlere SMS göndereceğini seç"),
-                    OptionItem(R.drawable.ic_sms, "Gönderilecek SMS'leri düzenle"),
-                    OptionItem(R.drawable.ic_info, "Afetler Hakkında Bilgilendirmeler"),
-                    OptionItem(R.drawable.ic_phone, "Acil Durum Telefon Numaraları"),
-                    OptionItem(R.drawable.ic_about, "Uygulamayı Puanla / Yorumla"),
-                    OptionItem(R.drawable.ic_share, "Uygulamayı Paylaş / Öner"),
-                    OptionItem(R.drawable.ic_about, "Uygulama Kodunu İncele"),
-                    OptionItem(R.drawable.ic_exit_to_app, "Oturumu Kapat")), this@OptionsVM)
+            listOf(
+                OptionItem(R.drawable.ic_contact, getString(R.string.item_option_0)),
+                OptionItem(R.drawable.ic_sms, getString(R.string.item_option_1)),
+                OptionItem(R.drawable.ic_info, getString(R.string.item_option_2)),
+                OptionItem(R.drawable.ic_phone, getString(R.string.item_option_3)),
+                OptionItem(R.drawable.ic_about, getString(R.string.item_option_4)),
+                OptionItem(R.drawable.ic_share, getString(R.string.item_option_5)),
+                OptionItem(R.drawable.ic_feedback, getString(R.string.item_option_6)),
+                OptionItem(R.drawable.ic_about, getString(R.string.item_option_7)),
+                OptionItem(R.drawable.ic_exit_to_app, getString(R.string.item_option_8))
+            ), this@OptionsVM
+        )
     }
     val optionAdapter: LiveData<OptionAdapter> = _optionListAdapter
 

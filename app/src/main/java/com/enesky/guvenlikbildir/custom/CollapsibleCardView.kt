@@ -20,6 +20,7 @@ class CollapsibleCardView : MaterialCardView {
 
     private var compactHeight = 0
     internal var expandedHeight = 0
+    internal var isExpanded = false
 
     init {
         viewTreeObserver.addOnPreDrawListener(
@@ -42,6 +43,7 @@ class CollapsibleCardView : MaterialCardView {
             val mLayoutParams = layoutParams
             mLayoutParams.height = valueAnimator.animatedValue as Int
             layoutParams = mLayoutParams
+            isExpanded = false
         }
 
         anim.start()
@@ -55,6 +57,7 @@ class CollapsibleCardView : MaterialCardView {
             val mLayoutParams = layoutParams
             mLayoutParams.height = valueAnimator.animatedValue as Int
             layoutParams = mLayoutParams
+            isExpanded = true
         }
 
         anim.start()

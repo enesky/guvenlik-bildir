@@ -1,7 +1,11 @@
 package com.enesky.guvenlikbildir
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.edit
+import com.enesky.guvenlikbildir.extensions.Constants
 import com.enesky.guvenlikbildir.extensions.getResponseFromJson
 import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.model.GenericResponse
@@ -35,11 +39,20 @@ class App : Application() {
         private lateinit var mFirestore: FirebaseFirestore
         val managerFirestore: FirebaseFirestore
             get() = mFirestore
+
+        private lateinit var mPrefs: SharedPreferences
+        val managerPrefs: SharedPreferences
+            get() = mPrefs
     }
+
+    private var isFirstTime: Boolean
+        get() = managerPrefs.getBoolean("isFirstTime", true)
+        set(value) = managerPrefs.edit { putBoolean("isFirstTime", value) }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        mPrefs = getSharedPreferences(Constants.appName, Context.MODE_PRIVATE)
         mAuth = FirebaseAuth.getInstance()
         mAnalytics = FirebaseAnalytics.getInstance(this)
         mFirestore = FirebaseFirestore.getInstance()

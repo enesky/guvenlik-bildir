@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.util.Patterns
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -14,8 +15,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
@@ -41,6 +44,9 @@ fun View.makeItInvisible() {
 fun View.makeItGone() {
     visibility = View.GONE
 }
+
+fun getString(@StringRes resId: Int) = App.managerInstance.getString(resId)
+
 
 fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
 
@@ -152,4 +158,54 @@ inline fun <reified T> Context.getResponseFromJson(
     } finally {
         return Gson().fromJson<T>(json, typeToken)
     }
+}
+
+fun Fragment.sendSMS(smsTo: String? = null,
+                     contactList: List<String>? = null,
+                     message: String){
+    var uri : Uri? = null
+
+    if(!smsTo.isNullOrEmpty())
+        uri = Uri.parse("smsto:$smsTo")
+    else if (!contactList.isNullOrEmpty()) {
+        val manufacturer = Build.MANUFACTURER
+
+        var numberString = "smsto:"
+        for ((index, value) in contactList.withIndex()) {
+
+            numberString = if (manufacturer == "samsung") {
+                if (index < (contactList.size - 1))
+                    numberString.plus(value).plus(",")
+                else
+                    numberString.plus(value)
+            } else {
+                if (index < (contactList.size - 1))
+                    numberString.plus(value).plus(";")
+                else
+                    numberString.plus(value)
+            }
+
+        }
+
+        uri = Uri.parse(numberString)
+    }
+
+    val sendSmsIntent = Intent().apply {
+        action = Intent.ACTION_SENDTO
+        data = uri
+        putExtra("sms_body", message)
+    }
+
+    startActivity(sendSmsIntent)
+}
+
+fun Fragment.openBrowser(@StringRes resId: Int): Unit =
+    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(resId))))
+
+fun Fragment.sendFeedback() {
+    val testIntent = Intent(Intent.ACTION_VIEW)
+    val data = Uri.parse("mailto:?subject=" + getString(R.string.label_mail_header) +
+                    "&body=" + getString(R.string.label_mail_body) + "&to=" + getString(R.string.email))
+    testIntent.data = data
+    startActivity(testIntent)
 }

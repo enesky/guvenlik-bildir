@@ -24,6 +24,9 @@ object Constants {
     const val usersCollectionUid = "uid"
     const val usersCollectionPhoneNumber = "phoneNumber"
 
+    //SharedPref
+    const val appName = "GuvenlikBildir"
+
     //Numbers
     const val polis = "155"
     const val acilYardım = "112"
@@ -31,5 +34,7 @@ object Constants {
     const val defaultAnimationDuration = 500L
 
     const val map = "map"
+
+
 
 }

@@ -122,8 +122,10 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/default_text_14"
                     android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/default_margin_4"
                     app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
                     app:layout_constraintTop_toTopOf="@id/tv_title_date"
+                    app:layout_constraintBottom_toTopOf="@id/cv_map"
                     tools:text="2020.02.04 08:47:38" />
 
                 <TextView
@@ -144,8 +146,7 @@
                 <com.enesky.guvenlikbildir.custom.CollapsibleCardView
                     android:id="@+id/cv_map"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin_8"
+                    android:layout_height="100dp"
                     android:backgroundTint="@color/colorPrimary"
                     app:cardCornerRadius="@dimen/default_margin_16"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -156,7 +157,7 @@
                             android:id="@+id/map"
                             android:name="com.google.android.gms.maps.MapFragment"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="match_parent"
                             app:cameraZoom="7"
                             app:liteMode="true"
                             app:mapType="normal" />

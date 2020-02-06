@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.extensions.Constants
 import com.enesky.guvenlikbildir.extensions.openGoogleMaps
+import com.enesky.guvenlikbildir.extensions.sendSMS
 import kotlinx.android.synthetic.main.dialog_info_count_down.*
 
 /**
@@ -53,8 +54,12 @@ class InfoCountDownDialog: DialogFragment() {
                 phoneNumber = Constants.map
                 tv_dialog_title.text = getString(R.string.label_google_maps)
             }
-            else -> {
+            tag!!.contains("1") -> {
                 phoneNumber = "1"
+                tv_dialog_title.text = getString(R.string.label_sending_sms)
+            }
+            tag!!.contains("2") -> {
+                phoneNumber = "2"
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
             }
         }
@@ -89,7 +94,9 @@ class InfoCountDownDialog: DialogFragment() {
                         val splitTag = tag!!.split(delimiters = *arrayOf("map"))
                         openGoogleMaps(splitTag[1], splitTag[2])
                     }
-                    else -> ""
+                    else -> {
+                        sendSMS("+905383115141", listOf( "+905383115141"), "hiiii")
+                    }
                 }
                 dismiss()
             }

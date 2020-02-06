@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.ui.activity.login
 
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
@@ -16,7 +17,7 @@ import com.redmadrobot.inputmask.MaskedTextChangedListener
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.concurrent.TimeUnit
 
-class LoginActivity: BaseActivity() {
+class LoginActivity : BaseActivity() {
 
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     private lateinit var binding: ActivityLoginBinding
@@ -29,7 +30,9 @@ class LoginActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
-        binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login).apply {
+        binding =
+            DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
+                .apply {
                     viewModel = loginVM
                     lifecycleOwner = this@LoginActivity
                 }
@@ -44,9 +47,11 @@ class LoginActivity: BaseActivity() {
                 if (credential.smsCode != null)
                     signInWithPhoneAuthCredential(credential)
                 else
-                    startVerifyCodeActivity(et_phone_number.text.toString(),
-                                            verification!!,
-                                            resendingToken!!)
+                    startVerifyCodeActivity(
+                        et_phone_number.text.toString(),
+                        verification!!,
+                        resendingToken!!
+                    )
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -55,7 +60,10 @@ class LoginActivity: BaseActivity() {
                 loginVM.setInputsEnabled(true)
             }
 
-            override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+            override fun onCodeSent(
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
                 Log.d("LoginActivity", "onCodeSent:$verificationId")
                 verification = verificationId
                 resendingToken = token
@@ -68,6 +76,16 @@ class LoginActivity: BaseActivity() {
         et_phone_number.apply {
             addTextChangedListener(listener)
             onFocusChangeListener = listener
+
+            setOnEditorActionListener { _, actionId, _ ->
+                when (actionId) {
+                    EditorInfo.IME_ACTION_DONE -> {
+                        startPhoneNumberVerification(text.toString())
+                    }
+                }
+                false
+            }
+
         }
 
         btn_send_code.setOnClickListener {
@@ -101,9 +119,11 @@ class LoginActivity: BaseActivity() {
         }
     }
 
-    fun startVerifyCodeActivity(phoneNumber: String,
-                                verificationId: String,
-                                token: PhoneAuthProvider.ForceResendingToken) {
+    fun startVerifyCodeActivity(
+        phoneNumber: String,
+        verificationId: String,
+        token: PhoneAuthProvider.ForceResendingToken
+    ) {
         if (phoneNumber.isPhoneNumberValid()) {
             loginVM.setInputsEnabled(false)
             openVerifyCodeActivity(phoneNumber, verificationId, token)

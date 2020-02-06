@@ -20,16 +20,31 @@
     <string name="label_max_time">60</string>
     <string name="label_resend_code">Kodu tekrar gönder</string>
     <string name="label_waiting_info">Doğrulama kodu bekleniyor…</string>
-    <string name="label_calling_155">155 - Polis Aranıyor...</string>
-    <string name="label_calling_112">112 - Acil Aranıyor...</string>
-    <string name="label_calling_110">110 - İftaiye Aranıyor...</string>
-    <string name="label_sending_sms">Sms gönderiliyor...</string>
+    <string name="label_calling_155">155 - Polis Aranıyor…</string>
+    <string name="label_calling_112">112 - Acil Aranıyor…</string>
+    <string name="label_calling_110">110 - İftaiye Aranıyor…</string>
+    <string name="label_sending_sms">Sms gönderiliyor…</string>
     <string name="label_itfaiye">110 - İtfaiye</string>
-    <string name="label_acil_yardim">112 - Acil Yardım</string>
+    <string name="label_acil_yardim">112 - Acil</string>
     <string name="label_polis">155 - Polis</string>
     <string name="label_title_acil">Acil Durum Telefon Numaraları</string>
     <string name="label_im_safe">Güvendeyim.</string>
     <string name="label_im_not_safe">Güvende değilim.</string>
-    <string name="label_google_maps">Google Maps\'e Yönlendiriliyorsunuz...</string>
+    <string name="label_google_maps">Google Maps\'e Yönlendiriliyorsunuz…</string>
+
+    <string name="link_github">https://github.com/EnesKy/guvenlik-bildir</string>
+    <string name="email">eneskamilyilmaz@gmail.com</string>
+
+    <string name="item_option_0">Kimlere SMS göndereceğini seç</string>
+    <string name="item_option_1">Gönderilecek SMS\'leri düzenle</string>
+    <string name="item_option_2">Afetler Hakkında Bilgilendirmeler</string>
+    <string name="item_option_3">Acil Durum Telefon Numaraları</string>
+    <string name="item_option_4">Uygulamayı Puanla / Yorumla</string>
+    <string name="item_option_5">Uygulamayı Paylaş / Öner</string>
+    <string name="item_option_6">Görüş ve Önerileriniz</string>
+    <string name="item_option_7">Uygulama Kodunu İncele</string>
+    <string name="item_option_8">Oturumu Kapat</string>
+    <string name="label_mail_header">Güvenlik Bildir: Görüş - Öneri</string>
+    <string name="label_mail_body">Görüş ve önerilerinizi buraya yazınız…</string>
 
 </resources>
