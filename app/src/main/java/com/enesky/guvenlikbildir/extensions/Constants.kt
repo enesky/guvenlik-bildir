@@ -32,12 +32,12 @@ object Constants {
     const val acilYardım = "112"
     const val itfaiye = "110"
     const val defaultAnimationDuration = 500L
-
     const val map = "map"
 
     //SharedPref Keys
     const val isFirstTime = "isFirstTime"
     const val lastKnownLocation = "lastKnownLocation"
+    const val locationMapLink = "locationMapLink"
     const val safeSms = "safeSms"
     const val unsafeSms = "unsafeSms"
 

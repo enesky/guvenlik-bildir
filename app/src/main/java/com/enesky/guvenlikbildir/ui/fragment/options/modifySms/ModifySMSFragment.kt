@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
+import com.enesky.guvenlikbildir.extensions.Constants
 import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.extensions.safeSms
 import com.enesky.guvenlikbildir.extensions.unsafeSms
@@ -45,7 +45,7 @@ class ModifySMSFragment: BaseFragment() {
 
         modifySmsVM.unsafeSmsUpdated.observe(viewLifecycleOwner, Observer { isUnsafeSmsUpdated ->
             if (isUnsafeSmsUpdated) {
-                unsafeSms = et_safe_sms.text.toString()
+                unsafeSms = et_unsafe_sms.text.toString()
                 modifySmsVM.setUnsafeSms(unsafeSms!!)
             }
         })
@@ -73,6 +73,18 @@ class ModifySMSFragment: BaseFragment() {
             override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+
+        tv_safe_location.setOnClickListener {
+            openInfoCountDownDialog(Constants.locationMapLink)
+        }
+
+        tv_unsafe_location.setOnClickListener {
+            openInfoCountDownDialog(Constants.locationMapLink)
+        }
+
+        btn_save.setOnClickListener {
+           //TODO: ?
+        }
 
     }
 

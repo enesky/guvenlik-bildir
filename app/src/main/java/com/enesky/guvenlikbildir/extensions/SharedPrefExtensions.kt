@@ -12,16 +12,18 @@ var isFirstTime: Boolean
     set(value) = App.mPrefs.edit { putBoolean(Constants.isFirstTime, value) }
 
 var lastKnownLocation: String?
-    get() = App.mPrefs.getString(Constants.lastKnownLocation, "Not Known")
+    get() = App.mPrefs.getString(Constants.lastKnownLocation, "41.01844,28.9941283")
     set(value) = App.mPrefs.edit { putString(Constants.lastKnownLocation, value) }
 
 var safeSms: String?
-    get() = App.mPrefs.getString(Constants.safeSms, "Güvendeyim.\n" +
-            "Bulunduğum Konum: https://www.google.com/maps/place/$lastKnownLocation")
+    get() = App.mPrefs.getString(Constants.safeSms, "Güvendeyim.")
     set(value) = App.mPrefs.edit { putString(Constants.safeSms, value) }
 
 var unsafeSms: String?
-    get() = App.mPrefs.getString(Constants.unsafeSms, "Güvende hissetmiyorum.\n" +
-            "Lütfen yardımcı olun. \n" +
-            "Bulunduğum Konum: https://www.google.com/maps/place/$lastKnownLocation")
+    get() = App.mPrefs.getString(Constants.unsafeSms, "Güvende hissetmiyorum.\n" + "Lütfen yardımcı olun.")
     set(value) = App.mPrefs.edit { putString(Constants.unsafeSms, value) }
+
+var locationMapLink: String?
+    get() = App.mPrefs.getString(Constants.locationMapLink, "Bulunduğum Konum: \n" +
+                    "https://www.google.com/maps/place/$lastKnownLocation")
+    set(value) = App.mPrefs.edit { putString(Constants.locationMapLink, value) }

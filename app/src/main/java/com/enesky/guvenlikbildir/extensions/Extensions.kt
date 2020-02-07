@@ -125,6 +125,15 @@ fun Fragment.openGoogleMaps(latlng: String, title: String) {
     startActivity(mapIntent)
 }
 
+fun Fragment.openLastKnownLocation() {
+    val query = "$lastKnownLocation(Son Bilinen Konum)"
+    val encodedQuery = Uri.encode(query)
+    val gmmIntentUri: Uri = Uri.parse("geo:$lastKnownLocation?q=$encodedQuery&z=3")
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+    mapIntent.setPackage("com.google.android.apps.maps")
+    startActivity(mapIntent)
+}
+
 fun Activity.openVerifyCodeActivity(phoneNumber: String,
                                    verificationId: String,
                                    token: PhoneAuthProvider.ForceResendingToken) {

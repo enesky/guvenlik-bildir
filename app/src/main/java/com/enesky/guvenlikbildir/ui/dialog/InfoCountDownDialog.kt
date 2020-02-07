@@ -69,6 +69,10 @@ class InfoCountDownDialog: DialogFragment() {
                 phoneNumber = "sms-unsafe"
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
             }
+            tag!!.contains(Constants.locationMapLink) -> {
+                phoneNumber = Constants.locationMapLink
+                tv_dialog_title.text = getString(R.string.label_google_maps)
+            }
         }
 
         tv_okey.setOnClickListener {
@@ -136,6 +140,9 @@ class InfoCountDownDialog: DialogFragment() {
                     Constants.map -> {
                         val splitTag = tag!!.split(delimiters = *arrayOf("map"))
                         openGoogleMaps(splitTag[1], splitTag[2])
+                    }
+                    Constants.locationMapLink -> {
+                        openLastKnownLocation()
                     }
                     else -> {
                         //sendSMS("+905383115141", listOf( "+905383115141"), "hiiii")
