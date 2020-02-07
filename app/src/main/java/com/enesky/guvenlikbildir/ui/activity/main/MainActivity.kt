@@ -1,15 +1,18 @@
 package com.enesky.guvenlikbildir.ui.activity.main
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
-import com.enesky.guvenlikbildir.extensions.ConnectionLiveData
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.requireAllPermissions
-import com.enesky.guvenlikbildir.extensions.showToast
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
@@ -20,7 +23,7 @@ import com.trendyol.medusalib.navigator.NavigatorConfiguration
 import com.trendyol.medusalib.navigator.transaction.NavigatorTransaction
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity(), Navigator.NavigatorListener{
+class MainActivity : BaseActivity(), Navigator.NavigatorListener {
 
     private var rootFragmentProvider: List<() -> Fragment> = listOf(
         { LatestEarthquakesFragment() },
@@ -33,8 +36,34 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener{
         rootFragmentProvider,
         this,
         NavigatorConfiguration(defaultNavigatorTransaction = NavigatorTransaction.SHOW_HIDE)
-        //TODO: Hız için show-hide kullanıldı. Ancak ram kullanımı 250 mb ları gördü :OOO
+        //TODO: Hız için show-hide kullanıldı. Ancak ram kullanımı 250 mb ları gördü :O
     )
+
+    //TODO: LocationManager kısmını farklı bi yapıya taşıyabilirsin?
+    private var locationManager: LocationManager? = null
+    private var locationListenerGPS: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            val latitude = location.latitude
+            val longitude = location.longitude
+            lastKnownLocation = "$latitude,$longitude"
+            Log.d("LocationManager", lastKnownLocation!!)
+        }
+
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+        override fun onProviderEnabled(provider: String?) {}
+        override fun onProviderDisabled(provider: String?) {}
+    }
+
+    @SuppressLint("MissingPermission")
+    fun requestLocationUpdates() {
+        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager!!.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            30000,
+            10f,
+            locationListenerGPS
+        )
+    }
 
     private val mainVM by lazy {
         getViewModel { MainVM() }
@@ -45,38 +74,34 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener{
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        //TODO: Ask just for first time. Then just ask it when it needed.
-        requireAllPermissions()
+        if (isFirstTime) {
+            requireAllPermissions()
+            isFirstTime = false
+        }
 
-        //GlobalScope.launch(Dispatchers.Main) {
-            start(savedInstanceState)
-        //}
+        requireLocationPermission { requestLocationUpdates() }
+
+        start(savedInstanceState)
     }
 
-    //TODO: Mümkün olduğu kadar hafiflet
+    //TODO: Bu metodu mümkün olduğu kadar hafiflet
     private fun start(savedInstanceState: Bundle?) {
         //delay(25)
-
         binding.apply {
             viewModel = mainVM
             lifecycleOwner = this@MainActivity
         }
-
         mainVM.init(binding)
-
         navigator.initialize(savedInstanceState)
 
         bottom_nav.apply {
-            //setOnNavigationItemSelectedListener(this@MainActivity)
-            //setOnNavigationItemReselectedListener(this@MainActivity)
-
             setOnNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.latest_earthquakes -> {
                         navigator.switchTab(0)
                         true
                     }
-                    R.id.notify ->  {
+                    R.id.notify -> {
                         navigator.switchTab(1)
                         true
                     }
@@ -88,7 +113,7 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener{
                 }
             }
 
-            setOnNavigationItemReselectedListener {  }
+            setOnNavigationItemReselectedListener { }
 
             selectedItemId = R.id.notify
         }

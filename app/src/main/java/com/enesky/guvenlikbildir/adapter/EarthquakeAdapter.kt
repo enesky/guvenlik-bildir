@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.databinding.ItemEarthquakeBinding
@@ -45,7 +46,8 @@ class EarthquakeAdapter(
         RecyclerView.ViewHolder(binding.root), OnMapReadyCallback {
 
         var map: GoogleMap? = null
-        var mEarthquakeOA: EarthquakeOA ?= null
+        var mEarthquakeOA: EarthquakeOA? = null
+        var progressBar: ProgressBar? = binding.pbLoading
 
         fun bind(pos: Int, earthquakeOA: EarthquakeOA) {
             binding.earthquake = earthquakeOA
@@ -78,7 +80,7 @@ class EarthquakeAdapter(
             }
 
             if (map != null)
-                setupMap(map!!, earthquakeOA)
+                setupMap(map!!, earthquakeOA, binding.pbLoading)
 
             binding.map.onCreate(null)
             binding.map.onResume()
@@ -89,8 +91,7 @@ class EarthquakeAdapter(
         override fun onMapReady(googleMap: GoogleMap?) {
             MapsInitializer.initialize(binding.root.context)
             map = googleMap
-            map!!.mapType = GoogleMap.MAP_TYPE_NONE
-            setupMap(map!!, mEarthquakeOA!!)
+            setupMap(map!!, mEarthquakeOA!!, progressBar!!)
         }
     }
 
@@ -98,10 +99,11 @@ class EarthquakeAdapter(
         if (holder.map != null) {
             holder.map!!.clear()
             holder.map!!.mapType = GoogleMap.MAP_TYPE_NONE
+            holder.progressBar!!.makeItVisible()
         }
     }
 
-    fun setupMap(map: GoogleMap, earthquake: EarthquakeOA) {
+    fun setupMap(map: GoogleMap, earthquake: EarthquakeOA, progressBar: ProgressBar) {
         val loc: LatLng? =
             if (earthquake.lat != null && earthquake.lng != null)
                 LatLng(earthquake.lat.toDouble(), earthquake.lng.toDouble())
@@ -109,14 +111,16 @@ class EarthquakeAdapter(
                 LatLng(earthquake.coordinates[0].toDouble(), earthquake.coordinates[1].toDouble())
 
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
-
-        map.setOnMapClickListener {
-            earthquakeListener.onMapClick(loc!!, earthquake.title)
-        }
-
+        map.uiSettings.isMapToolbarEnabled = false
         map.addMarker(MarkerOptions().position(loc!!))
         map.moveCamera(CameraUpdateFactory.newLatLng(loc))
-        map.uiSettings.isMapToolbarEnabled = false
+
+        map.setOnMapClickListener {
+            earthquakeListener.onMapClick(loc, earthquake.title)
+        }
+        map.setOnMapLoadedCallback {
+            progressBar.makeItGone()
+        }
     }
 
     override fun getFilter(): Filter {

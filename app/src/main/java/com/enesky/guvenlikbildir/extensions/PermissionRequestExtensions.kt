@@ -2,10 +2,10 @@ package com.enesky.guvenlikbildir.extensions
 
 import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsRequest
@@ -14,31 +14,59 @@ import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsReques
  * Created by Enes Kamil YILMAZ on 06.02.2020
  */
 
-fun Context.requireSendSmsPermission() = runWithPermissions(
+fun Context.requireSendSmsPermission(function: () -> Any) = runWithPermissions(
     Manifest.permission.SEND_SMS,
     options = getQuickPermissionOptions()
 ) {
     Log.d("CalendarEventExtensions", "requireSendSmsPermission: Send Sms permission granted")
+    if (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+        function()
+    }
 }
 
-fun Context.requireCallPhonePermission() = runWithPermissions(
+fun Context.requireCallPhonePermission(function: () -> Any) = runWithPermissions(
     Manifest.permission.CALL_PHONE,
     options = getQuickPermissionOptions()
 ) {
     Log.d("CalendarEventExtensions", "requireCallPhonePermission: Call Phone permission granted")
+    if (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+        function()
+    }
 }
 
-fun Context.requireReadContactsPermission() = runWithPermissions(
+fun Context.requireReadContactsPermission(function: () -> Any) = runWithPermissions(
     Manifest.permission.READ_CONTACTS,
     options = getQuickPermissionOptions()
 ) {
     Log.d("CalendarEventExtensions", "requireReadContactsPermission: Read Contacts permission granted")
+    if (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+        function()
+    }
+}
+
+fun Context.requireLocationPermission(function: () -> Any) = runWithPermissions(
+    Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.ACCESS_COARSE_LOCATION,
+    options = getQuickPermissionOptions()
+) {
+    Log.d("CalendarEventExtensions", "requireLocationPermission: Location permissions granted")
+    if (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+        ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        function()
+    }
 }
 
 fun Context.requireAllPermissions() = runWithPermissions(
     Manifest.permission.READ_CONTACTS,
     Manifest.permission.CALL_PHONE,
-    Manifest.permission.SEND_SMS, options = getQuickPermissionOptions()
+    Manifest.permission.SEND_SMS,
+    Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.ACCESS_COARSE_LOCATION, options = getQuickPermissionOptions()
 ) {
     Log.d("CalendarEventExtensions", "requireAllPermissions: All permissions granted")
 }
@@ -79,11 +107,11 @@ fun Context.permissionsPermanentlyDenied(req: QuickPermissionsRequest) {
 
 fun Context.whenPermAreDenied(req: QuickPermissionsRequest) {
     // handle something when permissions are not granted and the request method cannot be called
-    MaterialAlertDialogBuilder(this)
+    /*MaterialAlertDialogBuilder(this)
         .setTitle("İzinleri reddettiniz.")
         .setMessage("İzinlerin ${req.deniedPermissions.size}/${req.permissions.size} 'i reddedildi.\n" +
                     "Bazı fonksiyonlardan mahrum kalacaksınız :/" )
         .setPositiveButton("Tamam") { _, _ -> }
         .setCancelable(false)
-        .show()
+        .show()*/
 }

@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.core.content.edit
 import com.enesky.guvenlikbildir.extensions.Constants
 import com.enesky.guvenlikbildir.extensions.getResponseFromJson
 import com.enesky.guvenlikbildir.model.EarthquakeOA
@@ -25,37 +24,33 @@ class App : Application() {
 
     companion object {
         private lateinit var instance: App
-        val managerInstance: App
+        val mInstance: App
             get() = instance
 
-        private lateinit var mAuth: FirebaseAuth
-        val managerAuth: FirebaseAuth
-            get() = mAuth
+        private lateinit var firebaseAuth: FirebaseAuth
+        val mAuth: FirebaseAuth
+            get() = firebaseAuth
 
-        private lateinit var mAnalytics: FirebaseAnalytics
-        val managerAnalytics: FirebaseAnalytics
-            get() = managerAnalytics
+        private lateinit var firebaseAnalytics: FirebaseAnalytics
+        val mAnalytics: FirebaseAnalytics
+            get() = mAnalytics
 
-        private lateinit var mFirestore: FirebaseFirestore
-        val managerFirestore: FirebaseFirestore
-            get() = mFirestore
+        private lateinit var firebaseFirestore: FirebaseFirestore
+        val mFirestore: FirebaseFirestore
+            get() = firebaseFirestore
 
-        private lateinit var mPrefs: SharedPreferences
-        val managerPrefs: SharedPreferences
-            get() = mPrefs
+        private lateinit var sharedPreferences: SharedPreferences
+        val mPrefs: SharedPreferences
+            get() = sharedPreferences
     }
-
-    private var isFirstTime: Boolean
-        get() = managerPrefs.getBoolean("isFirstTime", true)
-        set(value) = managerPrefs.edit { putBoolean("isFirstTime", value) }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        mPrefs = getSharedPreferences(Constants.appName, Context.MODE_PRIVATE)
-        mAuth = FirebaseAuth.getInstance()
-        mAnalytics = FirebaseAnalytics.getInstance(this)
-        mFirestore = FirebaseFirestore.getInstance()
+        sharedPreferences = getSharedPreferences(Constants.appName, Context.MODE_PRIVATE)
+        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseFirestore = FirebaseFirestore.getInstance()
         AndroidThreeTen.init(this)
 
         if (BuildConfig.DEBUG) {

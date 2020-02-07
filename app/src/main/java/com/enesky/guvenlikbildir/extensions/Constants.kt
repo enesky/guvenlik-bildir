@@ -35,6 +35,10 @@ object Constants {
 
     const val map = "map"
 
-
+    //SharedPref Keys
+    const val isFirstTime = "isFirstTime"
+    const val lastKnownLocation = "lastKnownLocation"
+    const val safeSms = "safeSms"
+    const val unsafeSms = "unsafeSms"
 
 }

@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin_16"
                 android:layout_marginTop="@dimen/default_margin_16"
-                android:text="Güvendeysen gönderilecek SMS :"
+                android:text="@string/title_safe_sms"
                 android:textSize="@dimen/default_text_16" />
 
             <com.google.android.material.card.MaterialCardView
@@ -67,6 +67,7 @@
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/default_margin_16"
+                    android:text="@{viewModel.safeSmsLive}"
                     tools:text="Güvendeyim.
                  Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
 
@@ -95,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin_16"
                 android:layout_marginTop="@dimen/default_margin_16"
-                android:text="Güvende değilsen gönderilecek SMS :"
+                android:text="@string/title_unsafe_sms"
                 android:textSize="@dimen/default_text_16" />
 
             <com.google.android.material.card.MaterialCardView
@@ -114,6 +115,7 @@
                     android:background="@android:color/transparent"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/default_margin_16"
+                    android:text="@{viewModel.unsafeSmsLive}"
                     tools:text="Güvende değilim.
                  Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
 
@@ -126,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_24"
-            android:text="Kaydet"
+            android:text="@string/label_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 

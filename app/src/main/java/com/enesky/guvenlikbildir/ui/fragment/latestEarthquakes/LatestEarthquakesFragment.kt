@@ -2,13 +2,10 @@ package com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.BuildConfig
@@ -16,15 +13,12 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.model.EarthquakeOA
-import com.enesky.guvenlikbildir.model.GenericResponse
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_lastest_earthquakes.*
 import kotlinx.coroutines.*
-import okhttp3.Response
 import kotlin.math.abs
 
 @Suppress("UNCHECKED_CAST")
@@ -51,7 +45,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         latestEarthquakesVM.init(binding)
         app_bar_layout.addOnOffsetChangedListener(this)
 
-        ConnectionLiveData(requireContext()).observe(this, Observer { isOnline ->
+        ConnectionLiveData(requireContext()).observe(viewLifecycleOwner, Observer { isOnline ->
             if (isOnline)
                 fab_synchronize.setImageResource(R.drawable.ic_sync)
             else
@@ -123,7 +117,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
             delay(100)
 
             if (BuildConfig.DEBUG) {
-                latestEarthquakesVM.earthquakeAdapter.value!!.update(App.managerInstance.mockEarthquakeList.result.subList(0,listExpand) as MutableList<EarthquakeOA>)
+                latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,listExpand) as MutableList<EarthquakeOA>)
                 listExpand += 5
             } else {
                 latestEarthquakesVM.getLastEarthquakes("7")

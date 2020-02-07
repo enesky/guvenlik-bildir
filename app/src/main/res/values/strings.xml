@@ -46,5 +46,8 @@
     <string name="item_option_8">Oturumu Kapat</string>
     <string name="label_mail_header">Güvenlik Bildir: Görüş - Öneri</string>
     <string name="label_mail_body">Görüş ve önerilerinizi buraya yazınız…</string>
+    <string name="label_save">Kaydet</string>
+    <string name="title_unsafe_sms">Güvende değilsen gönderilecek SMS :</string>
+    <string name="title_safe_sms">Güvendeysen gönderilecek SMS :</string>
 
 </resources>

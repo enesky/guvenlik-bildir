@@ -45,7 +45,7 @@ fun View.makeItGone() {
     visibility = View.GONE
 }
 
-fun getString(@StringRes resId: Int) = App.managerInstance.getString(resId)
+fun getString(@StringRes resId: Int) = App.mInstance.getString(resId)
 
 
 fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))

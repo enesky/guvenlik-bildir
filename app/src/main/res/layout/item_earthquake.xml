@@ -160,7 +160,15 @@
                             android:layout_height="match_parent"
                             app:cameraZoom="7"
                             app:liteMode="true"
-                            app:mapType="normal" />
+                            app:mapType="none" />
+
+                        <ProgressBar
+                            android:id="@+id/pb_loading"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@android:color/white"
+                            android:padding="@dimen/default_margin_24"/>
 
                 </com.enesky.guvenlikbildir.custom.CollapsibleCardView>
 

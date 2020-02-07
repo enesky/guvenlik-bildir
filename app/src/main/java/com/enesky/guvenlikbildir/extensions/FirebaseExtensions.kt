@@ -12,7 +12,7 @@ import com.google.firebase.auth.PhoneAuthCredential
  */
 
 fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-    App.managerAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
+    App.mAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
         if (task.isSuccessful) {
             Log.d("Login", "signInWithCredential:success")
             addUserInfo2Database(task.result?.user!!)
@@ -26,7 +26,7 @@ fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
 }
 
 fun addUserInfo2Database(firebaseUser: FirebaseUser){
-    App.managerFirestore.collection(Constants.usersCollection)
+    App.mFirestore.collection(Constants.usersCollection)
         .add(hashMapOf(
             Constants.usersCollectionUid to firebaseUser.uid,
             Constants.usersCollectionPhoneNumber to firebaseUser.phoneNumber
@@ -40,7 +40,7 @@ fun addUserInfo2Database(firebaseUser: FirebaseUser){
 }
 
 fun checkIfNumberisRegistered(phoneNumber: String) {
-    App.managerFirestore.collection(Constants.usersCollection)
+    App.mFirestore.collection(Constants.usersCollection)
         .whereEqualTo(Constants.usersCollectionPhoneNumber, phoneNumber)
         .get()
         .addOnSuccessListener { documents ->

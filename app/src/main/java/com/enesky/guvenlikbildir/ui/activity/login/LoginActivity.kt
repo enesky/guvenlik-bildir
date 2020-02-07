@@ -94,7 +94,7 @@ class LoginActivity : BaseActivity() {
 
         tv_continue.setOnClickListener {
             if (checkInternet()) {
-                App.managerAuth.signInAnonymously().addOnCompleteListener(this) { task ->
+                App.mAuth.signInAnonymously().addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Log.d("LoginActivity", "signInAnonymously:success")
                         this.openMainActivity()
@@ -112,7 +112,7 @@ class LoginActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser: FirebaseUser? = App.managerAuth.currentUser
+        val currentUser: FirebaseUser? = App.mAuth.currentUser
         if (currentUser != null) {
             loginVM.setInputsEnabled(false)
             this.openMainActivity()
