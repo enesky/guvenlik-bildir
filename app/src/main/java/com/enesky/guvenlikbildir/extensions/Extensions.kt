@@ -169,6 +169,7 @@ inline fun <reified T> Context.getResponseFromJson(
     }
 }
 
+//sendSMS("+905383115141", listOf( "+905383115141"), "hiiii")
 fun Fragment.sendSMS(smsTo: String? = null,
                      contactList: List<String>? = null,
                      message: String){

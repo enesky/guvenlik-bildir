@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.dialog_info_count_down.*
  * Created by Enes Kamil YILMAZ on 02.02.2020
  */
 
-class InfoCountDownDialog: DialogFragment() {
+class InfoCountDownDialog : DialogFragment() {
 
     private lateinit var timer: CountDownTimer
     private var phoneNumber: String = Constants.polis
@@ -38,7 +38,10 @@ class InfoCountDownDialog: DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -61,12 +64,12 @@ class InfoCountDownDialog: DialogFragment() {
                 phoneNumber = Constants.map
                 tv_dialog_title.text = getString(R.string.label_google_maps)
             }
-            tag!!.contains("safe") -> {
-                phoneNumber = "sms-safe"
+            tag.equals(Constants.safeSms) -> {
+                phoneNumber = Constants.safeSms
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
             }
-            tag!!.contains("unsafe") -> {
-                phoneNumber = "sms-unsafe"
+            tag.equals(Constants.unsafeSms) -> {
+                phoneNumber = Constants.unsafeSms
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
             }
             tag!!.contains(Constants.locationMapLink) -> {
@@ -82,7 +85,7 @@ class InfoCountDownDialog: DialogFragment() {
         startCountDown()
 
         //TODO: Sonuçları değiştir.
-        if (tag!!.contains("sms")) {
+        if (tag!!.contains("Sms")) {
             sentPI = PendingIntent.getBroadcast(requireContext(), 0, Intent(SENT), 0)
             deliveredPI = PendingIntent.getBroadcast(requireContext(), 0, Intent(DELIVERED), 0)
             // --When the sms has been sent
@@ -130,7 +133,7 @@ class InfoCountDownDialog: DialogFragment() {
             }
 
             override fun onFinish() {
-                when(phoneNumber) {
+                when (phoneNumber) {
                     Constants.polis, Constants.acilYardım, Constants.itfaiye -> {
                         requireContext().requireCallPhonePermission {
                             val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
@@ -144,9 +147,11 @@ class InfoCountDownDialog: DialogFragment() {
                     Constants.locationMapLink -> {
                         openLastKnownLocation()
                     }
-                    else -> {
-                        //sendSMS("+905383115141", listOf( "+905383115141"), "hiiii")
-                        sendSMS()
+                    Constants.safeSms -> {
+                        sendSMS(Constants.safeSms)
+                    }
+                    Constants.unsafeSms -> {
+                        sendSMS(Constants.unsafeSms)
                     }
                 }
                 dismiss()
@@ -154,12 +159,22 @@ class InfoCountDownDialog: DialogFragment() {
         }.start()
     }
 
-    private fun sendSMS() {
+    private fun sendSMS(smsType: String) {
         requireContext().requireSendSmsPermission {
+            val text = if (smsType == Constants.safeSms)
+                                    safeSms
+                                else
+                                    unsafeSms
+
+            text.plus("\n" + locationMapLink)
+
             try {
                 val smsManager = SmsManager.getDefault()
-                for (number: String in listOf("+905383115141", "+905334233556"))
-                    smsManager.sendTextMessage(number, null, "Deneme", sentPI, deliveredPI)
+                for (number: String in listOf(//TODO: Listeyi firestoredan al.
+                    "+905383115141",
+                    "+905334233556"
+                ))
+                    smsManager.sendTextMessage(number, null, text, sentPI, deliveredPI)
             } catch (e: Exception) {
                 Log.d("SMSManager Exception", e.message!!)
                 requireContext().showToast("SMS Failed to send, please try again!")

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.adapter.onBackPressed
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.extensions.Constants
 import com.enesky.guvenlikbildir.extensions.getViewModel
@@ -35,21 +36,6 @@ class ModifySMSFragment: BaseFragment() {
             lifecycleOwner = this@ModifySMSFragment
         }
         modifySmsVM.init(binding)
-
-        modifySmsVM.safeSmsUpdated.observe(viewLifecycleOwner, Observer { isSafeSmsUpdated ->
-            if (isSafeSmsUpdated) {
-                safeSms = et_safe_sms.text.toString()
-                modifySmsVM.setSafeSms(safeSms!!)
-            }
-        })
-
-        modifySmsVM.unsafeSmsUpdated.observe(viewLifecycleOwner, Observer { isUnsafeSmsUpdated ->
-            if (isUnsafeSmsUpdated) {
-                unsafeSms = et_unsafe_sms.text.toString()
-                modifySmsVM.setUnsafeSms(unsafeSms!!)
-            }
-        })
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,22 +43,6 @@ class ModifySMSFragment: BaseFragment() {
 
         et_safe_sms.setText(safeSms)
         et_unsafe_sms.setText(unsafeSms)
-
-        et_safe_sms.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                modifySmsVM.setSafeSmsUpdated(true)
-            }
-            override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        et_unsafe_sms.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                modifySmsVM.setUnsafeSmsUpdated(true)
-            }
-            override fun beforeTextChanged(text: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
 
         tv_safe_location.setOnClickListener {
             openInfoCountDownDialog(Constants.locationMapLink)
@@ -83,7 +53,13 @@ class ModifySMSFragment: BaseFragment() {
         }
 
         btn_save.setOnClickListener {
-           //TODO: ?
+            safeSms = et_safe_sms.text.toString()
+            modifySmsVM.setSafeSms(safeSms!!)
+
+            unsafeSms = et_unsafe_sms.text.toString()
+            modifySmsVM.setUnsafeSms(unsafeSms!!)
+
+            activity!!.onBackPressed()
         }
 
     }

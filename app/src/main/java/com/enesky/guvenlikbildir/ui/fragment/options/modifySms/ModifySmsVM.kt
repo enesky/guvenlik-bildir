@@ -10,16 +10,6 @@ import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 class ModifySmsVM : BaseViewModel() {
 
-    private val _safeSmsUpdated = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-    val safeSmsUpdated: LiveData<Boolean> = _safeSmsUpdated
-
-    private val _unsafeSmsUpdated = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-    val unsafeSmsUpdated: LiveData<Boolean> = _unsafeSmsUpdated
-
     private val _unsafeSms = MutableLiveData<String>()
     val unsafeSmsLive: LiveData<String> = _unsafeSms
 
@@ -37,14 +27,6 @@ class ModifySmsVM : BaseViewModel() {
 
     fun init(binding: FragmentModifySmsBinding) {
         setViewDataBinding(binding)
-    }
-
-    fun setSafeSmsUpdated(updated: Boolean) {
-        _safeSmsUpdated.value = updated
-    }
-
-    fun setUnsafeSmsUpdated(updated: Boolean) {
-        _unsafeSmsUpdated.value = updated
     }
 
     fun setSafeSms(sms: String) {

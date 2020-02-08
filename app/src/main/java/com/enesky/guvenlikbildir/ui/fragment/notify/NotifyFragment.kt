@@ -48,11 +48,11 @@ class NotifyFragment : BaseFragment() {
         }
 
         iv_safe.setOnClickListener {
-            openInfoCountDownDialog("sms-safe")
+            openInfoCountDownDialog(Constants.safeSms)
         }
 
         iv_unsafe.setOnClickListener {
-            openInfoCountDownDialog("sms-unsafe")
+            openInfoCountDownDialog(Constants.unsafeSms)
         }
 
     }

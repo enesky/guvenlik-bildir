@@ -48,7 +48,6 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener {
             lastKnownLocation = "$latitude,$longitude"
             Log.d("LocationManager", lastKnownLocation!!)
         }
-
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
         override fun onProviderEnabled(provider: String?) {}
         override fun onProviderDisabled(provider: String?) {}
@@ -59,8 +58,8 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener {
         locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationManager!!.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
-            30000,
-            10f,
+            10000,
+            5f,
             locationListenerGPS
         )
     }
