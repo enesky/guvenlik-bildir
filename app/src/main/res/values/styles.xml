@@ -26,4 +26,11 @@
         <item name="dialogCornerRadius">@dimen/default_radius</item>
     </style>
 
+    <style name="Widget.IndicatorFastScroll.FastScroller.Floating">
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:background">@drawable/bg_radius</item>
+        <item name="android:radius">@dimen/default_radius</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
 </resources>

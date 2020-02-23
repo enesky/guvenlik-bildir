@@ -41,10 +41,8 @@ fun Context.requireReadContactsPermission(function: () -> Any) = runWithPermissi
     options = getQuickPermissionOptions()
 ) {
     Log.d("CalendarEventExtensions", "requireReadContactsPermission: Read Contacts permission granted")
-    if (ContextCompat.checkSelfPermission(this,
-            Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
         function()
-    }
 }
 
 fun Context.requireLocationPermission(function: () -> Any) = runWithPermissions(

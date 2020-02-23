@@ -22,18 +22,11 @@ class NotifyFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        notifyVM = getViewModel()
-        binding.apply {
-            viewModel = notifyVM
-            lifecycleOwner = this@NotifyFragment
-        }
-        notifyVM.init(binding)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        notifyVM = getViewModel()
+        binding.viewModel = notifyVM
+        notifyVM.init(binding)
 
         cl_polis.setOnClickListener {
             openInfoCountDownDialog(Constants.polis)

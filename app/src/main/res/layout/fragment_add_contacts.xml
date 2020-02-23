@@ -6,25 +6,91 @@
     <data>
         <variable
             name="viewModel"
-            type="com.enesky.guvenlikbildir.ui.fragment.options.addContacts.AddContactsVM" />
-
+            type="com.enesky.guvenlikbildir.ui.fragment.options.contacts.SharedContactsVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        tools:context=".ui.fragment.options.addContacts.AddContactsFragment">
+        tools:context=".ui.fragment.options.contacts.AddContactsFragment">
 
-        <Button
-            android:id="@+id/btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello"
-            app:layout_constraintTop_toTopOf="parent"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:theme="@style/ToolbarStyle"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:lineHeight="24sp"
+                    android:text="Kişi Ekle"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/default_text_20"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Ekle (1)"
+                    android:textSize="@dimen/default_text_16"
+                    android:textColor="@android:color/white"
+                    android:visibility="gone"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/default_margin_16"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_atop"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            setAdapter="@{viewModel.addContactAdapter}"
+            android:layoutAnimation="@anim/layout_animation"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.reddit.indicatorfastscroll.FastScrollerView
+            android:id="@+id/fastScroller"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.IndicatorFastScroll.FastScroller.Floating"
+            android:layout_marginEnd="@dimen/default_margin_4"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.reddit.indicatorfastscroll.FastScrollerThumbView
+            android:id="@+id/fastScrollerThumb"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/default_margin_8"
+            app:layout_constraintTop_toTopOf="@id/fastScroller"
+            app:layout_constraintBottom_toBottomOf="@id/fastScroller"
+            app:layout_constraintEnd_toStartOf="@id/fastScroller"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

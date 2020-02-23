@@ -105,6 +105,8 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
         /**init yenilemesi*/
         refresh()
+
+        //TODO: Recycler view i burada başlat.
     }
 
     fun refresh() {

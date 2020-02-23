@@ -16,7 +16,7 @@ import com.enesky.guvenlikbildir.extensions.sendFeedback
 import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
-import com.enesky.guvenlikbildir.ui.fragment.options.addContacts.AddContactsFragment
+import com.enesky.guvenlikbildir.ui.fragment.options.contacts.ContactsFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySMSFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
 import kotlinx.android.synthetic.main.fragment_options.*
@@ -42,8 +42,8 @@ class OptionsFragment: BaseFragment() {
 
         optionsVM.whereTo.observe(viewLifecycleOwner, Observer { whereTo ->
             when(whereTo) {
-                0 -> multipleStackNavigator!!.start(AddContactsFragment(), TransitionAnimationType.FADE_IN_OUT)
-                1 -> multipleStackNavigator!!.start(ModifySMSFragment(), TransitionAnimationType.FADE_IN_OUT)
+                0 -> multipleStackNavigator!!.start(ContactsFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
+                1 -> multipleStackNavigator!!.start(ModifySMSFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 2 -> requireContext().showToast(getString(R.string.item_option_2))
                 3 -> requireContext().showToast(getString(R.string.item_option_3))
                 4 -> requireContext().showToast(getString(R.string.item_option_4))

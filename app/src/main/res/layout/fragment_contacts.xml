@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.enesky.guvenlikbildir.ui.fragment.options.contacts.SharedContactsVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:context=".ui.fragment.options.contacts.ContactsFragment">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:theme="@style/ToolbarStyle"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:lineHeight="24sp"
+                android:text="Kayıtlı Kişiler"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/default_text_20"
+                android:textStyle="bold" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <TextView
+            android:id="@+id/placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kayıtlı kişi bulunamadı."
+            android:textColor="@color/black56"
+            android:textSize="@dimen/default_text_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <com.enesky.guvenlikbildir.custom.StatefulRecyclerView
+            android:id="@+id/rv_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="@dimen/default_margin_16"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_add_contact"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_16"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_add"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorAccent"
+            app:fab_size="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@android:color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
