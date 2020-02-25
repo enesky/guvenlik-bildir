@@ -13,7 +13,7 @@ var isFirstTime: Boolean
 
 var lastKnownLocation: String?
     get() = App.mPrefs.getString(Constants.lastKnownLocation, "41.01844,28.9941283")
-    set(value) = App.mPrefs.edit { putString(Constants.lastKnownLocation, value) }
+    set(value) = App.mPrefs.edit { putString(Constants.lastKnownLocation,  value) }
 
 var safeSms: String?
     get() = App.mPrefs.getString(Constants.safeSms, "Güvendeyim.")

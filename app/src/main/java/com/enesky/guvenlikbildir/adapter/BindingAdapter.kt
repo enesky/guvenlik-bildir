@@ -35,6 +35,14 @@ fun isOnlineBackground(view: View, isOnline: Boolean) {
         view.setBackground(R.color.colorSecondary)
 }
 
+@BindingAdapter("isSelected")
+fun isSelected(view: View, isSelected: Boolean) {
+    if (isSelected)
+        view.setBackground(R.color.green56)
+    else
+        view.setBackground(android.R.color.white)
+}
+
 @BindingAdapter("setAdapter")
 fun bindStatefulRecyclerViewAdapter(view: StatefulRecyclerView, adapter: RecyclerView.Adapter<*>) {
     view.setHasFixedSize(true)

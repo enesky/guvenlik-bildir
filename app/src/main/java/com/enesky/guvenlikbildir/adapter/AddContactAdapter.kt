@@ -1,9 +1,12 @@
 package com.enesky.guvenlikbildir.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ItemContactBinding
+import com.enesky.guvenlikbildir.extensions.setBackground
 import com.enesky.guvenlikbildir.model.Contact
 
 /**
@@ -12,7 +15,9 @@ import com.enesky.guvenlikbildir.model.Contact
 
 class AddContactAdapter(private var contactList: MutableList<Contact>,
                         private val addContactListener: AddContactListener)
-    : RecyclerView.Adapter<AddContactAdapter.AddContactViewHolder>(){
+    : RecyclerView.Adapter<AddContactAdapter.AddContactViewHolder>() {
+
+    var selectedPosList: HashSet<Int> = hashSetOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddContactViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,7 +27,7 @@ class AddContactAdapter(private var contactList: MutableList<Contact>,
 
     override fun getItemCount(): Int = contactList.size
 
-    override fun onBindViewHolder(holder: AddContactViewHolder, pos: Int) = holder.bind(pos, contactList[pos])
+    override fun onBindViewHolder(holder: AddContactViewHolder, pos: Int) = holder.bind(contactList[pos])
 
     fun update( items: MutableList<Contact>) {
         this.contactList = items
@@ -30,13 +35,25 @@ class AddContactAdapter(private var contactList: MutableList<Contact>,
     }
 
     inner class AddContactViewHolder(private val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(pos: Int, contact: Contact) {
+
+        fun bind(contact: Contact) {
             binding.contact = contact
-            binding.clContact.setOnClickListener {
-                addContactListener.onItemClick(pos, contact)
+            binding.root.setOnClickListener {
+                Log.d("AddContactAdapter", "onClick: $adapterPosition")
+
+                if (selectedPosList.contains(adapterPosition)) {
+                    it.setBackground(android.R.color.white)
+                    selectedPosList.remove(adapterPosition)
+                } else {
+                    it.setBackground(R.color.green56)
+                    selectedPosList.add(adapterPosition)
+                }
+
+                addContactListener.onItemClick(adapterPosition, contactList[adapterPosition])
             }
             binding.executePendingBindings()
         }
+
     }
 
     interface AddContactListener {

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
@@ -47,10 +48,11 @@ fun View.makeItGone() {
 
 fun getString(@StringRes resId: Int) = App.mInstance.getString(resId)
 
-
 fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
 
 fun View.setBackground(@ColorRes color: Int) = setBackgroundColor(context.getColorCompat(color))
+
+fun View.getBackgorund() = (background as ColorDrawable).color
 
 fun View.setBackgroundTint(@ColorRes color: Int) {
     backgroundTintList = ContextCompat.getColorStateList(context, context.getColorCompat(color))

@@ -25,6 +25,7 @@ class ContactsFragment : BaseFragment() {
     }
 
     private var contactList: List<Contact>? = null
+    private var selectedList: MutableList<Contact> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_contacts, container, false)
@@ -39,7 +40,11 @@ class ContactsFragment : BaseFragment() {
         else
             placeholder.makeItGone()
 
-        contactsVM.init(binding, contactList!!)
+        val selectedList = mutableListOf<Contact>()
+        for (contact in contactList!!)
+            selectedList.add(contact)
+
+        contactsVM.init(binding, selectedList)
 
         contactsVM.onClick.observe(viewLifecycleOwner, Observer {
 
@@ -60,8 +65,21 @@ class ContactsFragment : BaseFragment() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
 
-        if (!hidden)
-            "" //TODO: update list
+        if (!hidden) {
+            contactList = getUserInfo(App.mAuth.currentUser?.uid)?.contactList
+            if (contactList == null)
+                contactList = listOfNotNull()
+            else
+                placeholder.makeItGone()
+
+            val selectedList = mutableListOf<Contact>()
+            for (contact in contactList!!)
+                selectedList.add(contact)
+
+            if (selectedList.isNotEmpty())
+                contactsVM.contactAdapter.value?.update(selectedList)
+        }
+
 
     }
 

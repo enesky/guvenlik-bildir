@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.databinding.ItemContactBinding
-import com.enesky.guvenlikbildir.extensions.makeItGone
+import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.model.Contact
 
 /**
@@ -12,8 +12,7 @@ import com.enesky.guvenlikbildir.model.Contact
  */
 
 class ContactAdapter(private var contactList: List<Contact>,
-                     private val contactListener: ContactListener,
-                     private var isAddContactPage: Boolean = false)
+                     private val contactListener: ContactListener)
     : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
@@ -30,22 +29,10 @@ class ContactAdapter(private var contactList: List<Contact>,
 
         fun bind(pos: Int, contact: Contact) {
             binding.contact = contact
-            if (isAddContactPage)
-                binding.ivDelete.makeItGone()
-/*
-                if (isAddContactPage) {
-                binding.root.setOnClickListener {
-                    binding.clContact.setBackground(R.color.green56)
-                    mcontactListener.onItemClick(pos, contact)
-                }
-                binding.ivDelete.makeItGone()
-            } else {
-                binding.ivDelete.setOnClickListener {
-                    mcontactListener.onDeleteClick(pos, contact)
-                }
-                binding.ivDelete.makeItVisible()
-            }*/
-
+            binding.ivDelete.setOnClickListener {
+                contactListener.onDeleteClick(pos, contact)
+            }
+            binding.ivDelete.makeItVisible()
             binding.executePendingBindings()
         }
 
@@ -58,7 +45,7 @@ class ContactAdapter(private var contactList: List<Contact>,
 
     interface ContactListener {
         fun onDeleteClick(pos: Int, contact: Contact)
-        fun onItemClick(pos: Int, contact: Contact)
+        fun onItemClick(pos: Int)
     }
 
 }

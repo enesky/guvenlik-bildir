@@ -57,7 +57,7 @@ fun checkIfNumberisRegistered(phoneNumber: String) {
         }
 }
 
-fun addContactList(contactList: List<Contact>, firebaseUser: FirebaseUser) {
+fun addContactList(contactList: MutableList<Contact>, firebaseUser: FirebaseUser) {
     App.mFirestore.collection(Constants.usersCollection)
         .add(User(firebaseUser.uid, firebaseUser.phoneNumber, contactList))
         .addOnSuccessListener { documentReference ->

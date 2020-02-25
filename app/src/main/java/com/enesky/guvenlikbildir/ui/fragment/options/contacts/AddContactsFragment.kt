@@ -1,5 +1,6 @@
 package com.enesky.guvenlikbildir.ui.fragment.options.contacts
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentAddContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -30,6 +32,7 @@ class AddContactsFragment : BaseFragment() {
 
     private val scope = CoroutineScope(newSingleThreadContext("setList"))
     private var contactList: MutableList<Contact> = mutableListOf()
+    private var selectedMap: MutableMap<Int, Contact> = mutableMapOf()
 
     override fun onStart() {
         super.onStart()
@@ -42,6 +45,7 @@ class AddContactsFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_contacts, container, false)
         binding.viewModel = addContactsVM
@@ -51,11 +55,38 @@ class AddContactsFragment : BaseFragment() {
         contactList = addContactsVM.contactList.value!!
 
         addContactsVM.contactList.observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()) {
+            if ((it as MutableList<Contact>).isNotEmpty()) {
                 contactList = it
                 if (!addContactsVM.isViewsLoaded.value!!)
                     setupViews()
             }
+        })
+
+        addContactsVM.onClick.observe(viewLifecycleOwner, Observer {
+            /*if (it is Int) {
+                selectedContactList = addContactsVM.addContactAdapter.value!!.getSelectedItems()
+                if (selectedContactList.size > 0) {
+                    tv_save.makeItVisible()
+                    tv_save.text = "Ekle (${selectedContactList.size})"
+                } else {
+                    tv_save.makeItGone()
+                }
+
+            }*/
+            if (it is Pair<*,*>) {
+                if (selectedMap.contains(it.first as Int))
+                    selectedMap.remove(it.first as Int)
+                else
+                    selectedMap[it.first as Int] = it.second as Contact
+
+                if (selectedMap.isNotEmpty()) {
+                    tv_save.makeItVisible()
+                    tv_save.text = "Ekle (${selectedMap.size})"
+                } else {
+                    tv_save.makeItGone()
+                }
+            }
+
         })
 
         return binding.root
@@ -66,11 +97,14 @@ class AddContactsFragment : BaseFragment() {
         if (!contactList.isNullOrEmpty() && !addContactsVM.isViewsLoaded.value!!)
             setupViews()
 
-        rv_contacts.addOnItemClickListener(object: OnItemClickListener {
-            override fun onItemClicked(position: Int, view: View) {
-               view.setBackground(R.color.green56)
-            }
-        })
+        rv_contacts.addSelectedItemWatcher(selectedMap)
+
+        tv_save.setOnClickListener {
+            addContactsVM.selectedContactList.value = selectedMap.values.toMutableList()
+            addContactList(selectedMap.values.toMutableList(), App.mAuth.currentUser!!)
+            requireActivity().onBackPressed()
+        }
+
     }
 
     private fun setupViews() {
@@ -106,6 +140,7 @@ class AddContactsFragment : BaseFragment() {
             val isMobile = itype == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE ||
                     itype == ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
 
+            //TODO: seçili olan kişileri listede gösterme
             if (name.isNotEmpty() && phoneNumber.isNotEmpty())
                 if (isMobile && !contactList.contains(Contact(name, phoneNumber)))
                     contactList.add(Contact(name, phoneNumber))
