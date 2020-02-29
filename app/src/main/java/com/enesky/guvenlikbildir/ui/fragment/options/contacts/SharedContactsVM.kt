@@ -27,11 +27,12 @@ class SharedContactsVM : BaseViewModel(), ContactAdapter.ContactListener,
     }
 
     val isViewsLoaded = MutableLiveData<Boolean>()
-
     val onClick = LiveEvent<Any>()
+    val isSelectedListChanged = LiveEvent<Any>()
 
-    fun init(binding: FragmentContactsBinding, contactList: List<Contact>) {
+    fun init(binding: FragmentContactsBinding, contactList: MutableList<Contact>) {
         setViewDataBinding(binding)
+        selectedContactList.value = contactList
         _contactAdapter.value = ContactAdapter(contactList,this)
     }
 
@@ -42,7 +43,7 @@ class SharedContactsVM : BaseViewModel(), ContactAdapter.ContactListener,
     }
 
     override fun onDeleteClick(pos: Int, contact: Contact) {
-        onClick.value = hashMapOf(pos to contact)
+        onClick.value = contact
     }
 
     override fun onItemClick(pos: Int) {

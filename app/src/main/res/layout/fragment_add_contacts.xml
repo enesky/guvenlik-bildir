@@ -31,7 +31,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:lineHeight="24sp"
-                    android:text="Kişi Ekle"
+                    android:text="@string/label_add_contact"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/default_text_20"
                     android:textStyle="bold" />
@@ -40,7 +40,7 @@
                     android:id="@+id/tv_save"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Ekle (1)"
+                    android:text="@string/label_add_new_contact"
                     android:textSize="@dimen/default_text_16"
                     android:textColor="@android:color/white"
                     android:visibility="gone"
@@ -58,10 +58,24 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/colorPrimary"
             android:indeterminateTintMode="src_atop"
+            beGoneIfListNotEmpty="@{viewModel.contactList}"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_no_contact_in_device"
+            android:textColor="@color/black56"
+            android:textSize="@dimen/default_text_16"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_contacts"
@@ -78,7 +92,6 @@
             android:layout_height="wrap_content"
             style="@style/Widget.IndicatorFastScroll.FastScroller.Floating"
             android:layout_marginEnd="@dimen/default_margin_4"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent" />

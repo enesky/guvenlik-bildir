@@ -4,20 +4,16 @@ import android.app.Activity
 import android.util.Log
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.model.Contact
+import com.enesky.guvenlikbildir.model.User
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
-import java.lang.reflect.Type
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
 
 /**
  * Created by Enes Kamil YILMAZ on 31.01.2020
  */
-
-data class User(
-    val uid: String? = null,
-    val phoneNumber: String? = null,
-    val contactList: List<Contact>? = null
-)
 
 fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
     App.mAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
@@ -35,9 +31,10 @@ fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
 
 fun addUserInfo2Database(firebaseUser: FirebaseUser){
     App.mFirestore.collection(Constants.usersCollection)
-        .add(User(firebaseUser.uid, firebaseUser.phoneNumber))
+        .document(firebaseUser.uid)
+        .set(User(firebaseUser.uid, firebaseUser.phoneNumber!!))
         .addOnSuccessListener { documentReference ->
-            Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+            Log.d("Firestore", "DocumentSnapshot added with document named: ${firebaseUser.uid}")
         }
         .addOnFailureListener { e ->
             Log.w("Firestore", "Error adding document", e)
@@ -46,7 +43,8 @@ fun addUserInfo2Database(firebaseUser: FirebaseUser){
 
 fun checkIfNumberisRegistered(phoneNumber: String) {
     App.mFirestore.collection(Constants.usersCollection)
-        .whereEqualTo(Constants.usersCollectionPhoneNumber, phoneNumber).get()
+        .whereEqualTo(Constants.usersCollectionPhoneNumber, phoneNumber)
+        .get()
         .addOnSuccessListener { documents ->
             for (document in documents) {
                 Log.d("Firestore", "${document.id} => ${document.data}")
@@ -57,28 +55,42 @@ fun checkIfNumberisRegistered(phoneNumber: String) {
         }
 }
 
-fun addContactList(contactList: MutableList<Contact>, firebaseUser: FirebaseUser) {
+fun add2ContactList(contactList: MutableList<Contact>) : Boolean {
+    var added = false
+    val firebaseUser = App.mAuth.currentUser!!
     App.mFirestore.collection(Constants.usersCollection)
-        .add(User(firebaseUser.uid, firebaseUser.phoneNumber, contactList))
-        .addOnSuccessListener { documentReference ->
-            Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+        .document(firebaseUser.uid)
+        .set(User(firebaseUser.uid, firebaseUser.phoneNumber, contactList), SetOptions.merge())
+        .addOnSuccessListener {
+            Log.d("Firestore", "Contact list refreshed: ${firebaseUser.uid}")
+            added = true
+        }
+        .addOnFailureListener {
+            Log.w("Firestore", "Contact list couldn't refreshed", it)
+        }
+    return added
+}
+
+fun removeFromContactList(contact: Contact, function: () -> Unit) {
+    App.mFirestore.collection(Constants.usersCollection)
+        .document(App.mAuth.currentUser!!.uid)
+        .update(Constants.usersContactList, FieldValue.arrayRemove(contact))
+        .addOnSuccessListener {
+            function()
+            Log.d("Firestore", "$contact removed from contact list.")
         }
         .addOnFailureListener { e ->
-            Log.w("Firestore", "Error adding document", e)
+            Log.w("Firestore", "Contact list couldn't refreshed", e)
         }
 }
 
 fun getUserInfo(uid: String?): User? {
     var user: User? = null
-
     App.mFirestore.collection(Constants.usersCollection)
-        .whereEqualTo(Constants.usersCollectionUid, uid)
+        .document(App.mAuth.currentUser!!.uid)
         .get()
         .addOnSuccessListener {
-            if (!it.isEmpty) {
-                val userList: List<User> = it.toObjects(User::class.java)
-                user = userList[0]
-            }
+            user = it.toObject(User::class.java)
             Log.d("Firestore", "getUserInfo-Success: $it")
         }
         .addOnFailureListener {
@@ -86,4 +98,19 @@ fun getUserInfo(uid: String?): User? {
         }
 
     return user
+}
+
+fun getUsersContactList(function: (any: Any) -> Unit) {
+    App.mFirestore.collection(Constants.usersCollection)
+        .document(App.mAuth.currentUser!!.uid)
+        .get()
+        .addOnSuccessListener {
+            val user = it.toObject(User::class.java)
+            function(user!!.contactList)
+            Log.d("Firestore", "getUsersContactList-Success: $it")
+        }
+        .addOnFailureListener {
+            function(it.message!!)
+            Log.d("Firestore", "getUsersContactList-Failure: ${it.message}")
+        }
 }

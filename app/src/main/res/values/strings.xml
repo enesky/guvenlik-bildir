@@ -49,5 +49,10 @@
     <string name="label_save">Kaydet</string>
     <string name="title_unsafe_sms">Güvende değilsen gönderilecek SMS :</string>
     <string name="title_safe_sms">Güvendeysen gönderilecek SMS :</string>
+    <string name="label_no_contact_found">Kayıtlı kişi bulunamadı.</string>
+    <string name="label_saved_contacts">Kayıtlı Kişiler</string>
+    <string name="label_add_contact">Kişi Ekle</string>
+    <string name="label_add_new_contact">Ekle (1)</string>
+    <string name="label_no_contact_in_device">Rehberinizde kayıtlı kişi bulunamadı.</string>
 
 </resources>

@@ -26,7 +26,6 @@ class ContactAdapter(private var contactList: List<Contact>,
     override fun onBindViewHolder(holder: ContactViewHolder, pos: Int) = holder.bind(pos, contactList[pos])
 
     inner class ContactViewHolder(private val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(pos: Int, contact: Contact) {
             binding.contact = contact
             binding.ivDelete.setOnClickListener {
@@ -35,7 +34,6 @@ class ContactAdapter(private var contactList: List<Contact>,
             binding.ivDelete.makeItVisible()
             binding.executePendingBindings()
         }
-
     }
 
     fun update( items: MutableList<Contact>) {

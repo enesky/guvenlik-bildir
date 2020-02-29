@@ -23,7 +23,7 @@ object Constants {
     const val usersCollection = "users"
     const val usersCollectionUid = "uid"
     const val usersCollectionPhoneNumber = "phoneNumber"
-    const val usersContactList = "contactLists"
+    const val usersContactList = "contactList"
 
     //SharedPref
     const val appName = "GuvenlikBildir"

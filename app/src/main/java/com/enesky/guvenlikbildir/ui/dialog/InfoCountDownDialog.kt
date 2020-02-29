@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.model.Contact
 import kotlinx.android.synthetic.main.dialog_info_count_down.*
 
 /**
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.dialog_info_count_down.*
 class InfoCountDownDialog : DialogFragment() {
 
     private lateinit var timer: CountDownTimer
-    private var phoneNumber: String = Constants.polis
+    private var type: String = Constants.polis
 
     private lateinit var sentBroadcastReceiver: BroadcastReceiver
     private lateinit var deliveredBroadcastReceiver: BroadcastReceiver
@@ -49,31 +50,31 @@ class InfoCountDownDialog : DialogFragment() {
 
         when {
             tag.equals(Constants.polis) -> {
-                phoneNumber = Constants.polis
+                type = Constants.polis
                 tv_dialog_title.text = getString(R.string.label_calling_155)
             }
             tag.equals(Constants.acilYardım) -> {
-                phoneNumber = Constants.acilYardım
+                type = Constants.acilYardım
                 tv_dialog_title.text = getString(R.string.label_calling_112)
             }
             tag.equals(Constants.itfaiye) -> {
-                phoneNumber = Constants.itfaiye
+                type = Constants.itfaiye
                 tv_dialog_title.text = getString(R.string.label_calling_110)
             }
             tag!!.contains(Constants.map) -> {
-                phoneNumber = Constants.map
+                type = Constants.map
                 tv_dialog_title.text = getString(R.string.label_google_maps)
             }
             tag.equals(Constants.safeSms) -> {
-                phoneNumber = Constants.safeSms
+                type = Constants.safeSms
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
             }
             tag.equals(Constants.unsafeSms) -> {
-                phoneNumber = Constants.unsafeSms
+                type = Constants.unsafeSms
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
             }
             tag!!.contains(Constants.locationMapLink) -> {
-                phoneNumber = Constants.locationMapLink
+                type = Constants.locationMapLink
                 tv_dialog_title.text = getString(R.string.label_google_maps)
             }
         }
@@ -123,7 +124,7 @@ class InfoCountDownDialog : DialogFragment() {
             activity!!.unregisterReceiver(deliveredBroadcastReceiver)
         }
         timer.cancel()
-        Log.d("InfoCountDownDialog", "onDismiss(): $phoneNumber")
+        Log.d("InfoCountDownDialog", "onDismiss(): $type")
     }
 
     private fun startCountDown() {
@@ -133,10 +134,10 @@ class InfoCountDownDialog : DialogFragment() {
             }
 
             override fun onFinish() {
-                when (phoneNumber) {
+                when (type) {
                     Constants.polis, Constants.acilYardım, Constants.itfaiye -> {
                         requireContext().requireCallPhonePermission {
-                            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+                            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$type"))
                             startActivity(intent)
                         }
                     }
@@ -147,11 +148,8 @@ class InfoCountDownDialog : DialogFragment() {
                     Constants.locationMapLink -> {
                         openLastKnownLocation()
                     }
-                    Constants.safeSms -> {
-                        sendSMS(Constants.safeSms)
-                    }
-                    Constants.unsafeSms -> {
-                        sendSMS(Constants.unsafeSms)
+                    Constants.safeSms, Constants.unsafeSms -> {
+                        sendSMS()
                     }
                 }
                 dismiss()
@@ -159,26 +157,33 @@ class InfoCountDownDialog : DialogFragment() {
         }.start()
     }
 
-    private fun sendSMS(smsType: String) {
+    private fun sendSMS() {
         requireContext().requireSendSmsPermission {
-            val text = if (smsType == Constants.safeSms)
-                                    safeSms
-                                else
-                                    unsafeSms
+            getUsersContactList { sendIt(it) }
+        }
+    }
 
-            text.plus("\n" + locationMapLink)
-
-            try {
-                val smsManager = SmsManager.getDefault()
-                for (number: String in listOf(//TODO: Listeyi firestoredan al.
-                    "+905383115141",
-                    "+905334233556"
-                ))
-                    smsManager.sendTextMessage(number, null, text, sentPI, deliveredPI)
-            } catch (e: Exception) {
-                Log.d("SMSManager Exception", e.message!!)
-                requireContext().showToast("SMS Failed to send, please try again!")
+    private fun sendIt(list: Any) {
+        if (list is MutableList<*>) {
+            if ((list as MutableList<Contact>).isNullOrEmpty()) {
+                requireContext().showToast("Sms gönderilecek kayıt bulunamadı.")
+            } else {
+                val text = if (type == Constants.safeSms) safeSms
+                                    else unsafeSms
+                text.plus("\n" + locationMapLink)
+                try {
+                    val smsManager = SmsManager.getDefault()
+                    for (contact: Contact in list) {
+                        smsManager.sendTextMessage(contact.number, null, text, sentPI, deliveredPI)
+                        Log.d("Sms Sent to: ", contact.number)
+                    }
+                } catch (e: Exception) {
+                    Log.d("SMSManager Exception", e.message!!)
+                    requireContext().showToast("SMS Failed to send, please try again!")
+                }
             }
+        } else {
+            requireContext().showToast(list.toString())
         }
     }
 

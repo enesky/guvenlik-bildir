@@ -30,8 +30,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
-        binding =
-            DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
+        binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
                 .apply {
                     viewModel = loginVM
                     lifecycleOwner = this@LoginActivity

@@ -52,8 +52,8 @@ class OptionsFragment: BaseFragment() {
                 7 -> openBrowser(R.string.link_github)
                 8 -> {
                     App.mAuth.signOut()
-                    startActivity(Intent(activity, LoginActivity::class.java))
-                    activity!!.finishAffinity()
+                    startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    requireActivity().finishAffinity()
                 }
             }
         })

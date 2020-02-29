@@ -84,6 +84,14 @@ fun beGoneIfListEmpty(view: View, list: List<Any>) {
         view.makeItVisible()
 }
 
+@BindingAdapter("beGoneIfListNotEmpty")
+fun beGoneIfListNotEmpty(view: View, list: List<Any>) {
+    if (list.isNullOrEmpty())
+        view.makeItVisible()
+    else
+        view.makeItGone()
+}
+
 @SuppressLint("SimpleDateFormat")
 @BindingAdapter("shortenedDateText")
 fun bindShortenedDate(view: TextView, formattedDate: String) {
