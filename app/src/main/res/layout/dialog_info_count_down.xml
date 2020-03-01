@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:background="@drawable/bg_radius">
 
     <TextView
@@ -29,7 +30,7 @@
         android:visibility="visible"
         android:layout_margin="@dimen/default_margin_8"
         app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
-        app:layout_constraintBottom_toTopOf="@id/bottom_line"
+        app:layout_constraintBottom_toTopOf="@id/tv_sent_success_count"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -41,7 +42,38 @@
         android:textSize="@dimen/default_text_16"
         android:textColor="@color/colorPrimary"
         android:lineHeight="@dimen/default_text_24"
-        app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/pb_loading"
+        app:layout_constraintBottom_toBottomOf="@id/pb_loading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_sent_success_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Başarılı : 0/0"
+        android:textSize="@dimen/default_text_18"
+        android:textColor="@color/colorPrimary"
+        android:lineHeight="@dimen/default_text_24"
+        android:layout_margin="@dimen/default_margin_8"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/pb_loading"
+        app:layout_constraintBottom_toTopOf="@id/tv_sent_fail_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_sent_fail_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Başarısız : 0/0"
+        android:textSize="@dimen/default_text_18"
+        android:textColor="@color/colorPrimary"
+        android:lineHeight="@dimen/default_text_24"
+        android:layout_margin="@dimen/default_margin_8"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tv_sent_success_count"
         app:layout_constraintBottom_toTopOf="@id/bottom_line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -51,11 +83,12 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorPrimary"
-        android:layout_marginTop="@dimen/default_margin_8"
-        app:layout_constraintTop_toBottomOf="@id/pb_loading" />
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/tv_sent_fail_count"
+        app:layout_constraintBottom_toTopOf="@id/tv_dismiss"/>
 
     <TextView
-        android:id="@+id/tv_okey"
+        android:id="@+id/tv_dismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/default_margin_16"
@@ -68,6 +101,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/default_text_16"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/bottom_line"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

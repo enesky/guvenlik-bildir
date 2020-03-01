@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentNotifyBinding
-import com.enesky.guvenlikbildir.extensions.Constants
-import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_notify.*
 
@@ -41,13 +40,24 @@ class NotifyFragment : BaseFragment() {
         }
 
         iv_safe.setOnClickListener {
-            openInfoCountDownDialog(Constants.safeSms)
+            doThingsIfListFilledOrNot (
+                { openInfoCountDownDialog(Constants.safeSms) },
+                { showInfo() }
+            )
         }
 
         iv_unsafe.setOnClickListener {
-            openInfoCountDownDialog(Constants.unsafeSms)
+            doThingsIfListFilledOrNot (
+                { openInfoCountDownDialog(Constants.unsafeSms) },
+                { showInfo() }
+            )
         }
 
+    }
+
+    private fun showInfo() {
+        requireContext().showToast("Kayıtlı kullanıcı bulunamadı.\n" +
+                "Lütfen Seçenekler sekmesinden kullanıcı seçimi yapınız.")
     }
 
 }

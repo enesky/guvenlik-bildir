@@ -114,3 +114,20 @@ fun getUsersContactList(function: (any: Any) -> Unit) {
             Log.d("Firestore", "getUsersContactList-Failure: ${it.message}")
         }
 }
+
+fun doThingsIfListFilledOrNot(successFunction: () -> Unit,
+                              failFunction: () -> Unit) {
+    App.mFirestore.collection(Constants.usersCollection)
+        .document(App.mAuth.currentUser!!.uid)
+        .get()
+        .addOnSuccessListener {
+            if (it.toObject(User::class.java)?.contactList.isNullOrEmpty())
+                failFunction()
+            else
+                successFunction()
+            Log.d("Firestore", "doThingsIfListFilledOrNot-Success: $it")
+        }
+        .addOnFailureListener {
+            Log.d("Firestore", "doThingsIfListFilledOrNot-Failure: ${it.message}")
+        }
+}

@@ -32,6 +32,9 @@ class InfoCountDownDialog : DialogFragment() {
     private lateinit var deliveredPI: PendingIntent
     val SENT = "SMS_SENT"
     val DELIVERED = "SMS_DELIVERED"
+    var contactSize = 0
+    var sentCountSuccess = 0
+    var sentCountFailed = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, p0: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_info_count_down, container, false)
@@ -79,36 +82,47 @@ class InfoCountDownDialog : DialogFragment() {
             }
         }
 
-        tv_okey.setOnClickListener {
+        tv_dismiss.setOnClickListener {
             dismiss()
         }
 
         startCountDown()
 
-        //TODO: Sonuçları değiştir.
         if (tag!!.contains("Sms")) {
             sentPI = PendingIntent.getBroadcast(requireContext(), 0, Intent(SENT), 0)
             deliveredPI = PendingIntent.getBroadcast(requireContext(), 0, Intent(DELIVERED), 0)
-            // --When the sms has been sent
             sentBroadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     when (resultCode) {
-                        Activity.RESULT_OK -> requireContext().showToast("SMS sent success!")
-                        SmsManager.RESULT_ERROR_NO_SERVICE -> requireContext().showToast("No active network to send SMS.")
-                        SmsManager.RESULT_ERROR_RADIO_OFF -> requireContext().showToast("SMS not sent!")
-                        SmsManager.RESULT_ERROR_GENERIC_FAILURE -> requireContext().showToast("SMS not sent!")
-                        SmsManager.RESULT_ERROR_NULL_PDU -> requireContext().showToast("SMS not sent!")
+                        Activity.RESULT_OK -> {
+                            Log.d("InfoCountDownDialog","SMS sent success!")
+                            sentCountSuccess++
+                            tv_sent_success_count.text = "Başarılı : $sentCountSuccess/$contactSize"
+                        }
+                        else -> {
+                            Log.d("InfoCountDownDialog","SMS sent failed!")
+                            sentCountFailed++
+                            tv_sent_fail_count.makeItVisible()
+                            tv_sent_fail_count.text = "Başarısız : $sentCountFailed/$contactSize"
+                        }
+                    }
+                    if ((sentCountSuccess + sentCountFailed) == contactSize) {
+                        timer = object : CountDownTimer(2000, 1000) {
+                            override fun onTick(millisUntilFinished: Long) {}
+                            override fun onFinish() {
+                                dismiss()
+                            }
+                        }.start()
                     }
                 }
             }
             activity!!.registerReceiver(sentBroadcastReceiver, IntentFilter(SENT))
 
-            // --When SMS has been delivered
             deliveredBroadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     when (resultCode) {
-                        Activity.RESULT_OK -> requireContext().showToast("SMS delivered.")
-                        Activity.RESULT_CANCELED -> requireContext().showToast("SMS not delivered.")
+                        Activity.RESULT_OK -> Log.d("InfoCountDownDialog","SMS delivered.")
+                        Activity.RESULT_CANCELED -> Log.d("InfoCountDownDialog","SMS not delivered.")
                     }
                 }
             }
@@ -132,7 +146,6 @@ class InfoCountDownDialog : DialogFragment() {
             override fun onTick(millisUntilFinished: Long) {
                 tv_countdown.text = (millisUntilFinished / 1000).toString()
             }
-
             override fun onFinish() {
                 when (type) {
                     Constants.polis, Constants.acilYardım, Constants.itfaiye -> {
@@ -140,19 +153,23 @@ class InfoCountDownDialog : DialogFragment() {
                             val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$type"))
                             startActivity(intent)
                         }
+                        dismiss()
                     }
                     Constants.map -> {
                         val splitTag = tag!!.split(delimiters = *arrayOf("map"))
                         openGoogleMaps(splitTag[1], splitTag[2])
+                        dismiss()
                     }
                     Constants.locationMapLink -> {
                         openLastKnownLocation()
+                        dismiss()
                     }
                     Constants.safeSms, Constants.unsafeSms -> {
                         sendSMS()
+                        tv_countdown.makeItGone()
                     }
                 }
-                dismiss()
+
             }
         }.start()
     }
@@ -170,11 +187,15 @@ class InfoCountDownDialog : DialogFragment() {
             } else {
                 val text = if (type == Constants.safeSms) safeSms
                                     else unsafeSms
-                text.plus("\n" + locationMapLink)
                 try {
                     val smsManager = SmsManager.getDefault()
+                    contactSize = list.size
+                    tv_sent_success_count.text = "Başarılı: $sentCountSuccess/$contactSize"
+                    tv_sent_success_count.makeItVisible()
+                    tv_sent_fail_count.text = "Başarısız: $sentCountFailed/$contactSize"
+                    tv_sent_success_count.makeItVisible()
                     for (contact: Contact in list) {
-                        smsManager.sendTextMessage(contact.number, null, text, sentPI, deliveredPI)
+                        smsManager.sendTextMessage("905383115141", null, text + locationMapWithLink, sentPI, deliveredPI)
                         Log.d("Sms Sent to: ", contact.number)
                     }
                 } catch (e: Exception) {

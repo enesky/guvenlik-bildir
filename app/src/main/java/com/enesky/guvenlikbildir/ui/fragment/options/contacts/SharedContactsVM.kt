@@ -15,7 +15,6 @@ class SharedContactsVM : BaseViewModel(), ContactAdapter.ContactListener,
 
     private val _contactAdapter = MutableLiveData<ContactAdapter>()
     val contactAdapter : LiveData<ContactAdapter> = _contactAdapter
-
     private val _addContactAdapter = MutableLiveData<AddContactAdapter>()
     val addContactAdapter: LiveData<AddContactAdapter> = _addContactAdapter
 
@@ -27,6 +26,9 @@ class SharedContactsVM : BaseViewModel(), ContactAdapter.ContactListener,
     }
 
     val isViewsLoaded = MutableLiveData<Boolean>()
+    val isOnline = MutableLiveData<Boolean>().apply {
+        value = true
+    }
     val onClick = LiveEvent<Any>()
     val isSelectedListChanged = LiveEvent<Any>()
 

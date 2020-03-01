@@ -58,7 +58,7 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
 
         ConnectionLiveData(this).observe(this, Observer { isOnline ->
             if (!isOnline)
-                showToast("Internet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
+                showToast("İnternet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
         })
 
         bottom_nav.setOnNavigationItemReselectedListener(this)

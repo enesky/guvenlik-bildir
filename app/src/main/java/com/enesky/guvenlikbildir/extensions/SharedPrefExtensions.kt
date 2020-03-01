@@ -23,7 +23,7 @@ var unsafeSms: String?
     get() = App.mPrefs.getString(Constants.unsafeSms, "Güvende hissetmiyorum.\n" + "Lütfen yardımcı olun.")
     set(value) = App.mPrefs.edit { putString(Constants.unsafeSms, value) }
 
-var locationMapLink: String?
-    get() = App.mPrefs.getString(Constants.locationMapLink, "Bulunduğum Konum: \n" +
+var locationMapWithLink: String?
+    get() = App.mPrefs.getString(Constants.locationMapLink, "\nBulunduğum Konum: \n" +
                     "https://www.google.com/maps/place/$lastKnownLocation")
     set(value) = App.mPrefs.edit { putString(Constants.locationMapLink, value) }

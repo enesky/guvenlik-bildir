@@ -35,11 +35,23 @@ class ContactsFragment : BaseFragment() {
 
         contactsVM.isSelectedListChanged.observe(viewLifecycleOwner, Observer {
             contactsVM.contactAdapter.value!!.update(contactsVM.selectedContactList.value!!)
+            if (contactsVM.selectedContactList.value.isNullOrEmpty())
+                placeholder.makeItVisible()
+            else
+                placeholder.makeItGone()
         })
 
-        contactsVM.onClick.observe(viewLifecycleOwner, Observer {
-            if (it is Contact)
-                removeFromContactList(it) { deleteAndRefresh(it) }
+        contactsVM.onClick.observe(viewLifecycleOwner, Observer { any ->
+            if (any is Contact) {
+                pb_loading.makeItVisible()
+                removeFromContactList(any) { deleteAndRefresh(any) }
+                if (!contactsVM.isOnline.value!!)
+                    getUsersContactList { prepareViews(it) }
+            }
+        })
+
+        ConnectionLiveData(requireContext()).observe(viewLifecycleOwner, Observer { it ->
+                contactsVM.isOnline.value = it
         })
 
         return binding.root
@@ -64,10 +76,16 @@ class ContactsFragment : BaseFragment() {
     }
 
     private fun prepareViews(any: Any) {
+        pb_loading.makeItVisible()
         if (any is MutableList<*>) {
             if ((any as MutableList<Contact>).isNullOrEmpty()) {
+                selectedList.clear()
+                contactsVM.selectedContactList.value = selectedList
+                contactsVM.contactAdapter.value!!.update(selectedList)
+                rv_contacts.scheduleLayoutAnimation()
                 placeholder.makeItVisible()
             } else {
+                selectedList.clear()
                 selectedList.addAll(any)
                 contactsVM.selectedContactList.value = selectedList
                 contactsVM.contactAdapter.value!!.update(selectedList)
@@ -85,7 +103,18 @@ class ContactsFragment : BaseFragment() {
         selectedCList?.remove(contact)
         contactsVM.selectedContactList.value = selectedCList
         contactsVM.contactAdapter.value!!.update(selectedList)
-        rv_contacts.scheduleLayoutAnimation()
+
+        if (!contactsVM.contactList.value!!.contains(contact))
+            contactsVM.contactList.value!!.add(contact)
+
+        if(rv_contacts != null && pb_loading != null) {
+            rv_contacts.scheduleLayoutAnimation()
+            pb_loading.makeItGone()
+            if (contactsVM.selectedContactList.value.isNullOrEmpty())
+                placeholder.makeItVisible()
+            else
+                placeholder.makeItGone()
+        }
     }
 
 }

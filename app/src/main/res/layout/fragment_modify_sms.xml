@@ -40,8 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
-            android:layout_marginBottom="@dimen/default_margin_32">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/ll_unsafe">
 
             <TextView
                 android:id="@+id/tv_title_safe_sms"
@@ -101,20 +101,14 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
-
         <LinearLayout
             android:id="@+id/ll_unsafe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="@dimen/default_margin_32"
-            app:layout_constraintTop_toBottomOf="@+id/guideline">
+            app:layout_constraintTop_toBottomOf="@id/ll_safe"
+            app:layout_constraintBottom_toTopOf="@id/btn_save">
 
             <TextView
                 android:id="@+id/tv_title_unsafe_sms"
@@ -176,12 +170,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin_24"
+            android:layout_margin="@dimen/default_margin_32"
             android:text="@string/label_save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

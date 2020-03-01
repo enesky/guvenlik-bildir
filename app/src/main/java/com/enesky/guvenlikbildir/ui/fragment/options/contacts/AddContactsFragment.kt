@@ -56,6 +56,10 @@ class AddContactsFragment : BaseFragment() {
         addContactsVM.init(binding)
 
         contactList = addContactsVM.contactList.value!!
+        val turkishLocale = Locale("tr", "TR")
+        contactList.sortWith(Comparator { o1, o2 ->
+            Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
+        })
 
         addContactsVM.contactList.observe(viewLifecycleOwner, Observer {
             if ((it as MutableList<Contact>).isNotEmpty()) {
@@ -111,6 +115,7 @@ class AddContactsFragment : BaseFragment() {
             )
             fastScrollerThumb.setupWithFastScroller(fastScroller)
             addContactsVM.isViewsLoaded.value = true
+            pb_loading.makeItGone()
         }
     }
 

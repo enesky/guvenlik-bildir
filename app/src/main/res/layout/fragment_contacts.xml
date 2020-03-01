@@ -36,16 +36,13 @@
 
         <TextView
             android:id="@+id/placeholder"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_no_contact_found"
             android:textColor="@color/black56"
             android:textSize="@dimen/default_text_16"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/pb_loading"/>
 
         <ProgressBar
             android:id="@+id/pb_loading"
@@ -54,7 +51,6 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/colorPrimary"
             android:indeterminateTintMode="src_atop"
-            beGoneIfListNotEmpty="@{viewModel.selectedContactList}"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

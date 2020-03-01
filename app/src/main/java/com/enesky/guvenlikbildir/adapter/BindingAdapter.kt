@@ -76,16 +76,16 @@ fun bindIsVisible(view: View, isVisible: Boolean) {
         view.makeItGone()
 }
 
-@BindingAdapter("beGoneIfListEmpty")
-fun beGoneIfListEmpty(view: View, list: List<Any>) {
+@BindingAdapter("hideWhenListEmpty")
+fun hideWhenListEmpty(view: View, list: List<Any>) {
     if (list.isNullOrEmpty())
         view.makeItGone()
     else
         view.makeItVisible()
 }
 
-@BindingAdapter("beGoneIfListNotEmpty")
-fun beGoneIfListNotEmpty(view: View, list: List<Any>) {
+@BindingAdapter("showWhenListEmpty")
+fun showWhenListEmpty(view: View, list: List<Any>) {
     if (list.isNullOrEmpty())
         view.makeItVisible()
     else

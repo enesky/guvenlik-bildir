@@ -3,7 +3,7 @@ package com.enesky.guvenlikbildir.ui.fragment.options.modifySms
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
-import com.enesky.guvenlikbildir.extensions.locationMapLink
+import com.enesky.guvenlikbildir.extensions.locationMapWithLink
 import com.enesky.guvenlikbildir.extensions.safeSms
 import com.enesky.guvenlikbildir.extensions.unsafeSms
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
@@ -22,7 +22,7 @@ class ModifySmsVM : BaseViewModel() {
     init {
         _unsafeSms.value = unsafeSms
         _safeSms.value = safeSms
-        _lastLocation.value = locationMapLink
+        _lastLocation.value = locationMapWithLink
     }
 
     fun init(binding: FragmentModifySmsBinding) {
