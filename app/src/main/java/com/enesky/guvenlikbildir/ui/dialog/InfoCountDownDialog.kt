@@ -195,7 +195,7 @@ class InfoCountDownDialog : DialogFragment() {
                     tv_sent_fail_count.text = "Başarısız: $sentCountFailed/$contactSize"
                     tv_sent_success_count.makeItVisible()
                     for (contact: Contact in list) {
-                        smsManager.sendTextMessage("905383115141", null, text + locationMapWithLink, sentPI, deliveredPI)
+                        smsManager.sendTextMessage(contact.number, null, text + locationMapWithLink, sentPI, deliveredPI)
                         Log.d("Sms Sent to: ", contact.number)
                     }
                 } catch (e: Exception) {
