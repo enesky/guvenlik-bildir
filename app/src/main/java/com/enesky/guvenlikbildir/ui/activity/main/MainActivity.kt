@@ -11,6 +11,7 @@ import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -19,6 +20,7 @@ import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakes
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseUser
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
 import com.trendyol.medusalib.navigator.NavigatorConfiguration
@@ -49,8 +51,16 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         NavigatorConfiguration(1,false, defaultNavigatorTransaction = NavigatorTransaction.SHOW_HIDE)
     )
 
+    override fun onStart() {
+        super.onStart()
+        val currentUser: FirebaseUser? = App.mAuth.currentUser
+        if (currentUser == null)
+            this.openLoginActivity()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.AppTheme)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navigator.initialize(savedInstanceState)
         binding.viewModel = mainVM

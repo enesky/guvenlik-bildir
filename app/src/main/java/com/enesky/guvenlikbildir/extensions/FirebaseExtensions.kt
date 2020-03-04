@@ -24,7 +24,7 @@ fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         } else {
             Log.w("Login", "signInWithCredential:failure", task.exception)
             if (task.exception is FirebaseAuthInvalidCredentialsException)
-                showToast("Hatalı kod")
+                showToast("Hatalı kod. Tekrar deneyiniz.")
         }
     }
 }

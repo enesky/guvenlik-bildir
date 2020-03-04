@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
@@ -115,6 +116,11 @@ fun Activity.hideKeyboard() {
 
 fun Activity.openMainActivity() {
     startActivity(Intent(this, MainActivity::class.java))
+    finishAffinity()
+}
+
+fun Activity.openLoginActivity() {
+    startActivity(Intent(this, LoginActivity::class.java))
     finishAffinity()
 }
 
