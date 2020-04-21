@@ -57,6 +57,8 @@ class AddContactAdapter(private var contactList: MutableList<Contact>,
 
     }
 
+    override fun getItemId(position: Int): Long = position.toLong()
+
     interface AddContactListener {
         fun onItemClick(pos: Int, contact: Contact)
     }

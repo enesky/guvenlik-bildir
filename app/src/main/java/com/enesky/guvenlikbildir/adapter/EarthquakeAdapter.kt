@@ -1,10 +1,8 @@
 package com.enesky.guvenlikbildir.adapter
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Filter
@@ -15,12 +13,14 @@ import androidx.core.animation.doOnStart
 import androidx.core.view.doOnLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
-import androidx.core.view.setPadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ItemEarthquakeBinding
-import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.extensions.dp
+import com.enesky.guvenlikbildir.extensions.getValueAnimator
+import com.enesky.guvenlikbildir.extensions.makeItGone
+import com.enesky.guvenlikbildir.extensions.screenWidth
 import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,7 +28,6 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.delay
 
 /**
  * Created by Enes Kamil YILMAZ on 02.02.2020
@@ -43,12 +42,12 @@ class EarthquakeAdapter(
     private lateinit var recyclerView: RecyclerView
     private var expandedItemPos: Int? = null
 
-    private val listItemPadding: Float = context.resources.getDimension(R.dimen.default_margin_16)
     private val originalWidth = context.screenWidth - 32.dp
     private val expandedWidth = context.screenWidth - 8.dp
     private var originalHeight = -1 // will be calculated dynamically
     private var expandedHeight = -1 // will be calculated dynamically
-    private val listItemExpandDuration: Long get() = (300L / 0.8).toLong()
+    private val listItemExpandDuration = (300L / 0.85).toLong()
+    private val listItemPadding = context.resources.getDimension(R.dimen.default_margin_16)
     private var isScaledDown = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EarthquakeViewHolder {
@@ -67,7 +66,6 @@ class EarthquakeAdapter(
     override fun onBindViewHolder(holder: EarthquakeViewHolder, pos: Int) = holder.bind(earthquakeList[pos], pos)
 
     inner class EarthquakeViewHolder(private val binding: ItemEarthquakeBinding) : RecyclerView.ViewHolder(binding.root), OnMapReadyCallback {
-
         var map: GoogleMap? = null
         var mEarthquakeOA: EarthquakeOA? = null
         val cvMap = binding.cvMap
@@ -77,15 +75,11 @@ class EarthquakeAdapter(
         val scaleContainer = binding.scaleContainer
 
         fun bind(earthquakeOA: EarthquakeOA, position: Int) {
-            mEarthquakeOA = earthquakeOA
-            binding.earthquake = mEarthquakeOA
-
             toggleItem(this, position == expandedItemPos, animate = false)
             scaleDownItem(this, position, isScaledDown)
 
             binding.cvEarthquake.setOnClickListener {
                 earthquakeListener.onItemClick(adapterPosition, earthquakeOA)
-
                 when (expandedItemPos) {
                     null -> {
                         // expand clicked item
@@ -111,6 +105,8 @@ class EarthquakeAdapter(
                 }
             }
 
+            mEarthquakeOA = earthquakeOA
+            binding.earthquake = earthquakeOA
             binding.map.onCreate(null)
             binding.map.onResume()
             binding.map.getMapAsync(this)
@@ -120,20 +116,15 @@ class EarthquakeAdapter(
         override fun onMapReady(googleMap: GoogleMap?) {
             MapsInitializer.initialize(binding.root.context)
             map = googleMap
-
             //setupMap(map!!, mEarthquakeOA!!, progressBar)
-        }
-    }
-
-
-    override fun onViewRecycled(holder: EarthquakeViewHolder) {
-        if (expandedItemPos == holder.adapterPosition) {
-            setupMap(holder.map, holder.mEarthquakeOA!!, holder.progressBar)
         }
     }
 
     override fun onViewAttachedToWindow(holder: EarthquakeViewHolder) {
         super.onViewAttachedToWindow(holder)
+
+        if (expandedItemPos == holder.adapterPosition)
+            setupMap(holder.map, holder.mEarthquakeOA!!, holder.progressBar)
 
         // get originalHeight & expandedHeight if not gotten before
         if (expandedHeight < 0) {
@@ -227,6 +218,8 @@ class EarthquakeAdapter(
         setScaleDownProgress(holder, position, if (isScaleDown) 1f else 0f)
     }
 
+    override fun getItemId(position: Int): Long = position.toLong()
+
     override fun getFilter(): Filter = filter
 
     fun update(items: MutableList<EarthquakeOA>) {
@@ -237,7 +230,6 @@ class EarthquakeAdapter(
     private val filter: Filter = object : Filter() {
         @SuppressLint("DefaultLocale")
         override fun performFiltering(constraint: CharSequence): FilterResults {
-
             val returnList = FilterResults()
             val filteredList: MutableList<EarthquakeOA> = mutableListOf()
 
@@ -245,12 +237,9 @@ class EarthquakeAdapter(
                 returnList.values = earthquakeList
             else {
                 val filterPattern = constraint.toString().toLowerCase()
-                for (earthquake in earthquakeList) {
-                    if (earthquake.lokasyon.toLowerCase().contains(filterPattern) ||
-                        earthquake.date.toLowerCase().contains(filterPattern) ||
-                        earthquake.mag.toString().toLowerCase().contains(filterPattern))
+                for (earthquake in earthquakeList)
+                    if (earthquake.lokasyon.toLowerCase().contains(filterPattern))
                         filteredList.add(earthquake)
-                }
             }
 
             returnList.values = filteredList

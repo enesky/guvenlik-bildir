@@ -159,9 +159,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         sv_earthquake.viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
+    override fun onQueryTextSubmit(query: String?): Boolean = false
 
     override fun onQueryTextChange(newText: String?): Boolean {
         latestEarthquakesVM.earthquakeAdapter.value!!.filter.filter(newText)

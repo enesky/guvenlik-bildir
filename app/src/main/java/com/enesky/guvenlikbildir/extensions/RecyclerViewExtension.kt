@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.model.Contact
+
 /**
  * Created by Enes Kamil YILMAZ on 23.02.2020
  */

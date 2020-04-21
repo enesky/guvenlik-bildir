@@ -60,10 +60,16 @@ fun bindRecyclerViewAdapterWithAnim(view: RecyclerView, adapter: RecyclerView.Ad
 
 @BindingAdapter("setAdapter")
 fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
-    view.setHasFixedSize(true)
-    view.layoutManager = LinearLayoutManager(view.context)
-    //view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
+    adapter.setHasStableIds(true)
     view.adapter = adapter
+
+    view.apply {
+        setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(view.context)
+        setItemViewCacheSize(10)
+        isDrawingCacheEnabled = true
+        drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+    }
 }
 
 @BindingAdapter("setPagerAdapter")
@@ -144,7 +150,19 @@ fun setImage(view: ImageView, imageId: Int) {
     view.setImageResource(imageId)
 }
 
-@BindingAdapter("putValue2String")
-fun putValue2String(view: TextView, value: Number) {
-    view.text = view.context.getString(R.string.label_depth, value.toString())
+@SuppressLint("SetTextI18n")
+@BindingAdapter("stringKey", "numberValue", "stringValue", "unitName", requireAll=false)
+fun putValues2String(view: TextView, stringKey: String, numberValue: Number?,
+                     stringValue: String?, unitName: String?) {
+    var text = ""
+    if (numberValue != null)
+        text = "$stringKey $numberValue"
+    else if (stringValue != null)
+        text = "$stringKey $stringValue"
+
+    if (unitName != null)
+        view.text = "$text $unitName"
+    else
+        view.text = text
+
 }

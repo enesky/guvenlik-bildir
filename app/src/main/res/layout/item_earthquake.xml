@@ -26,8 +26,8 @@
             app:cardCornerRadius="@dimen/default_margin_16"
             app:cardElevation="0dp"
             app:cardMaxElevation="0dp"
-            tools:layout_marginLeft="@dimen/default_margin_16"
-            tools:layout_marginRight="@dimen/default_margin_16">
+            tools:layout_margin="@dimen/default_margin_16"
+            tools:layout_width="match_parent">
 
             <FrameLayout
                 android:id="@+id/card_container"
@@ -53,10 +53,9 @@
                             text="@{earthquake.mag}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/default_margin_4"
                             android:background="@drawable/bg_circle"
                             android:gravity="center"
-                            android:padding="@dimen/default_margin_10"
+                            android:padding="@dimen/default_margin_8"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_32"
                             android:textStyle="bold"
@@ -70,27 +69,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/default_margin_16"
-                            android:layout_marginTop="@dimen/default_margin_4"
-                            android:text="@string/title_location"
+                            tools:text="@string/label_location"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
+                            app:stringKey="@{@string/label_location}"
+                            app:stringValue="@{earthquake.lokasyon}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
                             app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_lokasyon"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/default_margin_4"
-                            android:text="@{earthquake.title}"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/default_text_14"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="MEDAR-AKHISAR (MANISA)" />
 
                         <TextView
                             android:id="@+id/tv_title_depth"
@@ -98,25 +84,15 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/default_margin_16"
                             android:layout_marginTop="@dimen/default_margin_4"
-                            android:text="@string/title_depth"
+                            tools:text="@string/label_depth"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
+                            app:stringKey="@{@string/label_depth}"
+                            app:numberValue="@{earthquake.depth}"
+                            app:unitName="@{@string/label_kilometer}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
-                            app:layout_constraintTop_toBottomOf="@id/tv_lokasyon" />
-
-                        <TextView
-                            android:id="@+id/tv_depth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/default_margin_4"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/default_text_14"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
-                            app:layout_constraintTop_toBottomOf="@id/tv_lokasyon"
-                            app:putValue2String="@{earthquake.depth}"
-                            tools:text="9.2 km" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_title_lokasyon" />
 
                         <TextView
                             android:id="@+id/tv_title_date"
@@ -124,39 +100,27 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/default_margin_16"
                             android:layout_marginTop="@dimen/default_margin_4"
-                            android:text="@string/title_date"
+                            tools:text="@string/label_date"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
+                            app:stringKey="@{@string/label_date}"
+                            app:stringValue="@{earthquake.date}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
-                            app:layout_constraintTop_toBottomOf="@id/tv_depth" />
-
-                        <TextView
-                            android:id="@+id/tv_date"
-                            formattedDateText="@{earthquake.date}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/default_text_14"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@id/iv_show_map"
-                            app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
-                            app:layout_constraintTop_toTopOf="@id/tv_title_date"
-                            tools:text="2020.02.04 08:47:38" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_title_depth" />
 
                         <TextView
                             android:id="@+id/tv_short_date"
                             shortenedDateText="@{earthquake.date}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/default_margin_4"
                             android:layout_marginEnd="@dimen/default_margin_8"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_12"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_title_depth"
+                            app:layout_constraintTop_toTopOf="@id/tv_title_depth"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
                             tools:text="5 saat önce" />
 
                         <ImageView
@@ -166,7 +130,7 @@
                             android:src="@drawable/ic_arrow"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_date" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_title_date" />
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cv_map"
