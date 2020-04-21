@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
-import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -16,6 +15,7 @@ import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_lastest_earthquakes.*
 import kotlinx.coroutines.*
@@ -28,7 +28,9 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
     private lateinit var binding: FragmentLastestEarthquakesBinding
     private lateinit var latestEarthquakesVM: LatestEarthquakesVM
     private var isAppBarExpanded: Boolean = false
-    private var listExpand: Int = 5
+    private var listExpand: Int = 10
+
+    private val loadingDuration: Long = (600L / 0.8).toLong()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_lastest_earthquakes, container,false)
@@ -42,7 +44,9 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
             viewModel = latestEarthquakesVM
             lifecycleOwner = this@LatestEarthquakesFragment
         }
-        latestEarthquakesVM.init(binding)
+
+        latestEarthquakesVM.init(requireActivity(), binding)
+
         app_bar_layout.addOnOffsetChangedListener(this)
 
         ConnectionLiveData(requireContext()).observe(viewLifecycleOwner, Observer { isOnline ->
@@ -58,8 +62,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
                     if (response != null && response is Result<*>) {
                         when (response.status) {
                             Status.SUCCESS -> ""
-                            Status.FAILURE -> requireContext().showToast(response.data.toString())
-                            Status.EXCEPTION -> requireContext().showToast(response.data.toString())
+                            Status.FAILURE, Status.EXCEPTION -> requireContext().showToast(response.data.toString())
                         }
                     }
                 }
@@ -75,6 +78,19 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        pb_loading.makeItVisible()
+
+        GlobalScope.launch(Dispatchers.Main) {
+            latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,10).toMutableList())
+            delay(100)
+            requireActivity().runOnUiThread { pb_loading.makeItGone() }
+        }
+
+        val snapHelper = GravitySnapHelper(Gravity.CENTER)
+        snapHelper.attachToRecyclerView(rv_earthquakes)
+
+        updateRecyclerViewAnimDuration()
 
         fab_synchronize.setOnClickListener {
             refresh()
@@ -103,13 +119,9 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         sv_earthquake.viewTreeObserver.addOnGlobalLayoutListener(this)
         sv_earthquake.setOnQueryTextListener(this)
 
-        /**init yenilemesi*/
-        refresh()
-
-        //TODO: Recycler view i burada başlat.
     }
 
-    fun refresh() {
+    private fun refresh() {
         val objectAnimator = ObjectAnimator
             .ofFloat(fab_synchronize, "rotation", 360f, 0f)
 
@@ -117,18 +129,23 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         pb_loading.makeItVisible()
         GlobalScope.launch(Dispatchers.Main) {
             delay(100)
+            latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,listExpand) as MutableList<EarthquakeOA>)
+            listExpand += 10
 
-            if (BuildConfig.DEBUG) {
-                latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,listExpand) as MutableList<EarthquakeOA>)
-                listExpand += 5
-            } else {
-                latestEarthquakesVM.getLastEarthquakes("7")
-            }
+            //latestEarthquakesVM.getLastEarthquakes("20")
 
-            delay(2000)
+            delay(1000)
             objectAnimator.cancel()
             pb_loading.makeItGone()
         }
+    }
+
+    /**
+     * Update RecyclerView Item Animation Durations
+     */
+    private fun updateRecyclerViewAnimDuration() = rv_earthquakes.itemAnimator?.run {
+        removeDuration = loadingDuration * 60 / 100
+        addDuration = loadingDuration
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {

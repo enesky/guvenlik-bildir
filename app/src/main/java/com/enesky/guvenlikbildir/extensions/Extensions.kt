@@ -1,17 +1,23 @@
 package com.enesky.guvenlikbildir.extensions
 
+import android.animation.TimeInterpolator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.util.Patterns
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
@@ -226,4 +232,26 @@ fun Fragment.sendFeedback() {
                     "&body=" + getString(R.string.label_mail_body) + "&to=" + getString(R.string.email))
     testIntent.data = data
     startActivity(testIntent)
+}
+
+inline val Int.dp: Int
+    get() = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), Resources.getSystem().displayMetrics).toInt()
+
+inline val Context.screenWidth: Int
+    get() = Point().also { (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(it) }.x
+
+inline fun getValueAnimator(
+    forward: Boolean = true,
+    duration: Long,
+    interpolator: TimeInterpolator,
+    crossinline updateListener: (progress: Float) -> Unit
+): ValueAnimator {
+    val a =
+        if (forward) ValueAnimator.ofFloat(0f, 1f)
+        else ValueAnimator.ofFloat(1f, 0f)
+    a.addUpdateListener { updateListener(it.animatedValue as Float) }
+    a.duration = duration
+    a.interpolator = interpolator
+    return a
 }

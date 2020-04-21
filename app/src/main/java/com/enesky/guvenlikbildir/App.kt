@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.reflect.TypeToken
 import com.jakewharton.threetenabp.AndroidThreeTen
+import java.util.*
 
 /**
  * Created by Enes Kamil YILMAZ on 26.01.2020
@@ -52,6 +53,8 @@ class App : Application() {
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         firebaseFirestore = FirebaseFirestore.getInstance()
         AndroidThreeTen.init(this)
+
+        Locale.setDefault(Locale("tr"))
 
         if (BuildConfig.DEBUG) {
             val earthquakeResponseTypeToken = object : TypeToken<GenericResponse<EarthquakeOA>>() {}.type

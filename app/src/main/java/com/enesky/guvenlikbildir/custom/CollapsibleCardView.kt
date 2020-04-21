@@ -35,7 +35,15 @@ class CollapsibleCardView : MaterialCardView {
             })
     }
 
-    fun collapseView() {
+    fun toggleView() {
+        if (isExpanded) {
+            collapseView(null)
+        } else {
+            expandView(250, null)
+        }
+    }
+
+    fun collapseView(function: (() -> Unit)?) {
         val anim = ValueAnimator.ofInt(measuredHeightAndState, compactHeight)
         anim.duration = Constants.defaultAnimationDuration
 
@@ -47,9 +55,10 @@ class CollapsibleCardView : MaterialCardView {
         }
 
         anim.start()
+        function?.invoke()
     }
 
-    fun expandView(height: Int) {
+    fun expandView(height: Int, function: (() -> Unit)?) {
         val anim = ValueAnimator.ofInt(measuredHeightAndState, height)
         anim.duration = Constants.defaultAnimationDuration
 
@@ -61,6 +70,7 @@ class CollapsibleCardView : MaterialCardView {
         }
 
         anim.start()
+        function?.invoke()
     }
 
 }

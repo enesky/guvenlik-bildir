@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
@@ -29,7 +30,7 @@ class AddContactAdapter(private var contactList: MutableList<Contact>,
 
     override fun onBindViewHolder(holder: AddContactViewHolder, pos: Int) = holder.bind(contactList[pos])
 
-    fun update( items: MutableList<Contact>) {
+    fun update(items: MutableList<Contact>) {
         this.contactList = items
         notifyDataSetChanged()
     }
@@ -59,4 +60,5 @@ class AddContactAdapter(private var contactList: MutableList<Contact>,
     interface AddContactListener {
         fun onItemClick(pos: Int, contact: Contact)
     }
+
 }

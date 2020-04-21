@@ -32,7 +32,7 @@ object Constants {
     const val polis = "155"
     const val acilYardım = "112"
     const val itfaiye = "110"
-    const val defaultAnimationDuration = 500L
+    const val defaultAnimationDuration = 250L
     const val map = "map"
 
     //SharedPref Keys

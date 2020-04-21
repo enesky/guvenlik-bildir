@@ -4,189 +4,207 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="earthquake"
             type="com.enesky.guvenlikbildir.model.EarthquakeOA" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_earthquake"
+    <FrameLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin_8"
-        android:animateLayoutChanges="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/default_margin_16">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_earthquake"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/default_margin_16"
+            android:backgroundTint="@color/colorPrimary"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            app:cardCornerRadius="@dimen/default_margin_16"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp"
+            tools:layout_marginLeft="@dimen/default_margin_16"
+            tools:layout_marginRight="@dimen/default_margin_16">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <FrameLayout
+                android:id="@+id/card_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin_16"
-                android:layout_marginTop="@dimen/default_margin_16"
-                android:layout_marginEnd="@dimen/default_margin_16"
-                android:animateLayoutChanges="true">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_mag"
-                    text="@{earthquake.mag}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_circle"
-                    android:gravity="center"
-                    android:padding="@dimen/default_margin_10"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_32"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_date"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="0.0" />
-
-                <TextView
-                    android:id="@+id/tv_title_lokasyon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_4"
-                    android:text="Lokasyon: "
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/tv_mag"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_lokasyon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin_4"
-                    android:text="@{earthquake.title}"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="MEDAR-AKHISAR (MANISA)" />
-
-                <TextView
-                    android:id="@+id/tv_title_depth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_4"
-                    android:text="Derinlik: "
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/tv_mag"
-                    app:layout_constraintTop_toBottomOf="@id/tv_lokasyon" />
-
-                <TextView
-                    android:id="@+id/tv_depth"
-                    text="@{earthquake.depth}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin_4"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
-                    app:layout_constraintTop_toBottomOf="@id/tv_lokasyon"
-                    tools:text="9.2 km" />
-
-                <TextView
-                    android:id="@+id/tv_title_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_4"
-                    android:text="Tarih: "
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/tv_mag"
-                    app:layout_constraintTop_toBottomOf="@id/tv_depth" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    formattedDateText="@{earthquake.date}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/default_margin_4"
-                    app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
-                    app:layout_constraintTop_toTopOf="@id/tv_title_date"
-                    app:layout_constraintBottom_toTopOf="@id/cv_map"
-                    tools:text="2020.02.04 08:47:38" />
-
-                <TextView
-                    android:id="@+id/tv_short_date"
-                    shortenedDateText="@{earthquake.date}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_4"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_12"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_date"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="5 saat önce" />
-
-                <com.enesky.guvenlikbildir.custom.CollapsibleCardView
-                    android:id="@+id/cv_map"
+                <LinearLayout
+                    android:id="@+id/scale_container"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    app:cardCornerRadius="@dimen/default_margin_16"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_date"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/default_margin_16"
+                    android:paddingTop="@dimen/default_margin_4"
+                    android:paddingRight="@dimen/default_margin_16"
+                    android:transformPivotX="0dp">
 
-                        <com.google.android.gms.maps.MapView
-                            android:id="@+id/map"
-                            android:name="com.google.android.gms.maps.MapFragment"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_mag"
+                            text="@{earthquake.mag}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_4"
+                            android:background="@drawable/bg_circle"
+                            android:gravity="center"
+                            android:padding="@dimen/default_margin_10"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_32"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@id/tv_title_lokasyon"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="0.0" />
+
+                        <TextView
+                            android:id="@+id/tv_title_lokasyon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/default_margin_16"
+                            android:layout_marginTop="@dimen/default_margin_4"
+                            android:text="@string/title_location"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_14"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_lokasyon"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_4"
+                            android:text="@{earthquake.title}"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_14"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="MEDAR-AKHISAR (MANISA)" />
+
+                        <TextView
+                            android:id="@+id/tv_title_depth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/default_margin_16"
+                            android:layout_marginTop="@dimen/default_margin_4"
+                            android:text="@string/title_depth"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_14"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintTop_toBottomOf="@id/tv_lokasyon" />
+
+                        <TextView
+                            android:id="@+id/tv_depth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_4"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_14"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
+                            app:layout_constraintTop_toBottomOf="@id/tv_lokasyon"
+                            app:putValue2String="@{earthquake.depth}"
+                            tools:text="9.2 km" />
+
+                        <TextView
+                            android:id="@+id/tv_title_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/default_margin_16"
+                            android:layout_marginTop="@dimen/default_margin_4"
+                            android:text="@string/title_date"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_14"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintTop_toBottomOf="@id/tv_depth" />
+
+                        <TextView
+                            android:id="@+id/tv_date"
+                            formattedDateText="@{earthquake.date}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_14"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@id/iv_show_map"
+                            app:layout_constraintStart_toEndOf="@id/tv_title_lokasyon"
+                            app:layout_constraintTop_toTopOf="@id/tv_title_date"
+                            tools:text="2020.02.04 08:47:38" />
+
+                        <TextView
+                            android:id="@+id/tv_short_date"
+                            shortenedDateText="@{earthquake.date}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_4"
+                            android:layout_marginEnd="@dimen/default_margin_8"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/default_text_12"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="5 saat önce" />
+
+                        <ImageView
+                            android:id="@+id/iv_show_map"
+                            android:layout_width="@dimen/default_margin_24"
+                            android:layout_height="@dimen/default_margin_24"
+                            android:src="@drawable/ic_arrow"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_map"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cameraZoom="7"
-                            app:liteMode="true"
-                            app:mapType="none" />
+                            android:layout_height="150dp"
+                            android:layout_marginBottom="@dimen/default_margin_16"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:visibility="gone"
+                            app:cardCornerRadius="@dimen/default_margin_16"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_show_map">
 
-                        <ProgressBar
-                            android:id="@+id/pb_loading"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center"
-                            android:indeterminateTint="@android:color/white"
-                            android:padding="@dimen/default_margin_24"/>
+                            <com.google.android.gms.maps.MapView
+                                android:id="@+id/map"
+                                android:name="com.google.android.gms.maps.MapFragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:cameraZoom="7"
+                                app:liteMode="true"
+                                app:mapType="none" />
 
-                </com.enesky.guvenlikbildir.custom.CollapsibleCardView>
+                            <ProgressBar
+                                android:id="@+id/pb_loading"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:indeterminateTint="@android:color/white"
+                                android:padding="@dimen/default_margin_32" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/iv_show_map"
-                android:layout_width="@dimen/default_margin_32"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_arrow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_date" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+                </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
 </layout>

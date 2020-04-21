@@ -55,4 +55,12 @@
     <string name="label_add_new_contact">Ekle (1)</string>
     <string name="label_no_contact_in_device">Rehberinizde kayıtlı kişi bulunamadı.</string>
 
+    <string name="label_depth">%1$s km</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_location">Lokasyon:</string>
+    <string name="title_depth">Derinlik:</string>
+    <string name="title_date">Tarih:</string>
+
 </resources>

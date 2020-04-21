@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.ui.activity.main
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -26,6 +27,7 @@ import com.trendyol.medusalib.navigator.Navigator
 import com.trendyol.medusalib.navigator.NavigatorConfiguration
 import com.trendyol.medusalib.navigator.transaction.NavigatorTransaction
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : BaseActivity(), Navigator.NavigatorListener,
     BottomNavigationView.OnNavigationItemSelectedListener,
@@ -51,13 +53,6 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         NavigatorConfiguration(1,false, defaultNavigatorTransaction = NavigatorTransaction.SHOW_HIDE)
     )
 
-    override fun onStart() {
-        super.onStart()
-        val currentUser: FirebaseUser? = App.mAuth.currentUser
-        if (currentUser == null)
-            this.openLoginActivity()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
@@ -66,13 +61,20 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         binding.viewModel = mainVM
         mainVM.init(binding)
 
-        ConnectionLiveData(this).observe(this, Observer { isOnline ->
-            if (!isOnline)
-                showToast("İnternet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
-        })
-
         bottom_nav.setOnNavigationItemReselectedListener(this)
         bottom_nav.setOnNavigationItemSelectedListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val currentUser: FirebaseUser? = App.mAuth.currentUser
+        if (currentUser == null)
+            this.openLoginActivity()
+
+        ConnectionLiveData(this).observe(this, Observer { isOnline ->
+                if (!isOnline)
+                    showToast("İnternet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
+            })
 
         if (isFirstTime) {
             requireAllPermissions()

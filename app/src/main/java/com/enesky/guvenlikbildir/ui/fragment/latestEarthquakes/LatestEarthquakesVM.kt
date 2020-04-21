@@ -1,7 +1,9 @@
 package com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.adapter.EarthquakeAdapter
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.model.EarthquakeOA
@@ -12,14 +14,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListener {
 
-    private val _earthquakeAdapter = MutableLiveData<EarthquakeAdapter>().apply {
-        value = EarthquakeAdapter(mutableListOf(), this@LatestEarthquakesVM)
-    }
+    private val _earthquakeAdapter = MutableLiveData<EarthquakeAdapter>()
     val earthquakeAdapter: LiveData<EarthquakeAdapter> = _earthquakeAdapter
 
     private val _responseHandler = ResponseHandler()
@@ -28,8 +27,11 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
     private val _whereTo = LiveEvent<Any>()
     val whereTo: LiveEvent<Any> = _whereTo
 
-    fun init(binding: FragmentLastestEarthquakesBinding) {
+    val onClick = LiveEvent<Any>()
+
+    fun init(context: Context, binding: FragmentLastestEarthquakesBinding) {
         setViewDataBinding(binding)
+        _earthquakeAdapter.value = EarthquakeAdapter(context, mutableListOf(), this@LatestEarthquakesVM)
     }
 
     suspend fun getLastEarthquakes(limit: String) {
@@ -50,7 +52,7 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
     }
 
     override fun onItemClick(pos: Int, earthquakeOA: EarthquakeOA) {
-        //TODO: Maybe open detail???
+        onClick.value = pos to earthquakeOA
     }
 
     override fun onMapClick(latlng: LatLng, header: String) {

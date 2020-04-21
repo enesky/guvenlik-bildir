@@ -50,6 +50,14 @@ fun bindStatefulRecyclerViewAdapter(view: StatefulRecyclerView, adapter: Recycle
     view.adapter = adapter
 }
 
+@BindingAdapter("setAdapterWithAnim")
+fun bindRecyclerViewAdapterWithAnim(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+    view.setHasFixedSize(true)
+    view.layoutManager = LinearLayoutManager(view.context)
+    view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
+    view.adapter = adapter
+}
+
 @BindingAdapter("setAdapter")
 fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
     view.setHasFixedSize(true)
@@ -124,14 +132,19 @@ fun onBackPressed(view: View, fragment: Fragment) {
     view.setOnClickListener { fragment.activity!!.onBackPressed() }
 }
 
-@BindingAdapter("dismiss")
+@BindingAdapter("onBackPressed")
 fun dismiss(view: EditText, dismiss: Boolean) {
     view.setOnClickListener {
-        //TODO: dismiss() ?
+        (view.context as Fragment).requireActivity().onBackPressed()
     }
 }
 
 @BindingAdapter("setImage")
 fun setImage(view: ImageView, imageId: Int) {
     view.setImageResource(imageId)
+}
+
+@BindingAdapter("putValue2String")
+fun putValue2String(view: TextView, value: Number) {
+    view.text = view.context.getString(R.string.label_depth, value.toString())
 }

@@ -8,7 +8,7 @@ import com.enesky.guvenlikbildir.model.Contact
  * Created by Enes Kamil YILMAZ on 23.02.2020
  */
 
-fun RecyclerView.addSelectedItemWatcher(selectedItemList: MutableMap<Int, Contact>) {
+fun RecyclerView.addSelectedContactWatcher(selectedItemList: MutableMap<Int, Contact>) {
     this.addOnChildAttachStateChangeListener(object: RecyclerView.OnChildAttachStateChangeListener {
         override fun onChildViewDetachedFromWindow(view: View) {
             //ignored

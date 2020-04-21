@@ -37,12 +37,7 @@ fun createHttpClient(): OkHttpClient {
 }
 
 class Connection {
-    suspend fun getLastEarthquakes(
-        limit: String
-    ) = webService.getLastEarthquakes(limit)
+    suspend fun getLastEarthquakes(limit: String) = webService.getLastEarthquakes(limit)
 
-    suspend fun getLastEarthquakesWithDate(
-        date: String,
-        limit: String
-    ) = webService.getLastEarthquakesWithDate(date, limit)
+    suspend fun getLastEarthquakesWithDate(date: String, limit: String) = webService.getLastEarthquakesWithDate(date, limit)
 }

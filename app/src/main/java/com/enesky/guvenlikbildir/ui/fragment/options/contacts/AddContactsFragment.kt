@@ -92,7 +92,7 @@ class AddContactsFragment : BaseFragment() {
         if (!contactList.isNullOrEmpty())
             setupFastScroller()
 
-        rv_contacts.addSelectedItemWatcher(selectedMap)
+        rv_contacts.addSelectedContactWatcher(selectedMap)
 
         tv_save.setOnClickListener {
             addContactsVM.selectedContactList.value!!.addAll(selectedMap.values.toMutableList())
