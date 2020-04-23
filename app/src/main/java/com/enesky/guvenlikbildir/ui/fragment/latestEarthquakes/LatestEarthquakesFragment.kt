@@ -1,8 +1,8 @@
 package com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -49,12 +49,14 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
         app_bar_layout.addOnOffsetChangedListener(this)
 
+        /* TODO: Internet bağlantısı olmadığında refresh edemesin veya toast göster.
         ConnectionLiveData(requireContext()).observe(viewLifecycleOwner, Observer { isOnline ->
             if (isOnline)
                 fab_synchronize.setImageResource(R.drawable.ic_sync)
             else
                 fab_synchronize.setImageResource(R.drawable.ic_sync_problem)
         })
+        */
 
         latestEarthquakesVM.responseHandler.addObserver{ _, response ->
             GlobalScope.launch {
@@ -74,17 +76,31 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
                 openInfoCountDownDialog(Constants.map + it)
         })
 
+        latestEarthquakesVM.onClick.observe(viewLifecycleOwner, Observer {
+            if (it is EarthquakeOA)
+                Toast.makeText(requireContext(),"Item clicked: ${it.date}", Toast.LENGTH_SHORT).show()
+            //requireContext().showToast("Item clicked: ${it.date}")
+        })
+
+        latestEarthquakesVM.onLongPressed.observe(viewLifecycleOwner, Observer {
+            if (it is EarthquakeOA)
+                requireContext().showToast("Item long pressed: ${it.date}")
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         pb_loading.makeItVisible()
+        srl_refresh.isRefreshing = true
 
         GlobalScope.launch(Dispatchers.Main) {
             latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,10).toMutableList())
             delay(100)
-            requireActivity().runOnUiThread { pb_loading.makeItGone() }
+            requireActivity().runOnUiThread {
+                pb_loading.makeItGone()
+                srl_refresh.isRefreshing = false
+            }
         }
 
         val snapHelper = GravitySnapHelper(Gravity.CENTER)
@@ -92,7 +108,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
         updateRecyclerViewAnimDuration()
 
-        fab_synchronize.setOnClickListener {
+        srl_refresh.setOnRefreshListener {
             refresh()
         }
 
@@ -118,31 +134,22 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
         sv_earthquake.viewTreeObserver.addOnGlobalLayoutListener(this)
         sv_earthquake.setOnQueryTextListener(this)
-
     }
 
     private fun refresh() {
-        val objectAnimator = ObjectAnimator
-            .ofFloat(fab_synchronize, "rotation", 360f, 0f)
-
-        objectAnimator.start()
         pb_loading.makeItVisible()
         GlobalScope.launch(Dispatchers.Main) {
-            delay(100)
             latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,listExpand) as MutableList<EarthquakeOA>)
-            listExpand += 10
+            listExpand += 5
 
             //latestEarthquakesVM.getLastEarthquakes("20")
 
             delay(1000)
-            objectAnimator.cancel()
             pb_loading.makeItGone()
+            srl_refresh.isRefreshing = false
         }
     }
 
-    /**
-     * Update RecyclerView Item Animation Durations
-     */
     private fun updateRecyclerViewAnimDuration() = rv_earthquakes.itemAnimator?.run {
         removeDuration = loadingDuration * 60 / 100
         addDuration = loadingDuration

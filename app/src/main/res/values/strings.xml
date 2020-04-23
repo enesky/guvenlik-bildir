@@ -58,7 +58,6 @@
     <string name="label_location">Lokasyon: </string>
     <string name="label_depth">Derinlik: </string>
     <string name="label_date">Tarih: </string>
-
     <string name="label_kilometer">km</string>
 
 </resources>

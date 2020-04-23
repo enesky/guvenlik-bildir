@@ -28,6 +28,10 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Created by Enes Kamil YILMAZ on 02.02.2020
@@ -63,7 +67,7 @@ class EarthquakeAdapter(
 
     override fun getItemCount(): Int = earthquakeList.size
 
-    override fun onBindViewHolder(holder: EarthquakeViewHolder, pos: Int) = holder.bind(earthquakeList[pos], pos)
+    override fun onBindViewHolder(holder: EarthquakeViewHolder, pos: Int) = holder.bind(earthquakeList[pos])
 
     inner class EarthquakeViewHolder(private val binding: ItemEarthquakeBinding) : RecyclerView.ViewHolder(binding.root), OnMapReadyCallback {
         var map: GoogleMap? = null
@@ -74,20 +78,20 @@ class EarthquakeAdapter(
         val cardContainer = binding.cardContainer
         val scaleContainer = binding.scaleContainer
 
-        fun bind(earthquakeOA: EarthquakeOA, position: Int) {
-            toggleItem(this, position == expandedItemPos, animate = false)
-            scaleDownItem(this, position, isScaledDown)
+        fun bind(earthquakeOA: EarthquakeOA) {
+            toggleItem(this, adapterPosition == expandedItemPos, animate = false)
+            scaleDownItem(this, adapterPosition, isScaledDown)
 
-            binding.cvEarthquake.setOnClickListener {
-                earthquakeListener.onItemClick(adapterPosition, earthquakeOA)
+            binding.rootLayout.setOnClickListener {
+                earthquakeListener.onItemClick(earthquakeOA)
                 when (expandedItemPos) {
                     null -> {
                         // expand clicked item
                         toggleItem(this, expand = true, animate = true)
                         setupMap(map, earthquakeOA, binding.pbLoading)
-                        expandedItemPos = position
+                        expandedItemPos = adapterPosition
                     }
-                    position -> {
+                    adapterPosition -> {
                         //collapse clicked item
                         toggleItem(this, expand = false, animate = true)
                         expandedItemPos = null
@@ -100,9 +104,14 @@ class EarthquakeAdapter(
                         // expand clicked item
                         toggleItem(this, expand = true, animate = true)
                         setupMap(map, earthquakeOA, binding.pbLoading)
-                        expandedItemPos = position
+                        expandedItemPos = adapterPosition
                     }
                 }
+            }
+
+            binding.rootLayout.setOnLongClickListener {
+                earthquakeListener.onLongPressed(earthquakeOA)
+                return@setOnLongClickListener true
             }
 
             mEarthquakeOA = earthquakeOA
@@ -165,12 +174,18 @@ class EarthquakeAdapter(
             ) { progress -> setExpandProgress(holder, progress) }
 
             if (expand)
-                animator.doOnEnd {
-                    holder.cvMap.isVisible = true
+                animator.doOnStart {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        delay(100)
+                        holder.cvMap.isVisible = true
+                    }
                 }
             else
                 animator.doOnStart {
-                    holder.cvMap.isVisible = false
+                    GlobalScope.launch(Dispatchers.Main) {
+                        delay(100)
+                        holder.cvMap.isVisible = false
+                    }
                 }
 
             animator.start()
@@ -254,7 +269,8 @@ class EarthquakeAdapter(
     }
 
     interface EarthquakeListener {
-        fun onItemClick(pos: Int, earthquakeOA: EarthquakeOA)
+        fun onItemClick(earthquakeOA: EarthquakeOA)
+        fun onLongPressed(earthquakeOA: EarthquakeOA)
         fun onMapClick(latlng: LatLng, header: String)
     }
 

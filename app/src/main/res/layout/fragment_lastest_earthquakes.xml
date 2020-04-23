@@ -92,31 +92,25 @@
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_earthquakes"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/srl_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingTop="16dp"
-                setAdapter="@{viewModel.earthquakeAdapter}"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:listitem="@layout/item_earthquake"/>
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_earthquakes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="16dp"
+                    setAdapter="@{viewModel.earthquakeAdapter}"
+                    android:longClickable="true"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:listitem="@layout/item_earthquake"/>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_synchronize"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin_16"
-            android:src="@drawable/ic_sync"
-            app:fab_colorNormal="@color/colorAccent"
-            app:fab_colorPressed="@color/colorPrimaryDark"
-            app:fab_size="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@android:color/white" />
 
         <ProgressBar
             android:id="@+id/pb_loading"

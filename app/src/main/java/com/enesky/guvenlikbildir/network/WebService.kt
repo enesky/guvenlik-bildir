@@ -4,6 +4,7 @@ import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.model.GenericResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 /**
@@ -13,12 +14,13 @@ import retrofit2.http.Query
 interface WebService {
 
     @GET("index.php")
-    suspend fun getLastEarthquakesWithDate(
-        @Query("date") date: String,
-        @Query("limit") limit: String): Response<GenericResponse<EarthquakeOA>>
+    suspend fun getLastEarthquakesWithDate(@Query("date") date: String,
+                                           @Query("limit") limit: String): Response<GenericResponse<EarthquakeOA>>
 
     @GET("live.php")
-    suspend fun getLastEarthquakes(
-        @Query("limit") limit: String): Response<GenericResponse<EarthquakeOA>>
+    suspend fun getLastEarthquakes(@Query("limit") limit: String): Response<GenericResponse<EarthquakeOA>>
+
+    @GET("lst1.asp")
+    suspend fun getKandilliPost(@Header("accept") type: String): Response<String>
 
 }

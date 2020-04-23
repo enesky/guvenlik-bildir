@@ -60,7 +60,7 @@ class App : Application() {
             val earthquakeResponseTypeToken = object : TypeToken<GenericResponse<EarthquakeOA>>() {}.type
             val earthquakeResponse = getResponseFromJson<GenericResponse<EarthquakeOA>>("mockservices/orhanaydogduMock.json", earthquakeResponseTypeToken)
             mockEarthquakeList = earthquakeResponse
-            Log.d("mockEarthquakeList", earthquakeResponse.toString())
+            //Log.d("mockEarthquakeList", earthquakeResponse.toString())
         }
 
     }

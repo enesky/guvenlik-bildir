@@ -3,11 +3,10 @@ package com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.adapter.EarthquakeAdapter
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.model.EarthquakeOA
-import com.enesky.guvenlikbildir.network.Connection
+import com.enesky.guvenlikbildir.network.EarthquakeOaAPI
 import com.enesky.guvenlikbildir.network.ResponseHandler
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -24,10 +23,9 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
     private val _responseHandler = ResponseHandler()
     val responseHandler: ResponseHandler = _responseHandler
 
-    private val _whereTo = LiveEvent<Any>()
-    val whereTo: LiveEvent<Any> = _whereTo
-
+    val whereTo = LiveEvent<Any>()
     val onClick = LiveEvent<Any>()
+    val onLongPressed = LiveEvent<Any>()
 
     fun init(context: Context, binding: FragmentLastestEarthquakesBinding) {
         setViewDataBinding(binding)
@@ -36,7 +34,7 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
 
     suspend fun getLastEarthquakes(limit: String) {
         try {
-            val response = Connection().getLastEarthquakes(limit)
+            val response = EarthquakeOaAPI().getLastEarthquakes(limit)
 
             if (response.isSuccessful) {
                 GlobalScope.launch(Dispatchers.Main) {
@@ -51,12 +49,16 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
         }
     }
 
-    override fun onItemClick(pos: Int, earthquakeOA: EarthquakeOA) {
-        onClick.value = pos to earthquakeOA
+    override fun onItemClick(earthquakeOA: EarthquakeOA) {
+        onClick.value = earthquakeOA
+    }
+
+    override fun onLongPressed(earthquakeOA: EarthquakeOA) {
+        onClick.value = earthquakeOA
     }
 
     override fun onMapClick(latlng: LatLng, header: String) {
-        _whereTo.value = "${latlng.latitude},${latlng.longitude}map$header"
+        whereTo.value = "${latlng.latitude},${latlng.longitude}map$header"
     }
 
 }
