@@ -6,12 +6,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.Gravity
@@ -24,6 +24,7 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
@@ -35,6 +36,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.Gson
 import java.io.IOException
 import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Enes Kamil YILMAZ on 09.01.2020
@@ -62,7 +64,7 @@ fun View.setBackground(@ColorRes color: Int) = setBackgroundColor(context.getCol
 fun View.getBackgorund() = (background as ColorDrawable).color
 
 fun View.setBackgroundTint(@ColorRes color: Int) {
-    backgroundTintList = ContextCompat.getColorStateList(context, context.getColorCompat(color))
+    backgroundTintList = ContextCompat.getColorStateList(context, color)
 }
 
 // Context Extensions
@@ -254,4 +256,26 @@ inline fun getValueAnimator(
     a.duration = duration
     a.interpolator = interpolator
     return a
+}
+
+fun calculateExecutionTime(function: () -> Any) {
+    val startTime = System.nanoTime()
+
+    function()
+
+    val endTime = System.nanoTime()
+    val timeNs = endTime - startTime
+    val timeMs: Long = TimeUnit.NANOSECONDS.toMillis(timeNs)
+    val timeSec: Long = TimeUnit.NANOSECONDS.toSeconds(timeNs)
+    val timeMin: Long = TimeUnit.NANOSECONDS.toMinutes(timeNs)
+    val timeHour: Long = TimeUnit.NANOSECONDS.toHours(timeNs)
+
+    var executionTime = "Execution Time: "
+    if (timeHour > 0) executionTime += "$timeHour Hours, "
+    if (timeMin > 0) executionTime += (timeMin % 60).toString() + " Minutes, "
+    if (timeSec > 0) executionTime += (timeSec % 60).toString() + " Seconds, "
+    if (timeMs > 0) executionTime += (timeMs % 1E+3).toString() + " MicroSeconds, "
+    if (timeNs > 0) executionTime += (timeNs % 1E+6).toString() + " NanoSeconds"
+
+    Log.i(" -- Execution Time -- ", executionTime)
 }

@@ -27,7 +27,7 @@ class MainVM : BaseViewModel() {
 
             if (response.isSuccessful) {
                 _responseHandler.handleSuccess(response)
-                EarthquakeAPI.parseResponse(response.body()!!.replace("Ý", "İ"))
+                EarthquakeAPI.parseResponse(response.body()!!.replace("�", "İ"))
                 //Log.i("MainVM - Response",response.body()!!)
             } else {
                 _responseHandler.handleFailure(response)

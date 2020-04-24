@@ -117,20 +117,34 @@ fun bindShortenedDate(view: TextView, formattedDate: String) {
 }
 
 @SuppressLint("SimpleDateFormat")
+@BindingAdapter("shortDateText", "shortTimeText")
+fun bindShortenedDateTime(view: TextView, dateText: String, timeText:String) {
+    val p = PrettyTime()
+    p.locale = Locale("tr")
+    val simpleDateFormat = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT)
+    val date = simpleDateFormat.parse("$dateText, $timeText")
+    view.text = p.format(date)
+}
+
+@SuppressLint("SimpleDateFormat")
 @BindingAdapter("formattedDateText")
 fun bindFormattedDate(view: TextView, formattedDate: String) {
     val date = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT).parse(formattedDate)
     view.text = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
 }
 
+@SuppressLint("SimpleDateFormat", "SetTextI18n")
+@BindingAdapter("stringKey", "dateText", "timeText")
+fun bindFormattedDate(view: TextView, stringKey: String, dateText: String, timeText:String) {
+    var formattedDateTimeText = ""
+    val date = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT).parse("$dateText, $timeText")
+    formattedDateTimeText = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
+    view.text = "$stringKey $formattedDateTimeText"
+}
+
 @BindingAdapter("text")
 fun setText(view: TextView, text: Number) {
     view.text = text.toString()
-}
-
-@BindingAdapter("textWithOneWordEachLine") //TODO: Not working...
-fun setTextToOneWordEachLine(view: TextView, text: String) {
-    view.text = text.replace(" ", "\n")
 }
 
 @BindingAdapter("onBackPressed")
@@ -151,14 +165,17 @@ fun setImage(view: ImageView, imageId: Int) {
 }
 
 @SuppressLint("SetTextI18n")
-@BindingAdapter("stringKey", "numberValue", "stringValue", "unitName", requireAll=false)
+@BindingAdapter("stringKey", "numberValue", "stringValue","secondStringValue", "unitName", requireAll=false)
 fun putValues2String(view: TextView, stringKey: String, numberValue: Number?,
-                     stringValue: String?, unitName: String?) {
+                     stringValue: String?,secondStringValue: String?, unitName: String?) {
     var text = ""
     if (numberValue != null)
         text = "$stringKey $numberValue"
-    else if (stringValue != null)
+    else if (stringValue != null) {
         text = "$stringKey $stringValue"
+        if (secondStringValue != null)
+            text += "($secondStringValue)"
+    }
 
     if (unitName != null)
         view.text = "$text $unitName"

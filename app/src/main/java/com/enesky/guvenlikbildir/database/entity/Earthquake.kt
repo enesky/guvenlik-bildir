@@ -1,6 +1,8 @@
-package com.enesky.guvenlikbildir.model
+package com.enesky.guvenlikbildir.database.entity
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -9,9 +11,12 @@ import kotlinx.android.parcel.Parcelize
  */
 
 @Parcelize
+@Entity
 data class Earthquake(
+	@PrimaryKey(autoGenerate = true) val id: Int,
 	val date: String, // YYYY.MM.dd
 	val time: String, // HH:mm:ss
+	val dateTime: String, // date + time
 	val lat: String,
 	val lng: String,
 	val depth: String,
@@ -20,5 +25,6 @@ data class Earthquake(
 	val magMW: String, //moment magnitude (if it exists use this one)
 	val locationOuter: String,
 	val locationInner: String,
+	val location: String, // locationInner + locationOuter
 	val quality: String //don't use it
 ) : Parcelable

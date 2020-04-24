@@ -2,7 +2,7 @@ package com.enesky.guvenlikbildir.network
 
 import android.util.Log
 import com.enesky.guvenlikbildir.extensions.Constants
-import com.enesky.guvenlikbildir.model.Earthquake
+import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.network.EarthquakeOaAPI.Companion.createHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -42,15 +42,17 @@ class EarthquakeAPI {
         private const val magMLIndex = magMDIndex + 5
         private const val magMWIndex = magMLIndex + 5
         private const val locationIndex = magMWIndex + 50
-
+        
         fun parseResponse(response: String): List<Earthquake> {
             val earthquakeList = ArrayList<Earthquake>()
 
             val regex = """<pre>.*</pre>""".toRegex(RegexOption.DOT_MATCHES_ALL)
             regex.find(response)?.value?.let {
-                it.slice(dataIndex until it.length).split("\n").forEach { line ->
-                    if (line.trim().isNotEmpty() && !line.contains("</pre>"))
+                it.slice(dataIndex until it.length).split("\n").forEachIndexed { index, line ->
+                    if (index < 200 && line.trim().isNotEmpty() && !line.contains("</pre>"))
                         earthquakeList.add(parseLine(line))
+                    else
+                        return@forEachIndexed
                 }
             }
 
@@ -65,15 +67,17 @@ class EarthquakeAPI {
 
             line.slice(magMWIndex..locationIndex).trim().split(" ").let {
                 locationOuter = it.last().replace("(", "").replace(")", "").run {
-                    this[0] + this.slice(1 until length).toLowerCase(Locale.ROOT)
+                    this[0] + this.slice(1 until length).toLowerCase(Locale("TR"))
                 }
                 if (it.size > 1)
                     locationInner = it.first()
             }
 
             return Earthquake(
+                0,
                 date = line.slice(0..dateIndex).trim(),
                 time = line.slice(dateIndex..timeIndex).trim(),
+                dateTime = line.slice(0..dateIndex).trim() + " " + line.slice(dateIndex..timeIndex).trim(),
                 lat = line.slice(timeIndex..latIndex).trim(),
                 lng = line.slice(latIndex..lngIndex).trim(),
                 depth = line.slice(lngIndex..depthIndex).trim(),
@@ -82,6 +86,7 @@ class EarthquakeAPI {
                 magMW = line.slice(magMLIndex..magMWIndex).trim(),
                 locationOuter = locationOuter,
                 locationInner = locationInner,
+                location = "$locationInner $locationOuter",
                 quality = line.slice(locationIndex until line.length).trim()
             )
         }

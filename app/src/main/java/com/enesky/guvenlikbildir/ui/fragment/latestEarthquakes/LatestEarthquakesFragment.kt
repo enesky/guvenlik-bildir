@@ -28,7 +28,6 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
     private lateinit var binding: FragmentLastestEarthquakesBinding
     private lateinit var latestEarthquakesVM: LatestEarthquakesVM
     private var isAppBarExpanded: Boolean = false
-    private var listExpand: Int = 10
 
     private val loadingDuration: Long = (600L / 0.8).toLong()
 
@@ -95,7 +94,9 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         srl_refresh.isRefreshing = true
 
         GlobalScope.launch(Dispatchers.Main) {
-            latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,10).toMutableList())
+
+            //TODO: set data
+
             delay(100)
             requireActivity().runOnUiThread {
                 pb_loading.makeItGone()
@@ -139,10 +140,8 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
     private fun refresh() {
         pb_loading.makeItVisible()
         GlobalScope.launch(Dispatchers.Main) {
-            latestEarthquakesVM.earthquakeAdapter.value!!.update(App.mInstance.mockEarthquakeList.result.subList(0,listExpand) as MutableList<EarthquakeOA>)
-            listExpand += 5
 
-            //latestEarthquakesVM.getLastEarthquakes("20")
+            //TODO: Refresh data
 
             delay(1000)
             pb_loading.makeItGone()

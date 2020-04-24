@@ -6,7 +6,7 @@
     <data>
         <variable
             name="earthquake"
-            type="com.enesky.guvenlikbildir.model.EarthquakeOA" />
+            type="com.enesky.guvenlikbildir.database.entity.Earthquake" />
     </data>
 
     <FrameLayout
@@ -51,22 +51,22 @@
 
                         <TextView
                             android:id="@+id/tv_mag"
-                            text="@{earthquake.mag}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            text="@{earthquake.magML}"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
                             android:background="@drawable/bg_circle"
                             android:gravity="center"
-                            android:padding="@dimen/default_margin_8"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_32"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@id/tv_title_lokasyon"
+                            app:layout_constraintEnd_toStartOf="@id/tv_location"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_location"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_date"
                             tools:text="0.0" />
 
                         <TextView
-                            android:id="@+id/tv_title_lokasyon"
+                            android:id="@+id/tv_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/default_margin_16"
@@ -75,12 +75,13 @@
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
                             app:stringKey="@{@string/label_location}"
-                            app:stringValue="@{earthquake.lokasyon}"
+                            app:stringValue="@{earthquake.locationInner}"
+                            app:secondStringValue="@{earthquake.locationOuter}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/tv_title_depth"
+                            android:id="@+id/tv_depth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/default_margin_16"
@@ -90,13 +91,13 @@
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
                             app:stringKey="@{@string/label_depth}"
-                            app:numberValue="@{earthquake.depth}"
+                            app:stringValue="@{earthquake.depth}"
                             app:unitName="@{@string/label_kilometer}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
-                            app:layout_constraintTop_toBottomOf="@id/tv_title_lokasyon" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
                         <TextView
-                            android:id="@+id/tv_title_date"
+                            android:id="@+id/tv_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/default_margin_16"
@@ -106,32 +107,34 @@
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
                             app:stringKey="@{@string/label_date}"
-                            app:stringValue="@{earthquake.date}"
+                            app:dateText="@{earthquake.date}"
+                            app:timeText="@{earthquake.time}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
-                            app:layout_constraintTop_toBottomOf="@id/tv_title_depth" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_depth" />
 
                         <TextView
                             android:id="@+id/tv_short_date"
-                            shortenedDateText="@{earthquake.date}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/default_margin_8"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_12"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_title_depth"
-                            app:layout_constraintTop_toTopOf="@id/tv_title_depth"
+                            app:shortDateText="@{earthquake.date}"
+                            app:shortTimeText="@{earthquake.time}"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_depth"
+                            app:layout_constraintTop_toTopOf="@id/tv_depth"
                             app:layout_constraintEnd_toEndOf="parent"
                             tools:text="5 saat önce" />
 
                         <ImageView
-                            android:id="@+id/iv_show_map"
+                            android:id="@+id/iv_indicator"
                             android:layout_width="@dimen/default_margin_24"
                             android:layout_height="@dimen/default_margin_24"
                             android:src="@drawable/ic_arrow"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_title_date" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cv_map"
@@ -142,7 +145,7 @@
                             android:visibility="gone"
                             app:cardCornerRadius="@dimen/default_margin_16"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/iv_show_map">
+                            app:layout_constraintTop_toBottomOf="@id/iv_indicator">
 
                             <com.google.android.gms.maps.MapView
                                 android:id="@+id/map"

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.enesky.guvenlikbildir.adapter.EarthquakeAdapter
+import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.network.EarthquakeOaAPI
@@ -39,7 +40,7 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
             if (response.isSuccessful) {
                 GlobalScope.launch(Dispatchers.Main) {
                     _responseHandler.handleSuccess(response)
-                    earthquakeAdapter.value!!.update(response.body()!!.result as MutableList<EarthquakeOA>)
+                    //earthquakeAdapter.value!!.update(response.body()!!.result as MutableList<EarthquakeOA>)
                 }
             } else {
                 _responseHandler.handleFailure(response)
@@ -49,12 +50,12 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
         }
     }
 
-    override fun onItemClick(earthquakeOA: EarthquakeOA) {
-        onClick.value = earthquakeOA
+    override fun onItemClick(earthquake: Earthquake) {
+        onClick.value = earthquake
     }
 
-    override fun onLongPressed(earthquakeOA: EarthquakeOA) {
-        onClick.value = earthquakeOA
+    override fun onLongPressed(earthquake: Earthquake) {
+        onClick.value = earthquake
     }
 
     override fun onMapClick(latlng: LatLng, header: String) {

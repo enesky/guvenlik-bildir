@@ -2,7 +2,7 @@
   "status":true,
   "result":[
     {
-      "mag":2,
+      "mag":2.9,
       "lng":27.8845,
       "lat":38.977,
       "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
@@ -20,7 +20,7 @@
       "hash2":"81e7906c3755e24f68c40761a0372dac"
     },
     {
-      "mag":1.8,
+      "mag":4.3,
       "lng":27.8402,
       "lat":39.023,
       "lokasyon":"GOKCEAHMET-AKHISAR (MANISA)",
@@ -38,7 +38,7 @@
       "hash2":"a74ebccbe67c685377a60ffbf26ed1ba"
     },
     {
-      "mag":1.9,
+      "mag":6.8,
       "lng":27.8653,
       "lat":38.9827,
       "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
@@ -56,7 +56,7 @@
       "hash2":"cf81a9bf2277a2934d5a0b782eced9d6"
     },
     {
-      "mag":1.5,
+      "mag":3,
       "lng":27.86,
       "lat":39.002,
       "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
@@ -92,7 +92,7 @@
       "hash2":"84df96a8edee8f05416926c085eb193e"
     },
     {
-      "mag":1.7,
+      "mag":3.5,
       "lng":27.8715,
       "lat":38.9803,
       "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
@@ -110,7 +110,7 @@
       "hash2":"c9d8c77d73cf03262b1f39c2b6c6028b"
     },
     {
-      "mag":1.5,
+      "mag":4.6,
       "lng":27.8668,
       "lat":38.9748,
       "lokasyon":"KARABORKLU-AKHISAR (MANISA)",
@@ -128,7 +128,7 @@
       "hash2":"1c3b2271e5a75b2e25882dab71e0c826"
     },
     {
-      "mag":1.8,
+      "mag":4.5,
       "lng":27.8917,
       "lat":38.991,
       "lokasyon":"DINGILLER-AKHISAR (MANISA)",

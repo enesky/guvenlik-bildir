@@ -10,5 +10,6 @@
     <color name="black56">#8f000000</color>
     <color name="transparent">#00000000</color>
     <color name="green56">#8f66BB6A</color>
+    <color name="red">#e53935</color>
 
 </resources>
