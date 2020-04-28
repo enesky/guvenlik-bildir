@@ -1,7 +1,7 @@
 package com.enesky.guvenlikbildir.network
 
 import android.util.Log
-import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.network.EarthquakeOaAPI.Companion.createHttpClient
 import retrofit2.Retrofit
@@ -49,7 +49,7 @@ class EarthquakeAPI {
             val regex = """<pre>.*</pre>""".toRegex(RegexOption.DOT_MATCHES_ALL)
             regex.find(response)?.value?.let {
                 it.slice(dataIndex until it.length).split("\n").forEachIndexed { index, line ->
-                    if (index < 200 && line.trim().isNotEmpty() && !line.contains("</pre>"))
+                    if (index < Constants.EARTHQUAKE_LIST_SIZE && line.trim().isNotEmpty() && !line.contains("</pre>"))
                         earthquakeList.add(parseLine(line))
                     else
                         return@forEachIndexed

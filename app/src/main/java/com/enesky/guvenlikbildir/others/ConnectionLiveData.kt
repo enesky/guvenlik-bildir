@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.extensions
+package com.enesky.guvenlikbildir.others
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -28,7 +28,10 @@ class ConnectionLiveData(private val context: Context) : LiveData<Boolean>(){
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            networkCallback = NetworkCallback(this)
+            networkCallback =
+                NetworkCallback(
+                    this
+                )
     }
 
     override fun onActive() {

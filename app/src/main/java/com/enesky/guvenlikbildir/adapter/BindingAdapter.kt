@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.custom.StatefulRecyclerView
-import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.extensions.setBackground
@@ -174,7 +174,7 @@ fun putValues2String(view: TextView, stringKey: String, numberValue: Number?,
     else if (stringValue != null) {
         text = "$stringKey $stringValue"
         if (secondStringValue != null)
-            text += "($secondStringValue)"
+            text += " ($secondStringValue)"
     }
 
     if (unitName != null)

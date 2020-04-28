@@ -8,6 +8,7 @@ import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class MainVM : BaseViewModel() {
 
@@ -21,13 +22,12 @@ class MainVM : BaseViewModel() {
         }
     }
 
-    private suspend fun getEarthquakes() {
+    suspend fun getEarthquakes() {
         try {
             val response = EarthquakeAPI().getKandilliPost()
 
             if (response.isSuccessful) {
-                _responseHandler.handleSuccess(response)
-                EarthquakeAPI.parseResponse(response.body()!!.replace("�", "İ"))
+                _responseHandler.handleSuccess(EarthquakeAPI.parseResponse(response.body()!!.replace("�", "İ")))
                 //Log.i("MainVM - Response",response.body()!!)
             } else {
                 _responseHandler.handleFailure(response)

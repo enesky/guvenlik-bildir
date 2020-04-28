@@ -5,6 +5,7 @@ import android.util.Log
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.model.Contact
 import com.enesky.guvenlikbildir.model.User
+import com.enesky.guvenlikbildir.others.Constants
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential

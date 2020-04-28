@@ -9,8 +9,8 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.others.Constants
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.redmadrobot.inputmask.MaskedTextChangedListener

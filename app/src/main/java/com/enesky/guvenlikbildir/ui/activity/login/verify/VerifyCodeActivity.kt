@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityVerifyCodeBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
-import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.extensions.signInWithPhoneAuthCredential

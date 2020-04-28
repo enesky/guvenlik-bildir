@@ -3,8 +3,7 @@ package com.enesky.guvenlikbildir
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.getResponseFromJson
 import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.model.GenericResponse

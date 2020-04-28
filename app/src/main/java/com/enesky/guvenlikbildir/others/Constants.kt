@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.extensions
+package com.enesky.guvenlikbildir.others
 
 object Constants {
 
@@ -8,13 +8,15 @@ object Constants {
     const val READ_TIMEOUT = 120
     const val CONNECT_TIMEOUT = 120
 
+    const val EARTHQUAKE_LIST_SIZE = 150
+
     //Notification Topic
     const val LANGUAGE_TURKISH = "Türkçe"
     const val LANG_TURKISH_CODE = "tr"
 
     //Formats - Orhan Aydoğdu
     const val DEFAULT_DATE_FORMAT = "dd/MM/yyyy HH:mm:ss"
-    const val EARTHQUAKE_LONG_DATE_FORMAT = "yyyy.MM.dd HH:mm:ss"
+    const val EARTHQUAKE_LONG_DATE_FORMAT = "yyyy.MM.dd, HH:mm:ss"
 
     //Formats - Kandilli
     const val DEFAULT_K_DATE_FORMAT = "yyyy.MM.dd"

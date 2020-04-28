@@ -1,8 +1,9 @@
-package com.enesky.guvenlikbildir.extensions
+package com.enesky.guvenlikbildir.others
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.enesky.guvenlikbildir.extensions.checkInternet
 
 /**
  * Created by Enes Kamil YILMAZ on 29.01.2020

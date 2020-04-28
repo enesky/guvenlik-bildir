@@ -2,7 +2,6 @@ package com.enesky.guvenlikbildir.ui.activity.main
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -12,10 +11,19 @@ import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.database.EarthquakeDB
+import com.enesky.guvenlikbildir.database.EarthquakeVM
+import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
+import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.network.EarthquakeAPI
+import com.enesky.guvenlikbildir.network.Result
+import com.enesky.guvenlikbildir.network.Status
+import com.enesky.guvenlikbildir.others.ConnectionLiveData
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
@@ -27,7 +35,10 @@ import com.trendyol.medusalib.navigator.Navigator
 import com.trendyol.medusalib.navigator.NavigatorConfiguration
 import com.trendyol.medusalib.navigator.transaction.NavigatorTransaction
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : BaseActivity(), Navigator.NavigatorListener,
     BottomNavigationView.OnNavigationItemSelectedListener,
@@ -61,6 +72,25 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         binding.viewModel = mainVM
         mainVM.init(binding)
 
+        val earthquakeDao = EarthquakeDB.getDatabaseManager(application.applicationContext).earthquakeDao()
+
+        val rvViewModel by lazy {
+            getViewModel { EarthquakeVM(App.mInstance, earthquakeDao) }
+        }
+
+        mainVM.responseHandler.addObserver { _, response ->
+            GlobalScope.launch {
+                withContext(Dispatchers.Main) {
+                    if (response != null && response is Result<*>) {
+                        when (response.status) {
+                            Status.SUCCESS -> rvViewModel.initAllEarthquakes(response.data as List<Earthquake>)
+                            Status.FAILURE, Status.EXCEPTION -> showToast(response.data.toString())
+                        }
+                    }
+                }
+            }
+        }
+
         bottom_nav.setOnNavigationItemReselectedListener(this)
         bottom_nav.setOnNavigationItemSelectedListener(this)
     }
@@ -71,7 +101,8 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         if (currentUser == null)
             this.openLoginActivity()
 
-        ConnectionLiveData(this).observe(this, Observer { isOnline ->
+        ConnectionLiveData(this)
+            .observe(this, Observer { isOnline ->
                 if (!isOnline)
                     showToast("İnternet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
             })

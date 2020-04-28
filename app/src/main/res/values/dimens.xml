@@ -6,7 +6,7 @@
     <dimen name="bottom_navigation_menu_height">56dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
 
-    <dimen name="default_radius">8dp</dimen>
+    <dimen name="default_radius">16dp</dimen>
 
     <dimen name="default_margin_4">4dp</dimen>
     <dimen name="default_margin_6">6dp</dimen>

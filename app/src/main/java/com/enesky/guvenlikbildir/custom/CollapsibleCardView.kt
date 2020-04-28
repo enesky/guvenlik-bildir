@@ -6,7 +6,7 @@ import androidx.annotation.Nullable
 import com.google.android.material.card.MaterialCardView
 import android.animation.ValueAnimator
 import android.view.ViewTreeObserver
-import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.others.Constants
 
 /**
  * Created by Enes Kamil YILMAZ on 05.02.2020

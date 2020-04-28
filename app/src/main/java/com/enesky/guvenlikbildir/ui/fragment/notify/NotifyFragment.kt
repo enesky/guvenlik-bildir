@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentNotifyBinding
 import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_notify.*
 

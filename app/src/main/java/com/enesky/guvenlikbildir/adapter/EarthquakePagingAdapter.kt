@@ -1,25 +1,23 @@
 package com.enesky.guvenlikbildir.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Filter
-import android.widget.Filterable
 import android.widget.ProgressBar
 import androidx.core.animation.doOnStart
 import androidx.core.view.doOnLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.ItemEarthquakeBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
@@ -32,14 +30,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Created by Enes Kamil YILMAZ on 02.02.2020
+ * Created by Enes Kamil YILMAZ on 25.04.2020
  */
 
-class EarthquakeAdapter(
-    context: Context,
-    private var earthquakeList: MutableList<Earthquake>,
-    private val earthquakeListener: EarthquakeListener
-) : RecyclerView.Adapter<EarthquakeAdapter.EarthquakeViewHolder>(), Filterable {
+class EarthquakePagingAdapter(context: Context,
+                              val earthquakeItemListener: EarthquakeItemListener
+) : PagedListAdapter<Earthquake, EarthquakePagingAdapter.EarthquakeViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var recyclerView: RecyclerView
     private var expandedItemPos: Int? = null
@@ -58,17 +54,19 @@ class EarthquakeAdapter(
         return EarthquakeViewHolder(binding)
     }
 
+    override fun onBindViewHolder(
+        holder: EarthquakeViewHolder,
+        position: Int
+    ) = holder.bind(getItem(position))
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
     }
 
-    override fun getItemCount(): Int = earthquakeList.size
-
-    override fun onBindViewHolder(holder: EarthquakeViewHolder, pos: Int) = holder.bind(earthquakeList[pos])
-
-    inner class EarthquakeViewHolder(val binding: ItemEarthquakeBinding)
-        : RecyclerView.ViewHolder(binding.root), OnMapReadyCallback {
+    inner class EarthquakeViewHolder(
+        val binding: ItemEarthquakeBinding
+    ) : RecyclerView.ViewHolder(binding.root), OnMapReadyCallback {
         var map: GoogleMap? = null
         var mEarthquake: Earthquake? = null
         val cvMap = binding.cvMap
@@ -98,7 +96,7 @@ class EarthquakeAdapter(
                     scaleDownItem(this, adapterPosition, isScaledDown)
 
                     binding.rootLayout.setOnClickListener {
-                        earthquakeListener.onItemClick(earthquake)
+                        earthquakeItemListener.onItemClick(earthquake)
                         when (expandedItemPos) {
                             null -> {
                                 // expand clicked item
@@ -125,8 +123,12 @@ class EarthquakeAdapter(
                     }
 
                     binding.rootLayout.setOnLongClickListener {
-                        earthquakeListener.onLongPressed(earthquake)
+                        earthquakeItemListener.onLongPressed(earthquake)
                         return@setOnLongClickListener true
+                    }
+
+                    binding.ivOptions.setOnClickListener {
+
                     }
 
                 }
@@ -173,7 +175,7 @@ class EarthquakeAdapter(
             map.moveCamera(CameraUpdateFactory.newLatLng(loc))
 
             map.setOnMapClickListener {
-                earthquakeListener.onMapClick(loc, earthquake.location)
+                earthquakeItemListener.onMapClick(loc, earthquake.location)
             }
             map.setOnMapLoadedCallback {
                 progressBar.makeItGone()
@@ -210,7 +212,7 @@ class EarthquakeAdapter(
         }
     }
 
-    fun setExpandProgress(holder: EarthquakeViewHolder, progress: Float) {
+    private fun setExpandProgress(holder: EarthquakeViewHolder, progress: Float) {
         if (expandedHeight > 0 && originalHeight > 0)
             holder.cardContainer.layoutParams.height = (originalHeight + (expandedHeight - originalHeight) * progress).toInt()
 
@@ -223,7 +225,7 @@ class EarthquakeAdapter(
     inline val LinearLayoutManager.visibleItemsRange: IntRange
         get() = findFirstVisibleItemPosition()..findLastVisibleItemPosition()
 
-    fun setScaleDownProgress(holder: EarthquakeViewHolder, position: Int, progress: Float) {
+    private fun setScaleDownProgress(holder: EarthquakeViewHolder, position: Int, progress: Float) {
         val itemExpanded = position >= 0 && position == expandedItemPos
         holder.cardContainer.layoutParams.apply {
             width = ((if (itemExpanded) expandedWidth else originalWidth) * (1 - 0.1f * progress)).toInt()
@@ -256,42 +258,22 @@ class EarthquakeAdapter(
         view.setBackgroundTint(color)
     }
 
-    fun update(items: MutableList<Earthquake>) {
-        this.earthquakeList = items
-        notifyDataSetChanged()
-    }
-
     override fun getItemId(position: Int): Long = position.toLong()
 
-    override fun getFilter(): Filter = filter
+    companion object {
+        private val DIFF_CALLBACK = object :
+            DiffUtil.ItemCallback<Earthquake>() {
+            override fun areItemsTheSame(oldEarthquake: Earthquake,
+                                         newEarthquake: Earthquake) =
+                oldEarthquake.id == newEarthquake.id
 
-    private val filter: Filter = object : Filter() {
-        @SuppressLint("DefaultLocale")
-        override fun performFiltering(constraint: CharSequence): FilterResults {
-            val returnList = FilterResults()
-            val filteredList: MutableList<Earthquake> = mutableListOf()
-
-            if (constraint.isEmpty())
-                returnList.values = earthquakeList
-            else {
-                val filterPattern = constraint.toString().toLowerCase()
-                for (earthquake in earthquakeList)
-                    if (earthquake.location.toLowerCase().contains(filterPattern))
-                        filteredList.add(earthquake)
-            }
-
-            returnList.values = filteredList
-            return returnList
-        }
-
-        override fun publishResults(constraint: CharSequence, results: FilterResults) {
-            earthquakeList.clear()
-            earthquakeList.addAll(results.values as Collection<Earthquake>)
-            notifyDataSetChanged()
+            override fun areContentsTheSame(oldEarthquake: Earthquake,
+                                            newEarthquake: Earthquake) =
+                oldEarthquake == newEarthquake
         }
     }
 
-    interface EarthquakeListener {
+    interface EarthquakeItemListener {
         fun onItemClick(earthquake: Earthquake)
         fun onLongPressed(earthquake: Earthquake)
         fun onMapClick(latlng: LatLng, header: String)

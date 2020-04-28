@@ -67,7 +67,7 @@
 
                         <TextView
                             android:id="@+id/tv_location"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/default_margin_16"
                             tools:text="@string/label_location"
@@ -78,6 +78,7 @@
                             app:stringValue="@{earthquake.locationInner}"
                             app:secondStringValue="@{earthquake.locationOuter}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintEnd_toStartOf="@id/iv_options"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -112,18 +113,26 @@
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
                             app:layout_constraintTop_toBottomOf="@id/tv_depth" />
 
+                        <ImageView
+                            android:id="@+id/iv_options"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_more_vert"
+                            android:padding="@dimen/default_margin_8"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
                         <TextView
                             android:id="@+id/tv_short_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/default_margin_8"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_12"
                             android:textStyle="bold"
                             app:shortDateText="@{earthquake.date}"
                             app:shortTimeText="@{earthquake.time}"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_depth"
-                            app:layout_constraintTop_toTopOf="@id/tv_depth"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+                            app:layout_constraintTop_toTopOf="@id/tv_date"
                             app:layout_constraintEnd_toEndOf="parent"
                             tools:text="5 saat önce" />
 

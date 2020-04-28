@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.extensions
 
 import androidx.core.content.edit
 import com.enesky.guvenlikbildir.App
+import com.enesky.guvenlikbildir.others.Constants
 
 /**
  * Created by Enes Kamil YILMAZ on 07.02.2020
@@ -24,6 +25,7 @@ var unsafeSms: String?
     set(value) = App.mPrefs.edit { putString(Constants.unsafeSms, value) }
 
 var locationMapWithLink: String?
-    get() = App.mPrefs.getString(Constants.locationMapLink, "\nBulunduğum Konum: \n" +
+    get() = App.mPrefs.getString(
+        Constants.locationMapLink, "\nBulunduğum Konum: \n" +
                     "https://www.google.com/maps/place/$lastKnownLocation")
     set(value) = App.mPrefs.edit { putString(Constants.locationMapLink, value) }

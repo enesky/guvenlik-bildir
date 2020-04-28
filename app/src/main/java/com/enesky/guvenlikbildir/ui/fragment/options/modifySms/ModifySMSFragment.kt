@@ -1,17 +1,13 @@
 package com.enesky.guvenlikbildir.ui.fragment.options.modifySms
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.adapter.onBackPressed
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
-import com.enesky.guvenlikbildir.extensions.Constants
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.extensions.safeSms
 import com.enesky.guvenlikbildir.extensions.unsafeSms

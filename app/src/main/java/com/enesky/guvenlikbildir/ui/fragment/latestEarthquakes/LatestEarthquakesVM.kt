@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.enesky.guvenlikbildir.adapter.EarthquakeAdapter
+import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.model.EarthquakeOA
@@ -16,10 +17,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListener {
+class LatestEarthquakesVM :
+    BaseViewModel(),
+    EarthquakeAdapter.EarthquakeListener,
+    EarthquakePagingAdapter.EarthquakeItemListener{
 
     private val _earthquakeAdapter = MutableLiveData<EarthquakeAdapter>()
     val earthquakeAdapter: LiveData<EarthquakeAdapter> = _earthquakeAdapter
+
+    private val _earthquakePagingAdapter = MutableLiveData<EarthquakePagingAdapter>()
+    val earthquakePagingAdapter: LiveData<EarthquakePagingAdapter> = _earthquakePagingAdapter
 
     private val _responseHandler = ResponseHandler()
     val responseHandler: ResponseHandler = _responseHandler
@@ -30,7 +37,12 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakeAdapter.EarthquakeListene
 
     fun init(context: Context, binding: FragmentLastestEarthquakesBinding) {
         setViewDataBinding(binding)
-        _earthquakeAdapter.value = EarthquakeAdapter(context, mutableListOf(), this@LatestEarthquakesVM)
+        //_earthquakeAdapter.value = EarthquakeAdapter(context, mutableListOf(), this@LatestEarthquakesVM)
+
+        _earthquakePagingAdapter.value = EarthquakePagingAdapter(
+            context = context,
+            earthquakeItemListener = this@LatestEarthquakesVM
+            )
     }
 
     suspend fun getLastEarthquakes(limit: String) {

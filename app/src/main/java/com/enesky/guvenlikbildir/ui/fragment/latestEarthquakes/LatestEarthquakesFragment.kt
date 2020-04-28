@@ -7,13 +7,19 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
+import com.enesky.guvenlikbildir.database.EarthquakeDB
+import com.enesky.guvenlikbildir.database.EarthquakeVM
 import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.appbar.AppBarLayout
@@ -22,7 +28,7 @@ import kotlinx.coroutines.*
 import kotlin.math.abs
 
 @Suppress("UNCHECKED_CAST")
-class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedListener,
+class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedListener,
     ViewTreeObserver.OnGlobalLayoutListener, SearchView.OnQueryTextListener {
 
     private lateinit var binding: FragmentLastestEarthquakesBinding
@@ -31,8 +37,17 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
     private val loadingDuration: Long = (600L / 0.8).toLong()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_lastest_earthquakes, container,false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_lastest_earthquakes,
+            container,
+            false
+        )
         return binding.root
     }
 
@@ -44,7 +59,26 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
             lifecycleOwner = this@LatestEarthquakesFragment
         }
 
-        latestEarthquakesVM.init(requireActivity(), binding)
+        latestEarthquakesVM.init(requireContext(), binding)
+
+        val earthquakeDao = EarthquakeDB.getDatabaseManager(requireActivity().applicationContext).earthquakeDao()
+
+        val rvViewModel by lazy {
+            getViewModel { EarthquakeVM(App.mInstance, earthquakeDao) }
+        }
+
+        val earthquakePagingAdapter = EarthquakePagingAdapter(
+            context = requireContext(),
+            earthquakeItemListener = latestEarthquakesVM
+        )
+
+        rv_earthquakes.layoutManager = LinearLayoutManager(requireContext())
+        rv_earthquakes.adapter = earthquakePagingAdapter
+
+        rvViewModel.earthquakeList.observe(
+            viewLifecycleOwner,
+            Observer(earthquakePagingAdapter::submitList)
+        )
 
         app_bar_layout.addOnOffsetChangedListener(this)
 
@@ -57,7 +91,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         })
         */
 
-        latestEarthquakesVM.responseHandler.addObserver{ _, response ->
+        latestEarthquakesVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     if (response != null && response is Result<*>) {
@@ -77,7 +111,8 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
 
         latestEarthquakesVM.onClick.observe(viewLifecycleOwner, Observer {
             if (it is EarthquakeOA)
-                Toast.makeText(requireContext(),"Item clicked: ${it.date}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Item clicked: ${it.date}", Toast.LENGTH_SHORT)
+                    .show()
             //requireContext().showToast("Item clicked: ${it.date}")
         })
 
@@ -107,7 +142,7 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         val snapHelper = GravitySnapHelper(Gravity.CENTER)
         snapHelper.attachToRecyclerView(rv_earthquakes)
 
-        updateRecyclerViewAnimDuration()
+        //updateRecyclerViewAnimDuration()
 
         srl_refresh.setOnRefreshListener {
             refresh()
@@ -171,5 +206,4 @@ class LatestEarthquakesFragment: BaseFragment(), AppBarLayout.OnOffsetChangedLis
         latestEarthquakesVM.earthquakeAdapter.value!!.filter.filter(newText)
         return true
     }
-
 }
