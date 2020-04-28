@@ -24,7 +24,6 @@ import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
@@ -76,14 +75,20 @@ fun Context.checkInternet(): Boolean {
     return networkInfo != null && networkInfo.isConnected
 }
 
-fun Context.showToast(message: String?) {
+fun Context.showToast(message: String?, isDurationLong: Boolean = true) {
     val layout = LayoutInflater.from(this).inflate(R.layout.default_toast, null, false)
     val textView = layout.findViewById<TextView>(R.id.toast_tv).apply {
         gravity = Gravity.CENTER
         text = message
     }
+
+    val mDuration = if (isDurationLong)
+        Toast.LENGTH_LONG
+    else
+        Toast.LENGTH_SHORT
+
     val toast = Toast(this).apply {
-        duration = Toast.LENGTH_LONG
+        duration = mDuration
         view = layout
         setGravity(Gravity.BOTTOM, 0, 200)
         show()

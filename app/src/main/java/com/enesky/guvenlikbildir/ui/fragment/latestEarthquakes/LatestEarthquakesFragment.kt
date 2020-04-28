@@ -7,23 +7,24 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
 import com.enesky.guvenlikbildir.database.EarthquakeDB
 import com.enesky.guvenlikbildir.database.EarthquakeVM
-import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
+import com.enesky.guvenlikbildir.database.entity.Earthquake
+import com.enesky.guvenlikbildir.databinding.FragmentLatestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.ui.dialog.EarthquakeOptionsDialog
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_lastest_earthquakes.*
+import kotlinx.android.synthetic.main.fragment_latest_earthquakes.*
 import kotlinx.coroutines.*
 import kotlin.math.abs
 
@@ -31,7 +32,7 @@ import kotlin.math.abs
 class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedListener,
     ViewTreeObserver.OnGlobalLayoutListener, SearchView.OnQueryTextListener {
 
-    private lateinit var binding: FragmentLastestEarthquakesBinding
+    private lateinit var binding: FragmentLatestEarthquakesBinding
     private lateinit var latestEarthquakesVM: LatestEarthquakesVM
     private var isAppBarExpanded: Boolean = false
 
@@ -44,7 +45,7 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_lastest_earthquakes,
+            R.layout.fragment_latest_earthquakes,
             container,
             false
         )
@@ -110,39 +111,26 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
         })
 
         latestEarthquakesVM.onClick.observe(viewLifecycleOwner, Observer {
-            if (it is EarthquakeOA)
-                Toast.makeText(requireContext(), "Item clicked: ${it.date}", Toast.LENGTH_SHORT)
-                    .show()
-            //requireContext().showToast("Item clicked: ${it.date}")
+            if (it is Earthquake)
+                requireContext().showToast("Item clicked: ${it.date}")
         })
 
-        latestEarthquakesVM.onLongPressed.observe(viewLifecycleOwner, Observer {
-            if (it is EarthquakeOA)
-                requireContext().showToast("Item long pressed: ${it.date}")
+        latestEarthquakesVM.onOptionClick.observe(viewLifecycleOwner, Observer {
+            if (it is Earthquake)
+                EarthquakeOptionsDialog.newInstance(it).show(parentFragmentManager,"EarthquakeOptionsDialog")
         })
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pb_loading.makeItVisible()
-        srl_refresh.isRefreshing = true
-
-        GlobalScope.launch(Dispatchers.Main) {
-
-            //TODO: set data
-
-            delay(100)
-            requireActivity().runOnUiThread {
-                pb_loading.makeItGone()
-                srl_refresh.isRefreshing = false
-            }
-        }
+        refresh()
 
         val snapHelper = GravitySnapHelper(Gravity.CENTER)
         snapHelper.attachToRecyclerView(rv_earthquakes)
 
-        //updateRecyclerViewAnimDuration()
+        updateRecyclerViewAnimDuration()
 
         srl_refresh.setOnRefreshListener {
             refresh()
@@ -174,6 +162,7 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
 
     private fun refresh() {
         pb_loading.makeItVisible()
+        srl_refresh.isRefreshing = false
         GlobalScope.launch(Dispatchers.Main) {
 
             //TODO: Refresh data

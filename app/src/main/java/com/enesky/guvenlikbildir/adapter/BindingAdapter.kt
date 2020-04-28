@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.custom.StatefulRecyclerView
+import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
@@ -162,6 +163,15 @@ fun dismiss(view: EditText, dismiss: Boolean) {
 @BindingAdapter("setImage")
 fun setImage(view: ImageView, imageId: Int) {
     view.setImageResource(imageId)
+}
+
+@SuppressLint("ResourceAsColor")
+@BindingAdapter("setColor")
+fun setColor(view: TextView, isColorWhite: Boolean) {
+    if (isColorWhite)
+        view.setTextColor(android.R.color.white)
+    else
+        view.setTextColor(R.color.colorPrimary)
 }
 
 @SuppressLint("SetTextI18n")

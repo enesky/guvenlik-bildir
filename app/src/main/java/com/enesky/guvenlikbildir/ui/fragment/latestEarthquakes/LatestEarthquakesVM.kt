@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.enesky.guvenlikbildir.adapter.EarthquakeAdapter
 import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
 import com.enesky.guvenlikbildir.database.entity.Earthquake
-import com.enesky.guvenlikbildir.databinding.FragmentLastestEarthquakesBinding
-import com.enesky.guvenlikbildir.model.EarthquakeOA
+import com.enesky.guvenlikbildir.databinding.FragmentLatestEarthquakesBinding
 import com.enesky.guvenlikbildir.network.EarthquakeOaAPI
 import com.enesky.guvenlikbildir.network.ResponseHandler
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
@@ -17,10 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class LatestEarthquakesVM :
-    BaseViewModel(),
-    EarthquakeAdapter.EarthquakeListener,
-    EarthquakePagingAdapter.EarthquakeItemListener{
+class LatestEarthquakesVM : BaseViewModel(), EarthquakePagingAdapter.EarthquakeItemListener{
 
     private val _earthquakeAdapter = MutableLiveData<EarthquakeAdapter>()
     val earthquakeAdapter: LiveData<EarthquakeAdapter> = _earthquakeAdapter
@@ -33,9 +29,9 @@ class LatestEarthquakesVM :
 
     val whereTo = LiveEvent<Any>()
     val onClick = LiveEvent<Any>()
-    val onLongPressed = LiveEvent<Any>()
+    val onOptionClick = LiveEvent<Any>()
 
-    fun init(context: Context, binding: FragmentLastestEarthquakesBinding) {
+    fun init(context: Context, binding: FragmentLatestEarthquakesBinding) {
         setViewDataBinding(binding)
         //_earthquakeAdapter.value = EarthquakeAdapter(context, mutableListOf(), this@LatestEarthquakesVM)
 
@@ -66,8 +62,8 @@ class LatestEarthquakesVM :
         onClick.value = earthquake
     }
 
-    override fun onLongPressed(earthquake: Earthquake) {
-        onClick.value = earthquake
+    override fun onOptionsClick(earthquake: Earthquake) {
+        onOptionClick.value = earthquake
     }
 
     override fun onMapClick(latlng: LatLng, header: String) {

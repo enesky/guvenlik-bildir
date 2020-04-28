@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="androidx.core.content.ContextCompat" />
         <variable
             name="optionItem"
             type="com.enesky.guvenlikbildir.model.OptionItem" />
@@ -33,8 +34,8 @@
             android:layout_height="wrap_content"
             android:text="@{optionItem.optionText}"
             tools:text="Gönderilecek SMS'leri düzenle."
-            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/default_text_16"
+            android:textColor="@{ContextCompat.getColor(context, optionItem.colorRes)}"
             app:layout_constraintBottom_toBottomOf="@id/line_bottom"
             app:layout_constraintStart_toEndOf="@id/iv_option"
             app:layout_constraintTop_toTopOf="parent" />

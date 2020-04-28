@@ -28,6 +28,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.samlss.broccoli.Broccoli
+
 
 /**
  * Created by Enes Kamil YILMAZ on 25.04.2020
@@ -40,7 +42,7 @@ class EarthquakePagingAdapter(context: Context,
     private lateinit var recyclerView: RecyclerView
     private var expandedItemPos: Int? = null
 
-    private val originalWidth = context.screenWidth - 32.dp
+    private val originalWidth = context.screenWidth - 24.dp
     private val expandedWidth = context.screenWidth - 8.dp
     private var originalHeight = -1
     private var expandedHeight = -1
@@ -75,15 +77,26 @@ class EarthquakePagingAdapter(context: Context,
         val cardContainer = binding.cardContainer
         val scaleContainer = binding.scaleContainer
 
+        val broccoli = Broccoli()
+
         fun bind(earthquake: Earthquake?) {
 
             when (earthquake) {
                 null -> {
-                    //TODO: Placeholder???
+                    broccoli.addPlaceholders(
+                        binding.tvLocation,
+                        binding.tvDepth,
+                        binding.tvDate,
+                        binding.tvMag,
+                        binding.tvShortDate,
+                        binding.map)
+                    broccoli.show()
+
                     binding.map.onCreate(null)
                     binding.map.onResume()
                 }
                 else -> {
+                    broccoli.removeAllPlaceholders()
 
                     mEarthquake = earthquake
                     binding.earthquake = earthquake
@@ -122,13 +135,8 @@ class EarthquakePagingAdapter(context: Context,
                         }
                     }
 
-                    binding.rootLayout.setOnLongClickListener {
-                        earthquakeItemListener.onLongPressed(earthquake)
-                        return@setOnLongClickListener true
-                    }
-
                     binding.ivOptions.setOnClickListener {
-
+                        earthquakeItemListener.onOptionsClick(earthquake)
                     }
 
                 }
@@ -157,10 +165,10 @@ class EarthquakePagingAdapter(context: Context,
 
             holder.cardContainer.doOnLayout { view ->
                 originalHeight = view.height
-                holder.cvMap.isVisible = true
+                holder.cvMap.makeItVisible()
                 view.doOnPreDraw {
                     expandedHeight = view.height
-                    holder.cvMap.isVisible = false
+                    holder.cvMap.makeItGone()
                 }
             }
         }
@@ -193,14 +201,14 @@ class EarthquakePagingAdapter(context: Context,
                 animator.doOnStart {
                     GlobalScope.launch(Dispatchers.Main) {
                         delay(200)
-                        holder.cvMap.isVisible = true
+                        holder.cvMap.makeItVisible()
                     }
                 }
             else
                 animator.doOnStart {
                     GlobalScope.launch(Dispatchers.Main) {
                         delay(100)
-                        holder.cvMap.isVisible = false
+                        holder.cvMap.makeItGone()
                     }
                 }
 
@@ -265,17 +273,19 @@ class EarthquakePagingAdapter(context: Context,
             DiffUtil.ItemCallback<Earthquake>() {
             override fun areItemsTheSame(oldEarthquake: Earthquake,
                                          newEarthquake: Earthquake) =
-                oldEarthquake.id == newEarthquake.id
+                oldEarthquake.dateTime == newEarthquake.dateTime &&
+                        oldEarthquake.id == newEarthquake.id
 
             override fun areContentsTheSame(oldEarthquake: Earthquake,
                                             newEarthquake: Earthquake) =
-                oldEarthquake == newEarthquake
+                oldEarthquake.dateTime == newEarthquake.dateTime &&
+                        oldEarthquake.id == newEarthquake.id
         }
     }
 
     interface EarthquakeItemListener {
         fun onItemClick(earthquake: Earthquake)
-        fun onLongPressed(earthquake: Earthquake)
+        fun onOptionsClick(earthquake: Earthquake)
         fun onMapClick(latlng: LatLng, header: String)
     }
 

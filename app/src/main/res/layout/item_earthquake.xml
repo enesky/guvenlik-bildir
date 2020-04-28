@@ -62,7 +62,6 @@
                             app:layout_constraintEnd_toStartOf="@id/tv_location"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_location"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_date"
                             tools:text="0.0" />
 
                         <TextView
@@ -143,7 +142,7 @@
                             android:src="@drawable/ic_arrow"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_date" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_date"/>
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cv_map"

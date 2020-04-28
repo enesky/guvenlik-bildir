@@ -59,5 +59,9 @@
     <string name="label_depth">Derinlik: </string>
     <string name="label_date">Tarih: </string>
     <string name="label_kilometer">km</string>
+    <string name="label_felt_it">Hissettim</string>
+    <string name="label_not_felt_it">Hissetmedim</string>
+    <string name="label_share">Paylaş</string>
+    <string name="label_copy">Panoya Kopyala</string>
 
 </resources>

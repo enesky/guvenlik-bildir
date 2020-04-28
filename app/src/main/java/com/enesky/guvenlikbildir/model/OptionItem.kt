@@ -1,6 +1,7 @@
 package com.enesky.guvenlikbildir.model
 
 import android.os.Parcelable
+import com.enesky.guvenlikbildir.R
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -10,5 +11,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class OptionItem(
     val imageId: Int,
-    val optionText: String
+    val optionText: String,
+    var colorRes: Int = R.color.colorPrimary
 ) : Parcelable
