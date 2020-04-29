@@ -109,7 +109,7 @@ class EarthquakePagingAdapter(context: Context,
                     scaleDownItem(this, adapterPosition, isScaledDown)
 
                     binding.rootLayout.setOnClickListener {
-                        earthquakeItemListener.onItemClick(earthquake)
+                        //earthquakeItemListener.onItemClick(earthquake)
                         when (expandedItemPos) {
                             null -> {
                                 // expand clicked item

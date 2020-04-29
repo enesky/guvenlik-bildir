@@ -5,6 +5,8 @@ object Constants {
     const val odDepremUrl = "https://api.orhanaydogdu.com.tr/deprem/"
     const val kandilliUrl = "http://www.koeri.boun.edu.tr/scripts/"
 
+    const val googlePlayUrl = "https://play.google.com/store/apps/details?id=com.enesky.guvenlikbildir"
+
     const val READ_TIMEOUT = 120
     const val CONNECT_TIMEOUT = 120
 

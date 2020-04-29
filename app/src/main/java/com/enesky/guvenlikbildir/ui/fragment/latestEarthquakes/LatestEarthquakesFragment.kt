@@ -38,17 +38,8 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
 
     private val loadingDuration: Long = (600L / 0.8).toLong()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_latest_earthquakes,
-            container,
-            false
-        )
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_latest_earthquakes, container, false)
         return binding.root
     }
 
@@ -110,11 +101,6 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
                 openInfoCountDownDialog(Constants.map + it)
         })
 
-        latestEarthquakesVM.onClick.observe(viewLifecycleOwner, Observer {
-            if (it is Earthquake)
-                requireContext().showToast("Item clicked: ${it.date}")
-        })
-
         latestEarthquakesVM.onOptionClick.observe(viewLifecycleOwner, Observer {
             if (it is Earthquake)
                 EarthquakeOptionsDialog.newInstance(it).show(parentFragmentManager,"EarthquakeOptionsDialog")
@@ -132,9 +118,9 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
 
         updateRecyclerViewAnimDuration()
 
-        srl_refresh.setOnRefreshListener {
-            refresh()
-        }
+        //srl_refresh.setOnRefreshListener {
+          //  refresh()
+        //}
 
         iv_filter.setOnClickListener {
             if (!isAppBarExpanded) {
@@ -162,14 +148,14 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
 
     private fun refresh() {
         pb_loading.makeItVisible()
-        srl_refresh.isRefreshing = false
+        //srl_refresh.isRefreshing = false
         GlobalScope.launch(Dispatchers.Main) {
 
             //TODO: Refresh data
 
             delay(1000)
             pb_loading.makeItGone()
-            srl_refresh.isRefreshing = false
+            //srl_refresh.isRefreshing = false
         }
     }
 

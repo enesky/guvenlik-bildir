@@ -20,7 +20,7 @@ class OptionsVM : BaseViewModel(), OptionAdapter.OptionListListener {
                 OptionItem(R.drawable.ic_info, getString(R.string.item_option_2)),
                 OptionItem(R.drawable.ic_phone, getString(R.string.item_option_3)),
                 OptionItem(R.drawable.ic_about, getString(R.string.item_option_4)),
-                OptionItem(R.drawable.ic_share, getString(R.string.item_option_5)),
+                OptionItem(R.drawable.ic_share_grey, getString(R.string.item_option_5)),
                 OptionItem(R.drawable.ic_feedback, getString(R.string.item_option_6)),
                 OptionItem(R.drawable.ic_about, getString(R.string.item_option_7)),
                 OptionItem(R.drawable.ic_exit_to_app, getString(R.string.item_option_8))

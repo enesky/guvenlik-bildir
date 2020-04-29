@@ -40,14 +40,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/default_margin_16"
-                    android:paddingTop="@dimen/default_margin_4"
                     android:paddingRight="@dimen/default_margin_16"
                     android:transformPivotX="0dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:paddingTop="@dimen/default_margin_16">
+                        tools:layout_marginTop="@dimen/default_margin_16">
 
                         <TextView
                             android:id="@+id/tv_mag"
@@ -67,12 +66,16 @@
                         <TextView
                             android:id="@+id/tv_location"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="18dp"
                             android:layout_marginStart="@dimen/default_margin_16"
-                            tools:text="@string/label_location"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
+                            android:maxLines="1"
+                            tools:text="@string/label_location"
+                            app:autoSizeMaxTextSize="@dimen/default_text_14"
+                            app:autoSizeMinTextSize="@dimen/default_text_12"
+                            app:autoSizeTextType="uniform"
                             app:stringKey="@{@string/label_location}"
                             app:stringValue="@{earthquake.locationInner}"
                             app:secondStringValue="@{earthquake.locationOuter}"
@@ -83,7 +86,7 @@
                         <TextView
                             android:id="@+id/tv_depth"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/default_margin_18"
                             android:layout_marginStart="@dimen/default_margin_16"
                             android:layout_marginTop="@dimen/default_margin_4"
                             tools:text="@string/label_depth"
@@ -99,13 +102,17 @@
                         <TextView
                             android:id="@+id/tv_date"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="18dp"
                             android:layout_marginStart="@dimen/default_margin_16"
                             android:layout_marginTop="@dimen/default_margin_4"
-                            tools:text="@string/label_date"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
+                            android:maxLines="1"
+                            tools:text="@string/label_date"
+                            app:autoSizeMaxTextSize="@dimen/default_text_14"
+                            app:autoSizeMinTextSize="@dimen/default_text_12"
+                            app:autoSizeTextType="uniform"
                             app:stringKey="@{@string/label_date}"
                             app:dateText="@{earthquake.date}"
                             app:timeText="@{earthquake.time}"
@@ -124,7 +131,7 @@
                         <TextView
                             android:id="@+id/tv_short_date"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/default_margin_18"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_12"
                             android:textStyle="bold"
