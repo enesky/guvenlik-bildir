@@ -118,9 +118,9 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
 
         updateRecyclerViewAnimDuration()
 
-        //srl_refresh.setOnRefreshListener {
-          //  refresh()
-        //}
+        srl_refresh.setOnRefreshListener {
+            refresh()
+        }
 
         iv_filter.setOnClickListener {
             if (!isAppBarExpanded) {
@@ -148,14 +148,14 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
 
     private fun refresh() {
         pb_loading.makeItVisible()
-        //srl_refresh.isRefreshing = false
+        srl_refresh.isRefreshing = false
         GlobalScope.launch(Dispatchers.Main) {
 
             //TODO: Refresh data
 
             delay(1000)
             pb_loading.makeItGone()
-            //srl_refresh.isRefreshing = false
+            srl_refresh.isRefreshing = false
         }
     }
 

@@ -95,14 +95,14 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/srl_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_earthquakes"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="16dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:paddingTop="8dp"
                     tools:listitem="@layout/item_earthquake"/>
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
