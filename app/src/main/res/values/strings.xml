@@ -43,7 +43,8 @@
     <string name="item_option_5">Uygulamayı Paylaş / Öner</string>
     <string name="item_option_6">Görüş ve Önerileriniz</string>
     <string name="item_option_7">Uygulama Kodunu İncele</string>
-    <string name="item_option_8">Oturumu Kapat</string>
+    <string name="item_option_8">Uygulama Hakkında</string>
+    <string name="item_option_9">Oturumu Kapat</string>
     <string name="label_mail_header">Güvenlik Bildir: Görüş - Öneri</string>
     <string name="label_mail_body">Görüş ve önerilerinizi buraya yazınız…</string>
     <string name="label_save">Kaydet</string>

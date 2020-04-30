@@ -27,12 +27,14 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.Gson
+import com.thefinestartist.finestwebview.FinestWebView
 import java.io.IOException
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
@@ -137,6 +139,21 @@ fun Activity.openLoginActivity() {
     finishAffinity()
 }
 
+fun Activity.openGooglePlayPage() {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse(Constants.googlePlayUrl)
+        setPackage("com.android.vending")
+    }
+    startActivity(intent)
+}
+
+fun Activity.shareGooglePlayPage() {
+    val sendIntent: Intent = Intent().setAction(Intent.ACTION_SEND)
+    sendIntent.putExtra(Intent.EXTRA_TEXT, " # Güvenlik Bildir #\n" + Constants.googlePlayUrl)
+    sendIntent.type = "text/plain"
+    startActivity(sendIntent)
+}
+
 fun Fragment.openGoogleMaps(latlng: String, title: String) {
     val query = "$latlng($title)"
     val encodedQuery = Uri.encode(query)
@@ -144,6 +161,20 @@ fun Fragment.openGoogleMaps(latlng: String, title: String) {
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
     mapIntent.setPackage("com.google.android.apps.maps")
     startActivity(mapIntent)
+}
+
+fun Activity.openVerifyCodeActivity(phoneNumber: String,
+                                    verificationId: String,
+                                    token: PhoneAuthProvider.ForceResendingToken) {
+    val intent = Intent(this, VerifyCodeActivity::class.java)
+    intent.putExtra("phoneNumber", phoneNumber)
+    intent.putExtra("verificationId", verificationId)
+    intent.putExtra("token", token)
+    startActivity(intent)
+}
+
+fun Activity.openWebView(url: String) {
+    FinestWebView.Builder(this).show(url)
 }
 
 fun Fragment.openLastKnownLocation() {
@@ -155,15 +186,6 @@ fun Fragment.openLastKnownLocation() {
     startActivity(mapIntent)
 }
 
-fun Activity.openVerifyCodeActivity(phoneNumber: String,
-                                   verificationId: String,
-                                   token: PhoneAuthProvider.ForceResendingToken) {
-    val intent = Intent(this, VerifyCodeActivity::class.java)
-    intent.putExtra("phoneNumber", phoneNumber)
-    intent.putExtra("verificationId", verificationId)
-    intent.putExtra("token", token)
-    startActivity(intent)
-}
 
 // Extensions
 fun getScreenHeight(): Int = Resources.getSystem().displayMetrics.heightPixels

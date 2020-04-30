@@ -20,22 +20,25 @@
 
         <ImageView
             android:id="@+id/iv_option"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_margin_16"
+            android:layout_width="@dimen/default_margin_24"
+            android:layout_height="@dimen/default_margin_24"
+            android:layout_marginStart="@dimen/default_margin_16"
             tools:src="@drawable/ic_sms"
             setImage="@{optionItem.imageId}"
-            app:layout_constraintBottom_toBottomOf="@id/line_bottom"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/line_bottom" />
 
         <TextView
+            android:id="@+id/tv_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{optionItem.optionText}"
             tools:text="Gönderilecek SMS'leri düzenle."
             android:textSize="@dimen/default_text_16"
             android:textColor="@{ContextCompat.getColor(context, optionItem.colorRes)}"
+            android:layout_margin="@dimen/default_margin_16"
+            android:padding="@dimen/default_margin_16"
             app:layout_constraintBottom_toBottomOf="@id/line_bottom"
             app:layout_constraintStart_toEndOf="@id/iv_option"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lineShade"
-            app:layout_constraintTop_toBottomOf="@id/iv_option" />
+            app:layout_constraintTop_toBottomOf="@id/tv_option" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

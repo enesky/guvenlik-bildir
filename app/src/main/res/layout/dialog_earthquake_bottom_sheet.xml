@@ -40,7 +40,14 @@
             android:layout_marginEnd="@dimen/default_margin_16"
             android:layout_marginTop="@dimen/default_margin_8"
             app:layout_constraintTop_toBottomOf="@id/toggle"
-            app:layout_constraintBottom_toTopOf="@id/rv_options" />
+            app:layout_constraintBottom_toTopOf="@id/line" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lineShade"
+            app:layout_constraintTop_toBottomOf="@id/tv_earthquake_details" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_options"
@@ -49,7 +56,7 @@
             android:nestedScrollingEnabled="false"
             tools:listitem="@layout/item_option"
             tools:itemCount="4"
-            app:layout_constraintTop_toBottomOf="@id/tv_earthquake_details"
+            app:layout_constraintTop_toBottomOf="@id/line"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

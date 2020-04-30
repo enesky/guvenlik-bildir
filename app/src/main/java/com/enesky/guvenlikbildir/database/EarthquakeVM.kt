@@ -25,7 +25,6 @@ class EarthquakeVM(
     application: Application,
     val earthquakeDao: EarthquakeDao) : AndroidViewModel(application) {
 
-
     val earthquakeList: LiveData<PagedList<Earthquake>> = earthquakeDao.getEarthquakes().toLiveData(
         Config( pageSize =  15,
                 enablePlaceholders = true,

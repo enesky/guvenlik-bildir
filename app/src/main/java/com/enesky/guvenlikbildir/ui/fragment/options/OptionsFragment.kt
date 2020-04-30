@@ -1,6 +1,7 @@
 package com.enesky.guvenlikbildir.ui.fragment.options
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,8 @@ import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.openBrowser
-import com.enesky.guvenlikbildir.extensions.sendFeedback
-import com.enesky.guvenlikbildir.extensions.showToast
+import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.contacts.ContactsFragment
@@ -46,14 +45,18 @@ class OptionsFragment: BaseFragment() {
                 1 -> multipleStackNavigator!!.start(ModifySMSFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 2 -> requireContext().showToast(getString(R.string.item_option_2))
                 3 -> requireContext().showToast(getString(R.string.item_option_3))
-                4 -> requireContext().showToast(getString(R.string.item_option_4))
-                5 -> requireContext().showToast(getString(R.string.item_option_5))
+                4 -> requireActivity().openGooglePlayPage()
+                5 -> requireActivity().shareGooglePlayPage()
                 6 -> sendFeedback()
-                7 -> openBrowser(R.string.link_github)
+                7 -> requireActivity().openWebView(Constants.githubUrl)
                 8 -> {
+
+                }
+                9 -> {
                     App.mAuth.signOut()
                     startActivity(Intent(requireActivity(), LoginActivity::class.java))
                     requireActivity().finishAffinity()
+
                 }
             }
         })

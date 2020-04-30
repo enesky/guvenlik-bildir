@@ -6,6 +6,7 @@ object Constants {
     const val kandilliUrl = "http://www.koeri.boun.edu.tr/scripts/"
 
     const val googlePlayUrl = "https://play.google.com/store/apps/details?id=com.enesky.guvenlikbildir"
+    const val githubUrl = "https://github.com/EnesKy/guvenlik-bildir"
 
     const val READ_TIMEOUT = 120
     const val CONNECT_TIMEOUT = 120
@@ -21,8 +22,8 @@ object Constants {
     const val EARTHQUAKE_LONG_DATE_FORMAT = "yyyy.MM.dd, HH:mm:ss"
 
     //Formats - Kandilli
-    const val DEFAULT_K_DATE_FORMAT = "yyyy.MM.dd"
-    const val EARTHQUAKE_K_SHORT_DATE_FORMAT = "HH:mm:ss"
+    const val DEFAULT_K_DATE_TIME_FORMAT = "yyyy.MM.dd HH:mm:ss"
+    const val EARTHQUAKE_K_TIME_FORMAT = "HH:mm:ss"
     const val EARTHQUAKE_K_LONG_DATE_FORMAT = "HH:mm:ss dd/MM/yyyy"
 
     //FirebaseAuthentication

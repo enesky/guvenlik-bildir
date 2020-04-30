@@ -124,7 +124,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_more_vert"
-                            android:padding="@dimen/default_margin_8"
+                            android:padding="@dimen/default_margin_6"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
 

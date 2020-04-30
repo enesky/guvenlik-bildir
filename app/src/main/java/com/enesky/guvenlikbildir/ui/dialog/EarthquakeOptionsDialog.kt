@@ -24,6 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_earthquake_bottom_sheet.*
+import java.text.SimpleDateFormat
 
 class EarthquakeOptionsDialog : BottomSheetDialogFragment(), OptionAdapter.OptionListListener {
 
@@ -70,18 +71,18 @@ class EarthquakeOptionsDialog : BottomSheetDialogFragment(), OptionAdapter.Optio
         super.onViewCreated(view, savedInstanceState)
 
         earthquakeDetail =
-                "# Kandilli Rasathanesi #\n" +
-                "${earthquake!!.location}\n" +
+                "# Deprem - Kandilli Rasathanesi #\n" +
+                "Yer: ${earthquake!!.location}\n" +
                 "Büyüklük: ${earthquake!!.magML}\n" +
                 "Derinlik: ${earthquake!!.depth} km\n" +
-                "${earthquake!!.dateTime} TSİ\n"
+                "Tarih: " + formatDateTime(earthquake!!.dateTime) + " TSİ\n"
 
         earthquakeDetailWithLinks =
-                "# Kandilli Rasathanesi #\n" +
-                "${earthquake!!.location}\n" +
+                "# Deprem - Kandilli Rasathanesi #\n" +
+                "Yer: ${earthquake!!.location}\n" +
                 "Büyüklük: ${earthquake!!.magML}\n" +
                 "Derinlik: ${earthquake!!.depth} km\n" +
-                "${earthquake!!.dateTime} TSİ\n" +
+                "Tarih: " + formatDateTime(earthquake!!.dateTime) + " TSİ\n"
                 "https://maps.google.com/maps?q=${earthquake!!.lat},${earthquake!!.lng}&ll=${earthquake!!.lat},${earthquake!!.lng}&&z=8\n" +
                 "# Güvenlik Bildir #\n" +
                 Constants.googlePlayUrl
@@ -158,6 +159,11 @@ class EarthquakeOptionsDialog : BottomSheetDialogFragment(), OptionAdapter.Optio
                 dismissAllowingStateLoss()
             }
         }
+    }
+
+    fun formatDateTime(dateTime: String): String {
+        val date = SimpleDateFormat(Constants.DEFAULT_K_DATE_TIME_FORMAT).parse(dateTime)
+        return SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
     }
 
 }

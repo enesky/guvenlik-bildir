@@ -139,6 +139,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.7.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.2.2"
 
+    implementation "com.thefinestartist:finestwebview:1.2.7"
     implementation 'com.github.rubensousa:gravitysnaphelper:2.2.0'
     implementation "com.github.skydoves:transformationlayout:1.0.3"
     implementation 'com.github.quickpermissions:quickpermissions-kotlin:0.4.0'

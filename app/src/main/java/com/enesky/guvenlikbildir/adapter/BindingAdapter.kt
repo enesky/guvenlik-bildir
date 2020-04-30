@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.adapter
 
 import android.annotation.SuppressLint
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.EditText
@@ -138,7 +139,9 @@ fun bindFormattedDate(view: TextView, formattedDate: String) {
 @BindingAdapter("stringKey", "dateText", "timeText")
 fun bindFormattedDate(view: TextView, stringKey: String, dateText: String, timeText:String) {
     var formattedDateTimeText = ""
+    //Log.i("bindFormattedDate@@@", "$dateText, $timeText")
     val date = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT).parse("$dateText, $timeText")
+    //Log.i("bindFormattedDate@@@", date.toString())
     formattedDateTimeText = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
     view.text = "$stringKey $formattedDateTimeText"
 }

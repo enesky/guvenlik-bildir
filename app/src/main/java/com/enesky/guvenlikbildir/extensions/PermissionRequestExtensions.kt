@@ -3,6 +3,7 @@ package com.enesky.guvenlikbildir.extensions
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,8 +20,7 @@ fun Context.requireSendSmsPermission(function: () -> Any) = runWithPermissions(
     options = getQuickPermissionOptions()
 ) {
     Log.d("CalendarEventExtensions", "requireSendSmsPermission: Send Sms permission granted")
-    if (ContextCompat.checkSelfPermission(this,
-            Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
         function()
     }
 }
@@ -30,8 +30,7 @@ fun Context.requireCallPhonePermission(function: () -> Any) = runWithPermissions
     options = getQuickPermissionOptions()
 ) {
     Log.d("CalendarEventExtensions", "requireCallPhonePermission: Call Phone permission granted")
-    if (ContextCompat.checkSelfPermission(this,
-            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
         function()
     }
 }
@@ -45,18 +44,32 @@ fun Context.requireReadContactsPermission(function: () -> Any) = runWithPermissi
         function()
 }
 
-fun Context.requireLocationPermission(function: () -> Any) = runWithPermissions(
-    Manifest.permission.ACCESS_FINE_LOCATION,
-    Manifest.permission.ACCESS_COARSE_LOCATION,
-    options = getQuickPermissionOptions()
-) {
-    Log.d("CalendarEventExtensions", "requireLocationPermission: Location permissions granted")
-    if (ContextCompat.checkSelfPermission(this,
-            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-        ContextCompat.checkSelfPermission(this,
-            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-        function()
+fun Context.requireLocationPermission(function: () -> Any) =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { runWithPermissions(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+        options = getQuickPermissionOptions()
+    ) {
+        Log.d("CalendarEventExtensions", "requireLocationPermission: Location permissions granted")
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            function()
+        }
     }
+} else { //if("VERSION.SDK_INT < Q")
+        runWithPermissions(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            options = getQuickPermissionOptions()
+        ) {
+            Log.d("CalendarEventExtensions", "requireLocationPermission: Location permissions granted")
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                function()
+            }
+        }
 }
 
 fun Context.requireAllPermissions() = runWithPermissions(
