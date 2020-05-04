@@ -26,7 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_earthquake_bottom_sheet.*
 import java.text.SimpleDateFormat
 
-class EarthquakeOptionsDialog : BottomSheetDialogFragment(), OptionAdapter.OptionListListener {
+class EarthquakeOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapter.OptionListListener {
 
     companion object {
         private const val earthquakeTag = "earthquakeTag"
@@ -44,15 +44,6 @@ class EarthquakeOptionsDialog : BottomSheetDialogFragment(), OptionAdapter.Optio
     private lateinit var binding: DialogEarthquakeBottomSheetBinding
     private var earthquakeDetail = ""
     private var earthquakeDetailWithLinks = ""
-
-    private var bottomSheetDialog: BottomSheetDialog? = null
-    private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        setupOnShowListener()
-        return bottomSheetDialog as BottomSheetDialog
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_earthquake_bottom_sheet, container, false)
@@ -104,40 +95,6 @@ class EarthquakeOptionsDialog : BottomSheetDialogFragment(), OptionAdapter.Optio
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        //No call for super(). Bug on API Level > 11.
-    }
-
-    override fun dismiss() {
-        super.dismissAllowingStateLoss()
-    }
-
-    override fun show(manager: FragmentManager, tag: String?) {
-        if (manager.findFragmentByTag(tag) == null) {
-            try {
-                super.show(manager, tag)
-            } catch (e: IllegalStateException) {
-                manager.beginTransaction().add(this, tag).commitAllowingStateLoss()
-            }
-        }
-    }
-
-    private fun setupOnShowListener() {
-
-        bottomSheetDialog!!.setOnShowListener { dialog ->
-
-            val frameLayout =
-                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
-
-            if (frameLayout != null) {
-                frameLayout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                bottomSheetBehavior = BottomSheetBehavior.from(frameLayout)
-                bottomSheetBehavior!!.skipCollapsed = true
-                bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-
-        }
-    }
 
     override fun onItemClick(pos: Int, optionItem: OptionItem) {
         when(pos) {

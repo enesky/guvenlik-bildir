@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_dialog"
+        android:paddingStart="@dimen/default_margin_24"
+        android:paddingEnd="@dimen/default_margin_24">
+
+        <View
+            android:id="@+id/toggle"
+            android:layout_width="@dimen/toolbar_height"
+            android:layout_height="@dimen/default_margin_8"
+            android:background="@drawable/bg_radius"
+            android:layout_margin="@dimen/default_margin_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_earthquake_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/default_text_14"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/label_about"
+            android:layout_margin="@dimen/default_margin_16"
+            app:layout_constraintTop_toBottomOf="@id/toggle"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

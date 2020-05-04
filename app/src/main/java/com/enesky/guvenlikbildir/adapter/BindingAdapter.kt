@@ -21,6 +21,7 @@ import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.extensions.setBackground
+import com.enesky.guvenlikbildir.extensions.setTextColorRes
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,7 +55,6 @@ fun bindStatefulRecyclerViewAdapter(view: StatefulRecyclerView, adapter: Recycle
 
 @BindingAdapter("setAdapterWithAnim")
 fun bindRecyclerViewAdapterWithAnim(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
-    view.setHasFixedSize(true)
     view.layoutManager = LinearLayoutManager(view.context)
     view.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.layout_animation)
     view.adapter = adapter
@@ -120,12 +120,15 @@ fun bindShortenedDate(view: TextView, formattedDate: String) {
 
 @SuppressLint("SimpleDateFormat")
 @BindingAdapter("shortDateText", "shortTimeText")
-fun bindShortenedDateTime(view: TextView, dateText: String, timeText:String) {
-    val p = PrettyTime()
-    p.locale = Locale("tr")
-    val simpleDateFormat = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT)
-    val date = simpleDateFormat.parse("$dateText, $timeText")
-    view.text = p.format(date)
+fun bindShortenedDateTime(view: TextView, dateText: String?, timeText:String?) {
+    if (dateText == null || timeText == null) {
+        view.text = "-"
+    } else {
+        val date = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT).parse("$dateText, $timeText")
+        val p = PrettyTime()
+        p.locale = Locale("tr")
+        view.text = p.format(date)
+    }
 }
 
 @SuppressLint("SimpleDateFormat")
@@ -137,13 +140,15 @@ fun bindFormattedDate(view: TextView, formattedDate: String) {
 
 @SuppressLint("SimpleDateFormat", "SetTextI18n")
 @BindingAdapter("stringKey", "dateText", "timeText")
-fun bindFormattedDate(view: TextView, stringKey: String, dateText: String, timeText:String) {
+fun bindFormattedDate(view: TextView, stringKey: String, dateText: String?, timeText:String?) {
     var formattedDateTimeText = ""
-    //Log.i("bindFormattedDate@@@", "$dateText, $timeText")
-    val date = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT).parse("$dateText, $timeText")
-    //Log.i("bindFormattedDate@@@", date.toString())
-    formattedDateTimeText = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
-    view.text = "$stringKey $formattedDateTimeText"
+    if (dateText == null || timeText == null) {
+        view.text = ""
+    } else {
+        val date = SimpleDateFormat(Constants.EARTHQUAKE_LONG_DATE_FORMAT).parse("$dateText, $timeText")
+        formattedDateTimeText = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
+        view.text = "$stringKey $formattedDateTimeText"
+    }
 }
 
 @BindingAdapter("text")
@@ -194,5 +199,50 @@ fun putValues2String(view: TextView, stringKey: String, numberValue: Number?,
         view.text = "$text $unitName"
     else
         view.text = text
+
+}
+
+@BindingAdapter("filterIndex","selectedIndex", requireAll=true)
+fun changeFilters(view: TextView, filterIndex: Int, selectedIndex: Int) {
+
+    when (selectedIndex) {
+        0 -> { // All
+            view.background = view.context.getDrawable(R.drawable.bg_left_active)
+            view.setTextColorRes(R.color.colorPrimary)
+        }
+        1 -> { // 0 - 3
+            view.setBackground(android.R.color.white)
+            view.setTextColorRes(R.color.colorPrimary)
+        }
+        2 -> { // 3 - 4.5
+            view.setBackground(android.R.color.white)
+            view.setTextColorRes(R.color.colorSecondary)
+        }
+        3 -> { // > 4.5
+            view.background = view.context.getDrawable(R.drawable.bg_right_active)
+            view.setTextColorRes(R.color.red)
+        }
+    }
+
+    when (filterIndex) {
+        0 -> { // All
+            if (selectedIndex != filterIndex) {
+                view.background = view.context.getDrawable(R.drawable.bg_left_passive)
+                view.setTextColorRes(android.R.color.white)
+            }
+        }
+        1, 2 -> { // 0-3, 3-4.5
+            if (selectedIndex != filterIndex) {
+                view.setBackground(R.color.colorPrimary)
+                view.setTextColorRes(android.R.color.white)
+            }
+        }
+        3 -> { // >4.5
+            if (selectedIndex != filterIndex) {
+                view.background = view.context.getDrawable(R.drawable.bg_right_passive)
+                view.setTextColorRes(android.R.color.white)
+            }
+        }
+    }
 
 }
