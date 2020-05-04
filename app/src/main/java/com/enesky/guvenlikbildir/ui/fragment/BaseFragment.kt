@@ -27,7 +27,7 @@ abstract class BaseFragment: Fragment() {
     }
 
     fun openInfoCountDownDialog(tag: String) {
-        InfoCountDownDialog().show(childFragmentManager, tag)
+        InfoCountDownDialog().show(parentFragmentManager, tag)
     }
 
 }

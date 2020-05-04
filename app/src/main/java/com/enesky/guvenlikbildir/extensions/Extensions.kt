@@ -120,6 +120,13 @@ fun Context.showKeyboard() {
     )
 }
 
+fun Context.hasNetwork(): Boolean {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = connectivityManager.activeNetwork
+    val capabilities = connectivityManager.getNetworkCapabilities(network)
+    return capabilities != null
+}
+
 // Activity-Fragment Extensions
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
