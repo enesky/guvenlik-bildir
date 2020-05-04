@@ -18,44 +18,17 @@ import kotlinx.coroutines.launch
 
 class LatestEarthquakesVM : BaseViewModel(), EarthquakePagingAdapter.EarthquakeItemListener{
 
-    private val _earthquakeAdapter = MutableLiveData<EarthquakeAdapter>()
-    val earthquakeAdapter: LiveData<EarthquakeAdapter> = _earthquakeAdapter
-
-    private val _earthquakePagingAdapter = MutableLiveData<EarthquakePagingAdapter>()
-    val earthquakePagingAdapter: LiveData<EarthquakePagingAdapter> = _earthquakePagingAdapter
-
-    private val _responseHandler = ResponseHandler()
-    val responseHandler: ResponseHandler = _responseHandler
+    val filterIndex = MutableLiveData<Int>().apply {
+        value = 0
+    }
 
     val whereTo = LiveEvent<Any>()
     val onClick = LiveEvent<Any>()
     val onOptionClick = LiveEvent<Any>()
+    val onFilterIndexChange = LiveEvent<Int>()
 
-    fun init(context: Context, binding: FragmentLatestEarthquakesBinding) {
+    fun init(binding: FragmentLatestEarthquakesBinding) {
         setViewDataBinding(binding)
-        //_earthquakeAdapter.value = EarthquakeAdapter(context, mutableListOf(), this@LatestEarthquakesVM)
-
-        _earthquakePagingAdapter.value = EarthquakePagingAdapter(
-            context = context,
-            earthquakeItemListener = this@LatestEarthquakesVM
-            )
-    }
-
-    suspend fun getLastEarthquakes(limit: String) {
-        try {
-            val response = EarthquakeOaAPI().getLastEarthquakes(limit)
-
-            if (response.isSuccessful) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    _responseHandler.handleSuccess(response)
-                    //earthquakeAdapter.value!!.update(response.body()!!.result as MutableList<EarthquakeOA>)
-                }
-            } else {
-                _responseHandler.handleFailure(response)
-            }
-        } catch (e: Exception) {
-            _responseHandler.handleException(e)
-        }
     }
 
     override fun onItemClick(earthquake: Earthquake) {
@@ -68,6 +41,11 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakePagingAdapter.EarthquakeI
 
     override fun onMapClick(latlng: LatLng, header: String) {
         whereTo.value = "${latlng.latitude},${latlng.longitude}map$header"
+    }
+
+    fun onFilterIndexChange(newIndex: Int) {
+        onFilterIndexChange.value = newIndex
+        filterIndex.value = newIndex
     }
 
 }

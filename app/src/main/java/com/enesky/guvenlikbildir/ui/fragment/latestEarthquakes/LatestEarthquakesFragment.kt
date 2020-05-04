@@ -2,34 +2,31 @@ package com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
-import com.enesky.guvenlikbildir.database.EarthquakeDB
-import com.enesky.guvenlikbildir.database.EarthquakeVM
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.FragmentLatestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.model.EarthquakeOA
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
-import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.enesky.guvenlikbildir.ui.dialog.EarthquakeOptionsDialog
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_latest_earthquakes.*
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs
 
 @Suppress("UNCHECKED_CAST")
-class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedListener,
+class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
+    AppBarLayout.OnOffsetChangedListener,
     ViewTreeObserver.OnGlobalLayoutListener, SearchView.OnQueryTextListener {
 
     private lateinit var binding: FragmentLatestEarthquakesBinding
@@ -37,6 +34,14 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
     private var isAppBarExpanded: Boolean = false
 
     private val loadingDuration: Long = (600L / 0.8).toLong()
+    var textChangedJob: Job? = null
+
+    var lastQuery = ""
+    var lastMinMag = 0.0
+    var lastMaxMag = 12.0
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_latest_earthquakes, container, false)
@@ -51,43 +56,25 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
             lifecycleOwner = this@LatestEarthquakesFragment
         }
 
-        latestEarthquakesVM.init(requireContext(), binding)
-
-        val earthquakeDao = EarthquakeDB.getDatabaseManager(requireActivity().applicationContext).earthquakeDao()
-
-        val rvViewModel by lazy {
-            getViewModel { EarthquakeVM(App.mInstance, earthquakeDao) }
-        }
+        latestEarthquakesVM.init(binding)
 
         val earthquakePagingAdapter = EarthquakePagingAdapter(
             context = requireContext(),
             earthquakeItemListener = latestEarthquakesVM
         )
 
-        rv_earthquakes.layoutManager = LinearLayoutManager(requireContext())
         rv_earthquakes.adapter = earthquakePagingAdapter
 
-        rvViewModel.earthquakeList.observe(
+        (requireActivity() as MainActivity).earthquakeVM.earthquakes.observe(
             viewLifecycleOwner,
             Observer(earthquakePagingAdapter::submitList)
         )
 
-        app_bar_layout.addOnOffsetChangedListener(this)
-
-        /* TODO: Internet bağlantısı olmadığında refresh edemesin veya toast göster.
-        ConnectionLiveData(requireContext()).observe(viewLifecycleOwner, Observer { isOnline ->
-            if (isOnline)
-                fab_synchronize.setImageResource(R.drawable.ic_sync)
-            else
-                fab_synchronize.setImageResource(R.drawable.ic_sync_problem)
-        })
-        */
-
-        latestEarthquakesVM.responseHandler.addObserver { _, response ->
+        (requireActivity() as MainActivity).earthquakeVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     if (response != null && response is Result<*>) {
-                        when (response.status) {
+                        when (response) {
                             Status.SUCCESS -> ""
                             Status.FAILURE, Status.EXCEPTION -> requireContext().showToast(response.data.toString())
                         }
@@ -95,6 +82,18 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
                 }
             }
         }
+
+        (requireActivity() as MainActivity).earthquakeVM.filterText.observe(viewLifecycleOwner, Observer {
+            lastQuery = it
+        })
+
+        (requireActivity() as MainActivity).earthquakeVM.minMag.observe(viewLifecycleOwner, Observer {
+            lastMinMag = it
+        })
+
+        (requireActivity() as MainActivity).earthquakeVM.maxMag.observe(viewLifecycleOwner, Observer {
+            lastMaxMag = it
+        })
 
         latestEarthquakesVM.whereTo.observe(viewLifecycleOwner, Observer {
             if (it is String)
@@ -106,14 +105,22 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
                 EarthquakeOptionsDialog.newInstance(it).show(parentFragmentManager,"EarthquakeOptionsDialog")
         })
 
+        latestEarthquakesVM.onFilterIndexChange.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                0 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery,0.0,12.0)
+                1 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery,0.0,3.0)
+                2 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery,3.0,4.5)
+                3 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery, 4.5, 12.0)
+            }
+        })
+
+        app_bar_layout.addOnOffsetChangedListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        refresh()
-
-        val snapHelper = GravitySnapHelper(Gravity.CENTER)
+        val snapHelper = GravitySnapHelper(Gravity.TOP)
         snapHelper.attachToRecyclerView(rv_earthquakes)
 
         updateRecyclerViewAnimDuration()
@@ -151,7 +158,7 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
         srl_refresh.isRefreshing = false
         GlobalScope.launch(Dispatchers.Main) {
 
-            //TODO: Refresh data
+            (requireActivity() as MainActivity).earthquakeVM.getEarthquakes()
 
             delay(1000)
             pb_loading.makeItGone()
@@ -178,7 +185,20 @@ class LatestEarthquakesFragment : BaseFragment(), AppBarLayout.OnOffsetChangedLi
     override fun onQueryTextSubmit(query: String?): Boolean = false
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        latestEarthquakesVM.earthquakeAdapter.value!!.filter.filter(newText)
+        if (newText.isNullOrEmpty()) {
+            (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList("",lastMinMag,lastMaxMag)
+        } else {
+            val searchText = newText.trim()
+            if (searchText != (requireActivity() as MainActivity).earthquakeVM.filterText.value) {
+                (requireActivity() as MainActivity).earthquakeVM.filterText.value = searchText
+                textChangedJob?.cancel()
+                textChangedJob = launch {
+                    delay(500L)
+                    (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(searchText,lastMinMag,lastMaxMag)
+                }
+            }
+        }
         return true
     }
+
 }

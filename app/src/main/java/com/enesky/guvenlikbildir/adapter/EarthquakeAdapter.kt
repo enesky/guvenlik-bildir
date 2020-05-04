@@ -81,7 +81,6 @@ class EarthquakeAdapter(
 
             when (earthquake) {
                 null -> {
-                    //TODO: Placeholder???
                     binding.map.onCreate(null)
                     binding.map.onResume()
                 }

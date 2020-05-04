@@ -56,7 +56,7 @@ class EarthquakeAPI {
                 }
             }
 
-            Log.i("EarthquakeAPI - earthquakeList", earthquakeList.toString())
+            //Log.i("EarthquakeAPI - earthquakeList", earthquakeList.toString())
 
             return earthquakeList.toList()
         }
@@ -82,7 +82,7 @@ class EarthquakeAPI {
                 lng = line.slice(latIndex..lngIndex).trim(),
                 depth = line.slice(lngIndex..depthIndex).trim(),
                 magMD = line.slice(depthIndex..magMDIndex).trim(),
-                magML = line.slice(magMDIndex..magMLIndex).trim(),
+                magML = line.slice(magMDIndex..magMLIndex).trim().toDouble(),
                 magMW = line.slice(magMLIndex..magMWIndex).trim(),
                 locationOuter = locationOuter,
                 locationInner = locationInner,

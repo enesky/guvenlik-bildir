@@ -11,16 +11,15 @@ import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.EarthquakeDB
+import com.enesky.guvenlikbildir.database.EarthquakeRepository
+import com.enesky.guvenlikbildir.database.EarthquakeSF
 import com.enesky.guvenlikbildir.database.EarthquakeVM
 import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
-import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.network.EarthquakeAPI
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.others.ConnectionLiveData
@@ -45,9 +44,18 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
     BottomNavigationView.OnNavigationItemReselectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    private val mainVM by lazy {
-        getViewModel { MainVM() }
+    private lateinit var earthquakeDao: EarthquakeDao
+
+    val earthquakeVM by lazy {
+        getViewModel {
+            EarthquakeVM(
+                EarthquakeRepository(
+                    earthquakeSF = EarthquakeSF(earthquakeDao),
+                    earthquakeDao = earthquakeDao
+            ))
+        }
     }
+
     private var locationManager: LocationManager? = null
     private var locationListenerGPS: LocationListener? = null
 
@@ -68,22 +76,16 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        navigator.initialize(savedInstanceState)
-        binding.viewModel = mainVM
-        mainVM.init(binding)
+        binding.lifecycleOwner = this
 
-        val earthquakeDao = EarthquakeDB.getDatabaseManager(application.applicationContext).earthquakeDao()
+        earthquakeDao = EarthquakeDB.getDatabaseManager(application).earthquakeDao()
 
-        val rvViewModel by lazy {
-            getViewModel { EarthquakeVM(App.mInstance, earthquakeDao) }
-        }
-
-        mainVM.responseHandler.addObserver { _, response ->
+        earthquakeVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     if (response != null && response is Result<*>) {
                         when (response.status) {
-                            Status.SUCCESS -> rvViewModel.initAllEarthquakes(response.data as List<Earthquake>)
+                            Status.SUCCESS -> ""
                             Status.FAILURE, Status.EXCEPTION -> showToast(response.data.toString())
                         }
                     }
@@ -91,6 +93,7 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
             }
         }
 
+        navigator.initialize(savedInstanceState)
         bottom_nav.setOnNavigationItemReselectedListener(this)
         bottom_nav.setOnNavigationItemSelectedListener(this)
     }
@@ -99,13 +102,14 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         super.onStart()
         val currentUser: FirebaseUser? = App.mAuth.currentUser
         if (currentUser == null)
-            this.openLoginActivity()
+            openLoginActivity()
 
-        ConnectionLiveData(this)
-            .observe(this, Observer { isOnline ->
+        ConnectionLiveData(this).observe(this, Observer
+            { isOnline ->
                 if (!isOnline)
                     showToast("İnternet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
-            })
+            }
+        )
 
         if (isFirstTime) {
             requireAllPermissions()

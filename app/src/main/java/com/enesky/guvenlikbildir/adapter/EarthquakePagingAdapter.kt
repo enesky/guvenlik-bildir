@@ -104,7 +104,7 @@ class EarthquakePagingAdapter(context: Context,
                     binding.map.onResume()
                     binding.map.getMapAsync(this)
 
-                    setMagBackgroundTint(binding.tvMag, earthquake.magML.toFloat())
+                    setMagBackgroundTint(binding.tvMag, earthquake.magML)
                     toggleItem(this, adapterPosition == expandedItemPos, animate = false)
                     scaleDownItem(this, adapterPosition, isScaledDown)
 
@@ -200,7 +200,7 @@ class EarthquakePagingAdapter(context: Context,
             if (expand)
                 animator.doOnStart {
                     GlobalScope.launch(Dispatchers.Main) {
-                        delay(200)
+                        delay(250)
                         holder.cvMap.makeItVisible()
                     }
                 }
@@ -257,10 +257,10 @@ class EarthquakePagingAdapter(context: Context,
         setScaleDownProgress(holder, position, if (isScaleDown) 1f else 0f)
     }
 
-    fun setMagBackgroundTint(view: View, magnitude: Float) {
+    fun setMagBackgroundTint(view: View, magnitude: Double) {
         val color = when {
-            magnitude < 3.5 -> android.R.color.white
-            3.5 >= magnitude && magnitude < 4.5 -> R.color.colorSecondary
+            magnitude < 3 -> android.R.color.white
+            (magnitude >= 3) && (magnitude < 4.5) -> R.color.colorSecondary
             else -> R.color.red
         }
         view.setBackgroundTint(color)

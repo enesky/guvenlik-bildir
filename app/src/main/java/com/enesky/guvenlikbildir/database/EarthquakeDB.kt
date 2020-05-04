@@ -26,16 +26,17 @@ abstract class EarthquakeDB : RoomDatabase() {
         var DB_INSTANCE: EarthquakeDB? = null
 
         fun getDatabaseManager(context: Context): EarthquakeDB {
-            if (DB_INSTANCE == null) {
-                DB_INSTANCE = Room.databaseBuilder(
+            return DB_INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     EarthquakeDB::class.java,
                     "earthquake-db"
                 )
-                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
                     .build()
+                DB_INSTANCE = instance
+                instance
             }
-            return DB_INSTANCE!!
         }
 
     }

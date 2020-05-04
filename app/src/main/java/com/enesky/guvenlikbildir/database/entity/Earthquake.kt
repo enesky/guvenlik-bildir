@@ -21,7 +21,7 @@ data class Earthquake(
 	val lng: String,
 	val depth: String,
 	val magMD: String, //duration magnitude (don't use it)
-	val magML: String, //local (richter) magnitude
+	val magML: Double, //local (richter) magnitude
 	val magMW: String, //moment magnitude (if it exists use this one)
 	val locationOuter: String,
 	val locationInner: String,
