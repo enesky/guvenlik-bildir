@@ -34,7 +34,18 @@
                     android:text="@string/label_latest_earthquakes"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/default_text_20"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_kandilli"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/kandilli_logo_2"
+                    android:layout_margin="@dimen/default_margin_8"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <ImageView
                     android:id="@+id/iv_filter"
@@ -229,8 +240,19 @@
             android:gravity="center"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_scroll_to_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_8"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_arrow_upward"
+            app:tint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
