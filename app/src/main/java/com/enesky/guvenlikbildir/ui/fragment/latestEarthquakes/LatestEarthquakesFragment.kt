@@ -6,14 +6,16 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.FragmentLatestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.enesky.guvenlikbildir.ui.dialog.EarthquakeOptionsDialog
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
@@ -73,8 +75,16 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                         tv_placeholder.makeItGone()
 
                     rv_earthquakes.adapter = earthquakePagingAdapter
-                    earthquakePagingAdapter.submitList(it)
-                    rv_earthquakes.smoothScrollToPosition(0)
+                    earthquakePagingAdapter.submitList(earthquakes)
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        delay(1000)
+                        if ((rv_earthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
+                            (rv_earthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0) {
+                            fab_scroll_to_top.show()
+                        }
+                    }
+
             }
         })
 
@@ -137,6 +147,10 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             refresh()
         }
 
+        iv_kandilli.setOnClickListener {
+            requireActivity().openWebView(Constants.kandilliUrl)
+        }
+
         iv_filter.setOnClickListener {
             if (!isAppBarExpanded) {
                 if (app_bar_layout.isVisible)
@@ -155,6 +169,28 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                     app_bar_layout.makeItGone()
                 }
             }
+        }
+
+        rv_earthquakes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0)
+                    fab_scroll_to_top.show()
+                else
+                    fab_scroll_to_top.hide()
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if ((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
+                    (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0) {
+                        fab_scroll_to_top.show()
+                }
+            }
+        })
+
+        fab_scroll_to_top.setOnClickListener {
+            fab_scroll_to_top.makeItGone()
+            rv_earthquakes.smoothScrollToPosition(0)
         }
 
         sv_earthquake.viewTreeObserver.addOnGlobalLayoutListener(this)

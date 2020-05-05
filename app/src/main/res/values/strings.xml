@@ -8,7 +8,7 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="label_latest_earthquakes">Son Depremler</string>
-    <string name="label_notify">Güvenliğini Bildir</string>
+    <string name="label_notify">Güvenlik Bildir</string>
     <string name="label_options">Seçenekler</string>
     <string name="label_time_up">Süre doldu.</string>
     <string name="hint_phone_number">Telefon numarası</string>

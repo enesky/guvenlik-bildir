@@ -1,6 +1,5 @@
 package com.enesky.guvenlikbildir.network
 
-import android.util.Log
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.network.EarthquakeOaAPI.Companion.createHttpClient
@@ -25,7 +24,7 @@ class EarthquakeAPI {
          */
         val kandilliWebService: WebService by lazy {
             Retrofit.Builder()
-                .baseUrl(Constants.kandilliUrl)
+                .baseUrl(Constants.kandilliBaseUrl)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .client(createHttpClient())
                 .build()

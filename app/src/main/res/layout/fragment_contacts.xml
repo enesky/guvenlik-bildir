@@ -68,20 +68,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <com.github.clans.fab.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_contact"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_16"
             android:foreground="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_add"
-            app:fab_colorNormal="@color/colorPrimary"
-            app:fab_colorPressed="@color/colorAccent"
-            app:fab_size="normal"
+            app:backgroundTint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@android:color/white" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
