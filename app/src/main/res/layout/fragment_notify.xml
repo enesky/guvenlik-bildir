@@ -238,6 +238,7 @@
                 app:civ_border_color="@color/colorAccent"
                 app:civ_border_width="2dp"
                 android:padding="@dimen/default_margin_16"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintBottom_toTopOf="@id/guide_bot_mid_horizontal"
                 app:layout_constraintEnd_toStartOf="@id/guide_vertical_mid"
                 app:layout_constraintStart_toStartOf="parent"
@@ -252,10 +253,10 @@
                 android:text="@string/label_im_safe"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/default_text_16"
-                app:layout_constraintTop_toTopOf="@id/guide_bot_mid_horizontal"
                 app:layout_constraintBottom_toBottomOf="@id/guide_bot_mid_horizontal"
+                app:layout_constraintEnd_toEndOf="@id/iv_safe"
                 app:layout_constraintStart_toStartOf="@id/iv_safe"
-                app:layout_constraintEnd_toEndOf="@id/iv_safe"/>
+                app:layout_constraintTop_toTopOf="@id/guide_bot_mid_horizontal" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_unsafe"
@@ -265,6 +266,7 @@
                 app:civ_border_color="@color/colorAccent"
                 app:civ_border_width="2dp"
                 android:padding="@dimen/default_margin_16"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guide_vertical_mid"

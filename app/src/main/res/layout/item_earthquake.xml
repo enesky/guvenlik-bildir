@@ -58,6 +58,7 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_32"
                             android:textStyle="bold"
+                            android:fontFamily="@font/signika_light"
                             app:layout_constraintEnd_toStartOf="@id/tv_location"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_location"

@@ -17,27 +17,27 @@ interface EarthquakeDao {
     @Query("SELECT * FROM earthquake")
     fun getAllEarthquakesDsF(): DataSource.Factory<Int, Earthquake>
 
-    @Query("SELECT * FROM earthquake WHERE magML >= :minMag AND magML < :maxMag ORDER BY id ASC")
+    @Query("SELECT * FROM earthquake WHERE magML >= :minMag AND magML < :maxMag")
     fun getEarthquakesBetweenGivenMagsDsF(minMag: Double, maxMag: Double): DataSource.Factory<Int, Earthquake>
 
-    @Query("SELECT * FROM earthquake WHERE magML >= :minMag ORDER BY id ASC")
+    @Query("SELECT * FROM earthquake WHERE magML >= :minMag")
     fun getEarthquakesBiggerThanGivenMagDsF(minMag: Double): DataSource.Factory<Int, Earthquake>
 
-    @Query("SELECT * FROM earthquake WHERE locationInner LIKE :location OR locationOuter LIKE :location ORDER BY id ASC")
+    @Query("SELECT * FROM earthquake WHERE locationInner LIKE :location OR locationOuter LIKE :location")
     fun getEarthquakesHappenedAtGivenLocDsF(location: String): DataSource.Factory<Int, Earthquake>
 
-    @Query("SELECT * FROM earthquake WHERE (magML >= :minMag AND magML < :maxMag) AND location LIKE '%' || :query || '%' ORDER BY id ASC")
+    @Query("SELECT * FROM earthquake WHERE (magML >= :minMag AND magML < :maxMag) AND location LIKE '%' || :query || '%'")
     fun getEarthquakesHappenedAtGivenLocAndBetweenGivenMagsDsF(
         query: String,
         minMag: Double,
         maxMag: Double): DataSource.Factory<Int, Earthquake>
 
-    @Query("SELECT * FROM earthquake WHERE magML >= :minMag AND location LIKE '%' || :query || '%' ORDER BY id ASC")
+    @Query("SELECT * FROM earthquake WHERE magML >= :minMag AND location LIKE '%' || :query || '%'")
     fun getEarthquakesHappenedAtGivenLocAndBiggerThanMagDsF(
         query: String,
         minMag: Double): DataSource.Factory<Int, Earthquake>
 
-    @Query("SELECT * FROM earthquake WHERE locationOuter LIKE '%' || :query || '%' OR locationInner LIKE '%' || :query || '%' ORDER BY id ASC")
+    @Query("SELECT * FROM earthquake WHERE locationOuter LIKE '%' || :query || '%' OR locationInner LIKE '%' || :query || '%'")
     fun getEarthquakesWithContainsQuery(query: String?): DataSource.Factory<Int, Earthquake>
 
     @Query("SELECT * FROM earthquake WHERE id == :id")
