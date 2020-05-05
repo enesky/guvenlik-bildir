@@ -2,13 +2,11 @@ package com.enesky.guvenlikbildir.database
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.Config
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import androidx.paging.toLiveData
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
 import com.enesky.guvenlikbildir.network.ResponseHandler
-import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 /**
@@ -25,10 +23,14 @@ class EarthquakeVM(private val earthquakeRepository: EarthquakeRepository) : Bas
     var maxMag = MutableLiveData<Double>().apply { value = 12.0 }
 
     var earthquakes: LiveData<PagedList<Earthquake>>
+    private var earthquakeSF: EarthquakeSF
 
     init {
         val earthquakeDao = EarthquakeDB.DB_INSTANCE?.earthquakeDao()
-        earthquakes = earthquakeDao!!.getEarthquakesHappenedAtGivenLocAndBiggerThanGivenMagDsF(
+        earthquakeSF = EarthquakeSF(earthquakeDao!!)
+        earthquakes = LivePagedListBuilder(earthquakeSF, 15).build()
+
+        /*earthquakes = earthquakeDao!!.getEarthquakesHappenedAtGivenLocAndBiggerThanGivenMagDsF(
             query = filterText.value!!,
             minMag = minMag.value!!,
             maxMag = maxMag.value!!).toLiveData(
@@ -37,17 +39,16 @@ class EarthquakeVM(private val earthquakeRepository: EarthquakeRepository) : Bas
                 prefetchDistance = 2,
                 enablePlaceholders = true,
                 maxSize = Constants.EARTHQUAKE_LIST_SIZE
-            ))
+            ))*/
+
     }
 
     fun getEarthquakeList(query: String, minMag: Double, maxMag: Double) {
-        this.filterText.value = query
+        filterText.value = query
         this.minMag.value = minMag
         this.maxMag.value = maxMag
 
-        //TODO: boş liste dönerse placeholder ekle
-
-        earthquakeRepository.getEarthquakes(query, minMag, maxMag)
+        earthquakeRepository.getEarthquakes(earthquakeSF, query, minMag, maxMag)
         earthquakes.value?.dataSource?.invalidate()
     }
 

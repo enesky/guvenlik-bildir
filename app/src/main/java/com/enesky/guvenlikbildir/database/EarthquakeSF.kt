@@ -14,12 +14,27 @@ class EarthquakeSF(private val earthquakeDao: EarthquakeDao): DataSource.Factory
     private var minMag = 0.0
     private var maxMag = 12.0
 
-    //TODO: Diğer olasılıkları da ekleyince performans kazancın görünür bir fark yaratıyor mu test et.
     override fun create(): DataSource<Int, Earthquake> {
-        return if (query.isEmpty() && minMag == 0.0 && maxMag == 12.0) {
-            earthquakeDao.getAllEarthquakesDsF().map { it }.create()
+        return if (query.isEmpty()) {
+            if (minMag == 0.0 && maxMag == 12.0) {
+                earthquakeDao.getAllEarthquakesDsF().map { it }.create()
+            } else {
+                if (maxMag == 12.0) {
+                    earthquakeDao.getEarthquakesBiggerThanGivenMagDsF(minMag).map{ it }.create()
+                } else {
+                    earthquakeDao.getEarthquakesBetweenGivenMagsDsF(minMag, maxMag).map { it }.create()
+                }
+            }
         } else {
-            earthquakeDao.getEarthquakesHappenedAtGivenLocAndBiggerThanGivenMagDsF(query, minMag, maxMag).map { it }.create()
+            if (minMag == 0.0 && maxMag == 12.0) {
+                earthquakeDao.getEarthquakesWithContainsQuery(query).map { it }.create()
+            } else {
+                if (maxMag == 12.0) {
+                    earthquakeDao.getEarthquakesHappenedAtGivenLocAndBiggerThanMagDsF(query, minMag).map{ it }.create()
+                } else {
+                    earthquakeDao.getEarthquakesHappenedAtGivenLocAndBetweenGivenMagsDsF(query, minMag, maxMag).map { it }.create()
+                }
+            }
         }
     }
 

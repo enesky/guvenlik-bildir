@@ -24,7 +24,6 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs
 
-@Suppress("UNCHECKED_CAST")
 class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
     AppBarLayout.OnOffsetChangedListener,
     ViewTreeObserver.OnGlobalLayoutListener, SearchView.OnQueryTextListener {
@@ -63,12 +62,21 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             earthquakeItemListener = latestEarthquakesVM
         )
 
-        rv_earthquakes.adapter = earthquakePagingAdapter
+        (requireActivity() as MainActivity).earthquakeVM.earthquakes.observe( viewLifecycleOwner,
+            Observer { earthquakes ->
+                earthquakes?.let {
+                    pb_loading.makeItGone()
 
-        (requireActivity() as MainActivity).earthquakeVM.earthquakes.observe(
-            viewLifecycleOwner,
-            Observer(earthquakePagingAdapter::submitList)
-        )
+                    if (earthquakes.isEmpty())
+                        tv_placeholder.makeItVisible()
+                    else
+                        tv_placeholder.makeItGone()
+
+                    rv_earthquakes.adapter = earthquakePagingAdapter
+                    earthquakePagingAdapter.submitList(it)
+                    rv_earthquakes.smoothScrollToPosition(0)
+            }
+        })
 
         (requireActivity() as MainActivity).earthquakeVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
@@ -154,14 +162,9 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
     }
 
     private fun refresh() {
-        pb_loading.makeItVisible()
-        srl_refresh.isRefreshing = false
         GlobalScope.launch(Dispatchers.Main) {
-
             (requireActivity() as MainActivity).earthquakeVM.getEarthquakes()
-
-            delay(1000)
-            pb_loading.makeItGone()
+            delay(500)
             srl_refresh.isRefreshing = false
         }
     }
@@ -193,7 +196,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                 (requireActivity() as MainActivity).earthquakeVM.filterText.value = searchText
                 textChangedJob?.cancel()
                 textChangedJob = launch {
-                    delay(500L)
+                    delay(300L)
                     (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(searchText,lastMinMag,lastMaxMag)
                 }
             }

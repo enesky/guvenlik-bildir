@@ -15,7 +15,6 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.EarthquakeDB
 import com.enesky.guvenlikbildir.database.EarthquakeRepository
-import com.enesky.guvenlikbildir.database.EarthquakeSF
 import com.enesky.guvenlikbildir.database.EarthquakeVM
 import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
@@ -50,7 +49,6 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         getViewModel {
             EarthquakeVM(
                 EarthquakeRepository(
-                    earthquakeSF = EarthquakeSF(earthquakeDao),
                     earthquakeDao = earthquakeDao
             ))
         }
@@ -91,6 +89,10 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
                     }
                 }
             }
+        }
+
+        GlobalScope.launch {
+            earthquakeVM.getEarthquakes()
         }
 
         navigator.initialize(savedInstanceState)

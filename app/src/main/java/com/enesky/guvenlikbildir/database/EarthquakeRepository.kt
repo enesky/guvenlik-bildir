@@ -11,10 +11,9 @@ import kotlinx.coroutines.launch
  * Created by Enes Kamil YILMAZ on 02.05.2020
  */
 
-class EarthquakeRepository(private val earthquakeSF: EarthquakeSF,
-                           private val earthquakeDao: EarthquakeDao) {
+class EarthquakeRepository(private val earthquakeDao: EarthquakeDao) {
 
-    fun getEarthquakes(query: String, minMag: Double, maxMag: Double) {
+    fun getEarthquakes(earthquakeSF: EarthquakeSF, query: String, minMag: Double, maxMag: Double) {
         earthquakeSF.filter(query, minMag, maxMag)
     }
 

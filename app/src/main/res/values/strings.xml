@@ -70,5 +70,6 @@
     <string name="label_filter_second">0 - 3</string>
     <string name="label_filter_third">3 - 4.5</string>
     <string name="label_filter_fourth"><![CDATA[> 4.5]]></string>
+    <string name="label_earthquake_placeholder">Kriterlere uygun deprem bulunamadı.</string>
 
 </resources>
