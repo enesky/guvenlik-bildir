@@ -21,7 +21,10 @@ interface EarthquakeDao {
     fun getEarthquakesBetweenGivenMagsDsF(minMag: Double, maxMag: Double): DataSource.Factory<Int, Earthquake>
 
     @Query("SELECT * FROM earthquake WHERE magML >= :minMag")
-    fun getEarthquakesBiggerThanGivenMagDsF(minMag: Double): DataSource.Factory<Int, Earthquake>
+    fun getEarthquakesHigherThanGivenMagDsF(minMag: Double): DataSource.Factory<Int, Earthquake>
+
+    @Query("SELECT * FROM earthquake WHERE magML < :maxMag")
+    fun getEarthquakesLowerThanGivenMagDsF(maxMag: Double): DataSource.Factory<Int, Earthquake>
 
     @Query("SELECT * FROM earthquake WHERE locationInner LIKE :location OR locationOuter LIKE :location")
     fun getEarthquakesHappenedAtGivenLocDsF(location: String): DataSource.Factory<Int, Earthquake>
@@ -33,9 +36,14 @@ interface EarthquakeDao {
         maxMag: Double): DataSource.Factory<Int, Earthquake>
 
     @Query("SELECT * FROM earthquake WHERE magML >= :minMag AND location LIKE '%' || :query || '%'")
-    fun getEarthquakesHappenedAtGivenLocAndBiggerThanMagDsF(
+    fun getEarthquakesHappenedAtGivenLocAndHigherThanMagDsF(
         query: String,
         minMag: Double): DataSource.Factory<Int, Earthquake>
+
+    @Query("SELECT * FROM earthquake WHERE magML < :maxMag AND location LIKE '%' || :query || '%'")
+    fun getEarthquakesHappenedAtGivenLocAndLowerThanGivenMagDsF(
+        query: String,
+        maxMag: Double): DataSource.Factory<Int, Earthquake>
 
     @Query("SELECT * FROM earthquake WHERE locationOuter LIKE '%' || :query || '%' OR locationInner LIKE '%' || :query || '%'")
     fun getEarthquakesWithContainsQuery(query: String?): DataSource.Factory<Int, Earthquake>

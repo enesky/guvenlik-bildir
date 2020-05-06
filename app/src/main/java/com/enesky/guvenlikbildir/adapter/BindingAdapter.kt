@@ -212,7 +212,7 @@ fun changeFilters(view: TextView, filterIndex: Int, selectedIndex: Int) {
         }
         1 -> { // 0 - 3
             view.setBackground(android.R.color.white)
-            view.setTextColorRes(R.color.colorPrimary)
+            view.setTextColorRes(R.color.greeny)
         }
         2 -> { // 3 - 4.5
             view.setBackground(android.R.color.white)

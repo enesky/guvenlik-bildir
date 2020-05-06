@@ -64,6 +64,8 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             earthquakeItemListener = latestEarthquakesVM
         )
 
+        rv_earthquakes.adapter = earthquakePagingAdapter
+
         (requireActivity() as MainActivity).earthquakeVM.earthquakes.observe( viewLifecycleOwner,
             Observer { earthquakes ->
                 earthquakes?.let {
@@ -74,13 +76,13 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                     else
                         tv_placeholder.makeItGone()
 
-                    rv_earthquakes.adapter = earthquakePagingAdapter
                     earthquakePagingAdapter.submitList(earthquakes)
 
                     GlobalScope.launch(Dispatchers.Main) {
-                        delay(1000)
-                        if ((rv_earthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
-                            (rv_earthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0) {
+                        delay(750)
+                        if (earthquakes.isNotEmpty() &&
+                            ((rv_earthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
+                            (rv_earthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)) {
                             fab_scroll_to_top.show()
                         }
                     }
@@ -190,7 +192,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         fab_scroll_to_top.setOnClickListener {
             fab_scroll_to_top.makeItGone()
-            rv_earthquakes.smoothScrollToPosition(0)
+            rv_earthquakes.scrollToPosition(0)
         }
 
         sv_earthquake.viewTreeObserver.addOnGlobalLayoutListener(this)
