@@ -64,8 +64,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             earthquakeItemListener = latestEarthquakesVM
         )
 
-        rv_earthquakes.adapter = earthquakePagingAdapter
-
         (requireActivity() as MainActivity).earthquakeVM.earthquakes.observe( viewLifecycleOwner,
             Observer { earthquakes ->
                 earthquakes?.let {
@@ -76,6 +74,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                     else
                         tv_placeholder.makeItGone()
 
+                    rv_earthquakes.adapter = earthquakePagingAdapter
                     earthquakePagingAdapter.submitList(earthquakes)
 
                     GlobalScope.launch(Dispatchers.Main) {

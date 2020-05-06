@@ -152,14 +152,6 @@ class EarthquakePagingAdapter(context: Context,
 
     }
 
-    override fun onCurrentListChanged(
-        previousList: PagedList<Earthquake>?,
-        currentList: PagedList<Earthquake>?
-    ) {
-        super.onCurrentListChanged(previousList, currentList)
-
-    }
-
     override fun onViewAttachedToWindow(holder: EarthquakeViewHolder) {
         super.onViewAttachedToWindow(holder)
         // get originalHeight & expandedHeight if not gotten before
@@ -177,17 +169,16 @@ class EarthquakePagingAdapter(context: Context,
         }
     }
 
-    /*
     override fun onViewRecycled(holder: EarthquakeViewHolder) {
         super.onViewRecycled(holder)
-
-        if (holder.googleMap != null && !isItemVisible()) {
-            // Clear the map and free up resources
-            holder.googleMap!!.clear()
-            holder.googleMap!!.mapType = GoogleMap.MAP_TYPE_NONE
-        }
+        // Clear the map and free up resources
+        if (holder.mEarthquake != null)
+            if (holder.mEarthquake!!.id != expandedItemId)
+                if (holder.mGoogleMap != null) {
+                    holder.mGoogleMap!!.clear()
+                    holder.mGoogleMap!!.mapType = GoogleMap.MAP_TYPE_NONE
+                }
     }
-    */
 
     override fun getItemId(position: Int): Long = position.toLong()
 
