@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_16"
-            app:boxBackgroundColor="@color/colorShade"
+            app:boxBackgroundColor="@color/porcelain"
             app:boxCornerRadiusTopEnd="@dimen/default_margin_8"
             app:boxCornerRadiusTopStart="@dimen/default_margin_8"
             app:boxCornerRadiusBottomEnd="@dimen/default_margin_8"
@@ -73,16 +73,17 @@
 
         <TextView
             android:id="@+id/tv_timeup"
+            isVisible="@{!viewModel.inputsEnabled}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
             android:text="@string/label_time_up"
             android:textSize="@dimen/default_text_18"
-            android:gravity="center"
-            isVisible="@{!viewModel.inputsEnabled}"
-            android:layout_marginTop="@dimen/default_margin_24"
-            app:layout_constraintTop_toBottomOf="@+id/pb_loading"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pb_loading" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_resend_code"

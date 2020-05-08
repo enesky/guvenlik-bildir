@@ -47,7 +47,7 @@
             android:id="@+id/line_bottom"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/lineShade"
+            android:background="@color/silverChalice"
             app:layout_constraintTop_toBottomOf="@id/tv_option" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

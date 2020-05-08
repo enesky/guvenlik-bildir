@@ -11,7 +11,6 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.Gravity
@@ -35,6 +34,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.Gson
 import com.thefinestartist.finestwebview.FinestWebView
+import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
@@ -311,5 +311,5 @@ fun calculateExecutionTime(function: () -> Any) {
     if (timeMs > 0) executionTime += (timeMs % 1E+3).toString() + " MicroSeconds, "
     if (timeNs > 0) executionTime += (timeNs % 1E+6).toString() + " NanoSeconds"
 
-    Log.i(" -- Execution Time -- ", executionTime)
+    Timber.tag(" -- Execution Time -- ").i(executionTime)
 }

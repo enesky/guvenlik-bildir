@@ -38,12 +38,13 @@ object Constants {
     const val usersContactList = "contactList"
 
     //SharedPref
-    const val appName = "GuvenlikBildir"
+    const val appName = "Güvenlik Bildir"
 
     //Numbers
     const val polis = "155"
     const val acilYardım = "112"
     const val itfaiye = "110"
+
     const val defaultAnimationDuration = 250L
     const val map = "map"
 
@@ -53,5 +54,9 @@ object Constants {
     const val locationMapLink = "locationMapLink"
     const val safeSms = "safeSms"
     const val unsafeSms = "unsafeSms"
+
+    //Notifications
+    const val notificationChannel = "Deprem Bildirimleri"
+    const val NOTIFICATION_EARTHQUAKE_ID = "earthquakeID"
 
 }

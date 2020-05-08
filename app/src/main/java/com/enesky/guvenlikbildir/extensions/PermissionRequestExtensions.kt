@@ -4,12 +4,12 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsRequest
+import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 06.02.2020
@@ -19,8 +19,13 @@ fun Context.requireSendSmsPermission(function: () -> Any) = runWithPermissions(
     Manifest.permission.SEND_SMS,
     options = getQuickPermissionOptions()
 ) {
-    Log.d("CalendarEventExtensions", "requireSendSmsPermission: Send Sms permission granted")
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+    Timber.tag("CalendarEventExtensions")
+        .d("requireSendSmsPermission: Send Sms permission granted")
+    if (ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.SEND_SMS
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
         function()
     }
 }
@@ -29,8 +34,13 @@ fun Context.requireCallPhonePermission(function: () -> Any) = runWithPermissions
     Manifest.permission.CALL_PHONE,
     options = getQuickPermissionOptions()
 ) {
-    Log.d("CalendarEventExtensions", "requireCallPhonePermission: Call Phone permission granted")
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+    Timber.tag("CalendarEventExtensions")
+        .d("requireCallPhonePermission: Call Phone permission granted")
+    if (ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CALL_PHONE
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
         function()
     }
 }
@@ -39,8 +49,13 @@ fun Context.requireReadContactsPermission(function: () -> Any) = runWithPermissi
     Manifest.permission.READ_CONTACTS,
     options = getQuickPermissionOptions()
 ) {
-    Log.d("CalendarEventExtensions", "requireReadContactsPermission: Read Contacts permission granted")
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
+    Timber.tag("CalendarEventExtensions")
+        .d("requireReadContactsPermission: Read Contacts permission granted")
+    if (ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_CONTACTS
+        ) == PackageManager.PERMISSION_GRANTED
+    )
         function()
 }
 
@@ -51,10 +66,21 @@ fun Context.requireLocationPermission(function: () -> Any) =
         Manifest.permission.ACCESS_BACKGROUND_LOCATION,
         options = getQuickPermissionOptions()
     ) {
-        Log.d("CalendarEventExtensions", "requireLocationPermission: Location permissions granted")
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        Timber.tag("CalendarEventExtensions")
+            .d("requireLocationPermission: Location permissions granted")
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             function()
         }
     }
@@ -64,7 +90,8 @@ fun Context.requireLocationPermission(function: () -> Any) =
             Manifest.permission.ACCESS_COARSE_LOCATION,
             options = getQuickPermissionOptions()
         ) {
-            Log.d("CalendarEventExtensions", "requireLocationPermission: Location permissions granted")
+            Timber.tag("CalendarEventExtensions")
+                .d("requireLocationPermission: Location permissions granted")
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 function()
@@ -79,7 +106,7 @@ fun Context.requireAllPermissions() = runWithPermissions(
     Manifest.permission.ACCESS_FINE_LOCATION,
     Manifest.permission.ACCESS_COARSE_LOCATION, options = getQuickPermissionOptions()
 ) {
-    Log.d("CalendarEventExtensions", "requireAllPermissions: All permissions granted")
+    Timber.tag("CalendarEventExtensions").d("requireAllPermissions: All permissions granted")
 }
 
 fun Context.getQuickPermissionOptions(): QuickPermissionsOptions {

@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.telephony.SmsManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.model.Contact
 import com.enesky.guvenlikbildir.others.Constants
 import kotlinx.android.synthetic.main.dialog_info_count_down.*
+import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 02.02.2020
@@ -96,12 +96,10 @@ class InfoCountDownDialog : DialogFragment() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     when (resultCode) {
                         Activity.RESULT_OK -> {
-                            Log.d("InfoCountDownDialog","SMS sent success!")
                             sentCountSuccess++
                             tv_sent_success_count.text = "Başarılı : $sentCountSuccess/$contactSize"
                         }
                         else -> {
-                            Log.d("InfoCountDownDialog","SMS sent failed!")
                             sentCountFailed++
                             tv_sent_fail_count.makeItVisible()
                             tv_sent_fail_count.text = "Başarısız : $sentCountFailed/$contactSize"
@@ -122,8 +120,8 @@ class InfoCountDownDialog : DialogFragment() {
             deliveredBroadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     when (resultCode) {
-                        Activity.RESULT_OK -> Log.d("InfoCountDownDialog","SMS delivered.")
-                        Activity.RESULT_CANCELED -> Log.d("InfoCountDownDialog","SMS not delivered.")
+                        Activity.RESULT_OK -> Timber.tag("InfoCountDownDialog").d("SMS delivered.")
+                        Activity.RESULT_CANCELED -> Timber.tag("InfoCountDownDialog").d("SMS not delivered.")
                     }
                 }
             }
@@ -139,7 +137,7 @@ class InfoCountDownDialog : DialogFragment() {
             activity!!.unregisterReceiver(deliveredBroadcastReceiver)
         }
         timer.cancel()
-        Log.d("InfoCountDownDialog", "onDismiss(): $type")
+        Timber.tag("InfoCountDownDialog").d( "onDismiss(): %s", type)
     }
 
     private fun startCountDown() {
@@ -196,11 +194,17 @@ class InfoCountDownDialog : DialogFragment() {
                     tv_sent_fail_count.text = "Başarısız: $sentCountFailed/$contactSize"
                     tv_sent_success_count.makeItVisible()
                     for (contact: Contact in list) {
-                        smsManager.sendTextMessage(contact.number, null, text + locationMapWithLink, sentPI, deliveredPI)
-                        Log.d("Sms Sent to: ", contact.number)
+                        smsManager.sendTextMessage(
+                            contact.number,
+                            null,
+                            text + locationMapWithLink,
+                            sentPI,
+                            deliveredPI
+                        )
+                        Timber.tag("Sms Sent to: ").d("%s", contact.number)
                     }
                 } catch (e: Exception) {
-                    Log.d("SMSManager Exception", e.message!!)
+                    Timber.tag("SMSManager Exception").d("%s", e.message!!)
                     requireContext().showToast("SMS Failed to send, please try again!")
                 }
             }

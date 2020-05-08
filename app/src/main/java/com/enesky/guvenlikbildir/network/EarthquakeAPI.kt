@@ -61,7 +61,7 @@ class EarthquakeAPI {
         }
 
         private fun parseLine(line: String): Earthquake {
-            var locationOuter = ""
+            var locationOuter: String
             var locationInner = ""
 
             line.slice(magMWIndex..locationIndex).trim().split(" ").let {

@@ -10,7 +10,6 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.model.Contact
-import com.enesky.guvenlikbildir.others.ConnectionLiveData
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
 import kotlinx.android.synthetic.main.fragment_contacts.*
@@ -46,14 +45,8 @@ class ContactsFragment : BaseFragment() {
             if (any is Contact) {
                 pb_loading.makeItVisible()
                 removeFromContactList(any) { deleteAndRefresh(any) }
-                if (!contactsVM.isOnline.value!!)
-                    getUsersContactList { prepareViews(it) }
+                getUsersContactList { prepareViews(it) }
             }
-        })
-
-        ConnectionLiveData(requireContext())
-            .observe(viewLifecycleOwner, Observer { it ->
-                contactsVM.isOnline.value = it
         })
 
         return binding.root

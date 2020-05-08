@@ -1,7 +1,8 @@
 package com.enesky.guvenlikbildir.extensions
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
+import android.os.Bundle
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.model.Contact
 import com.enesky.guvenlikbildir.model.User
@@ -11,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
+import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 31.01.2020
@@ -19,11 +21,16 @@ import com.google.firebase.firestore.SetOptions
 fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
     App.mAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
         if (task.isSuccessful) {
-            Log.d("Login", "signInWithCredential:success")
+            Timber.tag("Login").d("signInWithCredential:success")
+            val data = Bundle()
+            data.putString("phone", task.result?.user?.phoneNumber)
+            App.mAnalytics.setUserId(task.result?.user?.uid)
+            App.mAnalytics.logEvent("signInWithPhoneAuthCredential", data)
+            App.mCrashlytics.setUserId(task.result?.user?.phoneNumber!!)
             addUserInfo2Database(task.result?.user!!)
             this.openMainActivity()
         } else {
-            Log.w("Login", "signInWithCredential:failure", task.exception)
+            Timber.w(task.exception, "signInWithCredential:failure")
             if (task.exception is FirebaseAuthInvalidCredentialsException)
                 showToast("Hatalı kod. Tekrar deneyiniz.")
         }
@@ -34,11 +41,11 @@ fun addUserInfo2Database(firebaseUser: FirebaseUser){
     App.mFirestore.collection(Constants.usersCollection)
         .document(firebaseUser.uid)
         .set(User(firebaseUser.uid, firebaseUser.phoneNumber!!))
-        .addOnSuccessListener { documentReference ->
-            Log.d("Firestore", "DocumentSnapshot added with document named: ${firebaseUser.uid}")
+        .addOnSuccessListener { _ ->
+            Timber.tag("Firestore").d("DocumentSnapshot added with document named: %s", firebaseUser.uid)
         }
         .addOnFailureListener { e ->
-            Log.w("Firestore", "Error adding document", e)
+            Timber.w(e, "Error adding document")
         }
 }
 
@@ -48,14 +55,15 @@ fun checkIfNumberisRegistered(phoneNumber: String) {
         .get()
         .addOnSuccessListener { documents ->
             for (document in documents) {
-                Log.d("Firestore", "${document.id} => ${document.data}")
+                Timber.tag("Firestore").d("%1s => %2s", document.id, document.data)
             }
         }
         .addOnFailureListener { exception ->
-            Log.w("Firestore", "Error getting documents: ", exception)
+            Timber.w(exception, "Error getting documents: ")
         }
 }
 
+@SuppressLint("TimberArgCount")
 fun add2ContactList(contactList: MutableList<Contact>) : Boolean {
     var added = false
     val firebaseUser = App.mAuth.currentUser!!
@@ -63,25 +71,26 @@ fun add2ContactList(contactList: MutableList<Contact>) : Boolean {
         .document(firebaseUser.uid)
         .set(User(firebaseUser.uid, firebaseUser.phoneNumber, contactList), SetOptions.merge())
         .addOnSuccessListener {
-            Log.d("Firestore", "Contact list refreshed: ${firebaseUser.uid}")
+            Timber.tag("Firestore").d("Contact list refreshed: %s", firebaseUser.uid)
             added = true
         }
         .addOnFailureListener {
-            Log.w("Firestore", "Contact list couldn't refreshed", it)
+            Timber.tag("Firestore").w(it, "Contact list couldn't refreshed, %s")
         }
     return added
 }
 
+@SuppressLint("TimberArgCount")
 fun removeFromContactList(contact: Contact, function: () -> Unit) {
     App.mFirestore.collection(Constants.usersCollection)
         .document(App.mAuth.currentUser!!.uid)
         .update(Constants.usersContactList, FieldValue.arrayRemove(contact))
         .addOnSuccessListener {
             function()
-            Log.d("Firestore", "$contact removed from contact list.")
+            Timber.tag("Firestore").d("%s removed from contact list.", contact)
         }
         .addOnFailureListener { e ->
-            Log.w("Firestore", "Contact list couldn't refreshed", e)
+            Timber.tag("Firestore").w(e, "Contact list couldn't refreshed. %s")
         }
 }
 
@@ -92,10 +101,10 @@ fun getUserInfo(uid: String?): User? {
         .get()
         .addOnSuccessListener {
             user = it.toObject(User::class.java)
-            Log.d("Firestore", "getUserInfo-Success: $it")
+            Timber.tag("Firestore").d("getUserInfo-Success: %s", it)
         }
         .addOnFailureListener {
-            Log.d("Firestore", "getUserInfo-Failure: ${it.message}")
+            Timber.tag("Firestore").d("getUserInfo-Failure: %s", it.message)
         }
 
     return user
@@ -108,11 +117,11 @@ fun getUsersContactList(function: (any: Any) -> Unit) {
         .addOnSuccessListener {
             val user = it.toObject(User::class.java)
             function(user!!.contactList)
-            Log.d("Firestore", "getUsersContactList-Success: $it")
+            Timber.tag("Firestore").d("getUsersContactList-Success: %s", it)
         }
         .addOnFailureListener {
             function(it.message!!)
-            Log.d("Firestore", "getUsersContactList-Failure: ${it.message}")
+            Timber.tag("Firestore").d("getUsersContactList-Failure: %s", it.message)
         }
 }
 
@@ -126,9 +135,9 @@ fun doThingsIfListFilledOrNot(successFunction: () -> Unit,
                 failFunction()
             else
                 successFunction()
-            Log.d("Firestore", "doThingsIfListFilledOrNot-Success: $it")
+            Timber.tag("Firestore").d("doThingsIfListFilledOrNot-Success: %s", it)
         }
         .addOnFailureListener {
-            Log.d("Firestore", "doThingsIfListFilledOrNot-Failure: ${it.message}")
+            Timber.tag("Firestore").d("doThingsIfListFilledOrNot-Failure: %s", it.message)
         }
 }

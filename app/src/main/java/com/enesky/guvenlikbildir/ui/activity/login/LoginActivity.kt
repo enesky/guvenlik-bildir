@@ -1,7 +1,7 @@
 package com.enesky.guvenlikbildir.ui.activity.login
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
@@ -15,6 +15,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.redmadrobot.inputmask.MaskedTextChangedListener
 import kotlinx.android.synthetic.main.activity_login.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class LoginActivity : BaseActivity() {
@@ -27,6 +28,7 @@ class LoginActivity : BaseActivity() {
         getViewModel { LoginVM() }
     }
 
+    @SuppressLint("TimberArgCount")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
@@ -40,11 +42,13 @@ class LoginActivity : BaseActivity() {
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                Log.d("LoginActivity", "onVerificationCompleted:$credential")
+                Timber.tag("LoginActivity").d( "onVerificationCompleted: %s", credential)
 
-                if (credential.smsCode != null)
+                if (credential.smsCode != null) {
+                    Timber.tag("onVerificationCompleted").d("Kodu havada yakaladın. -> %s", credential.smsCode)
+                    showToast("Kodu senin için yakaladım. :)")
                     signInWithPhoneAuthCredential(credential)
-                else
+                } else
                     startVerifyCodeActivity(
                         et_phone_number.text.toString(),
                         verification!!,
@@ -53,7 +57,7 @@ class LoginActivity : BaseActivity() {
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                Log.w("LoginActivity", "onVerificationFailed:${e.message}")
+                Timber.tag("LoginActivity").w("onVerificationFailed: %s", e.message)
                 showToast(e.message)
                 loginVM.setInputsEnabled(true)
             }
@@ -62,7 +66,7 @@ class LoginActivity : BaseActivity() {
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                Log.d("LoginActivity", "onCodeSent:$verificationId")
+                Timber.tag("LoginActivity").d("onCodeSent: %s", verificationId)
                 verification = verificationId
                 resendingToken = token
 
@@ -76,11 +80,8 @@ class LoginActivity : BaseActivity() {
             onFocusChangeListener = listener
 
             setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE -> {
-                        startPhoneNumberVerification(text.toString())
-                    }
-                }
+                if (actionId == EditorInfo.IME_ACTION_DONE)
+                    startPhoneNumberVerification(text.toString())
                 false
             }
 
@@ -94,15 +95,15 @@ class LoginActivity : BaseActivity() {
             if (checkInternet()) {
                 App.mAuth.signInAnonymously().addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Log.d("LoginActivity", "signInAnonymously:success")
-                        this.openMainActivity()
+                        Timber.tag("LoginActivity").d("signInAnonymously:success")
+                        openMainActivity()
                     } else {
-                        Log.d("LoginActivity", "signInAnonymously:failure", task.exception)
+                        Timber.tag("LoginActivity").d(task.exception, "signInAnonymously:failure: %s")
                         showToast("Giriş başarısız.")
                     }
                 }
             } else {
-                this.openMainActivity()
+                showToast("İnternet bağlantısı bulunamadı. \n Lütfen tekrar deneyiniz")
             }
         }
 

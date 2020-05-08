@@ -5,12 +5,11 @@
     <color name="colorSecondary">#f9aa33</color>
     <color name="colorAccent">#4a6572</color>
     <color name="colorPrimaryLight">#e6344955</color>
-    <color name="colorShade">#f2f5f5</color>
-    <color name="lineShade">#66ababab</color>
+    <color name="porcelain">#f2f5f5</color>
+    <color name="silverChalice">#66ababab</color>
     <color name="black56">#8f000000</color>
     <color name="transparent">#00000000</color>
-    <color name="green56">#8f66BB6A</color>
-    <color name="red">#e53935</color>
-    <color name="greeny">#388e3c</color>
-
+    <color name="fern">#8f66BB6A</color>
+    <color name="cinnabar">#e53935</color>
+    <color name="apple">#388e3c</color>
 </resources>

@@ -10,7 +10,6 @@ import androidx.core.animation.doOnStart
 import androidx.core.view.doOnLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
-import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -72,7 +71,7 @@ class EarthquakePagingAdapter(context: Context,
         private val broccoli = Broccoli()
 
         init {
-            map?.onCreate(null)
+            map.onCreate(null)
         }
 
         override fun onMapReady(googleMap: GoogleMap?) {
@@ -281,9 +280,9 @@ class EarthquakePagingAdapter(context: Context,
 
     fun setMagBackgroundTint(view: View, magnitude: Double) {
         val color = when {
-            magnitude < 3 -> R.color.greeny
+            magnitude < 3 -> R.color.apple
             (magnitude >= 3) && (magnitude < 4.5) -> R.color.colorSecondary
-            else -> R.color.red
+            else -> R.color.cinnabar
         }
         view.setBackgroundTint(color)
     }

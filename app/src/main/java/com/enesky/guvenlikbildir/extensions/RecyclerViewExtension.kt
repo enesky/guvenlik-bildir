@@ -17,7 +17,7 @@ fun RecyclerView.addSelectedContactWatcher(selectedItemList: MutableMap<Int, Con
 
         override fun onChildViewAttachedToWindow(view: View) {
             if (selectedItemList.containsKey(getChildViewHolder(view).adapterPosition))
-                view.setBackground(R.color.green56)
+                view.setBackground(R.color.fern)
             else
                 view.setBackground(android.R.color.white)
         }

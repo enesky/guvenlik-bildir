@@ -2,7 +2,6 @@ package com.enesky.guvenlikbildir.adapter
 
 import android.annotation.SuppressLint
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.EditText
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.custom.StatefulRecyclerView
-import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
@@ -41,7 +39,7 @@ fun isOnlineBackground(view: View, isOnline: Boolean) {
 @BindingAdapter("isSelected")
 fun isSelected(view: View, isSelected: Boolean) {
     if (isSelected)
-        view.setBackground(R.color.green56)
+        view.setBackground(R.color.fern)
     else
         view.setBackground(android.R.color.white)
 }
@@ -212,7 +210,7 @@ fun changeFilters(view: TextView, filterIndex: Int, selectedIndex: Int) {
         }
         1 -> { // 0 - 3
             view.setBackground(android.R.color.white)
-            view.setTextColorRes(R.color.greeny)
+            view.setTextColorRes(R.color.apple)
         }
         2 -> { // 3 - 4.5
             view.setBackground(android.R.color.white)
@@ -220,7 +218,7 @@ fun changeFilters(view: TextView, filterIndex: Int, selectedIndex: Int) {
         }
         3 -> { // > 4.5
             view.background = view.context.getDrawable(R.drawable.bg_right_active)
-            view.setTextColorRes(R.color.red)
+            view.setTextColorRes(R.color.cinnabar)
         }
     }
 

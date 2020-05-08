@@ -1,14 +1,13 @@
 package com.enesky.guvenlikbildir.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ItemContactBinding
 import com.enesky.guvenlikbildir.extensions.setBackground
 import com.enesky.guvenlikbildir.model.Contact
+import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 11.02.2020
@@ -40,13 +39,13 @@ class AddContactAdapter(private var contactList: MutableList<Contact>,
         fun bind(contact: Contact) {
             binding.contact = contact
             binding.root.setOnClickListener {
-                Log.d("AddContactAdapter", "onClick: $adapterPosition")
+                Timber.tag("AddContactAdapter").d( "onClick: %s", adapterPosition)
 
                 if (selectedPosList.contains(adapterPosition)) {
                     it.setBackground(android.R.color.white)
                     selectedPosList.remove(adapterPosition)
                 } else {
-                    it.setBackground(R.color.green56)
+                    it.setBackground(R.color.fern)
                     selectedPosList.add(adapterPosition)
                 }
 

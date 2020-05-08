@@ -1,17 +1,23 @@
 package com.enesky.guvenlikbildir
 
 import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
-import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.extensions.getResponseFromJson
+import android.graphics.Color
+import android.os.Build
 import com.enesky.guvenlikbildir.model.EarthquakeOA
 import com.enesky.guvenlikbildir.model.GenericResponse
+import com.enesky.guvenlikbildir.others.Constants
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.reflect.TypeToken
 import com.jakewharton.threetenabp.AndroidThreeTen
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 import java.util.*
 
 /**
@@ -35,6 +41,10 @@ class App : Application() {
         val mAnalytics: FirebaseAnalytics
             get() = mAnalytics
 
+        private lateinit var firebaseCrashlytics: FirebaseCrashlytics
+        val mCrashlytics: FirebaseCrashlytics
+            get() = mCrashlytics
+
         private lateinit var firebaseFirestore: FirebaseFirestore
         val mFirestore: FirebaseFirestore
             get() = firebaseFirestore
@@ -51,17 +61,37 @@ class App : Application() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         firebaseFirestore = FirebaseFirestore.getInstance()
+        firebaseCrashlytics = FirebaseCrashlytics.getInstance()
         AndroidThreeTen.init(this)
 
+        if(BuildConfig.DEBUG)
+            Timber.plant(DebugTree())
+
+        createNotificationChannel()
         Locale.setDefault(Locale("tr"))
 
+        /*
         if (BuildConfig.DEBUG) {
             val earthquakeResponseTypeToken = object : TypeToken<GenericResponse<EarthquakeOA>>() {}.type
             val earthquakeResponse = getResponseFromJson<GenericResponse<EarthquakeOA>>("mockservices/orhanaydogduMock.json", earthquakeResponseTypeToken)
             mockEarthquakeList = earthquakeResponse
             //Log.d("mockEarthquakeList", earthquakeResponse.toString())
         }
+        */
+    }
 
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(Constants.appName, Constants.notificationChannel, importance)
+            channel.enableVibration(true)
+            channel.enableLights(true)
+            channel.setShowBadge(true)
+            channel.lightColor = Color.GRAY
+            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            val notificationManager = (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
 }

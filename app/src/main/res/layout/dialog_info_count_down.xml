@@ -11,17 +11,17 @@
         android:id="@+id/tv_dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin_24"
+        android:layout_marginTop="@dimen/default_margin_16"
+        android:layout_marginEnd="@dimen/default_margin_24"
+        android:gravity="center"
+        android:lineHeight="@dimen/default_text_24"
         android:text="Aranıyor"
         android:textColor="@android:color/black"
         android:textSize="@dimen/default_text_20"
-        android:lineHeight="@dimen/default_text_24"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/default_margin_16"
-        android:layout_marginStart="@dimen/default_margin_24"
-        android:layout_marginEnd="@dimen/default_margin_24"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/pb_loading"

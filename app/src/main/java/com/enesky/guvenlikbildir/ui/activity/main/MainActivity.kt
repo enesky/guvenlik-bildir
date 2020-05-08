@@ -6,11 +6,9 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.EarthquakeDB
@@ -21,7 +19,6 @@ import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
-import com.enesky.guvenlikbildir.others.ConnectionLiveData
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
@@ -37,6 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class MainActivity : BaseActivity(), Navigator.NavigatorListener,
     BottomNavigationView.OnNavigationItemSelectedListener,
@@ -106,13 +104,6 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         if (currentUser == null)
             openLoginActivity()
 
-        ConnectionLiveData(this).observe(this, Observer
-            { isOnline ->
-                if (!isOnline)
-                    showToast("İnternet bağlantısı bulunamadı.\nBazı fonksiyonlar pasif durumda olacaktır.")
-            }
-        )
-
         if (isFirstTime) {
             requireAllPermissions()
             isFirstTime = false
@@ -170,7 +161,7 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
                 val latitude = location.latitude
                 val longitude = location.longitude
                 lastKnownLocation = "$latitude,$longitude"
-                Log.d("LocationManager", lastKnownLocation!!)
+                Timber.tag("LocationManager").d("%s", lastKnownLocation!!)
             }
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String?) {}

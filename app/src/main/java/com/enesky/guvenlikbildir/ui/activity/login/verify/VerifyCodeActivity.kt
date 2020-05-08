@@ -2,7 +2,6 @@ package com.enesky.guvenlikbildir.ui.activity.login.verify
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.R
@@ -16,6 +15,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.android.synthetic.main.activity_verify_code.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class VerifyCodeActivity: BaseActivity() {
@@ -48,8 +48,9 @@ class VerifyCodeActivity: BaseActivity() {
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                Log.d("VerifyCodeActivity", "onVerificationCompleted:$credential")
+                Timber.tag("VerifyCodeActivity").d("onVerificationCompleted: %s", credential)
                 if (credential.smsCode != null) {
+                    showToast("Kodu senin için yakaladım. :)")
                     et_verify_code.setText(credential.smsCode)
                     verifyCodeViewModel.setInputsEnabled(false)
                 }
@@ -58,26 +59,24 @@ class VerifyCodeActivity: BaseActivity() {
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                Log.w("VerifyCodeActivity", "onVerificationFailed:${e.message}")
+                Timber.tag("VerifyCodeActivity").w(e.message, "onVerificationFailed: %s")
                 showToast(e.message)
                 verifyCodeViewModel.setInputsEnabled(true)
             }
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-                Log.d("VerifyCodeActivity", "onCodeSent:$verificationId")
+                Timber.tag("VerifyCodeActivity").d("onCodeSent: %s ", verificationId)
                 resendingToken = token
                 verification = verificationId
+                showToast("Kod gönderildi.")
             }
 
         }
 
         et_verify_code.apply {
             setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE -> {
-                        verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
-                    }
-                }
+                if (actionId == EditorInfo.IME_ACTION_DONE)
+                    verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
                 false
             }
         }

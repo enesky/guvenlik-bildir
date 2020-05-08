@@ -26,9 +26,6 @@ class SharedContactsVM : BaseViewModel(), ContactAdapter.ContactListener,
     }
 
     val isViewsLoaded = MutableLiveData<Boolean>()
-    val isOnline = MutableLiveData<Boolean>().apply {
-        value = true
-    }
     val onClick = LiveEvent<Any>()
     val isSelectedListChanged = LiveEvent<Any>()
 

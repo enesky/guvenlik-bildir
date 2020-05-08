@@ -1,10 +1,8 @@
 package com.enesky.guvenlikbildir.viewModel
 
-import android.util.Log
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 26.01.2020
@@ -13,7 +11,7 @@ import androidx.lifecycle.ViewModel
 open class BaseViewModel : ViewModel(){
 
     init {
-        Log.d(this.javaClass.simpleName, " ${this.javaClass.simpleName} created.")
+        Timber.tag(this.javaClass.simpleName).d(this.javaClass.simpleName, " %s created.")
     }
 
     private var dataViewBinding: ViewDataBinding? = null
@@ -24,7 +22,7 @@ open class BaseViewModel : ViewModel(){
 
     override fun onCleared() {
         super.onCleared()
-        Log.d(this.javaClass.simpleName, " ${this.javaClass.simpleName} destroyed.")
+        Timber.tag(this.javaClass.simpleName).d(this.javaClass.simpleName ,"%s destroyed.")
         dataViewBinding?.unbind()
         dataViewBinding = null
     }
