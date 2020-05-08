@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
+import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
@@ -46,14 +47,19 @@ class LoginActivity : BaseActivity() {
 
                 if (credential.smsCode != null) {
                     Timber.tag("onVerificationCompleted").d("Kodu havada yakaladın. -> %s", credential.smsCode)
-                    showToast("Kodu senin için yakaladım. :)")
+                    showToast(getString(R.string.label_code_caught))
                     signInWithPhoneAuthCredential(credential)
-                } else
-                    startVerifyCodeActivity(
-                        et_phone_number.text.toString(),
-                        verification!!,
-                        resendingToken!!
-                    )
+                } else {
+                    if (et_phone_number.text.toString().isPhoneNumberValid()) {
+                        loginVM.setInputsEnabled(false)
+                        openVerifyCodeActivity(et_phone_number.text.toString(), verification!!, resendingToken!!)
+                    } else {
+                        loginVM.setInputsEnabled(true)
+                        til_phone_number.error = getString(R.string.label_invalid_phone_number)
+                        til_phone_number.isErrorEnabled = true
+                    }
+                }
+
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -66,11 +72,11 @@ class LoginActivity : BaseActivity() {
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                Timber.tag("LoginActivity").d("onCodeSent: %s", verificationId)
+                Timber.tag("LoginActivity").d("onCodeSent: %1s, token: %2s", verification, token)
                 verification = verificationId
                 resendingToken = token
 
-                if (et_phone_number.text.toString() == Constants.testUserPhoneNumber)
+                if (BuildConfig.DEBUG && et_phone_number.text.toString() == Constants.testUserPhoneNumber)
                     openVerifyCodeActivity(Constants.testUserPhoneNumber, verificationId, token)
             }
         }
@@ -84,7 +90,6 @@ class LoginActivity : BaseActivity() {
                     startPhoneNumberVerification(text.toString())
                 false
             }
-
         }
 
         btn_send_code.setOnClickListener {
@@ -99,29 +104,14 @@ class LoginActivity : BaseActivity() {
                         openMainActivity()
                     } else {
                         Timber.tag("LoginActivity").d(task.exception, "signInAnonymously:failure: %s")
-                        showToast("Giriş başarısız.")
+                        showToast(getString(R.string.label_login_failed))
                     }
                 }
             } else {
-                showToast("İnternet bağlantısı bulunamadı. \n Lütfen tekrar deneyiniz")
+                showToast(getString(R.string.label_connection_not_found))
             }
         }
 
-    }
-
-    fun startVerifyCodeActivity(
-        phoneNumber: String,
-        verificationId: String,
-        token: PhoneAuthProvider.ForceResendingToken
-    ) {
-        if (phoneNumber.isPhoneNumberValid()) {
-            loginVM.setInputsEnabled(false)
-            openVerifyCodeActivity(phoneNumber, verificationId, token)
-        } else {
-            til_phone_number.error = "Geçersiz telefon numarası"
-            til_phone_number.isErrorEnabled = true
-            loginVM.setInputsEnabled(true)
-        }
     }
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
@@ -131,11 +121,15 @@ class LoginActivity : BaseActivity() {
             )
             loginVM.setInputsEnabled(false)
         } else {
-            til_phone_number.error = "Geçersiz telefon numarası"
+            val errorMessage: String =
+                if (phoneNumber.isEmpty())
+                    getString(R.string.label_empty_input)
+                else
+                    getString(R.string.label_invalid_phone_number)
+            til_phone_number.error = errorMessage
             til_phone_number.isErrorEnabled = true
             loginVM.setInputsEnabled(true)
         }
-
     }
 
 }

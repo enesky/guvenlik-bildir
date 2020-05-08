@@ -70,6 +70,13 @@
     <string name="label_filter_second">0 - 3</string>
     <string name="label_filter_third">3 - 4.5</string>
     <string name="label_filter_fourth"><![CDATA[> 4.5]]></string>
+
     <string name="label_earthquake_placeholder">Kriterlere uygun deprem bulunamadı.</string>
+
+    <string name="label_login_failed">Giriş başarısız.</string>
+    <string name="label_invalid_phone_number">Geçersiz telefon numarası</string>
+    <string name="label_empty_input">Lütfen giriş yapınız.</string>
+    <string name="label_connection_not_found">İnternet bağlantısı bulunamadı.\nLütfen tekrar deneyiniz.</string>
+    <string name="label_code_caught">Doğrulama kodu yakalandı.</string>
 
 </resources>

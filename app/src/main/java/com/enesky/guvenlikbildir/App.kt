@@ -39,11 +39,11 @@ class App : Application() {
 
         private lateinit var firebaseAnalytics: FirebaseAnalytics
         val mAnalytics: FirebaseAnalytics
-            get() = mAnalytics
+            get() = firebaseAnalytics
 
         private lateinit var firebaseCrashlytics: FirebaseCrashlytics
         val mCrashlytics: FirebaseCrashlytics
-            get() = mCrashlytics
+            get() = firebaseCrashlytics
 
         private lateinit var firebaseFirestore: FirebaseFirestore
         val mFirestore: FirebaseFirestore

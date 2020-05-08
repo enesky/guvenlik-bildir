@@ -73,29 +73,29 @@
 
         <TextView
             android:id="@+id/tv_timeup"
-            isVisible="@{!viewModel.inputsEnabled}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:gravity="center"
             android:text="@string/label_time_up"
             android:textSize="@dimen/default_text_18"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pb_loading" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_resend_code"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_resend_code"
             android:textAllCaps="false"
             isVisible="@{!viewModel.inputsEnabled}"
-            android:layout_marginTop="@dimen/default_margin_8"
-            app:layout_constraintTop_toBottomOf="@id/tv_timeup"
-            app:layout_constraintStart_toStartOf="@id/tv_timeup"
-            app:layout_constraintEnd_toEndOf="@id/tv_timeup"
+            android:layout_margin="@dimen/default_margin_16"
+            app:layout_constraintTop_toBottomOf="@id/btn_sign_in"
+            app:layout_constraintStart_toStartOf="@id/btn_sign_in"
+            app:layout_constraintEnd_toEndOf="@id/btn_sign_in"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

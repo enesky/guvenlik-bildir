@@ -28,7 +28,7 @@ fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
             App.mAnalytics.logEvent("signInWithPhoneAuthCredential", data)
             App.mCrashlytics.setUserId(task.result?.user?.phoneNumber!!)
             addUserInfo2Database(task.result?.user!!)
-            this.openMainActivity()
+            openMainActivity()
         } else {
             Timber.w(task.exception, "signInWithCredential:failure")
             if (task.exception is FirebaseAuthInvalidCredentialsException)

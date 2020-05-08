@@ -11,7 +11,7 @@ import timber.log.Timber
 open class BaseViewModel : ViewModel(){
 
     init {
-        Timber.tag(this.javaClass.simpleName).d(this.javaClass.simpleName, " %s created.")
+        Timber.tag(this.javaClass.simpleName).d("%s created.", this.javaClass.simpleName)
     }
 
     private var dataViewBinding: ViewDataBinding? = null
@@ -22,7 +22,7 @@ open class BaseViewModel : ViewModel(){
 
     override fun onCleared() {
         super.onCleared()
-        Timber.tag(this.javaClass.simpleName).d(this.javaClass.simpleName ,"%s destroyed.")
+        Timber.tag(this.javaClass.simpleName).d("%s destroyed.", this.javaClass.simpleName)
         dataViewBinding?.unbind()
         dataViewBinding = null
     }
