@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_dialog"
+        android:paddingBottom="@dimen/default_margin_24"
+        android:paddingStart="@dimen/default_margin_24"
+        android:paddingEnd="@dimen/default_margin_24">
+
+        <View
+            android:id="@+id/toggle"
+            android:layout_width="@dimen/toolbar_height"
+            android:layout_height="@dimen/default_margin_8"
+            android:background="@drawable/bg_radius"
+            android:layout_margin="@dimen/default_margin_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_mag"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_circle"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/default_text_32"
+            android:textStyle="bold"
+            android:fontFamily="@font/signika_light"
+            android:layout_margin="@dimen/default_margin_16"
+            app:layout_constraintTop_toBottomOf="@id/toggle"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="3.0" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_8"
+            app:layout_constraintStart_toEndOf="@id/tv_mag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_mag"
+            app:layout_constraintBottom_toBottomOf="@id/tv_mag" />
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="@string/label_notification_info"
+            android:layout_margin="@dimen/default_margin_16"
+            app:layout_constraintTop_toBottomOf="@id/tv_mag"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/switcher"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.bitvale.switcher.SwitcherX
+            android:id="@+id/switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tv_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_info"
+            app:layout_constraintBottom_toBottomOf="@id/tv_info"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

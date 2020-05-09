@@ -10,11 +10,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.adapter.OptionAdapter
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.dialog.AboutDialog
+import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsDialog
+import com.enesky.guvenlikbildir.ui.dialog.NotificationSettingsDialog
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.contacts.ContactsFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySMSFragment
@@ -44,19 +47,25 @@ class OptionsFragment: BaseFragment() {
             when(whereTo) {
                 0 -> multipleStackNavigator!!.start(ContactsFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 1 -> multipleStackNavigator!!.start(ModifySMSFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
+                2 -> NotificationSettingsDialog().show(parentFragmentManager, "EarthquakeItemOptionsDialog")
                 //2 -> requireContext().showToast(getString(R.string.item_option_2))
                 //3 -> requireContext().showToast(getString(R.string.item_option_3))
-                2 -> requireActivity().openGooglePlayPage()
-                3 -> requireActivity().shareGooglePlayPage()
-                4 -> sendFeedback()
-                5 -> requireActivity().openWebView(Constants.githubUrl)
-                6 -> AboutDialog().show(parentFragmentManager, "AboutDialog")
-                7 -> {
+                3 -> requireActivity().openGooglePlayPage()
+                4 -> requireActivity().shareGooglePlayPage()
+                5 -> sendFeedback()
+                6 -> requireActivity().openWebView(Constants.githubUrl)
+                7 -> AboutDialog().show(parentFragmentManager, "AboutDialog")
+                8 -> {
                     App.mAuth.signOut()
                     startActivity(Intent(requireActivity(), LoginActivity::class.java))
                     requireActivity().finishAffinity()
                 }
             }
+        })
+
+        optionsVM.notificationResIdLive.observe(viewLifecycleOwner, Observer {
+            optionsVM.optionList.value?.get(2)?.imageId = it
+            (rv_options.adapter as OptionAdapter).notifyItemChanged(2)
         })
 
     }

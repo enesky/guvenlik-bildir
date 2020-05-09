@@ -1,0 +1,84 @@
+package com.enesky.guvenlikbildir.ui.dialog
+
+import android.content.res.ColorStateList
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.SeekBar
+import androidx.databinding.DataBindingUtil
+
+import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.databinding.DialogNotificationSettingsBinding
+import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.ui.fragment.options.OptionsVM
+import kotlinx.android.synthetic.main.dialog_notification_settings.*
+
+/**
+ * Created by Enes Kamil YILMAZ on 09.05.2020
+ */
+
+class NotificationSettingsDialog : BaseBottomSheetDialogFragment() {
+
+    private lateinit var binding: DialogNotificationSettingsBinding
+    private lateinit var optionsVM: OptionsVM
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_notification_settings, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        optionsVM = getViewModel()
+
+        seekbar.max = 50
+        seekbar.progress = ((notificationMagLimit / 0.1) - 30).toInt()
+
+        refreshViews(notificationMagLimit.toDouble())
+
+        seekbar.setOnSeekBarChangeListener( object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                refreshViews((p1 + 30) * 0.1)
+            }
+            override fun onStartTrackingTouch(p0: SeekBar?) {}
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                notificationMagLimit = tv_mag.text.toString().toFloat()
+            }
+        })
+
+        switcher.setChecked(isNotificationsEnabled, true)
+
+        switcher.setOnCheckedChangeListener { isChecked ->
+            isNotificationsEnabled = isChecked
+            notificationIconResId = if (isNotificationsEnabled)
+                                        R.drawable.ic_notifications_active
+                                    else
+                                        R.drawable.ic_notifications_off
+            optionsVM.notificationResIdLive.value = notificationIconResId
+        }
+
+    }
+
+    fun refreshViews(currentMag: Double) {
+        tv_mag.text = currentMag.toString().subSequence(0,3)
+        tv_info.text = getString(R.string.label_notification_info, currentMag.toString().subSequence(0,3))
+        setMagBackgroundTint(tv_mag, seekbar, currentMag)
+    }
+
+    private fun setMagBackgroundTint(view: View, seekbar: SeekBar, magnitude: Double) {
+        val color = when {
+            magnitude < 3.5 -> R.color.apple
+            (magnitude >= 3.5) && (magnitude < 5) -> R.color.colorSecondary
+            else -> R.color.cinnabar
+        }
+        view.setBackgroundTint(color)
+
+        //TODO: Seekbar'ın renklerini de değiştir.
+    }
+
+}

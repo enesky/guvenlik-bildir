@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.extensions
 
 import androidx.core.content.edit
 import com.enesky.guvenlikbildir.App
+import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.others.Constants
 
 /**
@@ -29,3 +30,15 @@ var locationMapWithLink: String?
         Constants.locationMapLink, "\nBulunduğum Konum: \n" +
                     "https://www.google.com/maps/place/$lastKnownLocation")
     set(value) = App.mPrefs.edit { putString(Constants.locationMapLink, value) }
+
+var notificationIconResId: Int
+    get() = App.mPrefs.getInt(Constants.notificationIconResId, R.drawable.ic_notifications_active)
+    set(value) = App.mPrefs.edit { putInt(Constants.notificationIconResId, value) }
+
+var notificationMagLimit: Float
+    get() = App.mPrefs.getFloat(Constants.notificationMagLimit, 3.0f)
+    set(value) = App.mPrefs.edit { putFloat(Constants.notificationMagLimit, value) }
+
+var isNotificationsEnabled: Boolean
+    get() = App.mPrefs.getBoolean(Constants.isNotificationsEnabled, true)
+    set(value) = App.mPrefs.edit { putBoolean(Constants.isNotificationsEnabled, value) }

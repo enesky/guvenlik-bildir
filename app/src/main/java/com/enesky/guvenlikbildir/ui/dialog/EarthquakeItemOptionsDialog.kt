@@ -1,6 +1,5 @@
 package com.enesky.guvenlikbildir.ui.dialog
 
-import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -9,9 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.OptionAdapter
@@ -20,21 +17,18 @@ import com.enesky.guvenlikbildir.databinding.DialogEarthquakeBottomSheetBinding
 import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.model.OptionItem
 import com.enesky.guvenlikbildir.others.Constants
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_earthquake_bottom_sheet.*
 import java.text.SimpleDateFormat
 
-class EarthquakeOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapter.OptionListListener {
+class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapter.OptionListListener {
 
     companion object {
         private const val earthquakeTag = "earthquakeTag"
 
-        fun newInstance(earthquake: Earthquake): EarthquakeOptionsDialog {
+        fun newInstance(earthquake: Earthquake): EarthquakeItemOptionsDialog {
             val args = Bundle()
             args.putParcelable(earthquakeTag, earthquake)
-            val fragment = EarthquakeOptionsDialog()
+            val fragment = EarthquakeItemOptionsDialog()
             fragment.arguments = args
             return fragment
         }

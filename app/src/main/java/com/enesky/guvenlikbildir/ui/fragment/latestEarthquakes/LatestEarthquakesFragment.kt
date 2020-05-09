@@ -17,7 +17,7 @@ import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
-import com.enesky.guvenlikbildir.ui.dialog.EarthquakeOptionsDialog
+import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsDialog
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.appbar.AppBarLayout
@@ -121,7 +121,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         latestEarthquakesVM.onOptionClick.observe(viewLifecycleOwner, Observer {
             if (it is Earthquake)
-                EarthquakeOptionsDialog.newInstance(it).show(parentFragmentManager,"EarthquakeOptionsDialog")
+                EarthquakeItemOptionsDialog.newInstance(it).show(parentFragmentManager,"EarthquakeOptionsDialog")
         })
 
         latestEarthquakesVM.onFilterIndexChange.observe(viewLifecycleOwner, Observer {

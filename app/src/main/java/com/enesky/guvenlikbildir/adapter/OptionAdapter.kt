@@ -35,6 +35,8 @@ class OptionAdapter(private var optionItemList: List<OptionItem>,
         }
     }
 
+    override fun getItemId(position: Int): Long = position.toLong()
+
     interface OptionListListener {
         fun onItemClick(pos: Int, optionItem: OptionItem)
     }

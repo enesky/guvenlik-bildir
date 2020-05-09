@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
+import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityVerifyCodeBinding
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.showToast
-import com.enesky.guvenlikbildir.extensions.signInWithPhoneAuthCredential
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -41,7 +40,7 @@ class VerifyCodeActivity: BaseActivity() {
         verification = intent.getStringExtra("verificationId")
         resendingToken = intent.getParcelableExtra("token")
 
-        if (phoneNumber == Constants.testUserPhoneNumber)
+        if (BuildConfig.DEBUG && phoneNumber == Constants.testUserPhoneNumber)
             et_verify_code.setText(Constants.testUserVerifyCode)
 
         startCountDown()
@@ -50,16 +49,15 @@ class VerifyCodeActivity: BaseActivity() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 Timber.tag("VerifyCodeActivity").d("onVerificationCompleted: %s", credential)
                 if (credential.smsCode != null) {
-                    showToast("Kodu senin için yakaladım. :)")
+                    showToast(getString(R.string.label_code_caught))
                     et_verify_code.setText(credential.smsCode)
                     verifyCodeViewModel.setInputsEnabled(false)
+                    signInWithPhoneAuthCredential(credential)
                 }
-
-                signInWithPhoneAuthCredential(credential)
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                Timber.tag("VerifyCodeActivity").w(e.message, "onVerificationFailed: %s")
+                Timber.tag("VerifyCodeActivity").w("onVerificationFailed: %s", e.message)
                 showToast(e.message)
                 verifyCodeViewModel.setInputsEnabled(true)
             }
@@ -88,6 +86,8 @@ class VerifyCodeActivity: BaseActivity() {
         btn_resend_code.setOnClickListener {
             if (resendingToken != null)
                 resendVerificationCode(phoneNumber!!, resendingToken)
+            else if (BuildConfig.DEBUG)
+                verifyCodeViewModel.setInputsEnabled(true)
         }
 
     }
@@ -107,6 +107,7 @@ class VerifyCodeActivity: BaseActivity() {
     }
 
     private fun startCountDown() {
+        tv_timeup.makeItGone()
         object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 tv_countdown.text = (millisUntilFinished / 1000).toString()
@@ -114,6 +115,7 @@ class VerifyCodeActivity: BaseActivity() {
 
             override fun onFinish() {
                 tv_countdown.text = "0"
+                tv_timeup.makeItVisible()
                 verifyCodeViewModel.setInputsEnabled(false)
             }
         }.start()

@@ -54,6 +54,9 @@ object Constants {
     const val locationMapLink = "locationMapLink"
     const val safeSms = "safeSms"
     const val unsafeSms = "unsafeSms"
+    const val notificationIconResId = "notificationIconResId"
+    const val notificationMagLimit = "notificationMagLimit"
+    const val isNotificationsEnabled = "isNotificationsEnabled"
 
     //Notifications
     const val notificationChannel = "Deprem Bildirimleri"

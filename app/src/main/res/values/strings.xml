@@ -45,6 +45,7 @@
     <string name="item_option_7">Uygulama Kodunu İncele</string>
     <string name="item_option_8">Uygulama Hakkında</string>
     <string name="item_option_9">Oturumu Kapat</string>
+    <string name="item_option_10">Bildirim Ayarları</string>
     <string name="label_mail_header">Güvenlik Bildir: Görüş - Öneri</string>
     <string name="label_mail_body">Görüş ve önerilerinizi buraya yazınız…</string>
     <string name="label_save">Kaydet</string>
@@ -67,8 +68,8 @@
 
     <string name="label_about">Uygulama Hakkında\nYapım aşamasındadır.</string>
     <string name="label_filter_all">Hepsi</string>
-    <string name="label_filter_second">0 - 3</string>
-    <string name="label_filter_third">3 - 4.5</string>
+    <string name="label_filter_second">0 – 3</string>
+    <string name="label_filter_third">3 – 4.5</string>
     <string name="label_filter_fourth"><![CDATA[> 4.5]]></string>
 
     <string name="label_earthquake_placeholder">Kriterlere uygun deprem bulunamadı.</string>
@@ -78,5 +79,6 @@
     <string name="label_empty_input">Lütfen giriş yapınız.</string>
     <string name="label_connection_not_found">İnternet bağlantısı bulunamadı.\nLütfen tekrar deneyiniz.</string>
     <string name="label_code_caught">Doğrulama kodu yakalandı.</string>
+    <string name="label_notification_info">Büyüklüğü %s ve üstü olan depremler hakkında bildirim almak istiyorum.</string>
 
 </resources>

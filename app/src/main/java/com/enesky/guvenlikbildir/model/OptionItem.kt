@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class OptionItem(
-    val imageId: Int,
+    var imageId: Int,
     val optionText: String,
     var colorRes: Int = R.color.colorPrimary
 ) : Parcelable
