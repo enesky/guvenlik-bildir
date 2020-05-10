@@ -96,11 +96,13 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
             0 -> requireContext().showToast("Yapım aşamasındadır.", false)
             1 -> requireContext().showToast("Yapım aşamasındadır.", false)
             2 -> {
-                val sendIntent: Intent = Intent().setAction(Intent.ACTION_SEND)
-                sendIntent.putExtra(Intent.EXTRA_TEXT, earthquakeDetailWithLinks)
-                sendIntent.type = "text/plain"
-                if (sendIntent.resolveActivity(requireContext().packageManager) != null)
-                    requireContext().startActivity(sendIntent)
+                val share = Intent.createChooser(Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, earthquakeDetailWithLinks)
+                    putExtra(Intent.EXTRA_TITLE, "Deprem Detayları")
+                    type = "text/plain"
+                }, null)
+                startActivity(share)
                 dismissAllowingStateLoss()
             }
             3 -> {

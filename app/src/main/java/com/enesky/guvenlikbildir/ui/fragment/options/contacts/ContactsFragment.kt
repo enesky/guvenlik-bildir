@@ -31,7 +31,7 @@ class ContactsFragment : BaseFragment() {
         }
         contactsVM.init(binding, mutableListOf())
 
-        getUsersContactList {prepareViews(it)}
+        getUsersContactList { prepareViews(it) }
 
         contactsVM.isSelectedListChanged.observe(viewLifecycleOwner, Observer {
             contactsVM.contactAdapter.value!!.update(contactsVM.selectedContactList.value!!)
@@ -70,7 +70,7 @@ class ContactsFragment : BaseFragment() {
         rv_contacts.scheduleLayoutAnimation()
     }
 
-    private fun prepareViews(any: Any) {
+    private fun prepareViews(any: Any?) {
         pb_loading.makeItVisible()
         if (any is MutableList<*>) {
             if ((any as MutableList<Contact>).isNullOrEmpty()) {

@@ -19,7 +19,7 @@ fun Context.requireSendSmsPermission(function: () -> Any) = runWithPermissions(
     Manifest.permission.SEND_SMS,
     options = getQuickPermissionOptions()
 ) {
-    Timber.tag("CalendarEventExtensions")
+    Timber.tag("PermissionRequestExtension")
         .d("requireSendSmsPermission: Send Sms permission granted")
     if (ContextCompat.checkSelfPermission(
             this,
@@ -34,7 +34,7 @@ fun Context.requireCallPhonePermission(function: () -> Any) = runWithPermissions
     Manifest.permission.CALL_PHONE,
     options = getQuickPermissionOptions()
 ) {
-    Timber.tag("CalendarEventExtensions")
+    Timber.tag("PermissionRequestExtension")
         .d("requireCallPhonePermission: Call Phone permission granted")
     if (ContextCompat.checkSelfPermission(
             this,
@@ -49,7 +49,7 @@ fun Context.requireReadContactsPermission(function: () -> Any) = runWithPermissi
     Manifest.permission.READ_CONTACTS,
     options = getQuickPermissionOptions()
 ) {
-    Timber.tag("CalendarEventExtensions")
+    Timber.tag("PermissionRequestExtension")
         .d("requireReadContactsPermission: Read Contacts permission granted")
     if (ContextCompat.checkSelfPermission(
             this,
@@ -66,7 +66,7 @@ fun Context.requireLocationPermission(function: () -> Any) =
         Manifest.permission.ACCESS_BACKGROUND_LOCATION,
         options = getQuickPermissionOptions()
     ) {
-        Timber.tag("CalendarEventExtensions")
+        Timber.tag("PermissionRequestExtension")
             .d("requireLocationPermission: Location permissions granted")
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -90,7 +90,7 @@ fun Context.requireLocationPermission(function: () -> Any) =
             Manifest.permission.ACCESS_COARSE_LOCATION,
             options = getQuickPermissionOptions()
         ) {
-            Timber.tag("CalendarEventExtensions")
+            Timber.tag("PermissionRequestExtension")
                 .d("requireLocationPermission: Location permissions granted")
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -106,7 +106,7 @@ fun Context.requireAllPermissions() = runWithPermissions(
     Manifest.permission.ACCESS_FINE_LOCATION,
     Manifest.permission.ACCESS_COARSE_LOCATION, options = getQuickPermissionOptions()
 ) {
-    Timber.tag("CalendarEventExtensions").d("requireAllPermissions: All permissions granted")
+    Timber.tag("PermissionRequestExtension").d("requireAllPermissions: All permissions granted")
 }
 
 fun Context.getQuickPermissionOptions(): QuickPermissionsOptions {

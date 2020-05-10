@@ -34,7 +34,6 @@ class NotifierWorker (
             if (response.isSuccessful) {
                 Timber.tag("NotifierWorker").d("doWork Success")
                 earthquakeList = EarthquakeAPI.parseResponse(response.body()!!.replace("�", "I"))
-                earthquakeRepository.refreshEartquakes(earthquakeList)
 
                 loop@ for (earthquake: Earthquake in earthquakeList) when {
 
@@ -49,19 +48,18 @@ class NotifierWorker (
                             .d("earthquake.magML >= 1.5 => ${earthquake.location} - ${earthquake.dateTime}")
                         FcmService.showLocalNotification(
                             context,
-                            "Deprem oldu !!!",
-                            "${earthquake.location}'da ${earthquake.dateTime.formatDateTime()} tarihinde " +
-                                    "${earthquake.magML} büyüklüğünde deprem oldu.",
-                            earthquake.hashCode().toString()
+                            earthquake = earthquake,
+                            earthquakeID = earthquake.hashCode().toString()
                         )
                     }
 
                     else -> {
-                        Timber.tag("NotifierWorker")
-                            .d("${earthquake.location} - ${earthquake.dateTime}")
+                        Timber.tag("NotifierWorker").d("${earthquake.location} - ${earthquake.dateTime}")
                     }
+
                 }
 
+                earthquakeRepository.refreshEartquakes(earthquakeList)
                 Result.success()
             } else {
                 Timber.tag("NotifierWorker").d("doWork Failed")

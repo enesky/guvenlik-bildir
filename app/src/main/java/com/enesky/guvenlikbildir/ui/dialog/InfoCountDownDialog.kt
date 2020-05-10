@@ -179,7 +179,7 @@ class InfoCountDownDialog : DialogFragment() {
         }
     }
 
-    private fun sendIt(list: Any) {
+    private fun sendIt(list: Any?) {
         if (list is MutableList<*>) {
             if ((list as MutableList<Contact>).isNullOrEmpty()) {
                 requireContext().showToast("Sms gönderilecek kayıt bulunamadı.")

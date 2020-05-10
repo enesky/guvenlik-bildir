@@ -59,6 +59,7 @@ class App : Application() {
 
         fun stopWorker() {
             workManager.cancelAllWork()
+            Timber.tag("NotifierWorker").d("Worker stopped.")
         }
 
         fun startWorker() {
@@ -74,8 +75,10 @@ class App : Application() {
                 .setConstraints(constraints)
                 .build()
 
+            Timber.tag("NotifierWorker").d("Worker started.")
             workManager.enqueue(work)
         }
+
     }
 
     override fun onCreate() {

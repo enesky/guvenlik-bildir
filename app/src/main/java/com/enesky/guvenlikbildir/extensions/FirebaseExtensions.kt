@@ -110,13 +110,13 @@ fun getUserInfo(uid: String?): User? {
     return user
 }
 
-fun getUsersContactList(function: (any: Any) -> Unit) {
+fun getUsersContactList(function: (any: Any?) -> Unit) {
     App.mFirestore.collection(Constants.usersCollection)
         .document(App.mAuth.currentUser!!.uid)
         .get()
         .addOnSuccessListener {
             val user = it.toObject(User::class.java)
-            function(user!!.contactList)
+            function(user?.contactList)
             Timber.tag("Firestore").d("getUsersContactList-Success: %s", it)
         }
         .addOnFailureListener {
