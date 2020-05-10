@@ -34,14 +34,14 @@ class NotificationSettingsDialog : BaseBottomSheetDialogFragment() {
 
         optionsVM = getViewModel()
 
-        seekbar.max = 50
-        seekbar.progress = ((notificationMagLimit / 0.1) - 30).toInt()
+        seekbar.max = 55
+        seekbar.progress = ((notificationMagLimit / 0.1) - 25).toInt()
 
         refreshViews(notificationMagLimit.toDouble())
 
         seekbar.setOnSeekBarChangeListener( object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                refreshViews((p1 + 30) * 0.1)
+                refreshViews((p1 + 25) * 0.1)
             }
             override fun onStartTrackingTouch(p0: SeekBar?) {}
             override fun onStopTrackingTouch(p0: SeekBar?) {

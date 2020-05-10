@@ -43,7 +43,7 @@ var notificationIconResId: Int
     set(value) = App.mPrefs.edit { putInt(Constants.notificationIconResId, value) }
 
 var notificationMagLimit: Float
-    get() = App.mPrefs.getFloat(Constants.notificationMagLimit, 3.0f)
+    get() = App.mPrefs.getFloat(Constants.notificationMagLimit, 4.0f)
     set(value) = App.mPrefs.edit { putFloat(Constants.notificationMagLimit, value) }
 
 var isNotificationsEnabled: Boolean
