@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.database
 
 import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
 import com.enesky.guvenlikbildir.database.entity.Earthquake
+import com.enesky.guvenlikbildir.extensions.lastLoadedEarthquake
 import com.enesky.guvenlikbildir.others.ioThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -17,10 +18,11 @@ class EarthquakeRepository(private val earthquakeDao: EarthquakeDao) {
         earthquakeSF.filter(query, minMag, maxMag)
     }
 
-    suspend fun initAllEarthquakes(earthquakes: List<Earthquake>) {
+    suspend fun refreshEartquakes(earthquakes: List<Earthquake>) {
         earthquakeDao.deleteAll()
+        lastLoadedEarthquake = earthquakes.first()
         ioThread {
-            GlobalScope.launch(Dispatchers.Main) {
+            GlobalScope.launch(Dispatchers.IO) {
                 earthquakeDao.insertAll(earthquakes)
             }
         }

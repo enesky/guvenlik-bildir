@@ -1,16 +1,14 @@
 package com.enesky.guvenlikbildir.ui.dialog
 
 import android.content.res.ColorStateList
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
-
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.DialogNotificationSettingsBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -60,6 +58,11 @@ class NotificationSettingsDialog : BaseBottomSheetDialogFragment() {
                                     else
                                         R.drawable.ic_notifications_off
             optionsVM.notificationResIdLive.value = notificationIconResId
+
+            if (isChecked)
+                App.startWorker()
+            else
+                App.stopWorker()
         }
 
     }
@@ -72,13 +75,13 @@ class NotificationSettingsDialog : BaseBottomSheetDialogFragment() {
 
     private fun setMagBackgroundTint(view: View, seekbar: SeekBar, magnitude: Double) {
         val color = when {
-            magnitude < 3.5 -> R.color.apple
-            (magnitude >= 3.5) && (magnitude < 5) -> R.color.colorSecondary
-            else -> R.color.cinnabar
+            magnitude < 3.5 -> R.color.apple to "#388e3c"
+            (magnitude >= 3.5) && (magnitude < 5) -> R.color.colorSecondary to "#f9aa33"
+            else -> R.color.cinnabar to "#e53935"
         }
-        view.setBackgroundTint(color)
-
-        //TODO: Seekbar'ın renklerini de değiştir.
+        view.setBackgroundTint(color.first)
+        seekbar.progressTintList = ColorStateList.valueOf(Color.parseColor(color.second))
+        seekbar.thumbTintList = ColorStateList.valueOf(Color.parseColor(color.second))
     }
 
 }

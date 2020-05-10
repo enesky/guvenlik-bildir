@@ -85,7 +85,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                             fab_scroll_to_top.show()
                         }
                     }
-
             }
         })
 

@@ -93,6 +93,9 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
             earthquakeVM.getEarthquakes()
         }
 
+        if (isNotificationsEnabled)
+            App.startWorker()
+
         navigator.initialize(savedInstanceState)
         bottom_nav.setOnNavigationItemReselectedListener(this)
         bottom_nav.setOnNavigationItemSelectedListener(this)

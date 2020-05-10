@@ -8,9 +8,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
-import com.enesky.guvenlikbildir.model.EarthquakeOA
-import com.enesky.guvenlikbildir.model.GenericResponse
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.worker.NotifierWorker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -19,14 +22,13 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Enes Kamil YILMAZ on 26.01.2020
  */
 
 class App : Application() {
-
-    lateinit var mockEarthquakeList : GenericResponse<EarthquakeOA>
 
     companion object {
         private lateinit var instance: App
@@ -52,6 +54,28 @@ class App : Application() {
         private lateinit var sharedPreferences: SharedPreferences
         val mPrefs: SharedPreferences
             get() = sharedPreferences
+
+        private lateinit var workManager: WorkManager
+
+        fun stopWorker() {
+            workManager.cancelAllWork()
+        }
+
+        fun startWorker() {
+            workManager.cancelAllWork()
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresBatteryNotLow(true)
+                .build()
+
+            val work = PeriodicWorkRequestBuilder<NotifierWorker>(
+                Constants.workerRepeat, TimeUnit.MINUTES,
+                Constants.wrokerFlex, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+
+            workManager.enqueue(work)
+        }
     }
 
     override fun onCreate() {
@@ -62,6 +86,7 @@ class App : Application() {
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         firebaseFirestore = FirebaseFirestore.getInstance()
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
+        workManager = WorkManager.getInstance(this)
         AndroidThreeTen.init(this)
 
         if(BuildConfig.DEBUG)
@@ -69,15 +94,6 @@ class App : Application() {
 
         createNotificationChannel()
         Locale.setDefault(Locale("tr"))
-
-        /*
-        if (BuildConfig.DEBUG) {
-            val earthquakeResponseTypeToken = object : TypeToken<GenericResponse<EarthquakeOA>>() {}.type
-            val earthquakeResponse = getResponseFromJson<GenericResponse<EarthquakeOA>>("mockservices/orhanaydogduMock.json", earthquakeResponseTypeToken)
-            mockEarthquakeList = earthquakeResponse
-            //Log.d("mockEarthquakeList", earthquakeResponse.toString())
-        }
-        */
     }
 
     private fun createNotificationChannel() {
@@ -89,8 +105,7 @@ class App : Application() {
             channel.setShowBadge(true)
             channel.lightColor = Color.GRAY
             channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            val notificationManager = (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-            notificationManager.createNotificationChannel(channel)
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
         }
     }
 

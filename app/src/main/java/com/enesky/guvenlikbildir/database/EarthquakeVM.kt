@@ -57,7 +57,7 @@ class EarthquakeVM(private val earthquakeRepository: EarthquakeRepository) : Bas
             val response = EarthquakeAPI().getKandilliPost()
             if (response.isSuccessful) {
                 _responseHandler.handleSuccess("Success")
-                earthquakeRepository.initAllEarthquakes(EarthquakeAPI.parseResponse(response.body()!!.replace("�", "I")))
+                earthquakeRepository.refreshEartquakes(EarthquakeAPI.parseResponse(response.body()!!.replace("�", "I")))
             } else {
                 _responseHandler.handleFailure(response)
             }

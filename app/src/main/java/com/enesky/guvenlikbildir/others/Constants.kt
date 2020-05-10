@@ -54,6 +54,7 @@ object Constants {
     const val locationMapLink = "locationMapLink"
     const val safeSms = "safeSms"
     const val unsafeSms = "unsafeSms"
+    const val lastLoadedEarthquake = "lastLoadedEarthquake"
     const val notificationIconResId = "notificationIconResId"
     const val notificationMagLimit = "notificationMagLimit"
     const val isNotificationsEnabled = "isNotificationsEnabled"
@@ -61,5 +62,7 @@ object Constants {
     //Notifications
     const val notificationChannel = "Deprem Bildirimleri"
     const val NOTIFICATION_EARTHQUAKE_ID = "earthquakeID"
+    const val workerRepeat = 15L
+    const val wrokerFlex = 5L
 
 }

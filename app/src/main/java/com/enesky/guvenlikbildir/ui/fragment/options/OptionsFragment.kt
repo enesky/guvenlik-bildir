@@ -57,6 +57,7 @@ class OptionsFragment: BaseFragment() {
                 7 -> AboutDialog().show(parentFragmentManager, "AboutDialog")
                 8 -> {
                     App.mAuth.signOut()
+                    App.stopWorker()
                     startActivity(Intent(requireActivity(), LoginActivity::class.java))
                     requireActivity().finishAffinity()
                 }

@@ -14,6 +14,7 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.OptionAdapter
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.DialogEarthquakeBottomSheetBinding
+import com.enesky.guvenlikbildir.extensions.formatDateTime
 import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.model.OptionItem
 import com.enesky.guvenlikbildir.others.Constants
@@ -60,14 +61,14 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
                 "Yer: ${earthquake!!.location}\n" +
                 "Büyüklük: ${earthquake!!.magML}\n" +
                 "Derinlik: ${earthquake!!.depth} km\n" +
-                "Tarih: " + formatDateTime(earthquake!!.dateTime) + " TSİ\n"
+                "Tarih: " + earthquake!!.dateTime.formatDateTime() + " TSİ\n"
 
         earthquakeDetailWithLinks =
                 "# Deprem - Kandilli Rasathanesi #\n" +
                 "Yer: ${earthquake!!.location}\n" +
                 "Büyüklük: ${earthquake!!.magML}\n" +
                 "Derinlik: ${earthquake!!.depth} km\n" +
-                "Tarih: " + formatDateTime(earthquake!!.dateTime) + " TSİ\n"
+                "Tarih: " + earthquake!!.dateTime.formatDateTime() + " TSİ\n"
                 "https://maps.google.com/maps?q=${earthquake!!.lat},${earthquake!!.lng}&ll=${earthquake!!.lat},${earthquake!!.lng}&&z=8\n" +
                 "# Güvenlik Bildir #\n" +
                 Constants.googlePlayUrl
@@ -112,9 +113,5 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
         }
     }
 
-    fun formatDateTime(dateTime: String): String {
-        val date = SimpleDateFormat(Constants.DEFAULT_K_DATE_TIME_FORMAT).parse(dateTime)
-        return SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
-    }
 
 }

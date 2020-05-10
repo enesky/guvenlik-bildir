@@ -41,6 +41,7 @@
             android:id="@+id/seekbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:theme="@style/seekBarStyle"
             android:layout_marginStart="@dimen/default_margin_8"
             app:layout_constraintStart_toEndOf="@id/tv_mag"
             app:layout_constraintEnd_toEndOf="parent"

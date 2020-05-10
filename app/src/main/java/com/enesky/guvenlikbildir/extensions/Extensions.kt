@@ -37,6 +37,7 @@ import com.thefinestartist.finestwebview.FinestWebView
 import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 /**
@@ -200,6 +201,12 @@ fun getScreenHeight(): Int = Resources.getSystem().displayMetrics.heightPixels
 fun String.isPhoneNumberValid(): Boolean {
     return Patterns.PHONE.matcher(this).matches()
 }
+
+fun String.formatDateTime(): String {
+    val date = SimpleDateFormat(Constants.DEFAULT_K_DATE_TIME_FORMAT).parse(this)
+    return SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
+}
+
 
 inline fun <reified T> Context.getResponseFromJson(
     fileName: String,
