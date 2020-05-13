@@ -1,10 +1,14 @@
-package com.enesky.guvenlikbildir.database
+package com.enesky.guvenlikbildir.ui.activity.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.enesky.guvenlikbildir.database.EarthquakeDB
+import com.enesky.guvenlikbildir.database.EarthquakeRepository
+import com.enesky.guvenlikbildir.database.EarthquakeSF
 import com.enesky.guvenlikbildir.database.entity.Earthquake
+import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
 import com.enesky.guvenlikbildir.network.ResponseHandler
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
@@ -13,7 +17,9 @@ import com.enesky.guvenlikbildir.viewModel.BaseViewModel
  * Created by Enes Kamil YILMAZ on 25.04.2020
  */
 
-class EarthquakeVM(private val earthquakeRepository: EarthquakeRepository) : BaseViewModel() {
+class EarthquakeVM(
+    private val earthquakeRepository: EarthquakeRepository
+) : BaseViewModel() {
 
     private val _responseHandler = ResponseHandler()
     val responseHandler: ResponseHandler = _responseHandler
@@ -29,18 +35,10 @@ class EarthquakeVM(private val earthquakeRepository: EarthquakeRepository) : Bas
         val earthquakeDao = EarthquakeDB.DB_INSTANCE?.earthquakeDao()
         earthquakeSF = EarthquakeSF(earthquakeDao!!)
         earthquakes = LivePagedListBuilder(earthquakeSF, 15).build()
+    }
 
-        /*earthquakes = earthquakeDao!!.getEarthquakesHappenedAtGivenLocAndBiggerThanGivenMagDsF(
-            query = filterText.value!!,
-            minMag = minMag.value!!,
-            maxMag = maxMag.value!!).toLiveData(
-            Config( pageSize =  15,
-                initialLoadSizeHint = 15,
-                prefetchDistance = 2,
-                enablePlaceholders = true,
-                maxSize = Constants.EARTHQUAKE_LIST_SIZE
-            ))*/
-
+    fun init(binding: ActivityMainBinding) {
+        setViewDataBinding(binding)
     }
 
     fun getEarthquakeList(query: String, minMag: Double, maxMag: Double) {
@@ -62,7 +60,7 @@ class EarthquakeVM(private val earthquakeRepository: EarthquakeRepository) : Bas
                 _responseHandler.handleFailure(response)
             }
         } catch (e: Exception) {
-            _responseHandler.handleException(e)
+            _responseHandler.handleFailure(e)
         }
     }
 

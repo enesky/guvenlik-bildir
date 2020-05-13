@@ -94,7 +94,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                     if (response != null && response is Result<*>) {
                         when (response) {
                             Status.SUCCESS -> ""
-                            Status.FAILURE, Status.EXCEPTION -> requireContext().showToast(response.data.toString())
+                            Status.FAILURE -> requireContext().showToast(response.data.toString())
                         }
                     }
                 }
@@ -190,7 +190,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         fab_scroll_to_top.setOnClickListener {
             fab_scroll_to_top.makeItGone()
-            rv_earthquakes.scrollToPosition(0)
+            rv_earthquakes.smoothScrollToPosition(0)
         }
 
         sv_earthquake.viewTreeObserver.addOnGlobalLayoutListener(this)

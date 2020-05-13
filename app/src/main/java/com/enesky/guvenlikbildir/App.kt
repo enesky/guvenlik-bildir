@@ -8,10 +8,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.worker.NotifierWorker
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -63,20 +60,25 @@ class App : Application() {
         }
 
         fun startWorker() {
-            workManager.cancelAllWork()
+            Timber.tag("NotifierWorker").d("Worker started.")
+
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresBatteryNotLow(true)
                 .build()
 
             val work = PeriodicWorkRequestBuilder<NotifierWorker>(
-                Constants.workerRepeat, TimeUnit.MINUTES,
-                Constants.wrokerFlex, TimeUnit.MINUTES)
+                Constants.workerRepeat, TimeUnit.MINUTES)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
                 .setConstraints(constraints)
                 .build()
 
-            Timber.tag("NotifierWorker").d("Worker started.")
-            workManager.enqueue(work)
+            workManager.enqueueUniquePeriodicWork(
+                "REFRESH_EARTHQUAKES",
+                ExistingPeriodicWorkPolicy.REPLACE,
+                work
+            )
+
         }
 
     }

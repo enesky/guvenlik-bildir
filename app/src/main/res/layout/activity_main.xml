@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/colorPrimary"
+            android:foreground="?android:attr/selectableItemBackground"
             app:itemBackground="@drawable/bottom_nav_item"
             app:itemIconTint="@android:color/white"
             app:itemTextColor="@android:color/white"

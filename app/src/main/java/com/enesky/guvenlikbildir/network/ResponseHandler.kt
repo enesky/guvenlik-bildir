@@ -17,24 +17,22 @@ open class ResponseHandler : Observable() {
         return resource
     }
 
-    fun <T : Any> handleFailure(data: T) : Result<T> {
-        val resource: Result<T> = Result.failure(data)
-        setChanged()
-        notifyObservers(resource)
-        return resource
-    }
-
-    fun handleException(e: Exception) : Result<String> {
-        val resource: Result<String> = when (e) {
-            is HttpException -> Result.exception(getErrorMessage(e.code()))
-            is SocketTimeoutException -> Result.exception(getErrorMessage(1))
-            else -> {
-                if (e.localizedMessage != null && e.localizedMessage!!.contains("proxy"))
-                    Result.exception(getErrorMessage(2))
-                else
-                    Result.exception(getErrorMessage(Int.MAX_VALUE, e))
+    fun handleFailure(data: Any) : Result<*> {
+        val resource: Result<*> =
+            if (data is Exception) {
+                when (data) {
+                    is HttpException -> Result.failure(getErrorMessage(data.code()))
+                    is SocketTimeoutException -> Result.failure(getErrorMessage(1))
+                    else -> {
+                        if (data.localizedMessage != null && data.localizedMessage!!.contains("proxy"))
+                            Result.failure(getErrorMessage(2))
+                        else
+                            Result.failure(getErrorMessage(Int.MAX_VALUE, data))
+                    }
+                }
+            } else {
+                Result.failure(data)
             }
-        }
 
         setChanged()
         notifyObservers(resource)
@@ -57,4 +55,5 @@ open class ResponseHandler : Observable() {
 
         return errorMessage
     }
+
 }

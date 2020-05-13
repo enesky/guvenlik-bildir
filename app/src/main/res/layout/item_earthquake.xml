@@ -69,6 +69,7 @@
                             android:layout_width="0dp"
                             android:layout_height="18dp"
                             android:layout_marginStart="@dimen/default_margin_16"
+                            android:layout_marginEnd="@dimen/default_margin_8"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
@@ -86,10 +87,11 @@
 
                         <TextView
                             android:id="@+id/tv_depth"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="@dimen/default_margin_18"
                             android:layout_marginStart="@dimen/default_margin_16"
                             android:layout_marginTop="@dimen/default_margin_4"
+                            android:layout_marginEnd="@dimen/default_margin_8"
                             tools:text="@string/label_depth"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
@@ -98,13 +100,15 @@
                             app:stringValue="@{earthquake.depth}"
                             app:unitName="@{@string/label_kilometer}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintEnd_toStartOf="@id/iv_options"
                             app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
                         <TextView
                             android:id="@+id/tv_date"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="18dp"
                             android:layout_marginStart="@dimen/default_margin_16"
+                            android:layout_marginEnd="@dimen/default_margin_8"
                             android:layout_marginTop="@dimen/default_margin_4"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
@@ -118,6 +122,7 @@
                             app:dateText="@{earthquake.date}"
                             app:timeText="@{earthquake.time}"
                             app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintEnd_toStartOf="@id/tv_short_date"
                             app:layout_constraintTop_toBottomOf="@id/tv_depth" />
 
                         <ImageView

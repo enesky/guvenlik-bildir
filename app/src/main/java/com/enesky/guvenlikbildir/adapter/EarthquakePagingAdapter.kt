@@ -1,10 +1,14 @@
 package com.enesky.guvenlikbildir.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.ScaleAnimation
 import android.widget.ProgressBar
 import androidx.core.animation.doOnStart
 import androidx.core.view.doOnLayout
@@ -18,7 +22,10 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.ItemEarthquakeBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.google.android.gms.maps.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +33,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.samlss.broccoli.Broccoli
+import me.samlss.broccoli.BroccoliGradientDrawable
+import me.samlss.broccoli.PlaceholderParameter
+
 
 /**
  * Created by Enes Kamil YILMAZ on 25.04.2020
@@ -84,12 +94,52 @@ class EarthquakePagingAdapter(context: Context,
 
             when (earthquake) {
                 null -> {
-                    broccoli.addPlaceholders(
-                        binding.tvLocation,
-                        binding.tvDepth,
-                        binding.tvDate,
-                        binding.tvShortDate,
-                        binding.map)
+                    val fodAnimation: Animation = ScaleAnimation(0.15f, 1f, 1f, 1f).apply {
+                        duration = 300
+                        repeatMode = Animation.REVERSE
+                        repeatCount = Animation.INFINITE
+                    }
+
+                    val timeAnimation: Animation = ScaleAnimation(0.3f, 1f, 1f, 1f).apply {
+                        duration = 500
+                        repeatMode = Animation.REVERSE
+                        repeatCount = Animation.INFINITE
+                    }
+
+                    val odAnimation: Animation = ScaleAnimation(0.2f, 1f, 1f, 1f).apply {
+                        duration = 400
+                        repeatMode = Animation.REVERSE
+                        repeatCount = Animation.INFINITE
+                    }
+
+                    broccoli.addPlaceholder(PlaceholderParameter.Builder()
+                        .setView(binding.tvLocation)
+                        .setAnimation(fodAnimation)
+                        .build())
+
+                    broccoli.addPlaceholder(PlaceholderParameter.Builder()
+                        .setView(binding.tvDepth)
+                        .setAnimation(timeAnimation)
+                        .build())
+
+                    broccoli.addPlaceholder(PlaceholderParameter.Builder()
+                        .setView(binding.tvDate)
+                        .setAnimation(odAnimation)
+                        .build())
+
+                    broccoli.addPlaceholder(
+                        PlaceholderParameter.Builder()
+                            .setView(binding.tvMag)
+                            .setDrawable(BroccoliGradientDrawable(
+                                Color.parseColor("#DDDDDD"),
+                                Color.parseColor("#CCCCCC"),
+                                0f,
+                                1000,
+                                LinearInterpolator()
+                            ))
+                            .build())
+
+                    setCollapsingProgress(this, adapterPosition)
                     broccoli.show()
                 }
                 else -> {
