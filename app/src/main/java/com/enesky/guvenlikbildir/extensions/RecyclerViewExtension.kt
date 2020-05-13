@@ -3,7 +3,7 @@ package com.enesky.guvenlikbildir.extensions
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.model.Contact
+import com.enesky.guvenlikbildir.database.entity.Contact
 
 /**
  * Created by Enes Kamil YILMAZ on 23.02.2020

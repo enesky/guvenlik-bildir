@@ -3,10 +3,9 @@ package com.enesky.guvenlikbildir.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.enesky.guvenlikbildir.database.EarthquakeDB
-import com.enesky.guvenlikbildir.database.EarthquakeRepository
+import com.enesky.guvenlikbildir.database.AppDatabase
+import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
 import com.enesky.guvenlikbildir.database.entity.Earthquake
-import com.enesky.guvenlikbildir.extensions.formatDateTime
 import com.enesky.guvenlikbildir.extensions.lastLoadedEarthquake
 import com.enesky.guvenlikbildir.extensions.notificationMagLimit
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
@@ -26,8 +25,11 @@ class NotifierWorker (
     override suspend fun doWork(): Result = coroutineScope {
         return@coroutineScope try {
 
-            val earthquakeDao = EarthquakeDB.getDatabaseManager(context.applicationContext).earthquakeDao()
-            val earthquakeRepository = EarthquakeRepository(earthquakeDao)
+            val earthquakeDao = AppDatabase.getDatabaseManager(context.applicationContext).earthquakeDao()
+            val earthquakeRepository =
+                EarthquakeRepository(
+                    earthquakeDao
+                )
             val earthquakeList: List<Earthquake>
 
             val response = EarthquakeAPI().getKandilliPost()
@@ -48,8 +50,7 @@ class NotifierWorker (
                             .d("earthquake.magML >= 1.5 => ${earthquake.location} - ${earthquake.dateTime}")
                         FcmService.showLocalNotification(
                             context,
-                            earthquake = earthquake,
-                            earthquakeID = earthquake.hashCode().toString()
+                            earthquake = earthquake
                         )
                     }
 

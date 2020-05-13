@@ -61,7 +61,7 @@ object Constants {
 
     //Notifications
     const val notificationChannel = "Deprem Bildirimleri"
-    const val NOTIFICATION_EARTHQUAKE_ID = "earthquakeID"
+    const val NOTIFICATION_EARTHQUAKE = "earthquake"
     const val workerRepeat = 15L
     const val wrokerFlex = 5L
 

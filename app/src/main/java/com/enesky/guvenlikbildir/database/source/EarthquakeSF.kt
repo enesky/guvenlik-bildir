@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.database
+package com.enesky.guvenlikbildir.database.source
 
 import androidx.paging.DataSource
 import com.enesky.guvenlikbildir.database.dao.EarthquakeDao

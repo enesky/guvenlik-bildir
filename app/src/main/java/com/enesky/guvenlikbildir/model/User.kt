@@ -1,6 +1,7 @@
 package com.enesky.guvenlikbildir.model
 
 import android.os.Parcelable
+import com.enesky.guvenlikbildir.database.entity.Contact
 import kotlinx.android.parcel.Parcelize
 
 /**

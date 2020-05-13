@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import com.enesky.guvenlikbildir.App
-import com.enesky.guvenlikbildir.model.Contact
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.model.User
 import com.enesky.guvenlikbildir.others.Constants
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -26,7 +26,7 @@ fun Activity.signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
             data.putString("phone", task.result?.user?.phoneNumber)
             App.mAnalytics.setUserId(task.result?.user?.uid)
             App.mAnalytics.logEvent("signInWithPhoneAuthCredential", data)
-            App.mCrashlytics.setUserId(task.result?.user?.phoneNumber!!)
+            App.mCrashlytics.setUserId(task.result?.user?.uid!!)
             addUserInfo2Database(task.result?.user!!)
             openMainActivity()
         } else {

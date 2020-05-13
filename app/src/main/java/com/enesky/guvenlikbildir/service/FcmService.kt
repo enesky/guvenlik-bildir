@@ -27,13 +27,12 @@ class FcmService : FirebaseMessagingService() {
             context: Context,
             title: String = "",
             message: String = "",
-            earthquakeID: String? = "",
             earthquake: Earthquake? = null
         ) {
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            if (!earthquakeID.isNullOrEmpty())
-                intent.putExtra(Constants.NOTIFICATION_EARTHQUAKE_ID, earthquakeID)
+            if (earthquake != null)
+                intent.putExtra(Constants.NOTIFICATION_EARTHQUAKE, earthquake)
 
             val pIntent = PendingIntent.getActivity(
                 context.applicationContext,
@@ -55,11 +54,12 @@ class FcmService : FirebaseMessagingService() {
 
             if (earthquake != null) {
                 val contentTitle = "Deprem oldu! <u>(${earthquake.dateTime.formatDateTime()})</u>"
+                val styledTitle = Html.fromHtml(contentTitle, FROM_HTML_MODE_LEGACY)
                 val desc = "<b>${earthquake.location}</b> bölgesinde <b><u>${earthquake.magML}</u></b> büyüklüğünde deprem oldu."
                 val styledDesc = Html.fromHtml(desc, FROM_HTML_MODE_LEGACY)
 
                 val bigTextStyle = NotificationCompat.BigTextStyle()
-                    .setBigContentTitle(contentTitle)
+                    .setBigContentTitle(styledTitle)
                     .bigText(styledDesc)
                     .setSummaryText("Anlık Deprem Bildirimi")
 
@@ -87,16 +87,10 @@ class FcmService : FirebaseMessagingService() {
         if (remoteMessage.notification != null) {
             Timber.tag("FCM").d("Message Notification Body: %s", remoteMessage.notification!!.body)
 
-            var earthquakeID: String? = ""
-
-            if (remoteMessage.data.containsKey(Constants.NOTIFICATION_EARTHQUAKE_ID))
-                earthquakeID = remoteMessage.data[Constants.NOTIFICATION_EARTHQUAKE_ID]
-
             showLocalNotification(
                 context =  this,
                 title = remoteMessage.notification!!.title!!,
-                message = remoteMessage.notification!!.body!!,
-                earthquakeID = earthquakeID
+                message = remoteMessage.notification!!.body!!
             )
         }
     }

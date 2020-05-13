@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.model.Contact
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
 import kotlinx.android.synthetic.main.fragment_contacts.*
@@ -31,7 +31,8 @@ class ContactsFragment : BaseFragment() {
         }
         contactsVM.init(binding, mutableListOf())
 
-        getUsersContactList { prepareViews(it) }
+        //getUsersContactList { prepareViews(it) }
+        //TODO: room ile listeyi çek
 
         contactsVM.isSelectedListChanged.observe(viewLifecycleOwner, Observer {
             contactsVM.contactAdapter.value!!.update(contactsVM.selectedContactList.value!!)
@@ -44,8 +45,10 @@ class ContactsFragment : BaseFragment() {
         contactsVM.onClick.observe(viewLifecycleOwner, Observer { any ->
             if (any is Contact) {
                 pb_loading.makeItVisible()
-                removeFromContactList(any) { deleteAndRefresh(any) }
-                getUsersContactList { prepareViews(it) }
+                //removeFromContactList(any) { deleteAndRefresh(any) }
+                //getUsersContactList { prepareViews(it) }
+
+                //TODO: room ile çek
             }
         })
 

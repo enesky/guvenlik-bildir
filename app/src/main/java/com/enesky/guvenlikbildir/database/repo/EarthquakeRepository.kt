@@ -1,5 +1,6 @@
-package com.enesky.guvenlikbildir.database
+package com.enesky.guvenlikbildir.database.repo
 
+import com.enesky.guvenlikbildir.database.source.EarthquakeSF
 import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.extensions.lastLoadedEarthquake

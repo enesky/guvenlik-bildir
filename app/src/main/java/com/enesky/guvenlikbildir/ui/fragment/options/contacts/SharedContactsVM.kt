@@ -6,7 +6,7 @@ import com.enesky.guvenlikbildir.adapter.AddContactAdapter
 import com.enesky.guvenlikbildir.adapter.ContactAdapter
 import com.enesky.guvenlikbildir.databinding.FragmentAddContactsBinding
 import com.enesky.guvenlikbildir.databinding.FragmentContactsBinding
-import com.enesky.guvenlikbildir.model.Contact
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 import com.hadilq.liveevent.LiveEvent
 

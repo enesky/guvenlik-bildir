@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.databinding.ItemContactBinding
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.extensions.makeItVisible
-import com.enesky.guvenlikbildir.model.Contact
 
 /**
  * Created by Enes Kamil YILMAZ on 11.02.2020

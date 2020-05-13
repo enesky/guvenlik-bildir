@@ -36,6 +36,10 @@ class App : Application() {
         val mAuth: FirebaseAuth
             get() = firebaseAuth
 
+        private lateinit var firebaseFirestore: FirebaseFirestore
+        val mFirestore: FirebaseFirestore
+            get() = firebaseFirestore
+
         private lateinit var firebaseAnalytics: FirebaseAnalytics
         val mAnalytics: FirebaseAnalytics
             get() = firebaseAnalytics
@@ -43,10 +47,6 @@ class App : Application() {
         private lateinit var firebaseCrashlytics: FirebaseCrashlytics
         val mCrashlytics: FirebaseCrashlytics
             get() = firebaseCrashlytics
-
-        private lateinit var firebaseFirestore: FirebaseFirestore
-        val mFirestore: FirebaseFirestore
-            get() = firebaseFirestore
 
         private lateinit var sharedPreferences: SharedPreferences
         val mPrefs: SharedPreferences
@@ -87,10 +87,10 @@ class App : Application() {
         super.onCreate()
         instance = this
         sharedPreferences = getSharedPreferences(Constants.appName, Context.MODE_PRIVATE)
-        firebaseAuth = FirebaseAuth.getInstance()
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        firebaseFirestore = FirebaseFirestore.getInstance()
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
+        //firebaseAuth = FirebaseAuth.getInstance()
+        //firebaseFirestore = FirebaseFirestore.getInstance()
         workManager = WorkManager.getInstance(this)
         AndroidThreeTen.init(this)
 

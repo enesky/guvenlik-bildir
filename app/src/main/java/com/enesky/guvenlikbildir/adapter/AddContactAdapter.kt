@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ItemContactBinding
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.extensions.setBackground
-import com.enesky.guvenlikbildir.model.Contact
 import timber.log.Timber
 
 /**

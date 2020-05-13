@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.Dispatchers
@@ -255,7 +256,14 @@ class EarthquakePagingAdapter(context: Context,
         map.uiSettings.isMapToolbarEnabled = false
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-        //TODO: map.addCircle() ile dairesel bi animasyon çizebilirsin???
+        val circleOptions = CircleOptions()
+            .center(loc)
+            .radius(20000.0)
+            .strokeWidth(10f)
+            .strokeColor(Color.parseColor("#388e3c"))
+            .fillColor(Color.parseColor("#8f388e3c"))
+
+        map.addCircle(circleOptions)
 
     }
 

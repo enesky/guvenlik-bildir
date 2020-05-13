@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentAddContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.model.Contact
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import kotlinx.android.synthetic.main.fragment_add_contacts.*
@@ -97,7 +97,10 @@ class AddContactsFragment : BaseFragment() {
         tv_save.setOnClickListener {
             addContactsVM.selectedContactList.value!!.addAll(selectedMap.values.toMutableList())
             addContactsVM.isSelectedListChanged.value = true
-            add2ContactList(addContactsVM.selectedContactList.value!!)
+
+            //TODO: do it with room
+            //add2ContactList(addContactsVM.selectedContactList.value!!)
+
             requireActivity().onBackPressed()
         }
     }
@@ -137,8 +140,8 @@ class AddContactsFragment : BaseFragment() {
                     itype == ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
 
             if (name.isNotEmpty() && phoneNumber.isNotEmpty())
-                if (isMobile && !contactList.contains(Contact(name, phoneNumber)))
-                    contactList.add(Contact(name, phoneNumber))
+                if (isMobile && !contactList.contains(Contact(name = name, number = phoneNumber)))
+                    contactList.add(Contact(name = name, number = phoneNumber))
         }
         phones.close()
 

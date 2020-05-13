@@ -6,7 +6,7 @@
     <data>
         <variable
             name="contact"
-            type="com.enesky.guvenlikbildir.model.Contact" />
+            type="com.enesky.guvenlikbildir.database.entity.Contact" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

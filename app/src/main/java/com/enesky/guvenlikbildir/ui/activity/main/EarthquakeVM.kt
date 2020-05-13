@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.enesky.guvenlikbildir.database.EarthquakeDB
-import com.enesky.guvenlikbildir.database.EarthquakeRepository
-import com.enesky.guvenlikbildir.database.EarthquakeSF
+import com.enesky.guvenlikbildir.database.AppDatabase
+import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
+import com.enesky.guvenlikbildir.database.source.EarthquakeSF
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
@@ -28,12 +28,17 @@ class EarthquakeVM(
     var minMag = MutableLiveData<Double>().apply { value = 0.0 }
     var maxMag = MutableLiveData<Double>().apply { value = 12.0 }
 
+    var earthquakeFromNotification = MutableLiveData<Earthquake>()
+
     var earthquakes: LiveData<PagedList<Earthquake>>
     private var earthquakeSF: EarthquakeSF
 
     init {
-        val earthquakeDao = EarthquakeDB.DB_INSTANCE?.earthquakeDao()
-        earthquakeSF = EarthquakeSF(earthquakeDao!!)
+        val earthquakeDao = AppDatabase.dbInstance?.earthquakeDao()
+        earthquakeSF =
+            EarthquakeSF(
+                earthquakeDao!!
+            )
         earthquakes = LivePagedListBuilder(earthquakeSF, 15).build()
     }
 

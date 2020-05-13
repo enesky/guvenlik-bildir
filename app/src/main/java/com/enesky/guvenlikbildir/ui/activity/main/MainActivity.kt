@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.ui.activity.main
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -11,20 +12,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.database.EarthquakeDB
-import com.enesky.guvenlikbildir.database.EarthquakeRepository
-import com.enesky.guvenlikbildir.database.EarthquakeVM
+import com.enesky.guvenlikbildir.database.AppDatabase
+import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
 import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
+import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
+import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseUser
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
 import com.trendyol.medusalib.navigator.NavigatorConfiguration
@@ -36,7 +37,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class MainActivity : BaseActivity(), Navigator.NavigatorListener,
+class MainActivity : BaseActivity(),
+    Navigator.NavigatorListener,
     BottomNavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemReselectedListener {
 
@@ -47,8 +49,9 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         getViewModel {
             EarthquakeVM(
                 EarthquakeRepository(
-                    earthquakeDao = earthquakeDao
-            ))
+                    earthquakeDao
+                )
+            )
         }
     }
 
@@ -60,12 +63,17 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         { NotifyFragment() },
         { OptionsFragment() }
     )
+
     var navigator: MultipleStackNavigator = MultipleStackNavigator(
         supportFragmentManager,
         R.id.container,
         rootFragmentProvider,
         this,
-        NavigatorConfiguration(1,false, defaultNavigatorTransaction = NavigatorTransaction.SHOW_HIDE)
+        NavigatorConfiguration(
+            initialTabIndex = 1,
+            alwaysExitFromInitial = false,
+            defaultNavigatorTransaction = NavigatorTransaction.SHOW_HIDE
+        )
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +82,8 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-        earthquakeDao = EarthquakeDB.getDatabaseManager(application).earthquakeDao()
+        earthquakeDao = AppDatabase.getDatabaseManager(application).earthquakeDao()
+        earthquakeVM.init(binding)
 
         earthquakeVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
@@ -82,7 +91,7 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
                     if (response != null && response is Result<*>) {
                         when (response.status) {
                             Status.SUCCESS -> ""
-                            Status.FAILURE, Status.EXCEPTION -> showToast(response.data.toString())
+                            Status.FAILURE -> showToast(response.data.toString())
                         }
                     }
                 }
@@ -103,9 +112,11 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
 
     override fun onStart() {
         super.onStart()
+        /*
         val currentUser: FirebaseUser? = App.mAuth.currentUser
         if (currentUser == null)
             openLoginActivity()
+        */
 
         if (isFirstTime) {
             requireAllPermissions()
@@ -113,6 +124,16 @@ class MainActivity : BaseActivity(), Navigator.NavigatorListener,
         }
 
         requireLocationPermission { requestLocationUpdates() }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null) {
+            earthquakeVM.earthquakeFromNotification.value = intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE)
+            navigator.switchTab(0)
+        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

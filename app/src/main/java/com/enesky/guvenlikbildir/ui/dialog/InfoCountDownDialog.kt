@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.model.Contact
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.others.Constants
 import kotlinx.android.synthetic.main.dialog_info_count_down.*
 import timber.log.Timber
@@ -175,7 +175,8 @@ class InfoCountDownDialog : DialogFragment() {
 
     private fun sendSMS() {
         requireContext().requireSendSmsPermission {
-            getUsersContactList { sendIt(it) }
+           // getUsersContactList { sendIt(it) }
+            //TODO: room ile contactlistesini al.
         }
     }
 

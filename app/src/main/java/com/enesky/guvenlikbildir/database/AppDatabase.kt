@@ -4,37 +4,40 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.enesky.guvenlikbildir.database.dao.ContactDao
 import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.Earthquake
-import com.enesky.guvenlikbildir.others.ioThread
 
 /**
  * Created by Enes Kamil YILMAZ on 24.04.2020
  */
 
 @Database(
-    entities = [Earthquake::class],
+    entities = [Earthquake::class, Contact::class],
     version = 1,
     exportSchema = false
 )
-abstract class EarthquakeDB : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun earthquakeDao(): EarthquakeDao
+    abstract fun contactDao(): ContactDao
 
     companion object {
         @Volatile
-        var DB_INSTANCE: EarthquakeDB? = null
+        var dbInstance: AppDatabase? = null
 
-        fun getDatabaseManager(context: Context): EarthquakeDB {
-            return DB_INSTANCE ?: synchronized(this) {
+        fun getDatabaseManager(context: Context): AppDatabase {
+            return dbInstance
+                ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    EarthquakeDB::class.java,
-                    "earthquake-db"
+                    AppDatabase::class.java,
+                    "guvenlikbildir-db"
                 )
                     .fallbackToDestructiveMigration()
                     .build()
-                DB_INSTANCE = instance
+                dbInstance = instance
                 instance
             }
         }

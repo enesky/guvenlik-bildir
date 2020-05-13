@@ -41,6 +41,7 @@ class NotifyFragment : BaseFragment() {
         }
 
         iv_safe.setOnClickListener {
+            //TODO: do it with room
             doThingsIfListFilledOrNot (
                 { openInfoCountDownDialog(Constants.safeSms) },
                 { showInfo() }
@@ -48,6 +49,7 @@ class NotifyFragment : BaseFragment() {
         }
 
         iv_unsafe.setOnClickListener {
+            //TODO: do it with room
             doThingsIfListFilledOrNot (
                 { openInfoCountDownDialog(Constants.unsafeSms) },
                 { showInfo() }

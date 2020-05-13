@@ -68,7 +68,7 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
                 "Yer: ${earthquake!!.location}\n" +
                 "Büyüklük: ${earthquake!!.magML}\n" +
                 "Derinlik: ${earthquake!!.depth} km\n" +
-                "Tarih: " + earthquake!!.dateTime.formatDateTime() + " TSİ\n"
+                "Tarih: " + earthquake!!.dateTime.formatDateTime() + " TSİ\n" +
                 "https://maps.google.com/maps?q=${earthquake!!.lat},${earthquake!!.lng}&ll=${earthquake!!.lat},${earthquake!!.lng}&&z=8\n" +
                 "# Güvenlik Bildir #\n" +
                 Constants.googlePlayUrl
@@ -77,8 +77,8 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
 
         val optionListAdapter = OptionAdapter(
             listOf(
-                OptionItem(R.drawable.ic_thumb_up_white_24dp, getString(R.string.label_felt_it), android.R.color.white),
-                OptionItem(R.drawable.ic_thumb_down_white_24dp, getString(R.string.label_not_felt_it), android.R.color.white),
+                //OptionItem(R.drawable.ic_thumb_up_white_24dp, getString(R.string.label_felt_it), android.R.color.white),
+                //OptionItem(R.drawable.ic_thumb_down_white_24dp, getString(R.string.label_not_felt_it), android.R.color.white),
                 OptionItem(R.drawable.ic_share, getString(R.string.label_share), android.R.color.white),
                 OptionItem(R.drawable.ic_content_copy, getString(R.string.label_copy), android.R.color.white)
             ), this
@@ -93,9 +93,9 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
 
     override fun onItemClick(pos: Int, optionItem: OptionItem) {
         when(pos) {
-            0 -> requireContext().showToast("Yapım aşamasındadır.", false)
-            1 -> requireContext().showToast("Yapım aşamasındadır.", false)
-            2 -> {
+            //0 -> requireContext().showToast("Yapım aşamasındadır.", false)
+            //1 -> requireContext().showToast("Yapım aşamasındadır.", false)
+            1 -> {
                 val share = Intent.createChooser(Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, earthquakeDetailWithLinks)
@@ -105,7 +105,7 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
                 startActivity(share)
                 dismissAllowingStateLoss()
             }
-            3 -> {
+            2 -> {
                 val myClipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val myClip: ClipData = ClipData.newPlainText("Deprem Detayları", earthquakeDetailWithLinks)
                 myClipboard.setPrimaryClip(myClip)
