@@ -57,6 +57,8 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             lifecycleOwner = this@LatestEarthquakesFragment
         }
 
+        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
+
         latestEarthquakesVM.init(binding)
 
         val earthquakePagingAdapter = EarthquakePagingAdapter(

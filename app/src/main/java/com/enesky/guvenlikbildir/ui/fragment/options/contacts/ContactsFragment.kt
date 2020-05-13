@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -30,6 +31,8 @@ class ContactsFragment : BaseFragment() {
             lifecycleOwner = this@ContactsFragment
         }
         contactsVM.init(binding, mutableListOf())
+
+        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
 
         //getUsersContactList { prepareViews(it) }
         //TODO: room ile listeyi çek

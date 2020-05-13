@@ -11,9 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.database.entity.Contact
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
 import kotlinx.android.synthetic.main.dialog_info_count_down.*
 import timber.log.Timber
@@ -38,6 +39,7 @@ class InfoCountDownDialog : DialogFragment() {
     var sentCountFailed = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, p0: Bundle?): View? {
+        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
         return inflater.inflate(R.layout.dialog_info_count_down, container, false)
     }
 
@@ -109,6 +111,14 @@ class InfoCountDownDialog : DialogFragment() {
                         timer = object : CountDownTimer(2000, 1000) {
                             override fun onTick(millisUntilFinished: Long) {}
                             override fun onFinish() {
+
+                                val params = Bundle().apply {
+                                    putInt("sentCountSuccess", sentCountSuccess)
+                                    putInt("sentCountFailed", sentCountFailed)
+                                    putInt("successRatio", sentCountSuccess / contactSize)
+                                }
+                                App.mAnalytics.logEvent("InfoCountDown_Sms_Send", params)
+
                                 dismiss()
                             }
                         }.start()
@@ -151,7 +161,13 @@ class InfoCountDownDialog : DialogFragment() {
                         requireContext().requireCallPhonePermission {
                             val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$type"))
                             startActivity(intent)
+
+                            val params = Bundle().apply {
+                                putString("Dialed_number", type)
+                            }
+                            App.mAnalytics.logEvent("InfoCountDown_Calling", params)
                         }
+
                         dismiss()
                     }
                     Constants.map -> {
@@ -166,6 +182,10 @@ class InfoCountDownDialog : DialogFragment() {
                     Constants.safeSms, Constants.unsafeSms -> {
                         sendSMS()
                         tv_countdown.makeItGone()
+                        val params = Bundle().apply {
+                            putString("Sms type", type)
+                        }
+                        App.mAnalytics.logEvent("InfoCountDown_Send_Sms", params)
                     }
                 }
 
@@ -206,11 +226,11 @@ class InfoCountDownDialog : DialogFragment() {
                     }
                 } catch (e: Exception) {
                     Timber.tag("SMSManager Exception").d("%s", e.message!!)
-                    requireContext().showToast("SMS Failed to send, please try again!")
+                    requireContext().showToast("Sms gönderme işlemi başarısız!")
                 }
             }
         } else {
-            requireContext().showToast(list.toString())
+            requireContext().showToast("Sms gönderilecek kayıt bulunamadı.")
         }
     }
 

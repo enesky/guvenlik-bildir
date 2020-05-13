@@ -12,6 +12,7 @@ import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
 import com.enesky.guvenlikbildir.network.ResponseHandler
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
+import com.hadilq.liveevent.LiveEvent
 
 /**
  * Created by Enes Kamil YILMAZ on 25.04.2020
@@ -28,7 +29,7 @@ class EarthquakeVM(
     var minMag = MutableLiveData<Double>().apply { value = 0.0 }
     var maxMag = MutableLiveData<Double>().apply { value = 12.0 }
 
-    var earthquakeFromNotification = MutableLiveData<Earthquake>()
+    var earthquakeFromNotification = LiveEvent<Earthquake>()
 
     var earthquakes: LiveData<PagedList<Earthquake>>
     private var earthquakeSF: EarthquakeSF

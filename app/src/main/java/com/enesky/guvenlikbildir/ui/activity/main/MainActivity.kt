@@ -82,6 +82,8 @@ class MainActivity : BaseActivity(),
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
+        App.mAnalytics.setCurrentScreen(this, this.javaClass.simpleName, null)
+
         earthquakeDao = AppDatabase.getDatabaseManager(application).earthquakeDao()
         earthquakeVM.init(binding)
 
@@ -132,6 +134,7 @@ class MainActivity : BaseActivity(),
         if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null) {
             earthquakeVM.earthquakeFromNotification.value = intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE)
             navigator.switchTab(0)
+            Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
         }
 
     }

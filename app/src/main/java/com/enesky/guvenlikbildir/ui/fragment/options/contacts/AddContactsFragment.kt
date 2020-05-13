@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentAddContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -54,6 +55,8 @@ class AddContactsFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_contacts, container, false)
         binding.viewModel = addContactsVM
         addContactsVM.init(binding)
+
+        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
 
         contactList = addContactsVM.contactList.value!!
         val turkishLocale = Locale("tr", "TR")

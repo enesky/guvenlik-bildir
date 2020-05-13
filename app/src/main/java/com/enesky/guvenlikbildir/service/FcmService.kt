@@ -53,7 +53,7 @@ class FcmService : FirebaseMessagingService() {
                 .setAutoCancel(true)
 
             if (earthquake != null) {
-                val contentTitle = "Deprem oldu! <u>(${earthquake.dateTime.formatDateTime()})</u>"
+                val contentTitle = "Deprem oldu!<u> (${earthquake.dateTime.formatDateTime()}) </u>"
                 val styledTitle = Html.fromHtml(contentTitle, FROM_HTML_MODE_LEGACY)
                 val desc = "<b>${earthquake.location}</b> bölgesinde <b><u>${earthquake.magML}</u></b> büyüklüğünde deprem oldu."
                 val styledDesc = Html.fromHtml(desc, FROM_HTML_MODE_LEGACY)
@@ -63,7 +63,7 @@ class FcmService : FirebaseMessagingService() {
                     .bigText(styledDesc)
                     .setSummaryText("Anlık Deprem Bildirimi")
 
-                notificationBuilder.setContentTitle(contentTitle)
+                notificationBuilder.setContentTitle(styledTitle)
                 notificationBuilder.setStyle(bigTextStyle)
             }
 

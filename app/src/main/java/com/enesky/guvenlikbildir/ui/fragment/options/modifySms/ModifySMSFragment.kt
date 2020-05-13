@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.others.Constants
@@ -21,6 +22,7 @@ class ModifySMSFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_sms, container,false)
+        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
         return binding.root
     }
 
