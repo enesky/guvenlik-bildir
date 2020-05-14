@@ -59,7 +59,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             lifecycleOwner = this@LatestEarthquakesFragment
         }
 
-        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
         latestEarthquakesVM.init(binding)
 

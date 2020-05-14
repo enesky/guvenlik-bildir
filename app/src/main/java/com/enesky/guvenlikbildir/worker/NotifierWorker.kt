@@ -7,6 +7,7 @@ import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
 import com.enesky.guvenlikbildir.extensions.lastLoadedEarthquake
+import com.enesky.guvenlikbildir.extensions.notificationMagLimit
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
 import com.enesky.guvenlikbildir.service.FcmService
 import kotlinx.coroutines.coroutineScope
@@ -33,27 +34,29 @@ class NotifierWorker (
                 Timber.tag("NotifierWorker").d("doWork Success")
                 earthquakeList = EarthquakeAPI.parseResponse(response.body()!!.replace("�", "I"))
 
-                loop@ for (earthquake: Earthquake in earthquakeList) when {
+                if (lastLoadedEarthquake != null) {
+                    loop@ for (earthquake: Earthquake in earthquakeList) when {
 
-                    earthquake == lastLoadedEarthquake -> {
-                        Timber.tag("NotifierWorker")
-                            .d("lastLoadedEarthquake= ${earthquake.location} - ${earthquake.dateTime}")
-                        break@loop
+                        earthquake == lastLoadedEarthquake -> {
+                            Timber.tag("NotifierWorker")
+                                .d("lastLoadedEarthquake= ${earthquake.location} - ${earthquake.dateTime}")
+                            break@loop
+                        }
+
+                        earthquake.magML >= notificationMagLimit -> {
+                            Timber.tag("NotifierWorker")
+                                .d("earthquake.magML >= 1.5 => ${earthquake.location} - ${earthquake.dateTime}")
+                            FcmService.showLocalNotification(
+                                context = context,
+                                earthquake = earthquake
+                            )
+                        }
+
+                        else -> {
+                            Timber.tag("NotifierWorker").d("${earthquake.location} - ${earthquake.dateTime}")
+                        }
+
                     }
-
-                    earthquake.magML >= notificationMagLimit -> {
-                        Timber.tag("NotifierWorker")
-                            .d("earthquake.magML >= 1.5 => ${earthquake.location} - ${earthquake.dateTime}")
-                        FcmService.showLocalNotification(
-                            context,
-                            earthquake = earthquake
-                        )
-                    }
-
-                    else -> {
-                        Timber.tag("NotifierWorker").d("${earthquake.location} - ${earthquake.dateTime}")
-                    }
-
                 }
 
                 earthquakeRepository.refreshEartquakes(earthquakeList)

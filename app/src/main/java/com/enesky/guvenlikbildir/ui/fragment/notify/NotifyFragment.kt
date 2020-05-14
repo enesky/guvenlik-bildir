@@ -26,7 +26,7 @@ class NotifyFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notify, container, false)
-        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         return binding.root
     }
 

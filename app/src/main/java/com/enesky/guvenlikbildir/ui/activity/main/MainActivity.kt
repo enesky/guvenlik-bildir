@@ -74,7 +74,7 @@ class MainActivity : BaseActivity(),
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-        App.mAnalytics.setCurrentScreen(this, this.javaClass.simpleName, null)
+        App.mAnalytics.setCurrentScreen(this, "activity", this.javaClass.simpleName)
         mainVM.init(binding)
 
         mainVM.responseHandler.addObserver { _, response ->
@@ -90,12 +90,12 @@ class MainActivity : BaseActivity(),
             }
         }
 
-        GlobalScope.launch {
-            mainVM.getEarthquakes()
-        }
-
         if (isNotificationsEnabled)
             App.startWorker()
+        else
+            GlobalScope.launch(Dispatchers.IO) {
+                mainVM.getEarthquakes()
+            }
 
         navigator.initialize(savedInstanceState)
         bottom_nav.setOnNavigationItemReselectedListener(this)

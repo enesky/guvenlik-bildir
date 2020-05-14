@@ -24,7 +24,6 @@ import kotlinx.coroutines.*
 import java.text.Collator
 import java.util.*
 
-@ObsoleteCoroutinesApi
 class AddContactsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentAddContactsBinding
@@ -37,14 +36,25 @@ class AddContactsFragment : BaseFragment() {
 
     private var contactList: MutableList<Contact> = mutableListOf()
     private var selectedMap: MutableMap<Int, Contact> = mutableMapOf()
-    private val scope = CoroutineScope(newSingleThreadContext("setList"))
 
     override fun onStart() {
         super.onStart()
         if (mainVM.contactList.value.isNullOrEmpty()) {
             requireActivity().requireReadContactsPermission {
-                scope.launch {
-                    getContactsList()
+                GlobalScope.launch(Dispatchers.IO) {
+                    contactList = getContactsList().toMutableList()
+
+                    activity!!.runOnUiThread {
+                        if (contactList.isNullOrEmpty()) {
+                            context!!.showToast("Rehberinizde kayıtlı kişi bulunamadı.")
+                            activity!!.onBackPressed()
+                        } else {
+                            mainVM.getChosenContactList().value?.let { contactList.removeAll(it) }
+                            mainVM.contactList.value = contactList
+                        }
+
+                        pb_loading.makeItGone()
+                    }
                 }
             }
         }
@@ -55,21 +65,22 @@ class AddContactsFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_contacts, container, false)
         binding.viewModel = mainVM
         mainVM.init(binding)
-        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        contactList = mainVM.contactList.value!!.toMutableList()
+        pb_loading.makeItVisible()
+
         addContactAdapter = AddContactAdapter(contactList, mainVM)
         addContactAdapter.setHasStableIds(true)
 
         if (!contactList.isNullOrEmpty())
             setupFastScroller()
 
-        //TODO: Placeholder item yükle. Broccoli()
+        //TODO: Placeholder item yükleyebilirsin. -> Broccoli()
 
         rv_contacts.apply {
             addSelectedContactWatcher(selectedMap)
@@ -91,11 +102,6 @@ class AddContactsFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        val turkishLocale = Locale("tr", "TR")
-        contactList.sortWith(Comparator { o1, o2 ->
-            Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
-        })
 
         mainVM.contactList.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
@@ -139,7 +145,9 @@ class AddContactsFragment : BaseFragment() {
         }
     }
 
-    private fun getContactsList() {
+    private fun getContactsList() : List<Contact> {
+        val contactList = mutableListOf<Contact>()
+
         val phones: Cursor? = context!!.contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null, null, null, null
@@ -167,15 +175,7 @@ class AddContactsFragment : BaseFragment() {
             Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
         })
 
-        GlobalScope.launch(Dispatchers.Main) {
-            if (contactList.isNullOrEmpty()) {
-                context!!.showToast("Rehberinizde kayıtlı kişi bulunamadı.")
-                activity!!.onBackPressed()
-            } else {
-                mainVM.getChosenContactList().value?.let { contactList.removeAll(it) }
-                mainVM.contactList.value = contactList
-            }
-        }
+        return contactList
     }
 
 }

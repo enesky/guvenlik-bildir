@@ -22,7 +22,6 @@ import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationT
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.launch
 
 class ContactsFragment : BaseFragment() {
@@ -42,11 +41,10 @@ class ContactsFragment : BaseFragment() {
             lifecycleOwner = this@ContactsFragment
         }
         mainVM.init(binding)
-        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         return binding.root
     }
 
-    @ObsoleteCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

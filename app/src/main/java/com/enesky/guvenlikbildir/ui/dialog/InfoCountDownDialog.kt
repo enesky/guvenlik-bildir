@@ -41,7 +41,7 @@ class InfoCountDownDialog : DialogFragment() {
     var sentCountFailed = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, p0: Bundle?): View? {
-        App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
+        App.mAnalytics.setCurrentScreen(activity!!, "dialog", this.javaClass.simpleName)
         return inflater.inflate(R.layout.dialog_info_count_down, container, false)
     }
 
@@ -133,7 +133,8 @@ class InfoCountDownDialog : DialogFragment() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     when (resultCode) {
                         Activity.RESULT_OK -> Timber.tag("InfoCountDownDialog").d("SMS delivered.")
-                        Activity.RESULT_CANCELED -> Timber.tag("InfoCountDownDialog").d("SMS not delivered.")
+                        Activity.RESULT_CANCELED -> Timber.tag("InfoCountDownDialog")
+                            .d("SMS not delivered.")
                     }
                 }
             }
@@ -149,7 +150,7 @@ class InfoCountDownDialog : DialogFragment() {
             activity!!.unregisterReceiver(deliveredBroadcastReceiver)
         }
         timer.cancel()
-        Timber.tag("InfoCountDownDialog").d( "onDismiss(): %s", type)
+        Timber.tag("InfoCountDownDialog").d("onDismiss(): %s", type)
     }
 
     private fun startCountDown() {
@@ -157,6 +158,7 @@ class InfoCountDownDialog : DialogFragment() {
             override fun onTick(millisUntilFinished: Long) {
                 tv_countdown.text = (millisUntilFinished / 1000).toString()
             }
+
             override fun onFinish() {
                 when (type) {
                     Constants.polis, Constants.acilYardım, Constants.itfaiye -> {
@@ -197,38 +199,36 @@ class InfoCountDownDialog : DialogFragment() {
 
     private fun sendSMS() {
         requireContext().requireSendSmsPermission {
-          sendIt(getContactList().value)
+            sendIt(getContactList().value)
         }
     }
 
-    private fun getContactList() = AppDatabase.getDatabaseManager(context!!.applicationContext).contactDao().getAllContacts().asLiveData()
+    private fun getContactList() =
+        AppDatabase.getDatabaseManager(context!!.applicationContext).contactDao().getAllContacts().asLiveData()
 
-    private fun sendIt(list: Any?) {
-        if (list is MutableList<*>) {
-            if ((list as MutableList<Contact>).isNullOrEmpty()) {
-                requireContext().showToast("Sms gönderilecek kayıt bulunamadı.")
-            } else {
-                val text = if (type == Constants.safeSms) safeSms
-                                    else unsafeSms
-                try {
-                    val smsManager = SmsManager.getDefault()
-                    contactSize = list.size
-                    tv_sent_success_count.text = "Başarılı: $sentCountSuccess/$contactSize"
-                    tv_sent_success_count.makeItVisible()
-                    tv_sent_fail_count.text = "Başarısız: $sentCountFailed/$contactSize"
-                    tv_sent_success_count.makeItVisible()
-                    for (contact: Contact in list) {
-                        smsManager.sendTextMessage(
-                            contact.number, null, text + locationMapWithLink,
-                            sentPI, deliveredPI
-                        )
-                        Timber.tag("Sms Sent to: ").d("%s", contact.number)
-                    }
-                } catch (e: Exception) {
-                    Timber.tag("SMSManager Exception").d("%s", e.message!!)
-                    requireContext().showToast("Sms gönderme işlemi başarısız!")
+    private fun sendIt(list: List<Contact>?) {
+        if (!list.isNullOrEmpty()) {
+            val text = if (type == Constants.safeSms) safeSms
+                                else unsafeSms
+            try {
+                val smsManager = SmsManager.getDefault()
+                contactSize = list.size
+                tv_sent_success_count.text = "Başarılı: $sentCountSuccess/$contactSize"
+                tv_sent_success_count.makeItVisible()
+                tv_sent_fail_count.text = "Başarısız: $sentCountFailed/$contactSize"
+                tv_sent_success_count.makeItVisible()
+                for (contact: Contact in list) {
+                    smsManager.sendTextMessage(
+                        contact.number, null, text + locationMapWithLink,
+                        sentPI, deliveredPI
+                    )
+                    Timber.tag("Sms Sent to: ").d("%s", contact.number)
                 }
+            } catch (e: Exception) {
+                Timber.tag("SMSManager Exception").d("%s", e.message!!)
+                requireContext().showToast("Sms gönderme işlemi başarısız!")
             }
+
         } else {
             requireContext().showToast("Sms gönderilecek kayıt bulunamadı.")
         }
