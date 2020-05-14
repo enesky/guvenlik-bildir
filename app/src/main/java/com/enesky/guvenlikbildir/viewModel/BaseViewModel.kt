@@ -8,7 +8,7 @@ import timber.log.Timber
  * Created by Enes Kamil YILMAZ on 26.01.2020
  */
 
-open class BaseViewModel : ViewModel(){
+open class BaseViewModel : ViewModel() {
 
     init {
         Timber.tag(this.javaClass.simpleName).d("%s created.", this.javaClass.simpleName)

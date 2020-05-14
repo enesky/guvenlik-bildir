@@ -38,7 +38,7 @@ class ContactAdapter(private var contactList: List<Contact>,
 
     override fun getItemId(position: Int): Long = position.toLong()
 
-    fun update( items: MutableList<Contact>) {
+    fun update(items: List<Contact>) {
         this.contactList = items
         notifyDataSetChanged()
     }

@@ -7,16 +7,22 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.databinding.FragmentNotifyBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_notify.*
 
 class NotifyFragment : BaseFragment() {
 
     private lateinit var binding: FragmentNotifyBinding
-    private lateinit var notifyVM: NotifyVM
+    private val mainVM by lazy {
+        getViewModel {
+            MainVM(AppDatabase.getDatabaseManager(activity!!.application))
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notify, container, false)
@@ -26,9 +32,7 @@ class NotifyFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        notifyVM = getViewModel()
-        binding.viewModel = notifyVM
-        notifyVM.init(binding)
+        mainVM.init(binding)
 
         cl_polis.setOnClickListener {
             openInfoCountDownDialog(Constants.polis)
@@ -43,19 +47,17 @@ class NotifyFragment : BaseFragment() {
         }
 
         iv_safe.setOnClickListener {
-            //TODO: do it with room
-            doThingsIfListFilledOrNot (
-                { openInfoCountDownDialog(Constants.safeSms) },
-                { showInfo() }
-            )
+            if (mainVM.getChosenContactList().value.isNullOrEmpty())
+                showInfo()
+            else
+                openInfoCountDownDialog(Constants.safeSms)
         }
 
         iv_unsafe.setOnClickListener {
-            //TODO: do it with room
-            doThingsIfListFilledOrNot (
-                { openInfoCountDownDialog(Constants.unsafeSms) },
-                { showInfo() }
-            )
+            if (mainVM.getChosenContactList().value.isNullOrEmpty())
+                showInfo()
+            else
+                openInfoCountDownDialog(Constants.unsafeSms)
         }
 
     }

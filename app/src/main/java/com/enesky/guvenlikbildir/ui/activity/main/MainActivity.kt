@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.AppDatabase
-import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
-import com.enesky.guvenlikbildir.database.dao.EarthquakeDao
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.extensions.*
@@ -43,15 +41,9 @@ class MainActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemReselectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var earthquakeDao: EarthquakeDao
-
-    val earthquakeVM by lazy {
+    val mainVM by lazy {
         getViewModel {
-            EarthquakeVM(
-                EarthquakeRepository(
-                    earthquakeDao
-                )
-            )
+            MainVM(AppDatabase.getDatabaseManager(application))
         }
     }
 
@@ -83,11 +75,9 @@ class MainActivity : BaseActivity(),
         binding.lifecycleOwner = this
 
         App.mAnalytics.setCurrentScreen(this, this.javaClass.simpleName, null)
+        mainVM.init(binding)
 
-        earthquakeDao = AppDatabase.getDatabaseManager(application).earthquakeDao()
-        earthquakeVM.init(binding)
-
-        earthquakeVM.responseHandler.addObserver { _, response ->
+        mainVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     if (response != null && response is Result<*>) {
@@ -101,7 +91,7 @@ class MainActivity : BaseActivity(),
         }
 
         GlobalScope.launch {
-            earthquakeVM.getEarthquakes()
+            mainVM.getEarthquakes()
         }
 
         if (isNotificationsEnabled)
@@ -132,7 +122,7 @@ class MainActivity : BaseActivity(),
         super.onNewIntent(intent)
 
         if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null) {
-            earthquakeVM.earthquakeFromNotification.value = intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE)
+            mainVM.earthquakeFromNotification.value = intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE)
             navigator.switchTab(0)
             Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
         }

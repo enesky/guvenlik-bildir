@@ -4,10 +4,9 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.enesky.guvenlikbildir.database.AppDatabase
-import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
 import com.enesky.guvenlikbildir.database.entity.Earthquake
+import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
 import com.enesky.guvenlikbildir.extensions.lastLoadedEarthquake
-import com.enesky.guvenlikbildir.extensions.notificationMagLimit
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
 import com.enesky.guvenlikbildir.service.FcmService
 import kotlinx.coroutines.coroutineScope
@@ -26,10 +25,7 @@ class NotifierWorker (
         return@coroutineScope try {
 
             val earthquakeDao = AppDatabase.getDatabaseManager(context.applicationContext).earthquakeDao()
-            val earthquakeRepository =
-                EarthquakeRepository(
-                    earthquakeDao
-                )
+            val earthquakeRepository = EarthquakeRepository(earthquakeDao)
             val earthquakeList: List<Earthquake>
 
             val response = EarthquakeAPI().getKandilliPost()

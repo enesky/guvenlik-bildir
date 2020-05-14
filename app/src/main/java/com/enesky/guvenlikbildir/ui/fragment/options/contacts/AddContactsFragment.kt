@@ -1,7 +1,6 @@
 package com.enesky.guvenlikbildir.ui.fragment.options.contacts
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -12,16 +11,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.adapter.AddContactAdapter
+import com.enesky.guvenlikbildir.database.AppDatabase
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.databinding.FragmentAddContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.database.entity.Contact
+import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import kotlinx.android.synthetic.main.fragment_add_contacts.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.*
 import java.text.Collator
 import java.util.*
 
@@ -29,49 +28,83 @@ import java.util.*
 class AddContactsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentAddContactsBinding
-    private val addContactsVM by lazy {
-        getViewModel { SharedContactsVM() }
+    private lateinit var addContactAdapter : AddContactAdapter
+    private val mainVM by lazy {
+        getViewModel {
+            MainVM(AppDatabase.getDatabaseManager(activity!!.application))
+        }
     }
+
     private var contactList: MutableList<Contact> = mutableListOf()
     private var selectedMap: MutableMap<Int, Contact> = mutableMapOf()
     private val scope = CoroutineScope(newSingleThreadContext("setList"))
 
     override fun onStart() {
         super.onStart()
-        if (addContactsVM.contactList.value.isNullOrEmpty()) {
+        if (mainVM.contactList.value.isNullOrEmpty()) {
             requireActivity().requireReadContactsPermission {
                 scope.launch {
-                    getContactsList(requireActivity())
+                    getContactsList()
                 }
             }
-        } else {
-            (addContactsVM.contactList.value as MutableList)
-                .removeAll(addContactsVM.selectedContactList.value as MutableList)
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_contacts, container, false)
-        binding.viewModel = addContactsVM
-        addContactsVM.init(binding)
-
+        binding.viewModel = mainVM
+        mainVM.init(binding)
         App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
+        return binding.root
+    }
 
-        contactList = addContactsVM.contactList.value!!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        contactList = mainVM.contactList.value!!.toMutableList()
+        addContactAdapter = AddContactAdapter(contactList, mainVM)
+        addContactAdapter.setHasStableIds(true)
+
+        if (!contactList.isNullOrEmpty())
+            setupFastScroller()
+
+        //TODO: Placeholder item yükle. Broccoli()
+
+        rv_contacts.apply {
+            addSelectedContactWatcher(selectedMap)
+            setHasFixedSize(true)
+            setItemViewCacheSize(10)
+            isDrawingCacheEnabled = true
+            drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+            rv_contacts.adapter = addContactAdapter
+        }
+
+        tv_save.setOnClickListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                mainVM.addContactToList(selectedMap.values.toList())
+                mainVM.contactList.value?.removeAll(selectedMap.values.toList())
+            }
+            activity!!.onBackPressed()
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         val turkishLocale = Locale("tr", "TR")
         contactList.sortWith(Comparator { o1, o2 ->
             Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
         })
 
-        addContactsVM.contactList.observe(viewLifecycleOwner, Observer {
-            if ((it as MutableList<Contact>).isNotEmpty()) {
+        mainVM.contactList.observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()) {
                 contactList = it
                 setupFastScroller()
             }
         })
 
-        addContactsVM.onClick.observe(viewLifecycleOwner, Observer {
+        mainVM.onClick.observe(viewLifecycleOwner, Observer {
             if (it is Pair<*,*>) {
                 if (selectedMap.contains(it.first as Int))
                     selectedMap.remove(it.first as Int)
@@ -87,30 +120,11 @@ class AddContactsFragment : BaseFragment() {
             }
         })
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (!contactList.isNullOrEmpty())
-            setupFastScroller()
-
-        rv_contacts.addSelectedContactWatcher(selectedMap)
-
-        tv_save.setOnClickListener {
-            addContactsVM.selectedContactList.value!!.addAll(selectedMap.values.toMutableList())
-            addContactsVM.isSelectedListChanged.value = true
-
-            //TODO: do it with room
-            //add2ContactList(addContactsVM.selectedContactList.value!!)
-
-            requireActivity().onBackPressed()
-        }
     }
 
     private fun setupFastScroller() {
-        if (!addContactsVM.isViewsLoaded.value!!) {
-            addContactsVM.addContactAdapter.value!!.update(contactList)
+        if (!mainVM.isViewsLoaded.value!!) {
+            addContactAdapter.update(contactList)
             rv_contacts.scheduleLayoutAnimation()
             fastScroller.setupWithRecyclerView(
                 rv_contacts, { position ->
@@ -120,13 +134,13 @@ class AddContactsFragment : BaseFragment() {
                 }
             )
             fastScrollerThumb.setupWithFastScroller(fastScroller)
-            addContactsVM.isViewsLoaded.value = true
+            mainVM.isViewsLoaded.value = true
             pb_loading.makeItGone()
         }
     }
 
-    private fun getContactsList(context: Context) {
-        val phones: Cursor? = context.contentResolver.query(
+    private fun getContactsList() {
+        val phones: Cursor? = context!!.contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null, null, null, null
         )
@@ -153,13 +167,13 @@ class AddContactsFragment : BaseFragment() {
             Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
         })
 
-        requireActivity().runOnUiThread {
+        GlobalScope.launch(Dispatchers.Main) {
             if (contactList.isNullOrEmpty()) {
-                requireContext().showToast("Rehberinizde kayıtlı kişi bulunamadı.")
-                requireActivity().onBackPressed()
+                context!!.showToast("Rehberinizde kayıtlı kişi bulunamadı.")
+                activity!!.onBackPressed()
             } else {
-                contactList.removeAll(addContactsVM.selectedContactList.value as Collection<Contact>)
-                addContactsVM.contactList.value = contactList
+                mainVM.getChosenContactList().value?.let { contactList.removeAll(it) }
+                mainVM.contactList.value = contactList
             }
         }
     }

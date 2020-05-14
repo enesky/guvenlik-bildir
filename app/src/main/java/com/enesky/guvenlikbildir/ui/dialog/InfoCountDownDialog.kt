@@ -11,8 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.asLiveData
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
@@ -195,10 +197,11 @@ class InfoCountDownDialog : DialogFragment() {
 
     private fun sendSMS() {
         requireContext().requireSendSmsPermission {
-           // getUsersContactList { sendIt(it) }
-            //TODO: room ile contactlistesini al.
+          sendIt(getContactList().value)
         }
     }
+
+    private fun getContactList() = AppDatabase.getDatabaseManager(context!!.applicationContext).contactDao().getAllContacts().asLiveData()
 
     private fun sendIt(list: Any?) {
         if (list is MutableList<*>) {
@@ -216,11 +219,8 @@ class InfoCountDownDialog : DialogFragment() {
                     tv_sent_success_count.makeItVisible()
                     for (contact: Contact in list) {
                         smsManager.sendTextMessage(
-                            contact.number,
-                            null,
-                            text + locationMapWithLink,
-                            sentPI,
-                            deliveredPI
+                            contact.number, null, text + locationMapWithLink,
+                            sentPI, deliveredPI
                         )
                         Timber.tag("Sms Sent to: ").d("%s", contact.number)
                     }

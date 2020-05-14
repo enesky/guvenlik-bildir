@@ -13,7 +13,7 @@ import timber.log.Timber
  * Created by Enes Kamil YILMAZ on 11.02.2020
  */
 
-class AddContactAdapter(private var contactList: MutableList<Contact>,
+class AddContactAdapter(private var contactList: List<Contact>,
                         private val addContactListener: AddContactListener)
     : RecyclerView.Adapter<AddContactAdapter.AddContactViewHolder>() {
 
@@ -29,7 +29,7 @@ class AddContactAdapter(private var contactList: MutableList<Contact>,
 
     override fun onBindViewHolder(holder: AddContactViewHolder, pos: Int) = holder.bind(contactList[pos])
 
-    fun update(items: MutableList<Contact>) {
+    fun update(items: List<Contact>) {
         this.contactList = items
         notifyDataSetChanged()
     }

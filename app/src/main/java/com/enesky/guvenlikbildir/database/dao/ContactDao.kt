@@ -18,19 +18,16 @@ interface ContactDao {
     @Query("SELECT * FROM contact") // ORDER BY id ASC
     fun getAllContacts(): Flow<List<Contact>>
 
-    @Query("SELECT * FROM contact WHERE id == :id")
-    fun getContact(id: Int): Flow<Contact>
-
     @Query("DELETE FROM contact")
     suspend fun deleteAll()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg contact: Contact)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(vararg contact: Contact)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(earthquakes: List<Contact>)
 
     @Delete
-    fun delete(contact: Contact)
+    suspend fun delete(contact: Contact)
 
 }

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
 import com.enesky.guvenlikbildir.database.entity.Earthquake
@@ -40,6 +41,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
     var lastQuery = ""
     var lastMinMag = 0.0
     var lastMaxMag = 12.0
+    var earthquakeFromNotification: Earthquake? = null
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -66,7 +68,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             earthquakeItemListener = latestEarthquakesVM
         )
 
-        (requireActivity() as MainActivity).earthquakeVM.earthquakes.observe( viewLifecycleOwner,
+        (requireActivity() as MainActivity).mainVM.earthquakes.observe( viewLifecycleOwner,
             Observer { earthquakes ->
                 earthquakes?.let {
                     pb_loading.makeItGone()
@@ -81,16 +83,23 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
                     GlobalScope.launch(Dispatchers.Main) {
                         delay(750)
-                        if (earthquakes.isNotEmpty() &&
-                            ((rv_earthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
-                            (rv_earthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)) {
-                            fab_scroll_to_top.show()
+
+                        if (earthquakes.isNotEmpty()) {
+                            if (earthquakeFromNotification != null) {
+                                rv_earthquakes.smoothScrollToPosition(earthquakePagingAdapter.currentList?.indexOf(earthquakeFromNotification)!!)
+                                earthquakeFromNotification = null
+                            }
+                            if (((rv_earthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
+                                        (rv_earthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)) {
+                                fab_scroll_to_top.show()
+                            }
                         }
+
                     }
             }
         })
 
-        (requireActivity() as MainActivity).earthquakeVM.responseHandler.addObserver { _, response ->
+        (requireActivity() as MainActivity).mainVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     if (response != null && response is Result<*>) {
@@ -103,16 +112,22 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             }
         }
 
-        (requireActivity() as MainActivity).earthquakeVM.filterText.observe(viewLifecycleOwner, Observer {
+        (requireActivity() as MainActivity).mainVM.filterText.observe(viewLifecycleOwner, Observer {
             lastQuery = it
         })
 
-        (requireActivity() as MainActivity).earthquakeVM.minMag.observe(viewLifecycleOwner, Observer {
+        (requireActivity() as MainActivity).mainVM.minMag.observe(viewLifecycleOwner, Observer {
             lastMinMag = it
         })
 
-        (requireActivity() as MainActivity).earthquakeVM.maxMag.observe(viewLifecycleOwner, Observer {
+        (requireActivity() as MainActivity).mainVM.maxMag.observe(viewLifecycleOwner, Observer {
             lastMaxMag = it
+        })
+
+        (requireActivity() as MainActivity).mainVM.earthquakeFromNotification.observe(viewLifecycleOwner, Observer {
+            earthquakeFromNotification = it
+            if (earthquakePagingAdapter.currentList?.indexOf(it) != null)
+                rv_earthquakes.smoothScrollToPosition(earthquakePagingAdapter.currentList?.indexOf(it)!!)
         })
 
         latestEarthquakesVM.whereTo.observe(viewLifecycleOwner, Observer {
@@ -127,10 +142,10 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         latestEarthquakesVM.onFilterIndexChange.observe(viewLifecycleOwner, Observer {
             when(it) {
-                0 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery,0.0,12.0)
-                1 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery,0.0,3.0)
-                2 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery,3.0,4.5)
-                3 -> (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(lastQuery, 4.5, 12.0)
+                0 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery,0.0,12.0)
+                1 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery,0.0,3.0)
+                2 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery,3.0,4.5)
+                3 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery, 4.5, 12.0)
             }
         })
 
@@ -201,7 +216,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
     private fun refresh() {
         GlobalScope.launch(Dispatchers.Main) {
-            (requireActivity() as MainActivity).earthquakeVM.getEarthquakes()
+            (requireActivity() as MainActivity).mainVM.getEarthquakes()
             delay(500)
             srl_refresh.isRefreshing = false
         }
@@ -227,15 +242,15 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText.isNullOrEmpty()) {
-            (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList("",lastMinMag,lastMaxMag)
+            (requireActivity() as MainActivity).mainVM.getEarthquakeList("",lastMinMag,lastMaxMag)
         } else {
             val searchText = newText.trim()
-            if (searchText != (requireActivity() as MainActivity).earthquakeVM.filterText.value) {
-                (requireActivity() as MainActivity).earthquakeVM.filterText.value = searchText
+            if (searchText != (requireActivity() as MainActivity).mainVM.filterText.value) {
+                (requireActivity() as MainActivity).mainVM.filterText.value = searchText
                 textChangedJob?.cancel()
                 textChangedJob = launch {
                     delay(300L)
-                    (requireActivity() as MainActivity).earthquakeVM.getEarthquakeList(searchText,lastMinMag,lastMaxMag)
+                    (requireActivity() as MainActivity).mainVM.getEarthquakeList(searchText,lastMinMag,lastMaxMag)
                 }
             }
         }

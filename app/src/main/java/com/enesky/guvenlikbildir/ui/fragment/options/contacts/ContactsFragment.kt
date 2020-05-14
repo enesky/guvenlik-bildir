@@ -8,53 +8,41 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.databinding.FragmentContactsBinding
-import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.adapter.ContactAdapter
+import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Contact
+import com.enesky.guvenlikbildir.databinding.FragmentContactsBinding
+import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.makeItGone
+import com.enesky.guvenlikbildir.extensions.makeItVisible
+import com.enesky.guvenlikbildir.extensions.requireReadContactsPermission
+import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
 import kotlinx.android.synthetic.main.fragment_contacts.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.launch
 
 class ContactsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentContactsBinding
-    private val contactsVM by lazy {
-        getViewModel { SharedContactsVM() }
+    private lateinit var contactAdapter: ContactAdapter
+    private val mainVM by lazy {
+        getViewModel {
+            MainVM(AppDatabase.getDatabaseManager(activity!!.application))
+        }
     }
-    private var selectedList: MutableList<Contact> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_contacts, container, false)
         binding.apply {
-            viewModel = contactsVM
+            viewModel = mainVM
             lifecycleOwner = this@ContactsFragment
         }
-        contactsVM.init(binding, mutableListOf())
-
+        mainVM.init(binding)
         App.mAnalytics.setCurrentScreen(requireActivity(), this.javaClass.simpleName, null)
-
-        //getUsersContactList { prepareViews(it) }
-        //TODO: room ile listeyi çek
-
-        contactsVM.isSelectedListChanged.observe(viewLifecycleOwner, Observer {
-            contactsVM.contactAdapter.value!!.update(contactsVM.selectedContactList.value!!)
-            if (contactsVM.selectedContactList.value.isNullOrEmpty())
-                placeholder.makeItVisible()
-            else
-                placeholder.makeItGone()
-        })
-
-        contactsVM.onClick.observe(viewLifecycleOwner, Observer { any ->
-            if (any is Contact) {
-                pb_loading.makeItVisible()
-                //removeFromContactList(any) { deleteAndRefresh(any) }
-                //getUsersContactList { prepareViews(it) }
-
-                //TODO: room ile çek
-            }
-        })
-
         return binding.root
     }
 
@@ -62,7 +50,19 @@ class ContactsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        placeholder.makeItVisible()
         pb_loading.makeItVisible()
+
+        contactAdapter = ContactAdapter(listOfNotNull(), mainVM)
+        contactAdapter.setHasStableIds(true)
+
+        rv_contacts.apply {
+            setHasFixedSize(true)
+            setItemViewCacheSize(10)
+            isDrawingCacheEnabled = true
+            drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+            rv_contacts.adapter = contactAdapter
+        }
 
         fab_add_contact.setOnClickListener {
             requireContext().requireReadContactsPermission {
@@ -71,51 +71,32 @@ class ContactsFragment : BaseFragment() {
         }
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        rv_contacts.scheduleLayoutAnimation()
-    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-    private fun prepareViews(any: Any?) {
-        pb_loading.makeItVisible()
-        if (any is MutableList<*>) {
-            if ((any as MutableList<Contact>).isNullOrEmpty()) {
-                selectedList.clear()
-                contactsVM.selectedContactList.value = selectedList
-                contactsVM.contactAdapter.value!!.update(selectedList)
-                rv_contacts.scheduleLayoutAnimation()
-                placeholder.makeItVisible()
-            } else {
-                selectedList.clear()
-                selectedList.addAll(any)
-                contactsVM.selectedContactList.value = selectedList
-                contactsVM.contactAdapter.value!!.update(selectedList)
-                rv_contacts.scheduleLayoutAnimation()
-                placeholder.makeItGone()
+        mainVM.onClick.observe(viewLifecycleOwner, Observer { contact ->
+            if (contact is Contact) {
+                GlobalScope.launch(Dispatchers.IO) {
+                    mainVM.deleteContactFromList(contact)
+                }
             }
-        } else {
-            requireContext().showToast(any.toString())
-        }
-        pb_loading.makeItGone()
-    }
+        })
 
-    private fun deleteAndRefresh(contact: Contact) {
-        val selectedCList = contactsVM.selectedContactList.value
-        selectedCList?.remove(contact)
-        contactsVM.selectedContactList.value = selectedCList
-        contactsVM.contactAdapter.value!!.update(selectedList)
-
-        if (!contactsVM.contactList.value!!.contains(contact))
-            contactsVM.contactList.value!!.add(contact)
-
-        if(rv_contacts != null && pb_loading != null) {
-            rv_contacts.scheduleLayoutAnimation()
+        mainVM.getChosenContactList().observe(viewLifecycleOwner, Observer {
+            contactAdapter.update(it)
             pb_loading.makeItGone()
-            if (contactsVM.selectedContactList.value.isNullOrEmpty())
+
+            if (it.isNullOrEmpty())
                 placeholder.makeItVisible()
             else
                 placeholder.makeItGone()
-        }
+        })
+
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        rv_contacts.scheduleLayoutAnimation()
     }
 
 }
