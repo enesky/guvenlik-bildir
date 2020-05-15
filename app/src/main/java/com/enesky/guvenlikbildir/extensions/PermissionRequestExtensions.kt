@@ -63,7 +63,6 @@ fun Context.requireLocationPermission(function: () -> Any) =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { runWithPermissions(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION,
         options = getQuickPermissionOptions()
     ) {
         Timber.tag("PermissionRequestExtension")
@@ -75,12 +74,7 @@ fun Context.requireLocationPermission(function: () -> Any) =
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+            ) == PackageManager.PERMISSION_GRANTED) {
             function()
         }
     }

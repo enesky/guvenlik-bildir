@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.OptionAdapter
 import com.enesky.guvenlikbildir.database.entity.Earthquake
@@ -42,6 +43,7 @@ class EarthquakeItemOptionsDialog : BaseBottomSheetDialogFragment(), OptionAdapt
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_earthquake_bottom_sheet, container, false)
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
         if (arguments != null) {
             earthquake = arguments?.getParcelable(earthquakeTag)

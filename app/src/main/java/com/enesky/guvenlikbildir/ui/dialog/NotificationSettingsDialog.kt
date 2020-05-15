@@ -26,6 +26,7 @@ class NotificationSettingsDialog : BaseBottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_notification_settings, container, false)
+        App.mAnalytics.setCurrentScreen(activity!!, "dialog", this.javaClass.simpleName)
         return binding.root
     }
 

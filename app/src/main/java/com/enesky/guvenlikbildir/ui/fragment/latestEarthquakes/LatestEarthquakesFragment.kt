@@ -48,6 +48,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_latest_earthquakes, container, false)
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         return binding.root
     }
 
@@ -58,8 +59,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             viewModel = latestEarthquakesVM
             lifecycleOwner = this@LatestEarthquakesFragment
         }
-
-        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
         latestEarthquakesVM.init(binding)
 

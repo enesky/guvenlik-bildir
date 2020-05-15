@@ -9,7 +9,8 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.databinding.FragmentNotifyBinding
-import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment

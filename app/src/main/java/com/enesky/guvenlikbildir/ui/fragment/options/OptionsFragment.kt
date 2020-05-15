@@ -1,7 +1,6 @@
 package com.enesky.guvenlikbildir.ui.fragment.options
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.dialog.AboutDialog
-import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsDialog
 import com.enesky.guvenlikbildir.ui.dialog.NotificationSettingsDialog
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.contacts.ContactsFragment
