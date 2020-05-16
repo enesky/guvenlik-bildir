@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tv_dialog_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin_24"
         android:layout_marginTop="@dimen/default_margin_16"
@@ -21,7 +21,8 @@
         android:textSize="@dimen/default_text_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pb_loading"/>
 
     <ProgressBar
         android:id="@+id/pb_loading"

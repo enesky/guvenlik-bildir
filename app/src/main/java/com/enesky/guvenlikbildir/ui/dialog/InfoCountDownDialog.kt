@@ -6,6 +6,7 @@ import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
 import android.telephony.SmsManager
 import android.view.LayoutInflater
 import android.view.View
@@ -81,11 +82,20 @@ class InfoCountDownDialog : DialogFragment() {
                 type = Constants.unsafeSms
                 tv_dialog_title.text = getString(R.string.label_sending_sms)
             }
+            tag.equals(Constants.gpsSetting) -> {
+            type = Constants.gpsSetting
+            tv_dialog_title.text = getString(R.string.label_no_gps_connection_found)
+            }
             tag!!.contains(Constants.locationMapLink) -> {
                 type = Constants.locationMapLink
                 tv_dialog_title.text = getString(R.string.label_google_maps)
             }
         }
+
+        val params = Bundle().apply {
+            putString("action_type", type)
+        }
+        App.mAnalytics.logEvent("InfoCountDownDialog", params)
 
         tv_dismiss.setOnClickListener {
             dismiss()
@@ -190,6 +200,10 @@ class InfoCountDownDialog : DialogFragment() {
                             putString("Sms type", type)
                         }
                         App.mAnalytics.logEvent("InfoCountDown_Send_Sms", params)
+                    }
+                    Constants.gpsSetting -> {
+                        startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                        dismiss()
                     }
                 }
 

@@ -48,6 +48,11 @@ object Constants {
     const val defaultAnimationDuration = 250L
     const val map = "map"
 
+    //Location
+    const val MIN_TIME_BW_LOCATION_UPDATE = 2000L
+    const val MIN_DISTANCE_BW_LOCATION_UPDATE = 0f
+    const val gpsSetting = "gps"
+
     //SharedPref Keys
     const val isFirstTime = "isFirstTime"
     const val lastKnownLocation = "lastKnownLocation"

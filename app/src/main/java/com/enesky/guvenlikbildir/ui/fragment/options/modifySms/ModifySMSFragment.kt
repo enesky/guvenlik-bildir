@@ -10,10 +10,12 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.locationMapWithLink
 import com.enesky.guvenlikbildir.extensions.safeSms
 import com.enesky.guvenlikbildir.extensions.unsafeSms
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_modify_sms.*
+import java.util.*
 
 class ModifySMSFragment: BaseFragment() {
 
@@ -34,6 +36,10 @@ class ModifySMSFragment: BaseFragment() {
             lifecycleOwner = this@ModifySMSFragment
         }
         modifySmsVM.init(binding)
+
+        Timer().schedule(kotlin.concurrent.timerTask {
+            modifySmsVM.lastLocation.postValue(locationMapWithLink)
+        }, 0,1000)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

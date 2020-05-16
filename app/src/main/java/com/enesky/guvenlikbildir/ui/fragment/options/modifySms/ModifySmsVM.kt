@@ -16,13 +16,12 @@ class ModifySmsVM : BaseViewModel() {
     private val _safeSms = MutableLiveData<String>()
     val safeSmsLive: LiveData<String> = _safeSms
 
-    private val _lastLocation = MutableLiveData<String>()
-    val lastLocation: LiveData<String> = _lastLocation
+    val lastLocation = MutableLiveData<String>()
 
     init {
         _unsafeSms.value = unsafeSms
         _safeSms.value = safeSms
-        _lastLocation.value = locationMapWithLink
+        lastLocation.value = locationMapWithLink
     }
 
     fun init(binding: FragmentModifySmsBinding) {

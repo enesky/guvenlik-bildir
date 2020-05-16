@@ -20,6 +20,7 @@ import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.BaseActivity
+import com.enesky.guvenlikbildir.ui.dialog.InfoCountDownDialog
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
@@ -48,7 +49,7 @@ class MainActivity : BaseActivity(),
     }
 
     private var locationManager: LocationManager? = null
-    private var locationListenerGPS: LocationListener? = null
+    private var locationListener: LocationListener? = null
 
     private var rootFragmentProvider: List<() -> Fragment> = listOf(
         { LatestEarthquakesFragment() },
@@ -74,6 +75,13 @@ class MainActivity : BaseActivity(),
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
+        if (isFirstTime) {
+            requireAllPermissions()
+            isFirstTime = false
+        }
+
+        requireLocationPermission { requestLocationUpdates() }
+
         App.mAnalytics.setCurrentScreen(this, "activity", this.javaClass.simpleName)
         mainVM.init(binding)
 
@@ -93,7 +101,7 @@ class MainActivity : BaseActivity(),
         if (isNotificationsEnabled)
             App.startWorker()
         else
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch(Dispatchers.Default) {
                 mainVM.getEarthquakes()
             }
 
@@ -102,29 +110,21 @@ class MainActivity : BaseActivity(),
         bottom_nav.setOnNavigationItemSelectedListener(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        /*
-        val currentUser: FirebaseUser? = App.mAuth.currentUser
-        if (currentUser == null)
-            openLoginActivity()
-        */
-
-        if (isFirstTime) {
-            requireAllPermissions()
-            isFirstTime = false
-        }
-
-        requireLocationPermission { requestLocationUpdates() }
-    }
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
         if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null) {
-            mainVM.earthquakeFromNotification.value = intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE)
+            val earthquake =
+                intent.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE)
             navigator.switchTab(0)
+            mainVM.earthquakeFromNotification.value = earthquake
             Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
+            val params = Bundle().apply {
+                putString("earthquake_location", earthquake!!.location)
+                putDouble("earthquake_mag", earthquake.magML)
+                putString("earthquake_date", earthquake.dateTime)
+            }
+            App.mAnalytics.logEvent("MainActivity_clicked2notification", params)
         }
 
     }
@@ -171,27 +171,62 @@ class MainActivity : BaseActivity(),
         //ignored
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        locationManager = null
+        locationListener = null
+    }
+
     @SuppressLint("MissingPermission")
     fun requestLocationUpdates() {
-        locationListenerGPS = object : LocationListener {
+        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
-                val latitude = location.latitude
-                val longitude = location.longitude
-                lastKnownLocation = "$latitude,$longitude"
-                Timber.tag("LocationManager").d("%s", lastKnownLocation!!)
+                lastKnownLocation = "${location.latitude},${location.longitude}"
             }
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String?) {}
-            override fun onProviderDisabled(provider: String?) {}
+            override fun onProviderDisabled(provider: String?) {
+                InfoCountDownDialog().show(supportFragmentManager, Constants.gpsSetting)
+            }
         }
 
-        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val gpsProvider = LocationManager.GPS_PROVIDER
+        val networkProvider = LocationManager.NETWORK_PROVIDER
+        var finalProvider: String? = null
+
+        val isGpsEnabled = locationManager!!.isProviderEnabled(gpsProvider)
+        val isNetworkEnabled = locationManager!!.isProviderEnabled(networkProvider)
+
+        val gpsLocation: Location? = locationManager!!.getLastKnownLocation(gpsProvider)
+        val networkLocation: Location? = locationManager!!.getLastKnownLocation(networkProvider)
+        var lastKnownLoc: Location? = null
+
+        finalProvider = when {
+            isNetworkEnabled -> networkProvider
+            else -> gpsProvider
+        }
+
+        lastKnownLoc = if (networkLocation != null && gpsLocation != null) {
+            if (gpsLocation.accuracy > networkLocation.accuracy) //ne kadar küçükse o kadar accurate
+                networkLocation
+            else
+                gpsLocation
+        } else {
+            networkLocation ?: gpsLocation
+        }
+
+        if (lastKnownLoc != null)
+            lastKnownLocation = "${lastKnownLoc.latitude},${lastKnownLoc.longitude}"
+
         locationManager!!.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            10000,
-            5f,
-            locationListenerGPS!!
+            finalProvider,
+            Constants.MIN_TIME_BW_LOCATION_UPDATE,
+            Constants.MIN_DISTANCE_BW_LOCATION_UPDATE,
+            locationListener!!
         )
+
     }
 
 }

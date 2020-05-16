@@ -81,4 +81,6 @@
     <string name="label_code_caught">Doğrulama kodu yakalandı.</string>
     <string name="label_notification_info">Büyüklüğü %s ve üstü olan depremler hakkında bildirim almak istiyorum.</string>
 
+    <string name="label_no_gps_connection_found">Konum bilgisine erişilemiyor. \n Lütfen Konum servislerini (GPS) aktif hale getiriniz.</string>
+
 </resources>

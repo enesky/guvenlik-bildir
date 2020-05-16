@@ -256,12 +256,18 @@ class EarthquakePagingAdapter(context: Context,
         map.uiSettings.isMapToolbarEnabled = false
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
+        val color = when {
+            earthquake.magML < 3 -> "#388e3c" to "#66388e3c"
+            (earthquake.magML >= 3) && (earthquake.magML < 4.5) -> "#f9aa33" to "#66f9aa33"
+            else -> "#e53935" to "#66e53935"
+        }
+
         val circleOptions = CircleOptions()
             .center(loc)
             .radius(20000.0)
-            .strokeWidth(10f)
-            .strokeColor(Color.parseColor("#388e3c"))
-            .fillColor(Color.parseColor("#8f388e3c"))
+            .strokeWidth(1f)
+            .strokeColor(Color.parseColor(color.first))
+            .fillColor(Color.parseColor(color.second))
 
         map.addCircle(circleOptions)
 

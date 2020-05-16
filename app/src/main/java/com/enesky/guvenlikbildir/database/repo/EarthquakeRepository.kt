@@ -23,7 +23,7 @@ class EarthquakeRepository(private val earthquakeDao: EarthquakeDao) {
         earthquakeDao.deleteAll()
         lastLoadedEarthquake = earthquakes.first()
         ioThread {
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch(Dispatchers.Default) {
                 earthquakeDao.insertAll(earthquakes)
             }
         }
