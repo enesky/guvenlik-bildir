@@ -24,6 +24,7 @@ import com.enesky.guvenlikbildir.ui.dialog.InfoCountDownDialog
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
+import com.enesky.guvenlikbildir.ui.fragment.options.contacts.AddContactsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
@@ -42,7 +43,7 @@ class MainActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemReselectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    val mainVM by lazy {
+    private val mainVM by lazy {
         getViewModel {
             MainVM(AppDatabase.getDatabaseManager(application))
         }
@@ -74,6 +75,8 @@ class MainActivity : BaseActivity(),
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+        App.mAnalytics.setCurrentScreen(this, "activity", this.javaClass.simpleName)
+        mainVM.init(binding)
 
         if (isFirstTime) {
             requireAllPermissions()
@@ -82,8 +85,13 @@ class MainActivity : BaseActivity(),
 
         requireLocationPermission { requestLocationUpdates() }
 
-        App.mAnalytics.setCurrentScreen(this, "activity", this.javaClass.simpleName)
-        mainVM.init(binding)
+        requireReadContactsPermission {
+            GlobalScope.launch(Dispatchers.Default) {
+                mainVM.contactRepository.refreshContacts(
+                    AddContactsFragment.getContactsList(this@MainActivity).toMutableList()
+                )
+            }
+        }
 
         mainVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
@@ -126,7 +134,6 @@ class MainActivity : BaseActivity(),
             }
             App.mAnalytics.logEvent("MainActivity_clicked2notification", params)
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -185,6 +192,7 @@ class MainActivity : BaseActivity(),
             override fun onLocationChanged(location: Location) {
                 lastKnownLocation = "${location.latitude},${location.longitude}"
             }
+
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String?) {}
             override fun onProviderDisabled(provider: String?) {

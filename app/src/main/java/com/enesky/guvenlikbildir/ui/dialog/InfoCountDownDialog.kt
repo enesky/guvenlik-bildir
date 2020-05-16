@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
@@ -129,7 +130,7 @@ class InfoCountDownDialog : DialogFragment() {
                                     putInt("sentCountFailed", sentCountFailed)
                                     putInt("successRatio", sentCountSuccess / contactSize)
                                 }
-                                App.mAnalytics.logEvent("InfoCountDown_Sms_Send", params)
+                                App.mAnalytics.logEvent("InfoCountDown_Sms_Sent", params)
 
                                 dismiss()
                             }
@@ -212,13 +213,15 @@ class InfoCountDownDialog : DialogFragment() {
     }
 
     private fun sendSMS() {
-        requireContext().requireSendSmsPermission {
-            sendIt(getContactList().value)
-        }
-    }
+        val selectedContactListLiveData =
+            AppDatabase.getDatabaseManager(context!!.applicationContext).contactDao().getSelectedContactsFlow().asLiveData()
 
-    private fun getContactList() =
-        AppDatabase.getDatabaseManager(context!!.applicationContext).contactDao().getAllContacts().asLiveData()
+        selectedContactListLiveData.observe(viewLifecycleOwner, Observer { it ->
+            requireContext().requireSendSmsPermission {
+                sendIt(it)
+            }
+        })
+    }
 
     private fun sendIt(list: List<Contact>?) {
         if (!list.isNullOrEmpty()) {
@@ -241,10 +244,12 @@ class InfoCountDownDialog : DialogFragment() {
             } catch (e: Exception) {
                 Timber.tag("SMSManager Exception").d("%s", e.message!!)
                 requireContext().showToast("Sms gönderme işlemi başarısız!")
+                pb_loading.makeItGone()
             }
 
         } else {
             requireContext().showToast("Sms gönderilecek kayıt bulunamadı.")
+            dismiss()
         }
     }
 

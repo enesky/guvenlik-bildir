@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
+import com.enesky.guvenlikbildir.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
@@ -19,8 +20,7 @@ fun Context.requireSendSmsPermission(function: () -> Any) = runWithPermissions(
     Manifest.permission.SEND_SMS,
     options = getQuickPermissionOptions()
 ) {
-    Timber.tag("PermissionRequestExtension")
-        .d("requireSendSmsPermission: Send Sms permission granted")
+    Timber.tag("PermissionRequestExtension").d("requireSendSmsPermission: Send Sms permission granted")
     if (ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.SEND_SMS
@@ -34,12 +34,10 @@ fun Context.requireCallPhonePermission(function: () -> Any) = runWithPermissions
     Manifest.permission.CALL_PHONE,
     options = getQuickPermissionOptions()
 ) {
-    Timber.tag("PermissionRequestExtension")
-        .d("requireCallPhonePermission: Call Phone permission granted")
+    Timber.tag("PermissionRequestExtension").d("requireCallPhonePermission: Call Phone permission granted")
     if (ContextCompat.checkSelfPermission(
             this,
-            Manifest.permission.CALL_PHONE
-        ) == PackageManager.PERMISSION_GRANTED
+            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED
     ) {
         function()
     }
@@ -49,12 +47,10 @@ fun Context.requireReadContactsPermission(function: () -> Any) = runWithPermissi
     Manifest.permission.READ_CONTACTS,
     options = getQuickPermissionOptions()
 ) {
-    Timber.tag("PermissionRequestExtension")
-        .d("requireReadContactsPermission: Read Contacts permission granted")
+    Timber.tag("PermissionRequestExtension").d("requireReadContactsPermission: Read Contacts permission granted")
     if (ContextCompat.checkSelfPermission(
             this,
-            Manifest.permission.READ_CONTACTS
-        ) == PackageManager.PERMISSION_GRANTED
+            Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
     )
         function()
 }
@@ -69,12 +65,10 @@ fun Context.requireLocationPermission(function: () -> Any) =
             .d("requireLocationPermission: Location permissions granted")
         if (ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED ||
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
             ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             function()
         }
     }
@@ -84,10 +78,13 @@ fun Context.requireLocationPermission(function: () -> Any) =
             Manifest.permission.ACCESS_COARSE_LOCATION,
             options = getQuickPermissionOptions()
         ) {
-            Timber.tag("PermissionRequestExtension")
-                .d("requireLocationPermission: Location permissions granted")
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Timber.tag("PermissionRequestExtension").d("requireLocationPermission: Location permissions granted")
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 function()
             }
         }
@@ -105,8 +102,8 @@ fun Context.requireAllPermissions() = runWithPermissions(
 
 fun Context.getQuickPermissionOptions(): QuickPermissionsOptions {
     return QuickPermissionsOptions(
-        rationaleMessage = "Izin alındı.",
-        permanentlyDeniedMessage = "Izin reddedildi.",
+        rationaleMessage = getString(R.string.label_permission_granted),
+        permanentlyDeniedMessage = getString(R.string.label_permission_denied),
         rationaleMethod = { rationaleCallback(it) },
         permanentDeniedMethod = { permissionsPermanentlyDenied(it) },
         permissionsDeniedMethod = { whenPermAreDenied(it) }
@@ -116,10 +113,10 @@ fun Context.getQuickPermissionOptions(): QuickPermissionsOptions {
 fun Context.rationaleCallback(req: QuickPermissionsRequest) {
     // this will be called when permission is denied once or more time.
     MaterialAlertDialogBuilder(this)
-        .setTitle("Reddettiğiniz izinler bulundu.")
-        .setMessage("İlgili fonksiyonları kullanabilmeniz için izniniz gerekiyor.")
-        .setPositiveButton("İste hadi") { _, _ -> req.proceed() }
-        .setNegativeButton("İsteme") { _, _ -> req.cancel() }
+        .setTitle(getString(R.string.label_denied_permission_found))
+        .setMessage(getString(R.string.label_require_permission))
+        .setPositiveButton(getString(R.string.label_grant_permission)) { _, _ -> req.proceed() }
+        .setNegativeButton(getString(R.string.label_deny_permission)) { _, _ -> req.cancel() }
         .setCancelable(false)
         .show()
 }
@@ -127,12 +124,10 @@ fun Context.rationaleCallback(req: QuickPermissionsRequest) {
 fun Context.permissionsPermanentlyDenied(req: QuickPermissionsRequest) {
     // this will be called when some/all permissions required by the method are permanently denied.
     MaterialAlertDialogBuilder(this)
-        .setTitle("İzinler tamamen reddedildi.")
-        .setMessage(
-            "İzinleri kabul edip ilgili fonksiyonları kullanabilmek için lütfen ayarlardaki izinler sekmesinde bulunan izinlere onay veriniz."
-        )
-        .setPositiveButton("Uygulama Ayarlarını Aç") { _, _ -> req.openAppSettings() }
-        .setNegativeButton("İptal") { _, _ -> req.cancel() }
+        .setTitle(getString(R.string.label_all_permissions_granted))
+        .setMessage(getString(R.string.label_pls_grant_permission))
+        .setPositiveButton(getString(R.string.label_open_app_settings)) { _, _ -> req.openAppSettings() }
+        .setNegativeButton(getString(R.string.label_cancel)) { _, _ -> req.cancel() }
         .setCancelable(false)
         .show()
 }

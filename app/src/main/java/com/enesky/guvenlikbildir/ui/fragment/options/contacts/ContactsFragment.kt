@@ -56,7 +56,7 @@ class ContactsFragment : BaseFragment() {
 
         rv_contacts.apply {
             setHasFixedSize(true)
-            setItemViewCacheSize(10)
+            setItemViewCacheSize(20)
             isDrawingCacheEnabled = true
             drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
             rv_contacts.adapter = contactAdapter
@@ -73,14 +73,13 @@ class ContactsFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         mainVM.onClick.observe(viewLifecycleOwner, Observer { contact ->
-            if (contact is Contact) {
-                GlobalScope.launch(Dispatchers.IO) {
-                    mainVM.deleteContactFromList(contact)
-                }
+            GlobalScope.launch(Dispatchers.Default) {
+                if (contact is Contact)
+                    mainVM.contactRepository.unselectContact(contact)
             }
         })
 
-        mainVM.getChosenContactList().observe(viewLifecycleOwner, Observer {
+        mainVM.getSelectedContactList().observe(viewLifecycleOwner, Observer {
             contactAdapter.update(it)
             pb_loading.makeItGone()
 

@@ -1,6 +1,7 @@
 package com.enesky.guvenlikbildir.ui.fragment.options.contacts
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -37,29 +38,6 @@ class AddContactsFragment : BaseFragment() {
     private var contactList: MutableList<Contact> = mutableListOf()
     private var selectedMap: MutableMap<Int, Contact> = mutableMapOf()
 
-    override fun onStart() {
-        super.onStart()
-        if (mainVM.contactList.value.isNullOrEmpty()) {
-            requireActivity().requireReadContactsPermission {
-                GlobalScope.launch(Dispatchers.IO) {
-                    contactList = getContactsList().toMutableList()
-
-                    activity!!.runOnUiThread {
-                        if (contactList.isNullOrEmpty()) {
-                            context!!.showToast("Rehberinizde kayıtlı kişi bulunamadı.")
-                            activity!!.onBackPressed()
-                        } else {
-                            mainVM.getChosenContactList().value?.let { contactList.removeAll(it) }
-                            mainVM.contactList.value = contactList
-                        }
-
-                        pb_loading.makeItGone()
-                    }
-                }
-            }
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_contacts, container, false)
@@ -77,25 +55,17 @@ class AddContactsFragment : BaseFragment() {
         addContactAdapter = AddContactAdapter(contactList, mainVM)
         addContactAdapter.setHasStableIds(true)
 
-        if (!contactList.isNullOrEmpty())
-            setupFastScroller()
-
-        //TODO: Placeholder item yükleyebilirsin. -> Broccoli()
-
         rv_contacts.apply {
             addSelectedContactWatcher(selectedMap)
             setHasFixedSize(true)
-            setItemViewCacheSize(10)
+            setItemViewCacheSize(30)
             isDrawingCacheEnabled = true
             drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
             rv_contacts.adapter = addContactAdapter
         }
 
         tv_save.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                mainVM.addContactToList(selectedMap.values.toList())
-                mainVM.contactList.value?.removeAll(selectedMap.values.toList())
-            }
+            mainVM.contactRepository.selectContacts(selectedMap.values.toList())
             activity!!.onBackPressed()
         }
     }
@@ -103,9 +73,28 @@ class AddContactsFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mainVM.contactList.observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()) {
-                contactList = it
+        mainVM.getUnselectedContactList().observe(viewLifecycleOwner, Observer {
+            if (it.isNullOrEmpty()) {
+                activity!!.requireReadContactsPermission {
+                    GlobalScope.launch(Dispatchers.Default) {
+                        contactList = getContactsList(context!!).toMutableList()
+                        mainVM.contactRepository.refreshContacts(contactList)
+
+                        withContext(Dispatchers.Main) {
+                            if (contactList.isNullOrEmpty()) {
+                                context!!.showToast(getString(R.string.label_nothing_found_in_contacts))
+                                activity!!.onBackPressed()
+                            }
+                            pb_loading.makeItGone()
+                        }
+                    }
+                }
+            } else {
+                contactList = it.toMutableList()
+                val turkishLocale = Locale("tr", "TR")
+                contactList.sortWith(Comparator { o1, o2 ->
+                    Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
+                })
                 setupFastScroller()
             }
         })
@@ -119,7 +108,7 @@ class AddContactsFragment : BaseFragment() {
 
                 if (selectedMap.isNotEmpty()) {
                     tv_save.makeItVisible()
-                    tv_save.text = "Ekle (${selectedMap.size})"
+                    tv_save.text = getString(R.string.label_add_contact_with_number, selectedMap.size)
                 } else {
                     tv_save.makeItGone()
                 }
@@ -140,42 +129,43 @@ class AddContactsFragment : BaseFragment() {
                 }
             )
             fastScrollerThumb.setupWithFastScroller(fastScroller)
-            mainVM.isViewsLoaded.value = true
+            mainVM.isViewsLoaded.postValue(true)
             pb_loading.makeItGone()
         }
     }
 
-    private fun getContactsList() : List<Contact> {
-        val contactList = mutableListOf<Contact>()
+    companion object {
+        suspend fun getContactsList(context: Context) : List<Contact> {
+            return withContext(Dispatchers.Default) {
+                val contactList = mutableListOf<Contact>()
 
-        val phones: Cursor? = context!!.contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            null, null, null, null
-        )
+                val phones: Cursor? = context.contentResolver.query(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null, null, null, null
+                )
 
-        while (phones!!.moveToNext()) {
-            val name: String =
-                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-            val phoneNumber: String =
-                phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                    .replace(" ", "")
-            val itype =
-                phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
-            val isMobile = itype == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE ||
-                    itype == ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
+                while (phones!!.moveToNext()) {
+                    val name: String = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    val phoneNumber: String = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                            .replace(" ", "")
+                    val itype = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
+                    val isMobile = itype == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE ||
+                            itype == ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
 
-            if (name.isNotEmpty() && phoneNumber.isNotEmpty())
-                if (isMobile && !contactList.contains(Contact(name = name, number = phoneNumber)))
-                    contactList.add(Contact(name = name, number = phoneNumber))
+                    if (name.isNotEmpty() && phoneNumber.isNotEmpty())
+                        if (isMobile && !contactList.contains(Contact(name = name, number = phoneNumber)))
+                            contactList.add(Contact(name = name, number = phoneNumber))
+                }
+                phones.close()
+
+                val turkishLocale = Locale("tr", "TR")
+                contactList.sortWith(Comparator { o1, o2 ->
+                    Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
+                })
+
+                return@withContext contactList
+            }
         }
-        phones.close()
-
-        val turkishLocale = Locale("tr", "TR")
-        contactList.sortWith(Comparator { o1, o2 ->
-            Collator.getInstance(turkishLocale).compare(o1.name, o2.name)
-        })
-
-        return contactList
     }
 
 }

@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.AppDatabase
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.databinding.FragmentNotifyBinding
 import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.extensions.showToast
@@ -24,6 +26,8 @@ class NotifyFragment : BaseFragment() {
             MainVM(AppDatabase.getDatabaseManager(activity!!.application))
         }
     }
+
+    private var selectedContactList : List<Contact> = listOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notify, container, false)
@@ -48,18 +52,27 @@ class NotifyFragment : BaseFragment() {
         }
 
         iv_safe.setOnClickListener {
-            if (mainVM.getChosenContactList().value.isNullOrEmpty())
+            if (selectedContactList.isNullOrEmpty())
                 showInfo()
             else
                 openInfoCountDownDialog(Constants.safeSms)
         }
 
         iv_unsafe.setOnClickListener {
-            if (mainVM.getChosenContactList().value.isNullOrEmpty())
+            if (selectedContactList.isNullOrEmpty())
                 showInfo()
             else
                 openInfoCountDownDialog(Constants.unsafeSms)
         }
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        mainVM.getSelectedContactList().observe(viewLifecycleOwner, Observer { it ->
+            selectedContactList = it
+        })
 
     }
 

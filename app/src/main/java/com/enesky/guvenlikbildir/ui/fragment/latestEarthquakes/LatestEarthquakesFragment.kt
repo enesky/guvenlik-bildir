@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.EarthquakePagingAdapter
+import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.databinding.FragmentLatestEarthquakesBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
+import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsDialog
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
@@ -33,6 +34,11 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
     private lateinit var binding: FragmentLatestEarthquakesBinding
     private lateinit var latestEarthquakesVM: LatestEarthquakesVM
+    private val mainVM by lazy {
+        getViewModel {
+            MainVM(AppDatabase.getDatabaseManager(activity!!.application))
+        }
+    }
     private var isAppBarExpanded: Boolean = false
 
     private val loadingDuration: Long = (600L / 0.8).toLong()
@@ -67,8 +73,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             earthquakeItemListener = latestEarthquakesVM
         )
 
-        (requireActivity() as MainActivity).mainVM.earthquakes.observe( viewLifecycleOwner,
-            Observer { earthquakes ->
+        mainVM.earthquakes.observe( viewLifecycleOwner, Observer { earthquakes ->
                 earthquakes?.let {
                     pb_loading.makeItGone()
 
@@ -98,7 +103,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             }
         })
 
-        (requireActivity() as MainActivity).mainVM.responseHandler.addObserver { _, response ->
+        mainVM.responseHandler.addObserver { _, response ->
             GlobalScope.launch {
                 withContext(Dispatchers.Main) {
                     if (response != null && response is Result<*>) {
@@ -111,19 +116,19 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             }
         }
 
-        (requireActivity() as MainActivity).mainVM.filterText.observe(viewLifecycleOwner, Observer {
+        mainVM.filterText.observe(viewLifecycleOwner, Observer {
             lastQuery = it
         })
 
-        (requireActivity() as MainActivity).mainVM.minMag.observe(viewLifecycleOwner, Observer {
+        mainVM.minMag.observe(viewLifecycleOwner, Observer {
             lastMinMag = it
         })
 
-        (requireActivity() as MainActivity).mainVM.maxMag.observe(viewLifecycleOwner, Observer {
+        mainVM.maxMag.observe(viewLifecycleOwner, Observer {
             lastMaxMag = it
         })
 
-        (requireActivity() as MainActivity).mainVM.earthquakeFromNotification.observe(viewLifecycleOwner, Observer {
+        mainVM.earthquakeFromNotification.observe(viewLifecycleOwner, Observer {
             earthquakeFromNotification = it
             if (earthquakePagingAdapter.currentList?.indexOf(it) != null)
                 rv_earthquakes.smoothScrollToPosition(earthquakePagingAdapter.currentList?.indexOf(it)!!)
@@ -141,10 +146,10 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         latestEarthquakesVM.onFilterIndexChange.observe(viewLifecycleOwner, Observer {
             when(it) {
-                0 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery,0.0,12.0)
-                1 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery,0.0,3.0)
-                2 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery,3.0,4.5)
-                3 -> (requireActivity() as MainActivity).mainVM.getEarthquakeList(lastQuery, 4.5, 12.0)
+                0 -> mainVM.getEarthquakeList(lastQuery,0.0,12.0)
+                1 -> mainVM.getEarthquakeList(lastQuery,0.0,3.0)
+                2 -> mainVM.getEarthquakeList(lastQuery,3.0,4.5)
+                3 -> mainVM.getEarthquakeList(lastQuery, 4.5, 12.0)
             }
         })
 
@@ -215,7 +220,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
     private fun refresh() {
         GlobalScope.launch(Dispatchers.Main) {
-            (requireActivity() as MainActivity).mainVM.getEarthquakes()
+            mainVM.getEarthquakes()
             delay(500)
             srl_refresh.isRefreshing = false
         }
@@ -241,15 +246,15 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText.isNullOrEmpty()) {
-            (requireActivity() as MainActivity).mainVM.getEarthquakeList("",lastMinMag,lastMaxMag)
+            mainVM.getEarthquakeList("",lastMinMag,lastMaxMag)
         } else {
             val searchText = newText.trim()
-            if (searchText != (requireActivity() as MainActivity).mainVM.filterText.value) {
-                (requireActivity() as MainActivity).mainVM.filterText.value = searchText
+            if (searchText != mainVM.filterText.value) {
+                mainVM.filterText.value = searchText
                 textChangedJob?.cancel()
                 textChangedJob = launch {
                     delay(300L)
-                    (requireActivity() as MainActivity).mainVM.getEarthquakeList(searchText,lastMinMag,lastMaxMag)
+                    mainVM.getEarthquakeList(searchText,lastMinMag,lastMaxMag)
                 }
             }
         }

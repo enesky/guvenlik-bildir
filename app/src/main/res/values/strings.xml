@@ -10,6 +10,7 @@
     <string name="label_latest_earthquakes">Son Depremler</string>
     <string name="label_notify">Güvenlik Bildir</string>
     <string name="label_options">Seçenekler</string>
+
     <string name="label_time_up">Süre doldu.</string>
     <string name="hint_phone_number">Telefon numarası</string>
     <string name="hint_password">Parola</string>
@@ -54,7 +55,7 @@
     <string name="label_no_contact_found">Kayıtlı kişi bulunamadı.</string>
     <string name="label_saved_contacts">Kayıtlı Kişiler</string>
     <string name="label_add_contact">Kişi Ekle</string>
-    <string name="label_add_new_contact">Ekle (1)</string>
+    <string name="label_add_contact_with_number">Ekle (%d)</string>
     <string name="label_no_contact_in_device">Rehberinizde kayıtlı kişi bulunamadı.</string>
 
     <string name="label_location">Yer: </string>
@@ -82,5 +83,16 @@
     <string name="label_notification_info">Büyüklüğü %s ve üstü olan depremler hakkında bildirim almak istiyorum.</string>
 
     <string name="label_no_gps_connection_found">Konum bilgisine erişilemiyor. \n Lütfen Konum servislerini (GPS) aktif hale getiriniz.</string>
+    <string name="label_permission_granted">Izin alındı.</string>
+    <string name="label_permission_denied">Izin reddedildi.</string>
+    <string name="label_denied_permission_found">Reddettiğiniz izinler bulundu.</string>
+    <string name="label_require_permission">İlgili fonksiyonları kullanabilmeniz için izniniz gerekiyor.</string>
+    <string name="label_grant_permission">İzin ver</string>
+    <string name="label_deny_permission">İzin verme</string>
+    <string name="label_all_permissions_granted">İzinler tamamen reddedildi.</string>
+    <string name="label_pls_grant_permission">İlgili fonksiyonları kullanabilmek için lütfen ayarlardaki izinler sekmesinde bulunan izinlere onay veriniz.</string>
+    <string name="label_open_app_settings">Uygulama Ayarlarını Aç</string>
+    <string name="label_cancel">İptal</string>
+    <string name="label_nothing_found_in_contacts">Rehberinizde kayıtlı kişi bulunamadı.</string>
 
 </resources>

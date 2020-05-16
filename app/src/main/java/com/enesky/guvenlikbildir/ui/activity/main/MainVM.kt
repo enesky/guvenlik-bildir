@@ -14,6 +14,7 @@ import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
 import com.enesky.guvenlikbildir.database.source.EarthquakeSF
 import com.enesky.guvenlikbildir.database.entity.Earthquake
+import com.enesky.guvenlikbildir.database.repo.ContactRepository
 import com.enesky.guvenlikbildir.databinding.ActivityMainBinding
 import com.enesky.guvenlikbildir.databinding.FragmentAddContactsBinding
 import com.enesky.guvenlikbildir.databinding.FragmentContactsBinding
@@ -38,7 +39,6 @@ class MainVM (appDatabase: AppDatabase) : BaseViewModel(),
     var minMag = MutableLiveData<Double>().apply { value = 0.0 }
     var maxMag = MutableLiveData<Double>().apply { value = 12.0 }
 
-    val contactList = MutableLiveData<MutableList<Contact>>()
     val isViewsLoaded = MutableLiveData<Boolean>()
     val onClick = LiveEvent<Any>()
     var earthquakeFromNotification = LiveEvent<Earthquake>()
@@ -46,18 +46,19 @@ class MainVM (appDatabase: AppDatabase) : BaseViewModel(),
     var earthquakes: LiveData<PagedList<Earthquake>>
 
     var contactDao: ContactDao
+    var contactRepository: ContactRepository
     var earthquakeDao: EarthquakeDao
     var earthquakeRepository: EarthquakeRepository
     var earthquakeSF: EarthquakeSF
 
     init {
         contactDao = appDatabase.contactDao()
+        contactRepository = ContactRepository(contactDao)
         earthquakeDao = appDatabase.earthquakeDao()
         earthquakeRepository = EarthquakeRepository(earthquakeDao)
 
         earthquakeSF = EarthquakeSF(earthquakeDao)
         earthquakes = LivePagedListBuilder(earthquakeSF, 15).build()
-        contactList.value = mutableListOf()
     }
 
     fun init(binding: ActivityMainBinding) {
@@ -76,15 +77,10 @@ class MainVM (appDatabase: AppDatabase) : BaseViewModel(),
     fun init(binding: FragmentNotifyBinding) {
         setViewDataBinding(binding)
     }
-    
-    fun getChosenContactList(): LiveData<List<Contact>> = contactDao.getAllContacts().asLiveData()
 
-    suspend fun addContactToList(contactList: List<Contact>) = contactDao.insertAll(contactList)
+    fun getSelectedContactList(): LiveData<List<Contact>> = contactDao.getSelectedContactsFlow().asLiveData()
 
-    suspend fun deleteContactFromList(contact: Contact) {
-        contactList.value?.add(contact)
-        contactDao.delete(contact)
-    }
+    fun getUnselectedContactList(): LiveData<List<Contact>> = contactDao.getUnselectedContactsFlow().asLiveData()
 
     fun getEarthquakeList(query: String, minMag: Double, maxMag: Double) {
         filterText.value = query
