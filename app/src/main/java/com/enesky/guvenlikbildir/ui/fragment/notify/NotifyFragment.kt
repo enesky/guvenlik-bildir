@@ -15,6 +15,7 @@ import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.databinding.FragmentNotifyBinding
 import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.setTouchAnimation
 import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
@@ -31,7 +32,6 @@ class NotifyFragment : BaseFragment() {
     }
 
     private var selectedContactList : List<Contact> = listOf()
-    private var isMove = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notify, container, false)
@@ -83,43 +83,6 @@ class NotifyFragment : BaseFragment() {
     private fun showInfo() {
         requireContext().showToast("Kayıtlı kullanıcı bulunamadı.\n" +
                 "Lütfen Seçenekler sekmesinden kullanıcı seçimi yapınız.")
-    }
-
-    private fun View.setTouchAnimation(function: (() -> Unit)?) {
-        this.setOnTouchListener { p0, p1 ->
-            when (p1?.action) {
-                MotionEvent.ACTION_DOWN -> { startScaleAnimation(p0) }
-                MotionEvent.ACTION_MOVE -> {
-                    cancelScaleAnimation(p0)
-                    isMove = true
-                }
-                MotionEvent.ACTION_UP -> {
-                    cancelScaleAnimation(p0)
-                    if (!isMove)
-                        Handler().postDelayed({ function?.invoke() }, 150)
-                    isMove = false
-                }
-            }
-            true
-        }
-    }
-
-    private fun startScaleAnimation(view: View) {
-        val scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 0.75f)
-        val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 0.75f)
-        scaleDownX.duration = 150
-        scaleDownY.duration = 150
-        scaleDownX.start()
-        scaleDownY.start()
-    }
-
-    private fun cancelScaleAnimation(view: View) {
-        val scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f)
-        val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f)
-        scaleDownX.duration = 150
-        scaleDownY.duration = 150
-        scaleDownX.start()
-        scaleDownY.start()
     }
 
 }
