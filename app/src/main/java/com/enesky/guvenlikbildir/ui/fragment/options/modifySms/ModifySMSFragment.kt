@@ -110,6 +110,4 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
         }
     }
 
-
-
 }
