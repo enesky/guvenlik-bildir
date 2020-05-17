@@ -8,23 +8,36 @@ import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.locationMapWithLink
-import com.enesky.guvenlikbildir.extensions.safeSms
-import com.enesky.guvenlikbildir.extensions.unsafeSms
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_modify_sms.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
-class ModifySMSFragment: BaseFragment() {
+class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
     private lateinit var modifySmsVM: ModifySmsVM
     private lateinit var binding: FragmentModifySmsBinding
+    private var googleMap: GoogleMap? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_sms, container,false)
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
+
+        GlobalScope.launch(Dispatchers.Default) {
+            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+            withContext(Dispatchers.Main) {
+                mapFragment.getMapAsync(this@ModifySMSFragment)
+            }
+        }
+
         return binding.root
     }
 
@@ -39,7 +52,17 @@ class ModifySMSFragment: BaseFragment() {
 
         Timer().schedule(kotlin.concurrent.timerTask {
             modifySmsVM.lastLocation.postValue(locationMapWithLink)
-        }, 0,1000)
+
+            GlobalScope.launch(Dispatchers.Main) {
+                if (googleMap != null) {
+                    val latlng = lastKnownLocation!!.split(",")
+                    val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())
+                    googleMap!!.clear()
+                    googleMap!!.addMarker(MarkerOptions().position(loc))
+                }
+            }
+
+        }, 0,2000)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,5 +90,26 @@ class ModifySMSFragment: BaseFragment() {
         }
 
     }
+
+    override fun onMapReady(p0: GoogleMap?) {
+        googleMap = p0
+        if (googleMap == null) return
+
+        val latlng = lastKnownLocation!!.split(",")
+        val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())
+
+        googleMap!!.isMyLocationEnabled = true
+
+        googleMap!!.setOnMapClickListener {
+            openInfoCountDownDialog(Constants.locationMapLink)
+        }
+
+        googleMap!!.setOnMapLoadedCallback {
+            googleMap!!.addMarker(MarkerOptions().position(loc))
+            googleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 17f))
+        }
+    }
+
+
 
 }

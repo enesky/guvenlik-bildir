@@ -86,7 +86,6 @@ class EarthquakePagingAdapter(context: Context,
         }
 
         override fun onMapReady(googleMap: GoogleMap?) {
-            MapsInitializer.initialize(binding.root.context)
             mGoogleMap = googleMap
             setupMap(googleMap, mEarthquake!!, binding.pbLoading)
         }

@@ -94,5 +94,8 @@
     <string name="label_open_app_settings">Uygulama Ayarlarını Aç</string>
     <string name="label_cancel">İptal</string>
     <string name="label_nothing_found_in_contacts">Rehberinizde kayıtlı kişi bulunamadı.</string>
+    <string name="label_add_new_contact">Ekle (0)</string>
+    <string name="label_last_known_loc">Bilinen Son Konum :</string>
+    <string name="label_modify_sms">Sms\'leri Düzenle</string>
 
 </resources>

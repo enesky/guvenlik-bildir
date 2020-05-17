@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySmsVM" />
@@ -27,20 +26,61 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:lineHeight="24sp"
-                android:text="Sms'leri Düzenle"
+                android:lineHeight="@dimen/default_text_24"
+                android:text="@string/label_modify_sms"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/default_text_20"
                 android:textStyle="bold" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
+        <TextView
+            android:id="@+id/tv_title_last_known_loc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_16"
+            android:text="@string/label_last_known_loc"
+            android:textSize="@dimen/default_text_16"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/cv_map"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_map"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginTop="@dimen/default_margin_8"
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_marginEnd="@dimen/default_margin_16"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="2dp"
+            app:cardCornerRadius="@dimen/default_margin_16"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_last_known_loc">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:indeterminateTint="@color/colorPrimary"
+                android:layout_margin="@dimen/default_margin_16"
+                android:layout_gravity="end|bottom"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <LinearLayout
             android:id="@+id/ll_safe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/cv_map"
             app:layout_constraintBottom_toTopOf="@id/ll_unsafe">
 
             <TextView
@@ -57,7 +97,9 @@
                 android:id="@+id/cv_safe_sms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin_16"
+                android:layout_marginTop="@dimen/default_margin_8"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_marginEnd="@dimen/default_margin_16"
                 app:strokeColor="@color/colorPrimary"
                 app:strokeWidth="2dp"
                 app:cardCornerRadius="@dimen/default_radius">
@@ -124,7 +166,9 @@
                 android:id="@+id/cv_unsafe_sms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin_16"
+                android:layout_marginTop="@dimen/default_margin_8"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_marginEnd="@dimen/default_margin_16"
                 app:strokeColor="@color/colorPrimary"
                 app:strokeWidth="2dp"
                 app:cardCornerRadius="@dimen/default_radius">
@@ -163,7 +207,6 @@
 
                 </LinearLayout>
 
-
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
@@ -172,7 +215,7 @@
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin_32"
+            android:layout_margin="@dimen/default_margin_16"
             android:text="@string/label_save"
             app:layout_constraintBottom_toBottomOf="parent" />
 

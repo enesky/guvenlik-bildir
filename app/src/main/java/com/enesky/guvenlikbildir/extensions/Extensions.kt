@@ -186,7 +186,7 @@ fun Activity.openWebView(url: String) {
 }
 
 fun Fragment.openLastKnownLocation() {
-    val query = "$lastKnownLocation(Son Bilinen Konum)"
+    val query = "$lastKnownLocation(Bilinen Son Konum)"
     val encodedQuery = Uri.encode(query)
     val gmmIntentUri: Uri = Uri.parse("geo:$lastKnownLocation?q=$encodedQuery&z=3")
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)

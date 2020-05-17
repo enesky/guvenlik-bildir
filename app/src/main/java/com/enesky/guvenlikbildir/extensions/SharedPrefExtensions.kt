@@ -30,7 +30,7 @@ var unsafeSms: String?
 
 var locationMapWithLink: String?
     get() = App.mPrefs.getString(
-        Constants.locationMapLink, "\nSon Bilinen Konum: \n" +
+        Constants.locationMapLink, "\nBilinen Son Konum: \n" +
                     "https://www.google.com/maps/place/$lastKnownLocation")
     set(value) = App.mPrefs.edit { putString(Constants.locationMapLink, value) }
 
