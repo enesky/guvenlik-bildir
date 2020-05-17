@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,6 +26,9 @@ import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakes
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.contacts.AddContactsFragment
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
@@ -36,6 +40,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+
 
 class MainActivity : BaseActivity(),
     Navigator.NavigatorListener,
@@ -51,6 +56,9 @@ class MainActivity : BaseActivity(),
 
     private var locationManager: LocationManager? = null
     private var locationListener: LocationListener? = null
+    private var fusedLocationProviderClient: FusedLocationProviderClient? = null
+    private var locationRequest: LocationRequest? = null
+    private var locationCallback: LocationCallback? = null
 
     private var rootFragmentProvider: List<() -> Fragment> = listOf(
         { LatestEarthquakesFragment() },
@@ -83,7 +91,7 @@ class MainActivity : BaseActivity(),
             isFirstTime = false
         }
 
-        requireLocationPermission { requestLocationUpdates() }
+        requireLocationPermission { setLocationUpdateWatcher() }
 
         requireReadContactsPermission {
             GlobalScope.launch(Dispatchers.Default) {
@@ -122,8 +130,7 @@ class MainActivity : BaseActivity(),
         super.onNewIntent(intent)
 
         if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null) {
-            val earthquake =
-                intent.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE)
+            val earthquake = intent.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE)
             navigator.switchTab(0)
             mainVM.earthquakeFromNotification.value = earthquake
             Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
@@ -182,17 +189,69 @@ class MainActivity : BaseActivity(),
         super.onDestroy()
         locationManager = null
         locationListener = null
+        if (fusedLocationProviderClient != null)
+            fusedLocationProviderClient!!.removeLocationUpdates(locationCallback);
+    }
+
+    private fun checkPlayServiceAvailability(): Boolean {
+        val apiAvailability = GoogleApiAvailability.getInstance()
+        val resultCode = apiAvailability.isGooglePlayServicesAvailable(this)
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode))
+                apiAvailability.getErrorDialog(this, resultCode, 9000).show()
+            return false
+        }
+
+        return true
+    }
+
+    private fun setLocationUpdateWatcher() {
+        if (checkPlayServiceAvailability())
+            requestLocationUpdatesWithGoogleApi()
+        else
+            requestLocationUpdatesWithoutGoogleApi()
+    }
+
+    private fun requestLocationUpdatesWithGoogleApi() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+        locationRequest = LocationRequest().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = Constants.MIN_TIME_BW_LOCATION_UPDATE
+            fastestInterval = Constants.MIN_TIME_BW_LOCATION_UPDATE
+            smallestDisplacement = Constants.MIN_DISTANCE_BW_LOCATION_UPDATE
+        }
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+
+                val mLastKnownLocation = locationResult.lastLocation
+                if (mLastKnownLocation != null) {
+                    lastKnownLocation = "${mLastKnownLocation.latitude},${mLastKnownLocation.longitude}"
+                    Timber.tag("MainActivity").d(lastKnownLocation)
+                }
+
+            }
+        }
+
+        fusedLocationProviderClient!!.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.myLooper()
+        )
+
     }
 
     @SuppressLint("MissingPermission")
-    fun requestLocationUpdates() {
-        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    fun requestLocationUpdatesWithoutGoogleApi() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 lastKnownLocation = "${location.latitude},${location.longitude}"
             }
-
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String?) {}
             override fun onProviderDisabled(provider: String?) {
@@ -234,7 +293,6 @@ class MainActivity : BaseActivity(),
             Constants.MIN_DISTANCE_BW_LOCATION_UPDATE,
             locationListener!!
         )
-
     }
 
 }

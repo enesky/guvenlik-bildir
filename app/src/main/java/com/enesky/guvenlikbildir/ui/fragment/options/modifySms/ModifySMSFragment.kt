@@ -11,7 +11,11 @@ import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
-import com.google.android.gms.maps.*
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_modify_sms.*
@@ -41,30 +45,6 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        modifySmsVM = getViewModel()
-        binding.apply {
-            viewModel = modifySmsVM
-            lifecycleOwner = this@ModifySMSFragment
-        }
-        modifySmsVM.init(binding)
-
-        Timer().schedule(kotlin.concurrent.timerTask {
-            modifySmsVM.lastLocation.postValue(locationMapWithLink)
-
-            GlobalScope.launch(Dispatchers.Main) {
-                if (googleMap != null) {
-                    val latlng = lastKnownLocation!!.split(",")
-                    val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())
-                    googleMap!!.clear()
-                    googleMap!!.addMarker(MarkerOptions().position(loc))
-                }
-            }
-
-        }, 0,2000)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,6 +71,29 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        modifySmsVM = getViewModel()
+        binding.apply {
+            viewModel = modifySmsVM
+            lifecycleOwner = this@ModifySMSFragment
+        }
+        modifySmsVM.init(binding)
+
+        Timer().schedule(kotlin.concurrent.timerTask {
+            modifySmsVM.lastLocation.postValue(locationMapWithLink)
+
+            GlobalScope.launch(Dispatchers.Main) {
+                if (googleMap != null) {
+                    val latlng = lastKnownLocation!!.split(",")
+                    val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())
+                    googleMap!!.clear()
+                    googleMap!!.addMarker(MarkerOptions().position(loc))
+                }
+            }
+        }, 0,2000)
+    }
+
     override fun onMapReady(p0: GoogleMap?) {
         googleMap = p0
         if (googleMap == null) return
@@ -98,10 +101,25 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
         val latlng = lastKnownLocation!!.split(",")
         val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())
 
-        googleMap!!.isMyLocationEnabled = true
+        context!!.requireLocationPermission {
+            googleMap!!.isMyLocationEnabled = true
+            googleMap!!.uiSettings.setMyLocationButtonEnabled(true)
+        }
 
         googleMap!!.setOnMapClickListener {
             openInfoCountDownDialog(Constants.locationMapLink)
+        }
+
+        googleMap!!.setOnMyLocationButtonClickListener {
+            val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity!!)
+            fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val mLastKnownLocation = task.result
+                    if (mLastKnownLocation != null)
+                        lastKnownLocation = "${mLastKnownLocation.latitude},${mLastKnownLocation.longitude}"
+                }
+            }
+            true
         }
 
         googleMap!!.setOnMapLoadedCallback {
