@@ -101,25 +101,13 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
         val latlng = lastKnownLocation!!.split(",")
         val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())
 
-        context!!.requireLocationPermission {
+        activity!!.requireLocationPermission {
             googleMap!!.isMyLocationEnabled = true
             googleMap!!.uiSettings.setMyLocationButtonEnabled(true)
         }
 
         googleMap!!.setOnMapClickListener {
             openInfoCountDownDialog(Constants.locationMapLink)
-        }
-
-        googleMap!!.setOnMyLocationButtonClickListener {
-            val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity!!)
-            fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val mLastKnownLocation = task.result
-                    if (mLastKnownLocation != null)
-                        lastKnownLocation = "${mLastKnownLocation.latitude},${mLastKnownLocation.longitude}"
-                }
-            }
-            true
         }
 
         googleMap!!.setOnMapLoadedCallback {
