@@ -6,7 +6,7 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.adapter.OptionAdapter
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
 import com.enesky.guvenlikbildir.extensions.getString
-import com.enesky.guvenlikbildir.extensions.notificationIconResId
+import com.enesky.guvenlikbildir.others.notificationIconResId
 import com.enesky.guvenlikbildir.model.OptionItem
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 import com.hadilq.liveevent.LiveEvent

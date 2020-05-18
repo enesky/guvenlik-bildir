@@ -12,6 +12,9 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.DialogNotificationSettingsBinding
 import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.others.isNotificationsEnabled
+import com.enesky.guvenlikbildir.others.notificationIconResId
+import com.enesky.guvenlikbildir.others.notificationMagLimit
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsVM
 import kotlinx.android.synthetic.main.dialog_notification_settings.*
 

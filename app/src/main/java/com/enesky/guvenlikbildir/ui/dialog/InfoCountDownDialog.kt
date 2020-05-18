@@ -20,6 +20,9 @@ import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.others.locationMapWithLink
+import com.enesky.guvenlikbildir.others.safeSms
+import com.enesky.guvenlikbildir.others.unsafeSms
 import kotlinx.android.synthetic.main.dialog_info_count_down.*
 import timber.log.Timber
 
@@ -125,12 +128,12 @@ class InfoCountDownDialog : DialogFragment() {
                             override fun onTick(millisUntilFinished: Long) {}
                             override fun onFinish() {
 
-                                val params = Bundle().apply {
+                                val parameters = Bundle().apply {
                                     putInt("sentCountSuccess", sentCountSuccess)
                                     putInt("sentCountFailed", sentCountFailed)
                                     putInt("successRatio", sentCountSuccess / contactSize)
                                 }
-                                App.mAnalytics.logEvent("InfoCountDown_Sms_Sent", params)
+                                App.mAnalytics.logEvent("InfoCountDown_Sms_Sent", parameters)
 
                                 dismiss()
                             }

@@ -9,9 +9,8 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.others.*
 import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -91,7 +90,7 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
                     googleMap!!.addMarker(MarkerOptions().position(loc))
                 }
             }
-        }, 0,2000)
+        }, 0,Constants.MIN_TIME_BW_LOCATION_UPDATE)
     }
 
     override fun onMapReady(p0: GoogleMap?) {

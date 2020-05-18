@@ -37,8 +37,10 @@ object Constants {
     const val usersCollectionPhoneNumber = "phoneNumber"
     const val usersContactList = "contactList"
 
-    //SharedPref
+    //SharedPref Defaults
     const val appName = "Güvenlik Bildir"
+    const val defaultLastKnownLocation = "41.021299,29.0041568"
+    const val defaultNotificationMagLimit = 4.0f
 
     //Numbers
     const val polis = "155"
@@ -49,7 +51,7 @@ object Constants {
     const val map = "map"
 
     //Location
-    const val MIN_TIME_BW_LOCATION_UPDATE = 1000L
+    const val MIN_TIME_BW_LOCATION_UPDATE = 2000L
     const val MIN_DISTANCE_BW_LOCATION_UPDATE = 0f
     const val gpsSetting = "gps"
 

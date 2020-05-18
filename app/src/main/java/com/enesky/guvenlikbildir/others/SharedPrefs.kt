@@ -1,10 +1,9 @@
-package com.enesky.guvenlikbildir.extensions
+package com.enesky.guvenlikbildir.others
 
 import androidx.core.content.edit
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.entity.Earthquake
-import com.enesky.guvenlikbildir.others.Constants
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -17,7 +16,7 @@ var isFirstTime: Boolean
     set(value) = App.mPrefs.edit { putBoolean(Constants.isFirstTime, value) }
 
 var lastKnownLocation: String?
-    get() = App.mPrefs.getString(Constants.lastKnownLocation, "41.01844,28.9941283")
+    get() = App.mPrefs.getString(Constants.lastKnownLocation, Constants.defaultLastKnownLocation)
     set(value) = App.mPrefs.edit { putString(Constants.lastKnownLocation,  value) }
 
 var safeSms: String?
@@ -43,7 +42,7 @@ var notificationIconResId: Int
     set(value) = App.mPrefs.edit { putInt(Constants.notificationIconResId, value) }
 
 var notificationMagLimit: Float
-    get() = App.mPrefs.getFloat(Constants.notificationMagLimit, 4.0f)
+    get() = App.mPrefs.getFloat(Constants.notificationMagLimit, Constants.defaultNotificationMagLimit)
     set(value) = App.mPrefs.edit { putFloat(Constants.notificationMagLimit, value) }
 
 var isNotificationsEnabled: Boolean

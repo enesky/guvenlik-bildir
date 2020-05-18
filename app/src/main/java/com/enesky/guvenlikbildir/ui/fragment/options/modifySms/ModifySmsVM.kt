@@ -3,9 +3,9 @@ package com.enesky.guvenlikbildir.ui.fragment.options.modifySms
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
-import com.enesky.guvenlikbildir.extensions.locationMapWithLink
-import com.enesky.guvenlikbildir.extensions.safeSms
-import com.enesky.guvenlikbildir.extensions.unsafeSms
+import com.enesky.guvenlikbildir.others.locationMapWithLink
+import com.enesky.guvenlikbildir.others.safeSms
+import com.enesky.guvenlikbildir.others.unsafeSms
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 class ModifySmsVM : BaseViewModel() {

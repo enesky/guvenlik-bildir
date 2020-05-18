@@ -24,7 +24,7 @@
     <string name="label_calling_155">155 - Polis Aranıyor…</string>
     <string name="label_calling_112">112 - Acil Aranıyor…</string>
     <string name="label_calling_110">110 - İftaiye Aranıyor…</string>
-    <string name="label_sending_sms">Sms gönderiliyor…</string>
+    <string name="label_sending_sms">Sms gönderme işlemi başlatılıyor…</string>
     <string name="label_itfaiye">110 - İtfaiye</string>
     <string name="label_acil_yardim">112 - Acil</string>
     <string name="label_polis">155 - Polis</string>

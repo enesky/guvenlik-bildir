@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.others.lastKnownLocation
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity

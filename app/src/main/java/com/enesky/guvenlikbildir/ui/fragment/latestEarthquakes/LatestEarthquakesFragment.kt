@@ -86,7 +86,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                     earthquakePagingAdapter.submitList(earthquakes)
 
                     GlobalScope.launch(Dispatchers.Main) {
-                        delay(750)
+                        delay(1000)
 
                         if (earthquakes.isNotEmpty()) {
                             if (earthquakeFromNotification != null) {
@@ -130,8 +130,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         mainVM.earthquakeFromNotification.observe(viewLifecycleOwner, Observer {
             earthquakeFromNotification = it
-            if (earthquakePagingAdapter.currentList?.indexOf(it) != null)
-                rv_earthquakes.smoothScrollToPosition(earthquakePagingAdapter.currentList?.indexOf(it)!!)
         })
 
         latestEarthquakesVM.whereTo.observe(viewLifecycleOwner, Observer {
