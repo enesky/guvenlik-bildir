@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_dialog"
         android:paddingStart="@dimen/default_margin_24"
-        android:paddingEnd="@dimen/default_margin_24">
+        android:paddingEnd="@dimen/default_margin_24"
+        android:nestedScrollingEnabled="true">
 
         <View
             android:id="@+id/toggle"
@@ -36,18 +37,43 @@
             android:textStyle="bold"
             android:gravity="center"
             tools:text="Deprem Detayları"
-            android:layout_marginStart="@dimen/default_margin_16"
-            android:layout_marginEnd="@dimen/default_margin_16"
             android:layout_marginTop="@dimen/default_margin_8"
-            app:layout_constraintTop_toBottomOf="@id/toggle"
-            app:layout_constraintBottom_toTopOf="@id/line" />
+            app:layout_constraintTop_toBottomOf="@id/toggle" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_map"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="2dp"
+            app:cardCornerRadius="@dimen/default_margin_16"
+            app:layout_constraintTop_toBottomOf="@id/tv_earthquake_details"
+            app:layout_constraintBottom_toTopOf="@id/line">
+
+            <LinearLayout
+                android:id="@+id/mapContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"/>
+
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:indeterminateTint="@color/colorPrimary"
+                android:layout_margin="@dimen/default_margin_16"
+                android:layout_gravity="end|bottom"/>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/silverChalice"
-            app:layout_constraintTop_toBottomOf="@id/tv_earthquake_details" />
+            android:layout_marginTop="@dimen/default_margin_8"
+            app:layout_constraintTop_toBottomOf="@id/cv_map" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_options"

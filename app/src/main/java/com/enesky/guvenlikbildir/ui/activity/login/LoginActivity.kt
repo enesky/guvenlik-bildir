@@ -8,7 +8,7 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
-import com.enesky.guvenlikbildir.ui.activity.BaseActivity
+import com.enesky.guvenlikbildir.ui.base.BaseActivity
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
 import com.google.firebase.FirebaseException
@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+//TODO: Make it fragment and start when user login required.
 class LoginActivity : BaseActivity() {
 
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks

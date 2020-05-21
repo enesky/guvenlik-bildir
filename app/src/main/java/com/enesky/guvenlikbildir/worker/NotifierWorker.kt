@@ -6,8 +6,7 @@ import androidx.work.WorkerParameters
 import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
-import com.enesky.guvenlikbildir.extensions.lastLoadedEarthquake
-import com.enesky.guvenlikbildir.extensions.notificationMagLimit
+import com.enesky.guvenlikbildir.others.lastLoadedEarthquake
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
 import com.enesky.guvenlikbildir.service.FcmService
 import kotlinx.coroutines.coroutineScope
@@ -17,7 +16,7 @@ import timber.log.Timber
  * Created by Enes Kamil YILMAZ on 10.05.2020
  */
 
-class NotifierWorker (
+class NotifierWorker(
     val context: Context,
     params: WorkerParameters
 ) : CoroutineWorker(context, params) {
@@ -35,13 +34,14 @@ class NotifierWorker (
                 earthquakeList = EarthquakeAPI.parseResponse(response.body()!!.replace("�", "I"))
 
                 if (lastLoadedEarthquake != null) {
-                    loop@ for (earthquake: Earthquake in earthquakeList) when {
+                    loop@ for (earthquake: Earthquake in earthquakeList)
+                        when {
 
-                        earthquake == lastLoadedEarthquake -> {
-                            Timber.tag("NotifierWorker")
-                                .d("lastLoadedEarthquake= ${earthquake.location} - ${earthquake.dateTime}")
-                            break@loop
-                        }
+                            earthquake == lastLoadedEarthquake -> {
+                                Timber.tag("NotifierWorker")
+                                    .d("lastLoadedEarthquake= ${earthquake.location} - ${earthquake.dateTime}")
+                                break@loop
+                            }
 
                         earthquake.magML >= notificationMagLimit -> {
                             Timber.tag("NotifierWorker")
@@ -52,11 +52,12 @@ class NotifierWorker (
                             )
                         }
 
-                        else -> {
-                            Timber.tag("NotifierWorker").d("${earthquake.location} - ${earthquake.dateTime}")
-                        }
+                            else -> {
+                                Timber.tag("NotifierWorker")
+                                    .d("${earthquake.location} - ${earthquake.dateTime}")
+                            }
 
-                    }
+                        }
                 }
 
                 earthquakeRepository.refreshEartquakes(earthquakeList)

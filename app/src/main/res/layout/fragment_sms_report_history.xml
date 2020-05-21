@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.enesky.guvenlikbildir.ui.activity.main.MainVM" />
+            type="com.enesky.guvenlikbildir.ui.fragment.options.smsReports.SmsReportVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:lineHeight="24sp"
-                android:text="@string/label_saved_contacts"
+                android:text="@string/label_sms_report_history"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/default_text_20"
                 android:textStyle="bold" />
@@ -38,11 +38,14 @@
             android:id="@+id/placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_no_contact_found"
+            android:text="@string/label_no_sms_report_found"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/default_text_16"
             android:textStyle="bold"
             android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:showWhenListEmpty = "@{viewModel.smsReportHistoryList}"
             app:layout_constraintTop_toBottomOf="@id/pb_loading"/>
 
         <ProgressBar
@@ -58,29 +61,35 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_contacts"
+            android:id="@+id/rv_sms_reports"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingStart="@dimen/default_margin_16"
-            android:paddingEnd="@dimen/default_margin_16"
-            tools:itemCount="5"
-            tools:listitem="@layout/item_contact"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="@dimen/default_margin_16"
             android:layoutAnimation="@anim/layout_animation"
-            app:layout_constraintBottom_toBottomOf="parent"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_sms_report_history"
+            app:setAdapter = "@{viewModel.smsReportHistoryAdapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/tv_size"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add_contact"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin_16"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:backgroundTint="@color/colorAccent"
-            app:srcCompat="@drawable/ic_add"
-            app:tint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/default_text_14"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_margin="@dimen/default_margin_8"
+            app:hideWhenListEmpty="@{viewModel.smsReportHistoryList}"
+            app:resId="@{viewModel.sizeTextResId}"
+            app:param="@{viewModel.smsReportHistoryList.size()}"
+            tools:text="@string/label_sms_history_count"
+            tools:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/rv_sms_reports"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.dialog
+package com.enesky.guvenlikbildir.ui.base
 
 import android.app.Dialog
 import android.os.Bundle

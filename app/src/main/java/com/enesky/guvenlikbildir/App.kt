@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.work.*
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.others.isWorkerStarted
 import com.enesky.guvenlikbildir.worker.NotifierWorker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -56,6 +57,7 @@ class App : Application() {
 
         fun stopWorker() {
             workManager.cancelAllWork()
+            isWorkerStarted = false
             Timber.tag("NotifierWorker").d("Worker stopped.")
         }
 
@@ -78,6 +80,8 @@ class App : Application() {
                 ExistingPeriodicWorkPolicy.REPLACE,
                 work
             )
+
+            isWorkerStarted = true
 
         }
 

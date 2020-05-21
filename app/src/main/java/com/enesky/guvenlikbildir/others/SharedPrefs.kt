@@ -49,6 +49,10 @@ var isNotificationsEnabled: Boolean
     get() = App.mPrefs.getBoolean(Constants.isNotificationsEnabled, true)
     set(value) = App.mPrefs.edit { putBoolean(Constants.isNotificationsEnabled, value) }
 
+var isWorkerStarted: Boolean
+    get() = App.mPrefs.getBoolean(Constants.isWorkerStarted, false)
+    set(value) = App.mPrefs.edit { putBoolean(Constants.isWorkerStarted, value) }
+
 fun clearAll() {
     App.mPrefs.edit().apply{
         clear()

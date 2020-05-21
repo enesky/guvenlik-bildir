@@ -18,7 +18,9 @@ import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.others.LocationAPI
 import com.enesky.guvenlikbildir.others.isNotificationsEnabled
-import com.enesky.guvenlikbildir.ui.activity.BaseActivity
+import com.enesky.guvenlikbildir.others.isWorkerStarted
+import com.enesky.guvenlikbildir.ui.base.BaseActivity
+import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsBSDFragment
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
 import com.enesky.guvenlikbildir.ui.fragment.notify.NotifyFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsFragment
@@ -101,12 +103,22 @@ class MainActivity : BaseActivity(),
             }
         }
 
-        if (isNotificationsEnabled)
-            App.startWorker()
-        else
+        if (isNotificationsEnabled) {
+            if (isWorkerStarted) {
+                GlobalScope.launch(Dispatchers.Default) {
+                    mainVM.getEarthquakes()
+                }
+            } else {
+                App.startWorker()
+            }
+        } else {
             GlobalScope.launch(Dispatchers.Default) {
                 mainVM.getEarthquakes()
             }
+        }
+
+        if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null)
+            openEarthquakeOption(intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE))
 
         navigator.initialize(savedInstanceState)
         bottom_nav.setOnNavigationItemReselectedListener(this)
@@ -115,19 +127,8 @@ class MainActivity : BaseActivity(),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
-        if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null) {
-            val earthquake = intent.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE)
-            mainVM.earthquakeFromNotification.value = earthquake
-            navigator.switchTab(0)
-            Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
-            val params = Bundle().apply {
-                putString("earthquake_location", earthquake!!.location)
-                putDouble("earthquake_mag", earthquake.magML)
-                putString("earthquake_date", earthquake.dateTime)
-            }
-            App.mAnalytics.logEvent("MainActivity_clicked2notification", params)
-        }
+        if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null)
+            openEarthquakeOption(intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -198,6 +199,21 @@ class MainActivity : BaseActivity(),
     override fun onDestroy() {
         super.onDestroy()
         locationAPI.stopLocationUpdates()
+    }
+
+    private fun openEarthquakeOption(earthquake: Earthquake?) {
+        if (earthquake != null) {
+            EarthquakeItemOptionsBSDFragment.newInstance(earthquake)
+                .show(supportFragmentManager,"EarthquakeItemOptionsBSDFragment")
+
+            Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
+            val params = Bundle().apply {
+                putString("earthquake_location", earthquake!!.location)
+                putDouble("earthquake_mag", earthquake.magML)
+                putString("earthquake_date", earthquake.dateTime)
+            }
+            App.mAnalytics.logEvent("MainActivity_clicked2notification", params)
+        }
     }
 
 }

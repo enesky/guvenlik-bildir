@@ -15,6 +15,7 @@
         <item name="toolbarStyle">@style/ToolbarStyle</item>
         <item name="android:dialogTheme">@style/DialogTheme</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogMaterialTheme</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -26,6 +27,7 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogMaterialTheme</item>
     </style>
 
     <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
@@ -58,6 +60,19 @@
         <item name="android:progressTint">@color/colorSecondary</item>
         <item name="android:secondaryProgressTint">@android:color/white</item>
         <item name="android:colorControlActivated">@color/colorSecondary</item>
+    </style>
+
+    <style name="AlertDialogMaterialTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/Alert.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Alert.Button</item>
+    </style>
+
+    <style name="Alert.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="rippleColor">@color/colorPrimary</item>
     </style>
 
 </resources>

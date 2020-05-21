@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.fragment
+package com.enesky.guvenlikbildir.ui.base
 
 import android.content.Context
 import android.os.Bundle

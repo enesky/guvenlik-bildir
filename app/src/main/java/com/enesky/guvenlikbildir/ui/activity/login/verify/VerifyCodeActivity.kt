@@ -8,7 +8,7 @@ import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.ActivityVerifyCodeBinding
 import com.enesky.guvenlikbildir.extensions.*
-import com.enesky.guvenlikbildir.ui.activity.BaseActivity
+import com.enesky.guvenlikbildir.ui.base.BaseActivity
 import com.enesky.guvenlikbildir.others.Constants
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_verify_code.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+//TODO: Make it fragment
 class VerifyCodeActivity: BaseActivity() {
 
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks

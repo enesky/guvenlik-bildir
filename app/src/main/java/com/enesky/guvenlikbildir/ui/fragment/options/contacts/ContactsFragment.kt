@@ -17,7 +17,7 @@ import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.extensions.requireReadContactsPermission
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
-import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +30,7 @@ class ContactsFragment : BaseFragment() {
     private lateinit var contactAdapter: ContactAdapter
     private val mainVM by lazy {
         getViewModel {
-            MainVM(AppDatabase.getDatabaseManager(activity!!.application))
+            MainVM(AppDatabase.dbInstance!!)
         }
     }
 
@@ -41,12 +41,13 @@ class ContactsFragment : BaseFragment() {
             lifecycleOwner = this@ContactsFragment
         }
         mainVM.init(binding)
-        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
         placeholder.makeItVisible()
         pb_loading.makeItVisible()

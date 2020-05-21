@@ -10,33 +10,33 @@ import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.databinding.DialogNotificationSettingsBinding
+import com.enesky.guvenlikbildir.databinding.BottomSheetNotificationSettingsBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.isNotificationsEnabled
 import com.enesky.guvenlikbildir.others.notificationIconResId
 import com.enesky.guvenlikbildir.others.notificationMagLimit
+import com.enesky.guvenlikbildir.ui.base.BaseBottomSheetDialogFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsVM
-import kotlinx.android.synthetic.main.dialog_notification_settings.*
+import kotlinx.android.synthetic.main.bottom_sheet_notification_settings.*
 
 /**
  * Created by Enes Kamil YILMAZ on 09.05.2020
  */
 
-class NotificationSettingsDialog : BaseBottomSheetDialogFragment() {
+class NotificationSettingsBSDFragment : BaseBottomSheetDialogFragment() {
 
-    private lateinit var binding: DialogNotificationSettingsBinding
+    private lateinit var binding: BottomSheetNotificationSettingsBinding
     private lateinit var optionsVM: OptionsVM
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_notification_settings, container, false)
-        App.mAnalytics.setCurrentScreen(activity!!, "dialog", this.javaClass.simpleName)
+        binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_notification_settings, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         optionsVM = getViewModel()
+        App.mAnalytics.setCurrentScreen(activity!!, "bottom_sheet", this.javaClass.simpleName)
 
         seekbar.max = 55
         seekbar.progress = ((notificationMagLimit / 0.1) - 25).toInt()

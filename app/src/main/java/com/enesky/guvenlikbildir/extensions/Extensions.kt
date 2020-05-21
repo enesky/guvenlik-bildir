@@ -59,6 +59,12 @@ fun View.makeItGone() {
 
 fun getString(@StringRes resId: Int) = App.mInstance.getString(resId)
 
+fun getStrings(@StringRes resId: Int, @StringRes resId2: Int) = App.mInstance.getString(resId, getString(resId2))
+
+fun getString(@StringRes resId: Int, param: Any) = App.mInstance.getString(resId, param)
+
+fun getString(@StringRes resId: Int, param: String) = App.mInstance.getString(resId, param)
+
 fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
 
 fun View.setBackground(@ColorRes color: Int) = setBackgroundColor(context.getColorCompat(color))
@@ -69,21 +75,13 @@ fun View.setBackgroundTint(@ColorRes color: Int) {
     backgroundTintList = ContextCompat.getColorStateList(context, color)
 }
 
-private var onMove = false
-
 fun View.setTouchAnimation(function: (() -> Unit)?) {
     this.setOnTouchListener { p0, p1 ->
         when (p1?.action) {
             MotionEvent.ACTION_DOWN -> { startScaleAnimation(p0) }
-            MotionEvent.ACTION_MOVE -> {
-                cancelScaleAnimation(p0)
-                onMove = true
-            }
             MotionEvent.ACTION_UP -> {
                 cancelScaleAnimation(p0)
-                if (!onMove)
-                    Handler().postDelayed({ function?.invoke() }, 150)
-                onMove = false
+                Handler().postDelayed({ function?.invoke() }, 200)
             }
         }
         true
@@ -93,8 +91,8 @@ fun View.setTouchAnimation(function: (() -> Unit)?) {
 private fun startScaleAnimation(view: View) {
     val scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 0.75f)
     val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 0.75f)
-    scaleDownX.duration = 150
-    scaleDownY.duration = 150
+    scaleDownX.duration = 200
+    scaleDownY.duration = 200
     scaleDownX.start()
     scaleDownY.start()
 }
@@ -102,8 +100,8 @@ private fun startScaleAnimation(view: View) {
 private fun cancelScaleAnimation(view: View) {
     val scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f)
     val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f)
-    scaleDownX.duration = 150
-    scaleDownY.duration = 150
+    scaleDownX.duration = 200
+    scaleDownY.duration = 200
     scaleDownX.start()
     scaleDownY.start()
 }

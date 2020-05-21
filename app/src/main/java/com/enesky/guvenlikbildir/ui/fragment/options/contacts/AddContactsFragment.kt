@@ -18,7 +18,7 @@ import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.databinding.FragmentAddContactsBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
-import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
 import kotlinx.android.synthetic.main.fragment_add_contacts.*
 import kotlinx.coroutines.*
@@ -31,7 +31,7 @@ class AddContactsFragment : BaseFragment() {
     private lateinit var addContactAdapter : AddContactAdapter
     private val mainVM by lazy {
         getViewModel {
-            MainVM(AppDatabase.getDatabaseManager(activity!!.application))
+            MainVM(AppDatabase.dbInstance!!)
         }
     }
 
@@ -43,13 +43,13 @@ class AddContactsFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_contacts, container, false)
         binding.viewModel = mainVM
         mainVM.init(binding)
-        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         pb_loading.makeItVisible()
 
         addContactAdapter = AddContactAdapter(contactList, mainVM)

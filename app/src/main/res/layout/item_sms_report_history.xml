@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="smsReport"
+            type="com.enesky.guvenlikbildir.database.entity.SmsReport" />
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_history_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingTop="@dimen/default_margin_16"
+            android:paddingStart="@dimen/default_margin_16"
+            android:paddingEnd="@dimen/default_margin_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_report_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/default_text_14"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:text="@string/label_sms_report_type"
+                android:layout_marginStart="@dimen/default_margin_8"
+                app:layout_constraintBottom_toTopOf="@id/tv_report_success_rate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Rapor Tipi: Güvendeyim." />
+
+            <TextView
+                android:id="@+id/tv_report_success_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_sms_report_success_rate"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/default_text_14"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:layout_marginTop="@dimen/default_margin_4"
+                app:layout_constraintBottom_toTopOf="@id/tv_date"
+                app:layout_constraintStart_toStartOf="@id/tv_report_type"
+                app:layout_constraintTop_toBottomOf="@id/tv_report_type"
+                tools:text="Başarı Oranı: %42" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="0dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="@dimen/default_margin_4"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/default_text_14"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:text="@string/label_report_date"
+                tools:text="Gönderme Tarihi: 05.05.1999 12:12:12"
+                app:autoSizeMaxTextSize="@dimen/default_text_14"
+                app:autoSizeMinTextSize="@dimen/default_text_12"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintStart_toStartOf="@id/tv_report_success_rate"
+                app:layout_constraintTop_toBottomOf="@id/tv_report_success_rate"
+                app:layout_constraintBottom_toTopOf="@id/bottom_line"/>
+
+            <TextView
+                android:id="@+id/tv_short_date"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/default_margin_18"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/default_text_12"
+                android:textStyle="bold"
+                android:layout_marginEnd="@dimen/default_margin_16"
+                app:layout_constraintBottom_toTopOf="@id/bottom_line"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="5 saat önce" />
+
+            <View
+                android:id="@+id/bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorAccent"
+                android:layout_marginTop="@dimen/default_margin_16"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

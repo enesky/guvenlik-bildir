@@ -21,6 +21,7 @@ class OptionsVM : BaseViewModel(), OptionAdapter.OptionListListener {
         value = listOf(
             OptionItem(R.drawable.ic_contact, getString(R.string.item_option_0)),
             OptionItem(R.drawable.ic_feedback, getString(R.string.item_option_1)),
+            OptionItem(R.drawable.ic_report_24dp, getString(R.string.label_sms_report_history)),
             OptionItem(notificationResIdLive.value!!, getString(R.string.item_option_10)),
             //OptionItem(R.drawable.ic_info, getString(R.string.item_option_2)),
             //OptionItem(R.drawable.ic_phone, getString(R.string.item_option_3)),

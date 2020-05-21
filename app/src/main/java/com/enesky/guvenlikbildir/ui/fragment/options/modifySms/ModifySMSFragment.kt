@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentTransaction
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.*
-import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -21,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_modify_sms.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
@@ -32,20 +32,23 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_sms, container,false)
-        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
-
-        GlobalScope.launch(Dispatchers.Default) {
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-            withContext(Dispatchers.Main) {
-                mapFragment.getMapAsync(this@ModifySMSFragment)
-            }
-        }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
+
+        var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
+        if (supportMapFragment == null) {
+            supportMapFragment = SupportMapFragment.newInstance()
+            val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+            ft.add(R.id.mapContainer, supportMapFragment, "mapContainer")
+            ft.commit()
+            childFragmentManager.executePendingTransactions()
+        }
+        supportMapFragment?.getMapAsync(this)
 
         et_safe_sms.setText(safeSms)
         et_unsafe_sms.setText(unsafeSms)

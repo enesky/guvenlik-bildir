@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -15,11 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.custom.StatefulRecyclerView
+import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.extensions.makeItGone
-import com.enesky.guvenlikbildir.extensions.makeItVisible
-import com.enesky.guvenlikbildir.extensions.setBackground
-import com.enesky.guvenlikbildir.extensions.setTextColorRes
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,16 +58,19 @@ fun bindRecyclerViewAdapterWithAnim(view: RecyclerView, adapter: RecyclerView.Ad
 }
 
 @BindingAdapter("setAdapter")
-fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
-    adapter.setHasStableIds(true)
-    view.adapter = adapter
-
+fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {
     view.apply {
         setHasFixedSize(true)
         layoutManager = LinearLayoutManager(view.context)
-        setItemViewCacheSize(10)
+        setItemViewCacheSize(15)
         isDrawingCacheEnabled = true
         drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+    }
+
+    if (adapter != null) {
+        if (!adapter.hasObservers())
+            adapter.setHasStableIds(true)
+        view.adapter = adapter
     }
 }
 
@@ -91,7 +93,7 @@ fun bindIsVisible(view: View, isVisible: Boolean) {
 }
 
 @BindingAdapter("hideWhenListEmpty")
-fun hideWhenListEmpty(view: View, list: List<Any>) {
+fun hideWhenListEmpty(view: View, list: List<Any>?) {
     if (list.isNullOrEmpty())
         view.makeItGone()
     else
@@ -99,7 +101,7 @@ fun hideWhenListEmpty(view: View, list: List<Any>) {
 }
 
 @BindingAdapter("showWhenListEmpty")
-fun showWhenListEmpty(view: View, list: List<Any>) {
+fun showWhenListEmpty(view: View, list: List<Any>?) {
     if (list.isNullOrEmpty())
         view.makeItVisible()
     else
@@ -147,6 +149,11 @@ fun bindFormattedDate(view: TextView, stringKey: String, dateText: String?, time
         formattedDateTimeText = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
         view.text = "$stringKey $formattedDateTimeText"
     }
+}
+
+@BindingAdapter("resId", "param")
+fun setTextWithParam(view: TextView, @StringRes resId: Int, param: Any) {
+    view.text = getString(resId, param)
 }
 
 @BindingAdapter("text")
@@ -200,7 +207,7 @@ fun putValues2String(view: TextView, stringKey: String, numberValue: Number?,
 
 }
 
-@BindingAdapter("filterIndex","selectedIndex", requireAll=true)
+@BindingAdapter("filterIndex", "selectedIndex", requireAll=true)
 fun changeFilters(view: TextView, filterIndex: Int, selectedIndex: Int) {
 
     when (selectedIndex) {
@@ -244,3 +251,22 @@ fun changeFilters(view: TextView, filterIndex: Int, selectedIndex: Int) {
     }
 
 }
+
+@BindingAdapter("status")
+fun setStatus(view: View, status: SmsReportStatus) {
+    if (view is ImageView) {
+        view.makeItVisible()
+        when (status) {
+            SmsReportStatus.SUCCESS -> view.setImageResource(R.drawable.ic_success)
+            SmsReportStatus.DELIVERED -> view.setImageResource(R.drawable.ic_delivered)
+            SmsReportStatus.FAILED -> view.setImageResource(R.drawable.ic_failed)
+            else -> view.makeItGone()
+        }
+    } else {
+        if (status == SmsReportStatus.IN_QUEUE)
+            view.makeItVisible()
+        else
+            view.makeItGone()
+    }
+}
+

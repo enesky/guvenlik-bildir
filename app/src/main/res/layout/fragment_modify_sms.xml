@@ -59,11 +59,11 @@
             app:cardCornerRadius="@dimen/default_margin_16"
             app:layout_constraintTop_toBottomOf="@id/tv_title_last_known_loc">
 
-            <androidx.fragment.app.FragmentContainerView
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:id="@+id/map"
+            <LinearLayout
+                android:id="@+id/mapContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"/>
 
             <ProgressBar
                 android:id="@+id/pb_loading"
@@ -84,7 +84,7 @@
             app:layout_constraintBottom_toTopOf="@id/ll_unsafe">
 
             <TextView
-                android:id="@+id/tv_title_safe_sms"
+                android:id="@+id/tv_title_sms_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin_16"
@@ -217,6 +217,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_16"
             android:text="@string/label_save"
+            app:cornerRadius="@dimen/default_margin_8"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

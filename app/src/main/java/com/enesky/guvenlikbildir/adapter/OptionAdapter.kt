@@ -30,7 +30,7 @@ class OptionAdapter(private var optionItemList: List<OptionItem>,
     inner class OptionListViewHolder(private val binding: ItemOptionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(pos: Int, optionItem: OptionItem) {
             binding.optionItem = optionItem
-            binding.clOptionItem.setOnClickListener { optionListListener.onItemClick(pos, optionItem) }
+            binding.clReportItem.setOnClickListener { optionListListener.onItemClick(pos, optionItem) }
             binding.executePendingBindings()
         }
     }

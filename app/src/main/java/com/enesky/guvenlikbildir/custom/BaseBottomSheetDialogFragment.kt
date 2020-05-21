@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentManager
+import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.extensions.hideKeyboard
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -26,10 +27,6 @@ open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
         return bottomSheetDialog as BottomSheetDialog
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        //No call for super(). Bug on API Level > 11.
-    }
-
     override fun show(manager: FragmentManager, tag: String?) {
         if (manager.findFragmentByTag(tag) == null)
             try {
@@ -44,6 +41,16 @@ open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
         hideKeyboard()
     }
 
+    override fun setCancelable(cancelable: Boolean) {
+        super.setCancelable(cancelable)
+
+        val dialog = dialog as BottomSheetDialog?
+        dialog!!.setCanceledOnTouchOutside(cancelable)
+
+        //val bottomSheetView = dialog.window!!.decorView.findViewById<View>(R.id.design_bottom_sheet)
+        //BottomSheetBehavior.from(bottomSheetView).isHideable = cancelable
+    }
+
     private fun setupOnShowListener() {
 
         bottomSheetDialog!!.setOnShowListener { dialog ->
@@ -52,15 +59,17 @@ open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
 
             if (frameLayout != null) {
-                frameLayout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                frameLayout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 bottomSheetBehavior = BottomSheetBehavior.from(frameLayout)
-                bottomSheetBehavior!!.skipCollapsed = true
                 bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                bottomSheetBehavior!!.isDraggable = true
+                bottomSheetBehavior!!.skipCollapsed = true
+                bottomSheetBehavior!!.isFitToContents = true
             }
+
+
 
         }
     }
-
-
 
 }

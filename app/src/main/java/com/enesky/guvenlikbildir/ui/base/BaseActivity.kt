@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.activity
+package com.enesky.guvenlikbildir.ui.base
 
 import androidx.appcompat.app.AppCompatActivity
 import pub.devrel.easypermissions.EasyPermissions

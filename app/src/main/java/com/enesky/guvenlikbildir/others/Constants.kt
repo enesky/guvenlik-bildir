@@ -65,6 +65,7 @@ object Constants {
     const val notificationIconResId = "notificationIconResId"
     const val notificationMagLimit = "notificationMagLimit"
     const val isNotificationsEnabled = "isNotificationsEnabled"
+    const val isWorkerStarted = "isWorkerStarted"
 
     //Notifications
     const val notificationChannel = "Deprem Bildirimleri"

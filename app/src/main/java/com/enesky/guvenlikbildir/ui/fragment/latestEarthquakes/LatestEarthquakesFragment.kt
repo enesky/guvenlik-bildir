@@ -19,8 +19,8 @@ import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
-import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsDialog
-import com.enesky.guvenlikbildir.ui.fragment.BaseFragment
+import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsBSDFragment
+import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_latest_earthquakes.*
@@ -36,7 +36,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
     private lateinit var latestEarthquakesVM: LatestEarthquakesVM
     private val mainVM by lazy {
         getViewModel {
-            MainVM(AppDatabase.getDatabaseManager(activity!!.application))
+            MainVM(AppDatabase.dbInstance!!)
         }
     }
     private var isAppBarExpanded: Boolean = false
@@ -47,14 +47,12 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
     var lastQuery = ""
     var lastMinMag = 0.0
     var lastMaxMag = 12.0
-    var earthquakeFromNotification: Earthquake? = null
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_latest_earthquakes, container, false)
-        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         return binding.root
     }
 
@@ -67,6 +65,8 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
         }
 
         latestEarthquakesVM.init(binding)
+
+        App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
         val earthquakePagingAdapter = EarthquakePagingAdapter(
             context = requireContext(),
@@ -89,10 +89,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
                         delay(1000)
 
                         if (earthquakes.isNotEmpty()) {
-                            if (earthquakeFromNotification != null) {
-                                rv_earthquakes.smoothScrollToPosition(earthquakePagingAdapter.currentList?.indexOf(earthquakeFromNotification)!!)
-                                earthquakeFromNotification = null
-                            }
                             if (((rv_earthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
                                         (rv_earthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)) {
                                 fab_scroll_to_top.show()
@@ -128,10 +124,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             lastMaxMag = it
         })
 
-        mainVM.earthquakeFromNotification.observe(viewLifecycleOwner, Observer {
-            earthquakeFromNotification = it
-        })
-
         latestEarthquakesVM.whereTo.observe(viewLifecycleOwner, Observer {
             if (it is String)
                 openInfoCountDownDialog(Constants.map + it)
@@ -139,7 +131,8 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         latestEarthquakesVM.onOptionClick.observe(viewLifecycleOwner, Observer {
             if (it is Earthquake)
-                EarthquakeItemOptionsDialog.newInstance(it).show(parentFragmentManager,"EarthquakeOptionsDialog")
+                EarthquakeItemOptionsBSDFragment.newInstance(it)
+                    .show(parentFragmentManager,"EarthquakeItemOptionsBSDFragment")
         })
 
         latestEarthquakesVM.onFilterIndexChange.observe(viewLifecycleOwner, Observer {
@@ -157,8 +150,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val snapHelper = GravitySnapHelper(Gravity.TOP)
-        snapHelper.attachToRecyclerView(rv_earthquakes)
+        GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_earthquakes)
 
         updateRecyclerViewAnimDuration()
 

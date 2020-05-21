@@ -41,7 +41,6 @@ class MainVM (appDatabase: AppDatabase) : BaseViewModel(),
 
     val isViewsLoaded = MutableLiveData<Boolean>()
     val onClick = LiveEvent<Any>()
-    var earthquakeFromNotification = LiveEvent<Earthquake>()
 
     var earthquakes: LiveData<PagedList<Earthquake>>
 

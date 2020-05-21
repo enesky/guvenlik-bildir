@@ -24,7 +24,6 @@ import com.enesky.guvenlikbildir.databinding.ItemEarthquakeBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
@@ -36,7 +35,6 @@ import kotlinx.coroutines.launch
 import me.samlss.broccoli.Broccoli
 import me.samlss.broccoli.BroccoliGradientDrawable
 import me.samlss.broccoli.PlaceholderParameter
-
 
 /**
  * Created by Enes Kamil YILMAZ on 25.04.2020
@@ -261,15 +259,16 @@ class EarthquakePagingAdapter(context: Context,
             else -> "#e53935" to "#66e53935"
         }
 
+        val circleRadius = earthquake.magML * 10000.0
+
         val circleOptions = CircleOptions()
             .center(loc)
-            .radius(20000.0)
+            .radius(circleRadius)
             .strokeWidth(1f)
             .strokeColor(Color.parseColor(color.first))
             .fillColor(Color.parseColor(color.second))
 
         map.addCircle(circleOptions)
-
     }
 
     fun toggleItem(holder: EarthquakeViewHolder, expand: Boolean, animate: Boolean) {

@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.extensions
 
 import android.Manifest
 import android.content.Context
+import androidx.core.content.ContextCompat
 import com.enesky.guvenlikbildir.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
@@ -70,6 +71,7 @@ fun Context.requireAllPermissions() = runWithPermissions(
 fun Context.rationaleCallback(req: QuickPermissionsRequest) {
     // this will be called when permission is denied once or more time.
     MaterialAlertDialogBuilder(this)
+        .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
         .setTitle(getString(R.string.label_denied_permission_found))
         .setMessage(getString(R.string.label_require_permission))
         .setPositiveButton(getString(R.string.label_grant_permission)) { _, _ -> req.proceed() }
@@ -81,6 +83,7 @@ fun Context.rationaleCallback(req: QuickPermissionsRequest) {
 fun Context.permissionsPermanentlyDenied(req: QuickPermissionsRequest) {
     // this will be called when some/all permissions required by the method are permanently denied.
     MaterialAlertDialogBuilder(this)
+        .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
         .setTitle(getString(R.string.label_all_permissions_granted))
         .setMessage(getString(R.string.label_pls_grant_permission))
         .setPositiveButton(getString(R.string.label_open_app_settings)) { _, _ -> req.openAppSettings() }
@@ -92,6 +95,7 @@ fun Context.permissionsPermanentlyDenied(req: QuickPermissionsRequest) {
 fun Context.whenPermAreDenied(req: QuickPermissionsRequest) {
     // handle something when permissions are not granted and the request method cannot be called
     /*MaterialAlertDialogBuilder(this)
+        .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
         .setTitle("İzinleri reddettiniz.")
         .setMessage("İzinlerin ${req.deniedPermissions.size}/${req.permissions.size} 'i reddedildi.\n" +
                     "Bazı fonksiyonlardan mahrum kalacaksınız :/" )
