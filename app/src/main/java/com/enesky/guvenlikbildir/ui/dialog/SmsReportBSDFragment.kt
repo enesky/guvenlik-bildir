@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.custom.BaseBottomSheetDialogFragment
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.SmsReport
 import com.enesky.guvenlikbildir.databinding.BottomSheetSmsReportBinding
@@ -30,14 +29,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_sms_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 /**
  * Created by Enes Kamil YILMAZ on 18.05.2020
@@ -79,8 +75,6 @@ class SmsReportBSDFragment : BottomSheetDialogFragment(), OnMapReadyCallback {
                 if (smsReportVM.smsReport.value != null) {
 
                     smsReport = smsReportVM.smsReport.value
-
-                    rv_sms_report.makeItVisible()
                     smsReportVM.smsReportAdapter.value?.update(smsReport!!)
                     binding.smsReport = smsReport
 
@@ -108,7 +102,15 @@ class SmsReportBSDFragment : BottomSheetDialogFragment(), OnMapReadyCallback {
             ft.commit()
             childFragmentManager.executePendingTransactions()
         }
+
         supportMapFragment?.getMapAsync(this)
+        if (isHistory) {
+            rv_sms_report.makeItVisible()
+            btn_approve.makeItGone()
+            pb_loading.makeItVisible()
+            tv_title_sms_preview.text = getString(R.string.label_history_sent_sms)
+            tv_title_last_known_loc.text = getString(R.string.label_location_sent)
+        }
 
         GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_sms_report)
 
@@ -118,6 +120,7 @@ class SmsReportBSDFragment : BottomSheetDialogFragment(), OnMapReadyCallback {
             pb_loading.makeItVisible()
 
             googleMap!!.uiSettings.isMyLocationButtonEnabled = false
+            googleMap!!.isMyLocationEnabled = false
 
             GlobalScope.launch(Dispatchers.Default) {
                 smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList)
@@ -149,8 +152,9 @@ class SmsReportBSDFragment : BottomSheetDialogFragment(), OnMapReadyCallback {
 
         pb_map.makeItGone()
 
-        val lastKnownLoc = if (!isHistory) lastKnownLocation!!.split(",")
-                                else smsReport!!.lastKnownLocation.split(",")
+        val lastKnownLoc =
+            if (!isHistory) lastKnownLocation!!.split(",")
+            else smsReport!!.lastKnownLocation.split(",")
         val loc = LatLng(lastKnownLoc[0].toDouble(), lastKnownLoc[1].toDouble())
 
         if (!isHistory) {

@@ -6,10 +6,7 @@ import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.ContactStatus
 import com.enesky.guvenlikbildir.database.entity.SmsReport
 import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
-import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.others.lastKnownLocation
-import com.enesky.guvenlikbildir.others.safeSms
-import com.enesky.guvenlikbildir.others.unsafeSms
+import com.enesky.guvenlikbildir.others.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,7 +42,7 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
         val smsReport = SmsReport(
             isSafeSms = isSafeSms,
             sendingDate = sendingDate,
-            sentSms = sentSms + lastKnownLocation,
+            sentSms = sentSms + locationMapWithLink,
             lastKnownLocation = lastKnownLocation!!,
             contactReportList = contactReportList
         )
@@ -71,7 +68,9 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
 
     /**
      * Clean up reports
+     * Change in_queue status with failure
      */
+    @SuppressLint("SimpleDateFormat")
     fun cleanUpSmsReports() {
         GlobalScope.launch(Dispatchers.Default) {
             val smsReports = smsReportDao.getAllReports()
@@ -84,9 +83,9 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
                         }
                     }
                 }
-                smsReportDao.updateAll(smsReports)
             }
 
+            smsReportDao.updateAll(smsReports)
         }
     }
 

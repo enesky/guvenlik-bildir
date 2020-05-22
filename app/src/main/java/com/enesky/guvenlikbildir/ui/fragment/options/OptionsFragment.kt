@@ -68,7 +68,7 @@ class OptionsFragment: BaseFragment() {
 
         optionsVM.notificationResIdLive.observe(viewLifecycleOwner, Observer {
             optionsVM.optionList.value?.get(3)?.imageId = it
-            (rv_options.adapter as OptionAdapter).notifyItemChanged(2)
+            (rv_options.adapter as OptionAdapter).notifyItemChanged(3)
         })
 
     }

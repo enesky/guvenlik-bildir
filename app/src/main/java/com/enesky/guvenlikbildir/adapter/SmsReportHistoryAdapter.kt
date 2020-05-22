@@ -10,6 +10,7 @@ import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
 import com.enesky.guvenlikbildir.databinding.ItemSmsReportHistoryBinding
 import com.enesky.guvenlikbildir.extensions.getString
 import com.enesky.guvenlikbildir.extensions.getStrings
+import com.enesky.guvenlikbildir.extensions.setBackground
 import com.enesky.guvenlikbildir.others.Constants
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
@@ -42,6 +43,11 @@ class SmsReportHistoryAdapter(
     inner class SmsReportHistoryViewHolder(
         private val binding: ItemSmsReportHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(pos: Int, smsReport: SmsReport) {
+
+            if (pos % 2 == 0)
+                binding.clHistoryItem.setBackground(R.color.black10)
+            else
+                binding.clHistoryItem.setBackground(android.R.color.white)
 
             binding.tvReportType.text =
                 if (smsReport.isSafeSms)

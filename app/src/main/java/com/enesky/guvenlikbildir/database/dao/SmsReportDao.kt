@@ -1,7 +1,6 @@
 package com.enesky.guvenlikbildir.database.dao
 
 import androidx.room.*
-import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.SmsReport
 import kotlinx.coroutines.flow.Flow
 
@@ -27,7 +26,7 @@ interface SmsReportDao {
     @Query("DELETE FROM smsReport")
     suspend fun deleteAll()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(vararg smsReport: SmsReport)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

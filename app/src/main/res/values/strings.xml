@@ -109,5 +109,7 @@
     <string name="label_sms_report_type">Rapor Tipi: %s</string>
     <string name="label_pls_add_contact">Lütfen sms göndermek için kişi ekleyiniz.</string>
     <string name="label_cancel_with_sec">İptal (%d)</string>
+    <string name="label_history_sent_sms">Gönderilen SMS:</string>
+    <string name="label_location_sent">Gönderilen Konum:</string>
 
 </resources>

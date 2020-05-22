@@ -14,13 +14,8 @@ import com.enesky.guvenlikbildir.database.entity.SmsReport
 import com.enesky.guvenlikbildir.database.repo.SmsReportRepository
 import com.enesky.guvenlikbildir.databinding.BottomSheetSmsReportBinding
 import com.enesky.guvenlikbildir.databinding.FragmentSmsReportHistoryBinding
-import com.enesky.guvenlikbildir.others.lastKnownLocation
-import com.enesky.guvenlikbildir.others.locationMapWithLink
-import com.enesky.guvenlikbildir.others.safeSms
-import com.enesky.guvenlikbildir.others.unsafeSms
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 import com.hadilq.liveevent.LiveEvent
-import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 19.05.2020
@@ -35,8 +30,7 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
     private val _smsReportHistoryAdapter = MutableLiveData<SmsReportHistoryAdapter>()
     val smsReportHistoryAdapter: LiveData<SmsReportHistoryAdapter> = _smsReportHistoryAdapter
 
-    private val _smsReportHistoryList = MutableLiveData<List<SmsReport>>()
-    val smsReportHistoryList: LiveData<List<SmsReport>> = _smsReportHistoryList
+    val smsReportHistoryList = MutableLiveData<List<SmsReport>>()
 
     private val _smsReportAdapter = MutableLiveData<SmsReportAdapter>()
     val smsReportAdapter: LiveData<SmsReportAdapter> = _smsReportAdapter
@@ -54,12 +48,13 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
 
     init {
         smsReportRepository = SmsReportRepository(smsReportDao)
-        _smsReportHistoryAdapter.postValue(SmsReportHistoryAdapter(listOf(), this))
+        _smsReportHistoryAdapter.postValue(SmsReportHistoryAdapter(listOfNotNull(), this))
         _smsReportAdapter.postValue(SmsReportAdapter(null))
     }
 
     fun init(binding: FragmentSmsReportHistoryBinding) {
         setViewDataBinding(binding)
+        smsReportRepository.cleanUpSmsReports()
         _smsReport.postValue(null)
     }
 

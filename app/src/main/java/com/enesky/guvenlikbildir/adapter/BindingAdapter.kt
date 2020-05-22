@@ -65,12 +65,7 @@ fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>
         setItemViewCacheSize(15)
         isDrawingCacheEnabled = true
         drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-    }
-
-    if (adapter != null) {
-        if (!adapter.hasObservers())
-            adapter.setHasStableIds(true)
-        view.adapter = adapter
+        setAdapter(adapter)
     }
 }
 
