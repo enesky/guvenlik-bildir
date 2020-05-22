@@ -1,6 +1,7 @@
 package com.enesky.guvenlikbildir.ui.fragment.options.smsReports
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.enesky.guvenlikbildir.ui.dialog.SmsReportBSDFragment
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.android.synthetic.main.fragment_sms_report_history.*
 
 /**
@@ -41,6 +43,7 @@ class SmsReportHistoryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         pb_loading.makeItVisible()
+        GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_sms_reports)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -54,11 +57,9 @@ class SmsReportHistoryFragment : BaseFragment() {
             if (it.isNullOrEmpty()) {
                 placeholder.makeItVisible()
                 tv_size.makeItGone()
-
             } else {
                 tv_size.makeItVisible()
                 placeholder.makeItGone()
-
             }
         })
 

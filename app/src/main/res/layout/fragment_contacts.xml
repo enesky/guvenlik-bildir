@@ -65,6 +65,7 @@
             android:paddingEnd="@dimen/default_margin_16"
             tools:itemCount="5"
             tools:listitem="@layout/item_contact"
+            android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layoutAnimation="@anim/layout_animation"
             app:layout_constraintBottom_toBottomOf="parent"

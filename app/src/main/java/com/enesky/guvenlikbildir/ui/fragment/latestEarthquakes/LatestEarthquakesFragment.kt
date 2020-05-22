@@ -39,11 +39,9 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             MainVM(AppDatabase.dbInstance!!)
         }
     }
+
     private var isAppBarExpanded: Boolean = false
-
-    private val loadingDuration: Long = (600L / 0.8).toLong()
     var textChangedJob: Job? = null
-
     var lastQuery = ""
     var lastMinMag = 0.0
     var lastMaxMag = 12.0
@@ -152,7 +150,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_earthquakes)
 
-        updateRecyclerViewAnimDuration()
+        rv_earthquakes.updateRecyclerViewAnimDuration()
 
         srl_refresh.setOnRefreshListener {
             refresh()
@@ -214,11 +212,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             delay(500)
             srl_refresh.isRefreshing = false
         }
-    }
-
-    private fun updateRecyclerViewAnimDuration() = rv_earthquakes.itemAnimator?.run {
-        removeDuration = loadingDuration * 60 / 100
-        addDuration = loadingDuration
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {

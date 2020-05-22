@@ -62,9 +62,10 @@ class EarthquakeItemOptionsBSDFragment :
         var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
         if (supportMapFragment == null) {
             supportMapFragment = SupportMapFragment.newInstance()
-            val ft: FragmentTransaction = childFragmentManager.beginTransaction()
-            ft.add(R.id.mapContainer, supportMapFragment, "mapContainer")
-            ft.commit()
+            childFragmentManager.beginTransaction().apply {
+                add(R.id.mapContainer, supportMapFragment, "mapContainer")
+                commit()
+            }
             childFragmentManager.executePendingTransactions()
         }
         supportMapFragment?.getMapAsync(this)

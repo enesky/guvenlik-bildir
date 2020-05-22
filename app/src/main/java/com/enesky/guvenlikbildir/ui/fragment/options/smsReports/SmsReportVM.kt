@@ -48,18 +48,19 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
 
     init {
         smsReportRepository = SmsReportRepository(smsReportDao)
-        _smsReportHistoryAdapter.postValue(SmsReportHistoryAdapter(listOfNotNull(), this))
-        _smsReportAdapter.postValue(SmsReportAdapter(null))
     }
 
     fun init(binding: FragmentSmsReportHistoryBinding) {
         setViewDataBinding(binding)
         smsReportRepository.cleanUpSmsReports()
         _smsReport.postValue(null)
+        _smsReportHistoryAdapter.postValue(SmsReportHistoryAdapter(listOfNotNull(), this))
     }
 
     fun init(binding: BottomSheetSmsReportBinding) {
         setViewDataBinding(binding)
+        _smsReport.postValue(null)
+        _smsReportAdapter.postValue(SmsReportAdapter())
     }
 
     fun getSelectedContactList(): LiveData<List<Contact>> = contactDao.getSelectedContactsFlow().asLiveData()
@@ -69,6 +70,10 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
     fun getSafeSmsList() = smsReportDao.getSafeSmsListAsFlow().asLiveData()
 
     fun getUnsafeSmsList()= smsReportDao.getUnsafeSmsListAsFlow().asLiveData()
+
+    fun updateSmsReport(smsReport: SmsReport) {
+        _smsReport.postValue(smsReport)
+    }
 
     override fun onItemClick(pos: Int, smsReport: SmsReport) {
         onClick.value = smsReport

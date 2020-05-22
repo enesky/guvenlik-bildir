@@ -6,21 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.SmsReport
 import com.enesky.guvenlikbildir.databinding.BottomSheetSmsReportBinding
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.makeItGone
-import com.enesky.guvenlikbildir.extensions.makeItVisible
-import com.enesky.guvenlikbildir.extensions.requireLocationPermission
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.lastKnownLocation
 import com.enesky.guvenlikbildir.others.locationMapWithLink
 import com.enesky.guvenlikbildir.others.safeSms
 import com.enesky.guvenlikbildir.others.unsafeSms
+import com.enesky.guvenlikbildir.ui.base.BaseBottomSheetDialogFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.smsReports.SmsReportVM
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,7 +26,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_sms_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -39,7 +35,7 @@ import kotlinx.coroutines.launch
  * Created by Enes Kamil YILMAZ on 18.05.2020
  */
 
-class SmsReportBSDFragment : BottomSheetDialogFragment(), OnMapReadyCallback {
+class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback {
 
     private lateinit var binding: BottomSheetSmsReportBinding
     private lateinit var smsReportVM: SmsReportVM
@@ -97,34 +93,35 @@ class SmsReportBSDFragment : BottomSheetDialogFragment(), OnMapReadyCallback {
         var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
         if (supportMapFragment == null) {
             supportMapFragment = SupportMapFragment.newInstance()
-            val ft: FragmentTransaction = childFragmentManager.beginTransaction()
-            ft.add(R.id.mapContainer, supportMapFragment, "mapContainer")
-            ft.commit()
+            childFragmentManager.beginTransaction().apply {
+                add(R.id.mapContainer, supportMapFragment, "mapContainer")
+                commit()
+            }
             childFragmentManager.executePendingTransactions()
         }
 
         supportMapFragment?.getMapAsync(this)
+
         if (isHistory) {
-            rv_sms_report.makeItVisible()
             btn_approve.makeItGone()
-            pb_loading.makeItVisible()
             tv_title_sms_preview.text = getString(R.string.label_history_sent_sms)
             tv_title_last_known_loc.text = getString(R.string.label_location_sent)
         }
 
         GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_sms_report)
+        rv_sms_report.updateRecyclerViewAnimDuration()
 
         btn_approve.setOnClickListener {
             btn_approve.makeItGone()
             ll_sending.makeItVisible()
-            pb_loading.makeItVisible()
+
+            GlobalScope.launch(Dispatchers.Main) {
+                smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, true)
+                smsReportVM.updateSmsReport(smsReport!!)
+            }
 
             googleMap!!.uiSettings.isMyLocationButtonEnabled = false
             googleMap!!.isMyLocationEnabled = false
-
-            GlobalScope.launch(Dispatchers.Default) {
-                smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList)
-            }
         }
 
     }
@@ -133,15 +130,18 @@ class SmsReportBSDFragment : BottomSheetDialogFragment(), OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState)
 
         smsReportVM.smsReport.observe(viewLifecycleOwner, Observer {
-            if (smsReport == null && it != null) {
-                rv_sms_report.makeItVisible()
-                smsReportVM.smsReportAdapter.value?.update(it)
+            if (it != null) {
+                smsReportVM.smsReportAdapter.value!!.addOneByOne(it, smsReportVM.smsReportRepository)
                 binding.smsReport = it
             }
         })
 
         smsReportVM.getSelectedContactList().observe(viewLifecycleOwner, Observer {
             contactList = it
+            GlobalScope.launch(Dispatchers.Main) {
+                val tempSmsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, false)
+                smsReportVM.smsReportAdapter.value!!.update(tempSmsReport)
+            }
         })
 
     }

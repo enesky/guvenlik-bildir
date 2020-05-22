@@ -21,7 +21,7 @@ import java.util.*
  */
 
 class SmsReportHistoryAdapter(
-    private var smsReportList: List<SmsReport>?,
+    private var smsReportList: List<SmsReport> = listOfNotNull(),
     private val smsReportHistoryListener: SmsReportHistoryListener)
 : RecyclerView.Adapter<SmsReportHistoryAdapter.SmsReportHistoryViewHolder>() {
 
@@ -31,20 +31,15 @@ class SmsReportHistoryAdapter(
         return SmsReportHistoryViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return if (smsReportList == null)
-            0
-        else
-            smsReportList!!.size
-    }
+    override fun getItemCount(): Int = smsReportList.size
 
-    override fun onBindViewHolder(holder: SmsReportHistoryViewHolder, pos: Int) = holder.bind(pos, smsReportList!![pos])
+    override fun onBindViewHolder(holder: SmsReportHistoryViewHolder, pos: Int) = holder.bind(smsReportList[pos])
 
     inner class SmsReportHistoryViewHolder(
         private val binding: ItemSmsReportHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(pos: Int, smsReport: SmsReport) {
+        fun bind(smsReport: SmsReport) {
 
-            if (pos % 2 == 0)
+            if (adapterPosition % 2 == 0)
                 binding.clHistoryItem.setBackground(R.color.black10)
             else
                 binding.clHistoryItem.setBackground(android.R.color.white)
@@ -60,7 +55,7 @@ class SmsReportHistoryAdapter(
             binding.tvShortDate.text = getShortDate(smsReport.sendingDate)
 
             binding.clHistoryItem.setOnClickListener {
-                smsReportHistoryListener.onItemClick(pos, smsReport)
+                smsReportHistoryListener.onItemClick(adapterPosition, smsReport)
             }
             binding.executePendingBindings()
         }

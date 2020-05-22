@@ -14,6 +14,8 @@ object Constants {
 
     const val EARTHQUAKE_LIST_SIZE = 500
 
+    const val loadingDuration: Long = (600L / 0.8).toLong()
+
     //Notification Topic
     const val LANGUAGE_TURKISH = "Türkçe"
     const val LANG_TURKISH_CODE = "tr"

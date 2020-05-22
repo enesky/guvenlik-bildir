@@ -15,10 +15,7 @@ import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.extensions.showToast
 import com.enesky.guvenlikbildir.network.Result
 import com.enesky.guvenlikbildir.network.Status
-import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.others.LocationAPI
-import com.enesky.guvenlikbildir.others.isNotificationsEnabled
-import com.enesky.guvenlikbildir.others.isWorkerStarted
+import com.enesky.guvenlikbildir.others.*
 import com.enesky.guvenlikbildir.ui.base.BaseActivity
 import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsBSDFragment
 import com.enesky.guvenlikbildir.ui.fragment.latestEarthquakes.LatestEarthquakesFragment
@@ -51,7 +48,9 @@ class MainActivity : BaseActivity(),
             MainVM(AppDatabase.getDatabaseManager(application))
         }
     }
+
     private lateinit var locationAPI: LocationAPI
+    private lateinit var smsAPI: SmsAPI
 
     private var rootFragmentProvider: List<() -> Fragment> = listOf(
         { LatestEarthquakesFragment() },
@@ -80,6 +79,7 @@ class MainActivity : BaseActivity(),
         mainVM.init(binding)
 
         locationAPI = LocationAPI(this)
+        smsAPI = SmsAPI(this)
 
         EasyPermissions.requestPermissions(
             this,
@@ -188,6 +188,11 @@ class MainActivity : BaseActivity(),
                 )
             }
         }
+
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)) {
+            Timber.tag("MainActivity").d("SEND_SMS granted.")
+            smsAPI.setReceivers()
+        }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -199,6 +204,7 @@ class MainActivity : BaseActivity(),
     override fun onDestroy() {
         super.onDestroy()
         locationAPI.stopLocationUpdates()
+        smsAPI.onDestroy()
     }
 
     private fun openEarthquakeOption(earthquake: Earthquake?) {

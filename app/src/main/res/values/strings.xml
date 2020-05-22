@@ -103,7 +103,7 @@
     <string name="label_sms_report_history">Geçmiş Sms Raporları</string>
     <string name="label_no_sms_report_found">Kayıtlı sms raporu bulunamadı.</string>
     <string name="label_sms_history_count">%d sms raporu bulundu.</string>
-    <string name="label_sending">Gönderiliyor…</string>
+    <string name="label_sending">Gönderiliyor</string>
     <string name="label_sms_report_success_rate">Başarı Oranı: %</string>
     <string name="label_report_date">Gönderme Tarihi: %s</string>
     <string name="label_sms_report_type">Rapor Tipi: %s</string>

@@ -25,15 +25,22 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
     @SuppressLint("SimpleDateFormat")
     suspend fun createReport(
         isSafeSms: Boolean,
-        contactList: List<Contact>
+        contactList: List<Contact>,
+        saveIt: Boolean
     ): SmsReport {
 
-        val sentSms = if (isSafeSms) safeSms
-        else unsafeSms
+        val sentSms =
+            if (isSafeSms) safeSms
+            else unsafeSms
+
+        val status =
+            if (saveIt) SmsReportStatus.IN_QUEUE
+            else SmsReportStatus.STAND_BY
+
 
         val contactReportList: MutableList<ContactStatus> = mutableListOf()
         contactList.forEach { contact ->
-            contactReportList.add(ContactStatus(contact, SmsReportStatus.IN_QUEUE))
+            contactReportList.add(ContactStatus(contact, status))
         }
 
         val currentDate: Date = Calendar.getInstance().time
@@ -47,7 +54,9 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
             contactReportList = contactReportList
         )
 
-        smsReportDao.insert(smsReport)
+        if (saveIt)
+            smsReportDao.insert(smsReport)
+
         return smsReport
     }
 
@@ -78,7 +87,8 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
             if (!smsReports.isNullOrEmpty()) {
                 smsReports.forEach { smsReport ->
                     smsReport.contactReportList.forEachIndexed { index, contactStatus ->
-                        if (contactStatus.smsReportStatus == SmsReportStatus.IN_QUEUE) {
+                        if (contactStatus.smsReportStatus == SmsReportStatus.IN_QUEUE ||
+                            contactStatus.smsReportStatus == SmsReportStatus.STAND_BY) {
                             smsReport.contactReportList[index].smsReportStatus = SmsReportStatus.FAILED
                         }
                     }

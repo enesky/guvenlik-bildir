@@ -28,10 +28,11 @@ data class SmsReport(
 enum class SmsReportStatus(
     val status: Int
 ) : Parcelable {
-    IN_QUEUE(0),
-    FAILED(1),
-    SUCCESS(2),
-    DELIVERED(3)
+    STAND_BY(0),
+    IN_QUEUE(1),
+    FAILED(2),
+    SUCCESS(3),
+    DELIVERED(4)
 }
 
 @Parcelize
@@ -51,7 +52,7 @@ class StatusConverter {
 
         val listType = object : TypeToken<List<ContactStatus>>() {}.type
 
-        return gson.fromJson<List<ContactStatus>>(data, listType)
+        return gson.fromJson(data, listType)
     }
 
     @TypeConverter
@@ -61,16 +62,17 @@ class StatusConverter {
 
     @TypeConverter
     fun contactToContactStatus(contact: Contact): ContactStatus {
-        return ContactStatus(contact, SmsReportStatus.IN_QUEUE)
+        return ContactStatus(contact, SmsReportStatus.STAND_BY)
     }
 
     @TypeConverter
     fun toSmsReportStatus(value: Int): SmsReportStatus {
         return when(value) {
-            0 -> SmsReportStatus.IN_QUEUE
-            1 -> SmsReportStatus.FAILED
-            2 -> SmsReportStatus.SUCCESS
-            else -> SmsReportStatus.DELIVERED
+            1 -> SmsReportStatus.IN_QUEUE
+            2 -> SmsReportStatus.FAILED
+            3 -> SmsReportStatus.SUCCESS
+            4 -> SmsReportStatus.DELIVERED
+            else -> SmsReportStatus.STAND_BY
         }
     }
 
