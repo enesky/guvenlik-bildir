@@ -123,11 +123,6 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
         })
 
         latestEarthquakesVM.whereTo.observe(viewLifecycleOwner, Observer {
-            if (it is String)
-                openInfoCountDownDialog(Constants.map + it)
-        })
-
-        latestEarthquakesVM.onOptionClick.observe(viewLifecycleOwner, Observer {
             if (it is Earthquake)
                 EarthquakeItemOptionsBSDFragment.newInstance(it)
                     .show(parentFragmentManager,"EarthquakeItemOptionsBSDFragment")

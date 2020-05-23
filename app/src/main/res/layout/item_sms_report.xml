@@ -62,7 +62,7 @@
             android:layout_width="@dimen/default_margin_24"
             android:layout_height="@dimen/default_margin_24"
             android:indeterminateTint="@android:color/white"
-            android:layout_marginEnd="@dimen/default_margin_16"
+            android:layout_marginEnd="@dimen/default_margin_24"
             app:status="@{contactStatus.smsReportStatus}"
             android:rotation="1440"
             app:layout_constraintEnd_toEndOf="parent"

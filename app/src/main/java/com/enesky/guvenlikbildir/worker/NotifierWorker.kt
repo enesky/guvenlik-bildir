@@ -8,6 +8,7 @@ import com.enesky.guvenlikbildir.database.entity.Earthquake
 import com.enesky.guvenlikbildir.database.repo.EarthquakeRepository
 import com.enesky.guvenlikbildir.others.lastLoadedEarthquake
 import com.enesky.guvenlikbildir.network.EarthquakeAPI
+import com.enesky.guvenlikbildir.others.notificationMagLimit
 import com.enesky.guvenlikbildir.service.FcmService
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
@@ -43,14 +44,14 @@ class NotifierWorker(
                                 break@loop
                             }
 
-                        earthquake.magML >= notificationMagLimit -> {
-                            Timber.tag("NotifierWorker")
-                                .d("earthquake.magML >= 1.5 => ${earthquake.location} - ${earthquake.dateTime}")
-                            FcmService.showLocalNotification(
-                                context = context,
-                                earthquake = earthquake
-                            )
-                        }
+                            earthquake.magML >= notificationMagLimit -> {
+                                Timber.tag("NotifierWorker")
+                                    .d("earthquake.magML >= 1.5 => ${earthquake.location} - ${earthquake.dateTime}")
+                                FcmService.showLocalNotification(
+                                    context = context,
+                                    earthquake = earthquake
+                                )
+                            }
 
                             else -> {
                                 Timber.tag("NotifierWorker")

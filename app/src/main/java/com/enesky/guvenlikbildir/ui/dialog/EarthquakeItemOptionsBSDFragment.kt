@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
@@ -154,9 +153,7 @@ class EarthquakeItemOptionsBSDFragment :
 
         googleMap.addCircle(circleOptions)
 
-        googleMap.setOnMapClickListener {
-            InfoCountDownDialog().show(parentFragmentManager, Constants.locationMapLink)
-        }
+        googleMap.setOnMapClickListener {}
 
         googleMap.setOnMapLoadedCallback {
             googleMap.addMarker(MarkerOptions().position(loc))

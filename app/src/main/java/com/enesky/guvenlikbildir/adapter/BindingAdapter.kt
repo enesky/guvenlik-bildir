@@ -2,6 +2,7 @@ package com.enesky.guvenlikbildir.adapter
 
 import android.annotation.SuppressLint
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.EditText
@@ -19,6 +20,7 @@ import com.enesky.guvenlikbildir.custom.StatefulRecyclerView
 import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*
@@ -60,6 +62,7 @@ fun bindRecyclerViewAdapterWithAnim(view: RecyclerView, adapter: RecyclerView.Ad
 @BindingAdapter("setAdapter")
 fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {
     view.apply {
+        GravitySnapHelper(Gravity.TOP).attachToRecyclerView(this)
         setHasFixedSize(true)
         layoutManager = LinearLayoutManager(view.context)
         setItemViewCacheSize(15)
@@ -264,4 +267,3 @@ fun setStatus(view: View, status: SmsReportStatus) {
             view.makeItGone()
     }
 }
-

@@ -21,7 +21,7 @@ data class SmsReport(
     val sendingDate: String = "", //dd/MM/yyyy HH:mm:ss
     val sentSms: String = "",
     val lastKnownLocation: String = "",
-    val contactReportList: List<ContactStatus> = listOf()
+    var contactReportList: List<ContactStatus> = listOf()
 ) : Parcelable
 
 @Parcelize

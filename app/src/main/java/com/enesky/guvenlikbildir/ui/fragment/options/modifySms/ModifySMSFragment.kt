@@ -109,9 +109,7 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
             googleMap!!.uiSettings.setMyLocationButtonEnabled(true)
         }
 
-        googleMap!!.setOnMapClickListener {
-            openInfoCountDownDialog(Constants.locationMapLink)
-        }
+        googleMap!!.setOnMapClickListener {}
 
         googleMap!!.setOnMapLoadedCallback {
             googleMap!!.addMarker(MarkerOptions().position(loc))

@@ -40,8 +40,9 @@ import me.samlss.broccoli.PlaceholderParameter
  * Created by Enes Kamil YILMAZ on 25.04.2020
  */
 
-class EarthquakePagingAdapter(context: Context,
-                              val earthquakeItemListener: EarthquakeItemListener
+class EarthquakePagingAdapter(
+    context: Context,
+    val earthquakeItemListener: EarthquakeItemListener
 ) : PagedListAdapter<Earthquake, EarthquakePagingAdapter.EarthquakeViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var recyclerView: RecyclerView
@@ -243,7 +244,7 @@ class EarthquakePagingAdapter(context: Context,
         if (map == null) return
         val loc = LatLng(earthquake.lat.toDouble(), earthquake.lng.toDouble())
         map.setOnMapClickListener {
-            earthquakeItemListener.onMapClick(loc, earthquake.location)
+            earthquakeItemListener.onMapClick(earthquake)
         }
         map.setOnMapLoadedCallback {
             map.addMarker(MarkerOptions().position(loc))
@@ -365,9 +366,8 @@ class EarthquakePagingAdapter(context: Context,
     }
 
     interface EarthquakeItemListener {
-        fun onItemClick(earthquake: Earthquake)
         fun onOptionsClick(earthquake: Earthquake)
-        fun onMapClick(latlng: LatLng, header: String)
+        fun onMapClick(earthquake: Earthquake)
     }
 
 }

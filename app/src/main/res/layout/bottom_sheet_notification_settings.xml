@@ -10,7 +10,8 @@
         android:background="@drawable/rounded_dialog"
         android:paddingBottom="@dimen/default_margin_24"
         android:paddingStart="@dimen/default_margin_24"
-        android:paddingEnd="@dimen/default_margin_24">
+        android:paddingEnd="@dimen/default_margin_24"
+        android:layout_gravity="bottom">
 
         <View
             android:id="@+id/toggle"

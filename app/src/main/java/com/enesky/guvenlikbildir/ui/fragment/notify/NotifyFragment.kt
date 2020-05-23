@@ -67,7 +67,7 @@ class NotifyFragment : BaseFragment() {
                 SmsReportBSDFragment.newInstance(
                     isHistory = false,
                     isSafeSms = true
-                ).show(childFragmentManager,"SmsReportBSDFragment")
+                ).show(parentFragmentManager,"SmsReportBSDFragment")
         }
 
         iv_unsafe.setTouchAnimation {
@@ -77,7 +77,7 @@ class NotifyFragment : BaseFragment() {
                 SmsReportBSDFragment.newInstance(
                     isHistory = false,
                     isSafeSms = false
-                ).show(childFragmentManager,"SmsReportBSDFragment")
+                ).show(parentFragmentManager,"SmsReportBSDFragment")
         }
 
     }

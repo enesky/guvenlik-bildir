@@ -15,24 +15,18 @@ class LatestEarthquakesVM : BaseViewModel(), EarthquakePagingAdapter.EarthquakeI
     }
 
     val whereTo = LiveEvent<Any>()
-    val onClick = LiveEvent<Any>()
-    val onOptionClick = LiveEvent<Any>()
     val onFilterIndexChange = LiveEvent<Int>()
 
     fun init(binding: FragmentLatestEarthquakesBinding) {
         setViewDataBinding(binding)
     }
 
-    override fun onItemClick(earthquake: Earthquake) {
-        onClick.value = earthquake
-    }
-
     override fun onOptionsClick(earthquake: Earthquake) {
-        onOptionClick.value = earthquake
+        whereTo.value = earthquake
     }
 
-    override fun onMapClick(latlng: LatLng, header: String) {
-        whereTo.value = "${latlng.latitude},${latlng.longitude}map$header"
+    override fun onMapClick(earthquake: Earthquake) {
+        whereTo.value = earthquake
     }
 
     fun onFilterIndexChange(newIndex: Int) {

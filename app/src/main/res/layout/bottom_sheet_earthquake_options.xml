@@ -16,6 +16,7 @@
         android:background="@drawable/rounded_dialog"
         android:paddingStart="@dimen/default_margin_24"
         android:paddingEnd="@dimen/default_margin_24"
+        android:layout_gravity="bottom"
         android:nestedScrollingEnabled="true">
 
         <View

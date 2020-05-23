@@ -49,9 +49,6 @@ class SmsReportAdapter(private var contactStatusList: MutableList<ContactStatus>
     fun addOneByOne(smsReport: SmsReport,
                     smsReportRepository: SmsReportRepository) {
         GlobalScope.launch(Dispatchers.Main) {
-            //contactStatusList = smsReport.contactReportList.toMutableList()
-            //notifyDataSetChanged()
-
             smsReport.contactReportList.forEachIndexed { index, contactStatus ->
                 delay(1000)
                 val smsReportStatus = when (Random.nextInt(0,4) % 4) {

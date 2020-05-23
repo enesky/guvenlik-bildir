@@ -23,6 +23,9 @@ interface SmsReportDao {
     @Query("SELECT * FROM smsReport WHERE isSafeSms == 0")
     fun getUnsafeSmsListAsFlow(): Flow<List<SmsReport>>
 
+    @Query("SELECT * FROM smsReport WHERE id == 0")
+    suspend fun getLastAddedReport(): SmsReport
+
     @Query("DELETE FROM smsReport")
     suspend fun deleteAll()
 

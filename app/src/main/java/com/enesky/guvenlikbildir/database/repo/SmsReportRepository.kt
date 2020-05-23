@@ -37,12 +37,6 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
             if (saveIt) SmsReportStatus.IN_QUEUE
             else SmsReportStatus.STAND_BY
 
-
-        val contactReportList: MutableList<ContactStatus> = mutableListOf()
-        contactList.forEach { contact ->
-            contactReportList.add(ContactStatus(contact, status))
-        }
-
         val currentDate: Date = Calendar.getInstance().time
         val sendingDate: String = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(currentDate)
 
@@ -50,9 +44,16 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
             isSafeSms = isSafeSms,
             sendingDate = sendingDate,
             sentSms = sentSms + locationMapWithLink,
-            lastKnownLocation = lastKnownLocation!!,
-            contactReportList = contactReportList
+            lastKnownLocation = lastKnownLocation!!
         )
+
+        if (contactList.isNotEmpty()) {
+            val contactReportList: MutableList<ContactStatus> = mutableListOf()
+            contactList.forEach { contact ->
+                contactReportList.add(ContactStatus(contact, status))
+            }
+            smsReport.contactReportList = contactReportList
+        }
 
         if (saveIt)
             smsReportDao.insert(smsReport)

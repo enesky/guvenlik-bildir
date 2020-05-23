@@ -25,7 +25,7 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
 
     var contactDao: ContactDao = AppDatabase.dbInstance!!.contactDao()
     var smsReportDao: SmsReportDao = AppDatabase.dbInstance!!.smsReportDao()
-    var smsReportRepository: SmsReportRepository
+    var smsReportRepository: SmsReportRepository = SmsReportRepository(smsReportDao)
 
     private val _smsReportHistoryAdapter = MutableLiveData<SmsReportHistoryAdapter>()
     val smsReportHistoryAdapter: LiveData<SmsReportHistoryAdapter> = _smsReportHistoryAdapter
@@ -41,14 +41,7 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
     private val _onClick = LiveEvent<SmsReport>()
     val onClick: LiveEvent<SmsReport> = _onClick
 
-    val locationLive = MutableLiveData<String>()
-    val smsLive = MutableLiveData<String>()
-
     val sizeTextResId = R.string.label_sms_history_count
-
-    init {
-        smsReportRepository = SmsReportRepository(smsReportDao)
-    }
 
     fun init(binding: FragmentSmsReportHistoryBinding) {
         setViewDataBinding(binding)
@@ -59,7 +52,6 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
 
     fun init(binding: BottomSheetSmsReportBinding) {
         setViewDataBinding(binding)
-        _smsReport.postValue(null)
         _smsReportAdapter.postValue(SmsReportAdapter())
     }
 
