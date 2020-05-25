@@ -23,7 +23,9 @@
         android:background="@drawable/rounded_dialog"
         android:padding="@dimen/default_margin_16"
         android:nestedScrollingEnabled="true"
-        android:fitsSystemWindows="true">
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
             android:id="@+id/toggle"

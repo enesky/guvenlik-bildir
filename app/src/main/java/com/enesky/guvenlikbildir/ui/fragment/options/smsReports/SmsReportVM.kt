@@ -32,7 +32,7 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
 
     val smsReportHistoryList = MutableLiveData<List<SmsReport>>()
 
-    private val _smsReportAdapter = MutableLiveData<SmsReportAdapter>()
+    private val _smsReportAdapter = MutableLiveData(SmsReportAdapter())
     val smsReportAdapter: LiveData<SmsReportAdapter> = _smsReportAdapter
 
     private val _smsReport = MutableLiveData<SmsReport>()
@@ -52,7 +52,6 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
 
     fun init(binding: BottomSheetSmsReportBinding) {
         setViewDataBinding(binding)
-        _smsReportAdapter.postValue(SmsReportAdapter())
     }
 
     fun getSelectedContactList(): LiveData<List<Contact>> = contactDao.getSelectedContactsFlow().asLiveData()
