@@ -11,11 +11,13 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.SmsReport
+import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
 import com.enesky.guvenlikbildir.databinding.BottomSheetSmsReportBinding
 import com.enesky.guvenlikbildir.extensions.getViewModel
 import com.enesky.guvenlikbildir.extensions.makeItGone
 import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.extensions.requireLocationPermission
+import com.enesky.guvenlikbildir.others.SmsAPI
 import com.enesky.guvenlikbildir.others.lastKnownLocation
 import com.enesky.guvenlikbildir.ui.base.BaseBottomSheetDialogFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.smsReports.SmsReportVM
@@ -29,12 +31,14 @@ import kotlinx.android.synthetic.main.bottom_sheet_sms_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 18.05.2020
  */
 
-class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback {
+class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback,
+    SmsAPI.SmsApiListener {
 
     private lateinit var binding: BottomSheetSmsReportBinding
     private lateinit var smsReportVM: SmsReportVM
@@ -96,7 +100,11 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             btn_confirm.setOnClickListener {
                 if (!clicked) {
                     clicked = true
-                    setAreYouSureDialog(true) //TODO: İşlem tamamlandığında setAreYouSureDialog(false) çalıştır
+                    setAreYouSureDialog(true)
+                    SmsAPI.instance.apply {
+                        setListener(this@SmsReportBSDFragment)
+                        sendSMS(isSafe = isSafeSms)
+                    }
                     btn_confirm.makeItGone()
                     ll_sending.makeItVisible()
 
@@ -119,7 +127,7 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
 
         smsReportVM.smsReport.observe(viewLifecycleOwner, Observer {
             if (it != null && !isHistory) {
-                smsReportVM.smsReportAdapter.value!!.addOneByOne(it, smsReportVM.smsReportRepository)
+                smsReport = it
                 binding.smsReport = it
             }
         })
@@ -134,6 +142,21 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             }
         })
 
+    }
+
+    override fun onStatusChange(contact: Contact?, status: SmsReportStatus) {
+        val isItemUpdated = smsReportVM.smsReportAdapter.value!!.updateItem(contact, status)
+
+        if (isItemUpdated)
+            smsReportVM.smsReportRepository.updateReport(
+                smsReport = smsReport!!,
+                contact = contact,
+                newStatus = status
+            )
+    }
+
+    override fun processFinished() {
+        setAreYouSureDialog(false)
     }
 
     override fun onMapReady(p0: GoogleMap?) {

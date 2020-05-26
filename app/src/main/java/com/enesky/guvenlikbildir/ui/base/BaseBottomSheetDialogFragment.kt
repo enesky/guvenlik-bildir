@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.extensions.showDialog
+import com.enesky.guvenlikbildir.others.SmsAPI
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -59,7 +60,9 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
                         message = "Sms gönderme işlemi tamamlanmadan çıkmak istiyor musunuz ?",
                         positiveButtonText = "Devam Et",
                         positiveButtonFunction = { },
+                        negativeButtonText = "İptal Et",
                         negativeButtonFunction = {
+                            SmsAPI.instance.stopProcess()
                             dismiss()
                         },
                         countDownOnNegative = false
@@ -67,25 +70,29 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
                 }
             }
 
-            activity!!.onBackPressedDispatcher.
-            addCallback(this, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (dialog!!.isShowing) {
-                        activity?.showDialog(
-                            title = "İşlemi iptal et ?",
-                            message = "Sms gönderme işlemini iptal edip çıkmak istiyor musunuz?",
-                            positiveButtonText = "Devam Et",
-                            positiveButtonFunction = { },
-                            negativeButtonFunction = {
-                                dismiss()
-                            },
-                            countDownOnNegative = false
-                        )
+            //TODO: Geri tuş listener çalışmıyor.
+            activity!!.onBackPressedDispatcher.addCallback(activity!!,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        if (dialog!!.isShowing) {
+                            activity?.showDialog(
+                                title = "İşlemi iptal et ?",
+                                message = "Sms gönderme işlemini iptal edip çıkmak istiyor musunuz?",
+                                positiveButtonText = "Devam Et",
+                                positiveButtonFunction = { },
+                                negativeButtonText = "İptal Et",
+                                negativeButtonFunction = {
+                                    SmsAPI.instance.stopProcess()
+                                    dismiss()
+                                },
+                                countDownOnNegative = false
+                            )
+                        }
                     }
-                }
             })
 
             behavior?.isHideable = false
+            isCancelable = false
         }
     }
 

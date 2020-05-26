@@ -28,6 +28,7 @@ class SmsAPI(
     companion object {
         lateinit var instance: SmsAPI
             private set
+        private const val contactTag = "contact"
     }
 
     init {
@@ -38,20 +39,31 @@ class SmsAPI(
     private lateinit var deliveredBroadcastReceiver: BroadcastReceiver
     private lateinit var sentPI: PendingIntent
     private lateinit var deliveredPI: PendingIntent
+    private lateinit var smsApiListener: SmsApiListener
+
     private val SENT = "SMS_SENT"
     private val DELIVERED = "SMS_DELIVERED"
+    private var cancelled = false
 
     fun setReceivers() {
         sentBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-
                         val statusSuccess = SmsReportStatus.SUCCESS
+                        triggerListener(
+                            intent = intent,
+                            status = statusSuccess
+                        )
+                        Timber.tag("SmsAPI").d("Sms successfully sent.")
                     }
                     else -> {
-
                         val statusFailed = SmsReportStatus.FAILED
+                        triggerListener(
+                            intent = intent,
+                            status = statusFailed
+                        )
+                        Timber.tag("SmsAPI").d("Sms sending failed.")
                     }
                 }
             }
@@ -61,51 +73,33 @@ class SmsAPI(
             override fun onReceive(context: Context?, intent: Intent?) {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-
                         val statusDelivered = SmsReportStatus.DELIVERED
-                        Timber.tag("InfoCountDownDialog").d("SMS delivered.")
+                        triggerListener(
+                            intent = intent,
+                            status = statusDelivered
+                        )
+                        Timber.tag("SmsAPI").d("Sms delivered.")
                     }
                     Activity.RESULT_CANCELED -> {
-                        Timber.tag("InfoCountDownDialog").d("SMS not delivered.")
+                        Timber.tag("SmsAPI").d("Sms not delivered.")
                     }
                 }
             }
         }
 
-        sentPI = PendingIntent.getBroadcast(activity, 0, Intent(SENT), 0)
-        deliveredPI = PendingIntent.getBroadcast(activity, 0, Intent(DELIVERED), 0)
         activity.registerReceiver(sentBroadcastReceiver, IntentFilter(SENT))
         activity.registerReceiver(deliveredBroadcastReceiver, IntentFilter(DELIVERED))
     }
 
-    private fun sendIt(list: List<Contact>?, isSafe: Boolean) {
-        if (!list.isNullOrEmpty()) {
-            val text =
-                if (isSafe) safeSms
-                else unsafeSms
-
-            try {
-                val smsManager = SmsManager.getDefault()
-                for (contact: Contact in list) {
-                    smsManager.sendTextMessage(
-                        "05383115141", null, text + locationMapWithLink,
-                        sentPI, deliveredPI
-                    )
-                    Timber.tag("Sms Sent to: ").d("%s", contact.number)
-                }
-            } catch (e: Exception) {
-                Timber.tag("SMSManager Exception").d("%s", e.message!!)
-                activity.showToast("Sms gönderme işlemi başarısız!")
-            }
-
-        } else {
-            activity.showToast("Sms gönderilecek kayıt bulunamadı.")
-        }
+    fun setListener(smsApiListener: SmsApiListener) {
+        this.smsApiListener = smsApiListener
     }
 
-    private fun sendSMS(isSafe: Boolean) {
+    fun sendSMS(isSafe: Boolean) {
         val selectedContactListLiveData =
             AppDatabase.dbInstance?.contactDao()?.getSelectedContactsFlow()?.asLiveData()
+
+        cancelled = false
 
         selectedContactListLiveData?.observe(activity, Observer { it ->
             activity.requireSendSmsPermission {
@@ -114,11 +108,86 @@ class SmsAPI(
         })
     }
 
+     private fun sendIt(list: List<Contact>?, isSafe: Boolean) {
+        if (!list.isNullOrEmpty()) {
+            val text = if (isSafe) safeSms + locationMapWithLink
+                                else unsafeSms + locationMapWithLink
+            try {
+                val smsManager = SmsManager.getDefault()
+                for (contact: Contact in list) {
+                    if (!cancelled) {
+
+                        triggerListener(
+                            contact = contact,
+                            status = SmsReportStatus.IN_QUEUE
+                        )
+
+                        val sentIntent = Intent(SENT)
+                        sentIntent.putExtra(contactTag, contact)
+                        sentPI = PendingIntent.getBroadcast(
+                            activity, 0, sentIntent, 0
+                        )
+
+                        val deliverIntent = Intent(DELIVERED)
+                        deliverIntent.putExtra(contactTag, contact)
+                        deliveredPI = PendingIntent.getBroadcast(
+                            activity, 0, deliverIntent, 0
+                        )
+
+                        smsManager.sendTextMessage(
+                            contact.number,
+                            null,
+                            text,
+                            sentPI,
+                            deliveredPI
+                        )
+                        Timber.tag("Sms Sent to: ").d("%s", contact.number)
+                    }
+                }
+                processFinished()
+            } catch (e: Exception) {
+                activity.showToast("Sms gönderme işlemi başarısız!")
+                Timber.tag("SmsAPI").d("Exception: %s", e.message!!)
+            }
+        } else {
+            activity.showToast("Sms gönderilecek kayıt bulunamadı.")
+            Timber.tag("SmsAPI").d("Contact list empty.")
+        }
+    }
+
+    fun stopProcess() {
+        cancelled = true
+    }
+
+    private fun triggerListener(intent: Intent? = null,
+                                contact: Contact? = null,
+                                status: SmsReportStatus) {
+        if (::smsApiListener.isInitialized) {
+            //TODO: !! Intent.getParcelableExtra'dan null değer alınıyor.
+            val tempContact: Contact? = if (intent != null) intent.getParcelableExtra(contactTag)
+                                         else contact
+            smsApiListener.onStatusChange(tempContact, status)
+            Timber.tag("SmsAPI").d("${tempContact?.name} -> $status")
+        }
+    }
+
+    private fun processFinished() {
+        if (::smsApiListener.isInitialized)
+            smsApiListener.processFinished()
+        Timber.tag("SmsAPI").d("processFinished")
+    }
+
     fun onDestroy() {
         if (::sentBroadcastReceiver.isInitialized && ::deliveredBroadcastReceiver.isInitialized) {
             activity.unregisterReceiver(sentBroadcastReceiver)
             activity.unregisterReceiver(deliveredBroadcastReceiver)
         }
     }
+
+    interface SmsApiListener {
+        fun onStatusChange(contact: Contact?, status: SmsReportStatus)
+        fun processFinished()
+    }
+
 
 }

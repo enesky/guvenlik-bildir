@@ -66,11 +66,17 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
      */
     fun updateReport(
         smsReport: SmsReport,
-        contactStatus: ContactStatus,
+        contact: Contact? = null,
+        contactStatus: ContactStatus? = null,
         newStatus: SmsReportStatus
     ) {
         GlobalScope.launch(Dispatchers.Default) {
-            val contactStatusIndex = smsReport.contactReportList.indexOf(contactStatus)
+            var contactStatusIndex = -1
+            smsReport.contactReportList.forEachIndexed { index, cs ->
+                if (cs == contactStatus || cs.contact == contact)
+                    contactStatusIndex = index
+            }
+
             smsReport.contactReportList[contactStatusIndex].smsReportStatus = newStatus
             smsReportDao.update(smsReport)
         }

@@ -3,16 +3,11 @@ package com.enesky.guvenlikbildir.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.ContactStatus
 import com.enesky.guvenlikbildir.database.entity.SmsReport
 import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
-import com.enesky.guvenlikbildir.database.repo.SmsReportRepository
 import com.enesky.guvenlikbildir.databinding.ItemSmsReportBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 /**
  * Created by Enes Kamil YILMAZ on 19.05.2020
@@ -46,45 +41,23 @@ class SmsReportAdapter(private var contactStatusList: MutableList<ContactStatus>
         notifyDataSetChanged()
     }
 
-    fun addOneByOne(smsReport: SmsReport,
-                    smsReportRepository: SmsReportRepository) {
-        GlobalScope.launch(Dispatchers.Main) {
-            smsReport.contactReportList.forEachIndexed { index, contactStatus ->
-                delay(1000)
-                val smsReportStatus = when (Random.nextInt(0,4) % 4) {
-                    1 -> SmsReportStatus.SUCCESS
-                    2 -> SmsReportStatus.FAILED
-                    3 -> SmsReportStatus.DELIVERED
-                    else -> SmsReportStatus.IN_QUEUE
-                }
-                updateItem(
-                    smsReport =  smsReport,
-                    updatedContactStatus = contactStatus,
-                    newStatus =  smsReportStatus,
-                    smsReportRepository =  smsReportRepository
-                )
-            }
-        }
-    }
+    fun updateItem(contact: Contact?, status: SmsReportStatus): Boolean {
 
-    fun updateItem(smsReport: SmsReport,
-                   updatedContactStatus: ContactStatus,
-                   newStatus: SmsReportStatus,
-                   smsReportRepository: SmsReportRepository): Boolean {
+        if (contact == null) return false
+
         var updatedItemIndex = -1
         contactStatusList.forEachIndexed { index, contactStatus ->
-            if (updatedContactStatus.contact == contactStatus.contact) {
+            if (contactStatus.contact == contact) {
                 updatedItemIndex = index
-                contactStatusList.toMutableList()[index] = updatedContactStatus
-                smsReportRepository.updateReport(smsReport, updatedContactStatus, newStatus)
+                contactStatusList.toMutableList()[index].smsReportStatus = status
             }
         }
 
         return if (updatedItemIndex != -1) {
-            notifyItemChanged(updatedItemIndex)
-            true
-        } else
-            false
+                    notifyItemChanged(updatedItemIndex)
+                    true
+               } else
+                    false
     }
 
 }
