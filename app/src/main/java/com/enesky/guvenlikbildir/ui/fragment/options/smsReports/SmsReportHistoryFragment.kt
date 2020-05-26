@@ -17,6 +17,10 @@ import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.enesky.guvenlikbildir.ui.dialog.SmsReportBSDFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.android.synthetic.main.fragment_sms_report_history.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Created by Enes Kamil YILMAZ on 19.05.2020
@@ -50,16 +54,20 @@ class SmsReportHistoryFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         smsReportVM.getSmsReportHistory().observe(viewLifecycleOwner, Observer {
-            smsReportVM.smsReportHistoryList.postValue(it.reversed())
-            smsReportVM.smsReportHistoryAdapter.value!!.update(it.reversed())
-            pb_loading.makeItGone()
+            GlobalScope.launch(Dispatchers.Default) {
+                smsReportVM.smsReportHistoryList.postValue(it.reversed())
+                smsReportVM.smsReportHistoryAdapter.value!!.update(it.reversed())
+                withContext(Dispatchers.Main) {
+                    pb_loading.makeItGone()
 
-            if (it.isNullOrEmpty()) {
-                placeholder.makeItVisible()
-                tv_size.makeItGone()
-            } else {
-                tv_size.makeItVisible()
-                placeholder.makeItGone()
+                    if (it.isNullOrEmpty()) {
+                        placeholder.makeItVisible()
+                        tv_size.makeItGone()
+                    } else {
+                        tv_size.makeItVisible()
+                        placeholder.makeItGone()
+                    }
+                }
             }
         })
 
@@ -71,11 +79,6 @@ class SmsReportHistoryFragment : BaseFragment() {
             }
         })
 
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        rv_sms_reports.scheduleLayoutAnimation()
     }
 
 }

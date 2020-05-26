@@ -91,13 +91,11 @@ class MainActivity : BaseActivity(),
         )
 
         mainVM.responseHandler.addObserver { _, response ->
-            GlobalScope.launch {
-                withContext(Dispatchers.Main) {
-                    if (response != null && response is Result<*>) {
-                        when (response.status) {
-                            Status.SUCCESS -> ""
-                            Status.FAILURE -> showToast(response.data.toString())
-                        }
+            GlobalScope.launch(Dispatchers.Main) {
+                if (response != null && response is Result<*>) {
+                    when (response.status) {
+                        Status.SUCCESS -> ""
+                        Status.FAILURE -> showToast(response.data.toString())
                     }
                 }
             }
@@ -214,7 +212,7 @@ class MainActivity : BaseActivity(),
 
             Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
             val params = Bundle().apply {
-                putString("earthquake_location", earthquake!!.location)
+                putString("earthquake_location", earthquake.location)
                 putDouble("earthquake_mag", earthquake.magML)
                 putString("earthquake_date", earthquake.dateTime)
             }

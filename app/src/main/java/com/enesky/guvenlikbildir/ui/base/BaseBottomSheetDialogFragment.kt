@@ -23,45 +23,6 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
     var behavior: BottomSheetBehavior<*>? = null
     var outsideOfSheet: View? = null
 
-    fun setAreYouSureDialog(isCancellable: Boolean) {
-        if (outsideOfSheet != null && isCancellable) {
-            outsideOfSheet!!.setOnClickListener {
-                if (dialog!!.isShowing) {
-                    activity?.showDialog(
-                        title = "İşlemi iptal et ?",
-                        message = "Sms gönderme işlemi tamamlanmadan çıkmak istiyor musunuz ?",
-                        positiveButtonText = "Devam Et",
-                        positiveButtonFunction = { },
-                        negativeButtonFunction = {
-                           dismiss()
-                        },
-                        countDownOnNegative = false
-                    )
-                }
-            }
-
-            activity!!.onBackPressedDispatcher.
-                addCallback(this, object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        if (dialog!!.isShowing) {
-                            activity?.showDialog(
-                                title = "İşlemi iptal et ?",
-                                message = "Sms gönderme işlemini iptal edip çıkmak istiyor musunuz?",
-                                positiveButtonText = "Devam Et",
-                                positiveButtonFunction = { },
-                                negativeButtonFunction = {
-                                    dismiss()
-                                },
-                                countDownOnNegative = false
-                            )
-                        }
-                    }
-            })
-
-            behavior?.isHideable = false
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -87,6 +48,45 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                         View.SYSTEM_UI_FLAG_FULLSCREEN
         dialog?.window?.statusBarColor = resources.getColor(R.color.transparent)
+    }
+
+    fun setAreYouSureDialog(isCancellable: Boolean) {
+        if (outsideOfSheet != null && isCancellable) {
+            outsideOfSheet!!.setOnClickListener {
+                if (dialog!!.isShowing) {
+                    activity?.showDialog(
+                        title = "İşlemi iptal et ?",
+                        message = "Sms gönderme işlemi tamamlanmadan çıkmak istiyor musunuz ?",
+                        positiveButtonText = "Devam Et",
+                        positiveButtonFunction = { },
+                        negativeButtonFunction = {
+                            dismiss()
+                        },
+                        countDownOnNegative = false
+                    )
+                }
+            }
+
+            activity!!.onBackPressedDispatcher.
+            addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (dialog!!.isShowing) {
+                        activity?.showDialog(
+                            title = "İşlemi iptal et ?",
+                            message = "Sms gönderme işlemini iptal edip çıkmak istiyor musunuz?",
+                            positiveButtonText = "Devam Et",
+                            positiveButtonFunction = { },
+                            negativeButtonFunction = {
+                                dismiss()
+                            },
+                            countDownOnNegative = false
+                        )
+                    }
+                }
+            })
+
+            behavior?.isHideable = false
+        }
     }
 
 }

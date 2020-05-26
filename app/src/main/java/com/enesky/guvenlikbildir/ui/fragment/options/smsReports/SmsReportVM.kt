@@ -30,7 +30,7 @@ class SmsReportVM: BaseViewModel(), SmsReportHistoryAdapter.SmsReportHistoryList
     private val _smsReportHistoryAdapter = MutableLiveData<SmsReportHistoryAdapter>()
     val smsReportHistoryAdapter: LiveData<SmsReportHistoryAdapter> = _smsReportHistoryAdapter
 
-    val smsReportHistoryList = MutableLiveData<List<SmsReport>>()
+    val smsReportHistoryList = MutableLiveData<List<SmsReport>>(listOf())
 
     private val _smsReportAdapter = MutableLiveData(SmsReportAdapter())
     val smsReportAdapter: LiveData<SmsReportAdapter> = _smsReportAdapter

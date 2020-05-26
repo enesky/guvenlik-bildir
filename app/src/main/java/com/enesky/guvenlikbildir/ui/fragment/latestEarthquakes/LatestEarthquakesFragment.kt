@@ -98,13 +98,11 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
         })
 
         mainVM.responseHandler.addObserver { _, response ->
-            GlobalScope.launch {
-                withContext(Dispatchers.Main) {
-                    if (response != null && response is Result<*>) {
-                        when (response) {
-                            Status.SUCCESS -> ""
-                            Status.FAILURE -> requireContext().showToast(response.data.toString())
-                        }
+            GlobalScope.launch(Dispatchers.Main) {
+                if (response != null && response is Result<*>) {
+                    when (response) {
+                        Status.SUCCESS -> ""
+                        Status.FAILURE -> requireContext().showToast(response.data.toString())
                     }
                 }
             }
