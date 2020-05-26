@@ -40,9 +40,6 @@ android {
         debug {
             minifyEnabled false
             shrinkResources false
-            firebaseCrashlytics {
-                mappingFileUploadEnabled false
-            }
         }
         release {
             minifyEnabled false
@@ -79,9 +76,6 @@ android {
         enabled = true
     }
 
-    androidExtensions {
-        experimental = true
-    }
 }
 
 dependencies {

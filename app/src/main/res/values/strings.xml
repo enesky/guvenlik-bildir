@@ -98,7 +98,7 @@
     <string name="label_last_known_loc">Bilinen Son Konum :</string>
     <string name="label_modify_sms">Sms\'leri Düzenle</string>
     <string name="label_sms_preview">Gönderilecek SMS :</string>
-    <string name="label_verify_location_and_send">Konumu Doğrula ve Gönder</string>
+    <string name="label_confirm_location_and_send">Konumu Doğrula ve Gönder</string>
 
     <string name="label_sms_report_history">Geçmiş Sms Raporları</string>
     <string name="label_no_sms_report_found">Kayıtlı sms raporu bulunamadı.</string>

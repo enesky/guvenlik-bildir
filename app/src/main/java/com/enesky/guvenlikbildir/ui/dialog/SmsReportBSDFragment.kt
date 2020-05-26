@@ -44,6 +44,7 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
     private var isHistory: Boolean = false
     private var googleMap: GoogleMap? = null
     private var contactList: List<Contact> = listOf()
+    private var clicked: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_sms_report, container, false)
@@ -85,20 +86,19 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         }
         supportMapFragment?.getMapAsync(this)
 
-        var clicked = false
-
         val transition = LayoutTransition()
         transition.setAnimateParentHierarchy(false)
         cl_bottom_sheet.layoutTransition = transition
 
         if (isHistory)
-            ll_sending.makeItGone()
+            btn_confirm.makeItGone()
         else {
-            ll_sending.setOnClickListener {
+            btn_confirm.setOnClickListener {
                 if (!clicked) {
                     clicked = true
-                    tv_button.text = getString(R.string.label_sending)
-                    dots.makeItVisible()
+                    setAreYouSureDialog(true) //TODO: İşlem tamamlandığında setAreYouSureDialog(false) çalıştır
+                    btn_confirm.makeItGone()
+                    ll_sending.makeItVisible()
 
                     GlobalScope.launch(Dispatchers.Main) {
                         smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, true)
@@ -111,7 +111,6 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
                 }
             }
         }
-
 
     }
 

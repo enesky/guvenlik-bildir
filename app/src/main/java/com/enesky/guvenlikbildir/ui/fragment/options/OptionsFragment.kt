@@ -23,6 +23,8 @@ import com.enesky.guvenlikbildir.ui.fragment.options.smsReports.SmsReportHistory
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
 import kotlinx.android.synthetic.main.fragment_options.*
 
+const val notificationIndex = 3
+
 class OptionsFragment: BaseFragment() {
 
     private lateinit var binding: FragmentOptionsBinding
@@ -49,9 +51,7 @@ class OptionsFragment: BaseFragment() {
                 0 -> multipleStackNavigator!!.start(ContactsFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 1 -> multipleStackNavigator!!.start(ModifySMSFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 2 -> multipleStackNavigator!!.start(SmsReportHistoryFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
-                3 -> NotificationSettingsBSDFragment().show(parentFragmentManager, "NotificationSettingsBSDFragment")
-                //2 -> requireContext().showToast(getString(R.string.item_option_2))
-                //3 -> requireContext().showToast(getString(R.string.item_option_3))
+                notificationIndex -> NotificationSettingsBSDFragment().show(parentFragmentManager, "NotificationSettingsBSDFragment")
                 4 -> requireActivity().openGooglePlayPage()
                 5 -> requireActivity().shareGooglePlayPage()
                 6 -> sendFeedback()
@@ -67,8 +67,8 @@ class OptionsFragment: BaseFragment() {
         })
 
         optionsVM.notificationResIdLive.observe(viewLifecycleOwner, Observer {
-            optionsVM.optionList.value?.get(3)?.imageId = it
-            (rv_options.adapter as OptionAdapter).notifyItemChanged(3)
+            optionsVM.optionList.value?.get(notificationIndex)?.imageId = it
+            (rv_options.adapter as OptionAdapter).notifyItemChanged(notificationIndex)
         })
 
     }

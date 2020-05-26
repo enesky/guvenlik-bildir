@@ -21,7 +21,9 @@
         android:orientation="vertical"
         android:layout_gravity="bottom"
         android:background="@drawable/rounded_dialog"
-        android:padding="@dimen/default_margin_16"
+        android:paddingStart="@dimen/default_margin_16"
+        android:paddingEnd="@dimen/default_margin_16"
+        android:paddingTop="@dimen/default_margin_16"
         android:nestedScrollingEnabled="true"
         app:behavior_hideable="false"
         app:behavior_peekHeight="0dp"
@@ -114,59 +116,56 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginVertical="@dimen/default_margin_8"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/label_confirm_location_and_send"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:visibility="visible"
+            app:cornerRadius="@dimen/default_margin_8"/>
+
+        <LinearLayout
             android:id="@+id/ll_sending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin_16"
-            android:layout_marginTop="@dimen/default_margin_8"
-            android:layout_marginEnd="@dimen/default_margin_16"
-            android:layout_marginBottom="@dimen/default_margin_8"
-            android:backgroundTint="@color/colorAccent"
-            android:scrollbarThumbVertical="@drawable/bg_scrollbar_thumb"
-            android:scrollbars="vertical"
-            android:text="@string/label_verify_location_and_send"
-            android:textAllCaps="false"
-            android:visibility="visible"
-            app:cornerRadius="@dimen/default_margin_8">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:padding="@dimen/default_margin_8">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_margin="@dimen/default_margin_8">
+            <TextView
+                android:id="@+id/tv_sending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/label_sending"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/default_text_14" />
 
-                <TextView
-                    android:id="@+id/tv_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:text="@string/label_verify_location_and_send"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14" />
-
-                <pl.tajchert.waitingdots.DotsTextView
-                    android:id="@+id/dots"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14"
-                    app:autoplay="true"
-                    app:period="800"
-                    android:visibility="invisible"/>
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+            <pl.tajchert.waitingdots.DotsTextView
+                android:id="@+id/dots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/default_text_16"
+                app:autoplay="true"
+                app:period="800"/>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_sms_report"
             style="@style/scrollbar_style"
             setAdapter="@{viewModel.smsReportAdapter}"
             android:layout_width="match_parent"
-            android:layout_height="155dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin_16"
             android:layout_marginEnd="@dimen/default_margin_16"
+            android:layout_marginBottom="@dimen/default_margin_16"
             android:nestedScrollingEnabled="true"
             android:visibility="gone"
             tools:itemCount="3"

@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
+import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Patterns
 import android.util.TypedValue
@@ -21,6 +22,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
@@ -30,6 +32,7 @@ import com.enesky.guvenlikbildir.others.lastKnownLocation
 import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
 import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.gson.Gson
@@ -356,4 +359,55 @@ fun calculateExecutionTime(function: () -> Any) {
     if (timeNs > 0) executionTime += (timeNs % 1E+6).toString() + " NanoSeconds"
 
     Timber.tag(" -- Execution Time -- ").i(executionTime)
+}
+
+fun Context.showDialog(
+    title: String,
+    message: String,
+    positiveButtonText: String,
+    positiveButtonFunction: () -> Any?,
+    negativeButtonText: String = getString(R.string.label_cancel),
+    negativeButtonFunction: (() -> Any?)? = null,
+    countDownOnNegative: Boolean = true
+) {
+    val dialog = MaterialAlertDialogBuilder(this)
+        .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(positiveButtonText) {
+                dialog, _ ->
+                    positiveButtonFunction()
+                    dialog.dismiss()
+        }
+        .setNegativeButton(negativeButtonText) {
+                dialog, _ ->
+                    if (negativeButtonFunction != null)
+                        negativeButtonFunction()
+                    dialog.dismiss()
+        }
+        .setCancelable(true)
+        .create()
+
+    dialog.setOnShowListener {
+        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        val text = if (countDownOnNegative) negativeButtonText
+                            else positiveButtonText
+
+        val timer = object: CountDownTimer(3200, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                if (countDownOnNegative)
+                    negativeButton.text = "$text (${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)})"
+                else
+                    positiveButton.text = "$text (${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)})"
+            }
+            override fun onFinish() {
+                if (dialog.isShowing)
+                    dialog.dismiss()
+            }
+        }
+        timer.start()
+    }
+
+    dialog.show()
 }
