@@ -15,3 +15,5 @@
 .cxx
 /keystore.properties
 /eky_store_key.jks
+/app/google-services.json
+/app/src/dev/google-services.json

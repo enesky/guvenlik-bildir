@@ -21,7 +21,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:lineHeight="24sp"
-                android:text="@string/label_notify"
+                android:text="@string/app_name"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/default_text_20"
                 android:textStyle="bold" />
