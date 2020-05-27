@@ -32,6 +32,12 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_sms, container,false)
+        modifySmsVM = getViewModel()
+        binding.apply {
+            viewModel = modifySmsVM
+            lifecycleOwner = this@ModifySMSFragment
+        }
+        modifySmsVM.init(binding)
         return binding.root
     }
 
@@ -50,6 +56,7 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
             childFragmentManager.executePendingTransactions()
         }
         supportMapFragment?.getMapAsync(this)
+        mapContainer.setViewParent(nsv)
 
         et_safe_sms.setText(safeSms)
         et_unsafe_sms.setText(unsafeSms)
@@ -76,12 +83,6 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        modifySmsVM = getViewModel()
-        binding.apply {
-            viewModel = modifySmsVM
-            lifecycleOwner = this@ModifySMSFragment
-        }
-        modifySmsVM.init(binding)
 
         Timer().schedule(kotlin.concurrent.timerTask {
             modifySmsVM.lastLocation.postValue(locationMapWithLink)

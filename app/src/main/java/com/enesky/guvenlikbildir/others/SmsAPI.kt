@@ -181,7 +181,7 @@ class SmsAPI(
             if (lastContact != null &&
                 status != SmsReportStatus.IN_QUEUE &&
                 status != SmsReportStatus.DELIVERED &&
-                tempContact == lastContact)
+                lastContact == tempContact)
                 processFinished()
 
             Timber.tag("SmsAPI").d("${tempContact?.name} -> $status")

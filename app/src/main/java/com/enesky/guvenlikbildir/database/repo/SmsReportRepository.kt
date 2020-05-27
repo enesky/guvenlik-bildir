@@ -69,7 +69,7 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
         contact: Contact? = null,
         contactStatus: ContactStatus? = null,
         newStatus: SmsReportStatus
-    ) {
+    ) { //TODO: Debug this out
         GlobalScope.launch(Dispatchers.Default) {
             var contactStatusIndex = -1
             smsReport.contactReportList.forEachIndexed { index, cs ->

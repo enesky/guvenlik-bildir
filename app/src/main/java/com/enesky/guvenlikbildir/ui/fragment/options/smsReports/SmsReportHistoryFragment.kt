@@ -48,16 +48,18 @@ class SmsReportHistoryFragment : BaseFragment() {
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
         pb_loading.makeItVisible()
         GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_sms_reports)
+
+        //TODO: Adapter işlemlerini burda yap.
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         smsReportVM.getSmsReportHistory().observe(viewLifecycleOwner, Observer {
-            GlobalScope.launch(Dispatchers.Default) {
-                smsReportVM.smsReportHistoryList.postValue(it.reversed())
-                smsReportVM.smsReportHistoryAdapter.value!!.update(it.reversed())
-                withContext(Dispatchers.Main) {
+            GlobalScope.launch(Dispatchers.Main) {
+                    smsReportVM.smsReportHistoryList.postValue(it.reversed())
+                    smsReportVM.smsReportHistoryAdapter.value!!.update(it.reversed())
                     pb_loading.makeItGone()
 
                     if (it.isNullOrEmpty()) {
@@ -68,7 +70,7 @@ class SmsReportHistoryFragment : BaseFragment() {
                         placeholder.makeItGone()
                     }
                 }
-            }
+
         })
 
         smsReportVM.onClick.observe(viewLifecycleOwner, Observer {

@@ -93,9 +93,10 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         transition.setAnimateParentHierarchy(false)
         cl_bottom_sheet.layoutTransition = transition
 
-        if (isHistory)
+        if (isHistory) {
             btn_confirm.makeItGone()
-        else {
+            rv_sms_report.makeItVisible()
+        } else {
             btn_confirm.setOnClickListener {
                 if (!clicked) {
                     clicked = true
