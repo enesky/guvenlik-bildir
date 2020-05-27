@@ -51,9 +51,9 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
         dialog?.window?.statusBarColor = resources.getColor(R.color.transparent)
     }
 
-    fun setAreYouSureDialog(isCancellable: Boolean) {
-        if (outsideOfSheet != null && isCancellable) {
-            outsideOfSheet!!.setOnClickListener {
+    fun setAreYouSureDialog(isBsCancelable: Boolean) {
+        if (isBsCancelable) {
+            outsideOfSheet?.setOnClickListener {
                 if (dialog!!.isShowing) {
                     activity?.showDialog(
                         title = "İşlemi iptal et ?",
@@ -71,7 +71,7 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
             }
 
             //TODO: Geri tuş listener çalışmıyor.
-            activity!!.onBackPressedDispatcher.addCallback(activity!!,
+            activity?.onBackPressedDispatcher?.addCallback(activity!!,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
                         if (dialog!!.isShowing) {
@@ -93,6 +93,18 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
 
             behavior?.isHideable = false
             isCancelable = false
+        } else {
+            isCancelable = true
+            outsideOfSheet?.setOnClickListener {
+                dismissAllowingStateLoss()
+            }
+            activity?.onBackPressedDispatcher?.addCallback(activity!!,
+                object : OnBackPressedCallback(false){
+                    override fun handleOnBackPressed() {
+                        dismissAllowingStateLoss()
+                    }
+                }
+            )
         }
     }
 

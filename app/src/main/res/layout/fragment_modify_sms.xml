@@ -9,216 +9,221 @@
             type="com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySmsVM" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         tools:context=".ui.fragment.options.modifySms.ModifySMSFragment">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
-            android:theme="@style/ToolbarStyle"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:theme="@style/ToolbarStyle"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:lineHeight="@dimen/default_text_24"
+                    android:text="@string/label_modify_sms"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/default_text_20"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
             <TextView
+                android:id="@+id/tv_title_last_known_loc"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:lineHeight="@dimen/default_text_24"
-                android:text="@string/label_modify_sms"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/default_text_20"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_marginTop="@dimen/default_margin_16"
+                android:text="@string/label_last_known_loc"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/default_text_16"
+                app:layout_constraintBottom_toTopOf="@id/cv_map"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        </com.google.android.material.appbar.MaterialToolbar>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_map"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_marginTop="@dimen/default_margin_8"
+                android:layout_marginEnd="@dimen/default_margin_16"
+                android:backgroundTint="@color/colorPrimary"
+                app:cardCornerRadius="@dimen/default_margin_16"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_last_known_loc"
+                app:strokeColor="@color/colorPrimary"
+                app:strokeWidth="2dp">
 
-        <TextView
-            android:id="@+id/tv_title_last_known_loc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin_16"
-            android:layout_marginTop="@dimen/default_margin_16"
-            android:text="@string/label_last_known_loc"
-            android:textSize="@dimen/default_text_16"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintBottom_toTopOf="@id/cv_map"/>
+                <LinearLayout
+                    android:id="@+id/mapContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_map"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginTop="@dimen/default_margin_8"
-            android:layout_marginStart="@dimen/default_margin_16"
-            android:layout_marginEnd="@dimen/default_margin_16"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="2dp"
-            app:cardCornerRadius="@dimen/default_margin_16"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_last_known_loc">
+                <ProgressBar
+                    android:id="@+id/pb_loading"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="@dimen/default_margin_16"
+                    android:indeterminateTint="@color/colorPrimary" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
-                android:id="@+id/mapContainer"
+                android:id="@+id/ll_safe"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/ll_unsafe"
+                app:layout_constraintTop_toBottomOf="@id/cv_map">
 
-            <ProgressBar
-                android:id="@+id/pb_loading"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:indeterminateTint="@color/colorPrimary"
+                <TextView
+                    android:id="@+id/tv_title_sms_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin_16"
+                    android:layout_marginTop="@dimen/default_margin_16"
+                    android:text="@string/title_safe_sms"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/default_text_16" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_safe_sms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin_16"
+                    android:layout_marginTop="@dimen/default_margin_8"
+                    android:layout_marginEnd="@dimen/default_margin_16"
+                    app:cardCornerRadius="@dimen/default_radius"
+                    app:strokeColor="@color/colorPrimary"
+                    app:strokeWidth="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/default_margin_16"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/et_safe_sms"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autoLink="web|map"
+                            android:background="@android:color/transparent"
+                            android:inputType="textMultiLine"
+                            android:text="@{viewModel.safeSmsLive}"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/default_text_16"
+                            tools:text="Güvendeyim." />
+
+                        <EditText
+                            android:id="@+id/tv_safe_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_8"
+                            android:autoLink="web|map"
+                            android:background="@android:color/transparent"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:focusedByDefault="false"
+                            android:text="@{viewModel.lastLocation}"
+                            android:textColor="@color/black56"
+                            android:textSize="@dimen/default_text_14"
+                            tools:text="Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_unsafe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_32"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/btn_save"
+                app:layout_constraintTop_toBottomOf="@id/ll_safe">
+
+                <TextView
+                    android:id="@+id/tv_title_unsafe_sms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin_16"
+                    android:layout_marginTop="@dimen/default_margin_16"
+                    android:text="@string/title_unsafe_sms"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/default_text_16" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_unsafe_sms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin_16"
+                    android:layout_marginTop="@dimen/default_margin_8"
+                    android:layout_marginEnd="@dimen/default_margin_16"
+                    app:cardCornerRadius="@dimen/default_radius"
+                    app:strokeColor="@color/colorPrimary"
+                    app:strokeWidth="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/default_margin_16"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/et_unsafe_sms"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:inputType="textMultiLine"
+                            android:text="@{viewModel.unsafeSmsLive}"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/default_text_16"
+                            tools:text="Güvende değilim." />
+
+                        <EditText
+                            android:id="@+id/tv_unsafe_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/default_margin_8"
+                            android:autoLink="web|map"
+                            android:background="@android:color/transparent"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:focusedByDefault="false"
+                            android:text="@{viewModel.lastLocation}"
+                            android:textColor="@color/black56"
+                            android:textSize="@dimen/default_text_14"
+                            tools:text="Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin_16"
-                android:layout_gravity="end|bottom"/>
+                android:text="@string/label_save"
+                app:cornerRadius="@dimen/default_margin_8"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:id="@+id/ll_safe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/cv_map"
-            app:layout_constraintBottom_toTopOf="@id/ll_unsafe">
-
-            <TextView
-                android:id="@+id/tv_title_sms_preview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin_16"
-                android:layout_marginTop="@dimen/default_margin_16"
-                android:text="@string/title_safe_sms"
-                android:textSize="@dimen/default_text_16"
-                android:textColor="@color/colorPrimary"/>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_safe_sms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin_8"
-                android:layout_marginStart="@dimen/default_margin_16"
-                android:layout_marginEnd="@dimen/default_margin_16"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="2dp"
-                app:cardCornerRadius="@dimen/default_radius">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_margin_16"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/et_safe_sms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:autoLink="web|map"
-                        android:background="@android:color/transparent"
-                        android:inputType="textMultiLine"
-                        android:text="@{viewModel.safeSmsLive}"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/default_text_16"
-                        tools:text="Güvendeyim." />
-
-                    <EditText
-                        android:id="@+id/tv_safe_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin_8"
-                        android:background="@android:color/transparent"
-                        android:autoLink="web|map"
-                        android:textColor="@color/black56"
-                        android:textSize="@dimen/default_text_14"
-                        android:text="@{viewModel.lastLocation}"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:focusedByDefault="false"
-                        tools:text="Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_unsafe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/default_margin_32"
-            app:layout_constraintTop_toBottomOf="@id/ll_safe"
-            app:layout_constraintBottom_toTopOf="@id/btn_save">
-
-            <TextView
-                android:id="@+id/tv_title_unsafe_sms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin_16"
-                android:layout_marginTop="@dimen/default_margin_16"
-                android:text="@string/title_unsafe_sms"
-                android:textSize="@dimen/default_text_16"
-                android:textColor="@color/colorPrimary"/>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_unsafe_sms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin_8"
-                android:layout_marginStart="@dimen/default_margin_16"
-                android:layout_marginEnd="@dimen/default_margin_16"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="2dp"
-                app:cardCornerRadius="@dimen/default_radius">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_margin_16"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/et_unsafe_sms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:inputType="textMultiLine"
-                        android:text="@{viewModel.unsafeSmsLive}"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/default_text_16"
-                        tools:text="Güvende değilim." />
-
-                    <EditText
-                        android:id="@+id/tv_unsafe_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin_8"
-                        android:autoLink="web|map"
-                        android:background="@android:color/transparent"
-                        android:textColor="@color/black56"
-                        android:textSize="@dimen/default_text_14"
-                        android:text="@{viewModel.lastLocation}"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:focusedByDefault="false"
-                        tools:text="Bulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin_16"
-            android:text="@string/label_save"
-            app:cornerRadius="@dimen/default_margin_8"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Bundle
 import android.telephony.SmsManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -29,6 +30,7 @@ class SmsAPI(
         lateinit var instance: SmsAPI
             private set
         private const val contactTag = "contact"
+        private const val contactBundle = "contactBundle"
     }
 
     init {
@@ -44,6 +46,7 @@ class SmsAPI(
     private val SENT = "SMS_SENT"
     private val DELIVERED = "SMS_DELIVERED"
     private var cancelled = false
+    private var lastContact: Contact? = null
 
     fun setReceivers() {
         sentBroadcastReceiver = object : BroadcastReceiver() {
@@ -110,11 +113,15 @@ class SmsAPI(
 
      private fun sendIt(list: List<Contact>?, isSafe: Boolean) {
         if (!list.isNullOrEmpty()) {
+
             val text = if (isSafe) safeSms + locationMapWithLink
                                 else unsafeSms + locationMapWithLink
+
+            lastContact = list.last()
+
             try {
                 val smsManager = SmsManager.getDefault()
-                for (contact: Contact in list) {
+                list.forEachIndexed { index, contact ->
                     if (!cancelled) {
 
                         triggerListener(
@@ -123,15 +130,19 @@ class SmsAPI(
                         )
 
                         val sentIntent = Intent(SENT)
-                        sentIntent.putExtra(contactTag, contact)
+                        val sentBundle = Bundle()
+                        sentBundle.putParcelable(contactBundle, contact)
+                        sentIntent.putExtra(contactTag, sentBundle)
                         sentPI = PendingIntent.getBroadcast(
-                            activity, 0, sentIntent, 0
+                            activity, index, sentIntent, PendingIntent.FLAG_UPDATE_CURRENT
                         )
 
                         val deliverIntent = Intent(DELIVERED)
-                        deliverIntent.putExtra(contactTag, contact)
+                        val deliverBundle = Bundle()
+                        deliverBundle.putParcelable(contactBundle, contact)
+                        deliverIntent.putExtra(contactTag, deliverBundle)
                         deliveredPI = PendingIntent.getBroadcast(
-                            activity, 0, deliverIntent, 0
+                            activity, index, deliverIntent, PendingIntent.FLAG_UPDATE_CURRENT
                         )
 
                         smsManager.sendTextMessage(
@@ -144,7 +155,6 @@ class SmsAPI(
                         Timber.tag("Sms Sent to: ").d("%s", contact.number)
                     }
                 }
-                processFinished()
             } catch (e: Exception) {
                 activity.showToast("Sms gönderme işlemi başarısız!")
                 Timber.tag("SmsAPI").d("Exception: %s", e.message!!)
@@ -163,10 +173,17 @@ class SmsAPI(
                                 contact: Contact? = null,
                                 status: SmsReportStatus) {
         if (::smsApiListener.isInitialized) {
-            //TODO: !! Intent.getParcelableExtra'dan null değer alınıyor.
-            val tempContact: Contact? = if (intent != null) intent.getParcelableExtra(contactTag)
-                                         else contact
+            val tempContact: Contact? =
+                if (intent != null) intent.getBundleExtra(contactTag)?.getParcelable(contactBundle)
+                else contact
             smsApiListener.onStatusChange(tempContact, status)
+
+            if (lastContact != null &&
+                status != SmsReportStatus.IN_QUEUE &&
+                status != SmsReportStatus.DELIVERED &&
+                tempContact == lastContact)
+                processFinished()
+
             Timber.tag("SmsAPI").d("${tempContact?.name} -> $status")
         }
     }

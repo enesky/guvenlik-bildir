@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.bottom_sheet_sms_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 18.05.2020
@@ -157,6 +156,8 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
 
     override fun processFinished() {
         setAreYouSureDialog(false)
+        tv_sending.text = getString(R.string.label_sent)
+        dots.makeItGone()
     }
 
     override fun onMapReady(p0: GoogleMap?) {
