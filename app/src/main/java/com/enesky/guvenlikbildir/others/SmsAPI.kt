@@ -14,6 +14,7 @@ import androidx.lifecycle.asLiveData
 import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
+import com.enesky.guvenlikbildir.database.repo.SmsReportRepository
 import com.enesky.guvenlikbildir.extensions.requireSendSmsPermission
 import com.enesky.guvenlikbildir.extensions.showToast
 import timber.log.Timber
@@ -42,6 +43,7 @@ class SmsAPI(
     private lateinit var sentPI: PendingIntent
     private lateinit var deliveredPI: PendingIntent
     private lateinit var smsApiListener: SmsApiListener
+    private lateinit var smsReportRepository: SmsReportRepository
 
     private val SENT = "SMS_SENT"
     private val DELIVERED = "SMS_DELIVERED"
@@ -92,6 +94,8 @@ class SmsAPI(
 
         activity.registerReceiver(sentBroadcastReceiver, IntentFilter(SENT))
         activity.registerReceiver(deliveredBroadcastReceiver, IntentFilter(DELIVERED))
+
+        smsReportRepository = SmsReportRepository(AppDatabase.dbInstance!!.smsReportDao())
     }
 
     fun setListener(smsApiListener: SmsApiListener) {
@@ -177,6 +181,10 @@ class SmsAPI(
                 if (intent != null) intent.getBundleExtra(contactTag)?.getParcelable(contactBundle)
                 else contact
             smsApiListener.onStatusChange(tempContact, status)
+            smsReportRepository.updateReport(
+                contact = tempContact,
+                newStatus = status
+            )
 
             if (lastContact != null &&
                 status != SmsReportStatus.IN_QUEUE &&

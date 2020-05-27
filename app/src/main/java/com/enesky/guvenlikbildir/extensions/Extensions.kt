@@ -368,46 +368,48 @@ fun Context.showDialog(
     positiveButtonFunction: () -> Any?,
     negativeButtonText: String = getString(R.string.label_cancel),
     negativeButtonFunction: (() -> Any?)? = null,
-    countDownOnNegative: Boolean = true
+    countDownOnNegative: Boolean = true,
+    isNegativeButtonEnabled: Boolean = true
 ) {
-    val dialog = MaterialAlertDialogBuilder(this)
+    val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
         .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
         .setTitle(title)
         .setMessage(message)
-        .setPositiveButton(positiveButtonText) {
-                dialog, _ ->
+        .setPositiveButton(positiveButtonText) { dialog, _ ->
                     positiveButtonFunction()
                     dialog.dismiss()
         }
-        .setNegativeButton(negativeButtonText) {
-                dialog, _ ->
-                    if (negativeButtonFunction != null)
-                        negativeButtonFunction()
-                    dialog.dismiss()
+        .setNegativeButton(negativeButtonText) { dialog, _ ->
+            if (negativeButtonFunction != null)
+                negativeButtonFunction()
+            dialog.dismiss()
         }
         .setCancelable(true)
         .create()
 
-    dialog.setOnShowListener {
-        val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        val text = if (countDownOnNegative) negativeButtonText
+    materialAlertDialogBuilder.setOnShowListener {
+        val negativeButton = materialAlertDialogBuilder.getButton(AlertDialog.BUTTON_NEGATIVE)
+        val positiveButton = materialAlertDialogBuilder.getButton(AlertDialog.BUTTON_POSITIVE)
+        val text = if (countDownOnNegative || isNegativeButtonEnabled) negativeButtonText
                             else positiveButtonText
+
+        if (!isNegativeButtonEnabled)
+            negativeButton.makeItGone()
 
         val timer = object: CountDownTimer(3200, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                if (countDownOnNegative)
+                if (countDownOnNegative || isNegativeButtonEnabled)
                     negativeButton.text = "$text (${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)})"
                 else
                     positiveButton.text = "$text (${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)})"
             }
             override fun onFinish() {
-                if (dialog.isShowing)
-                    dialog.dismiss()
+                if (materialAlertDialogBuilder.isShowing)
+                    materialAlertDialogBuilder.dismiss()
             }
         }
         timer.start()
     }
 
-    dialog.show()
+    materialAlertDialogBuilder.show()
 }

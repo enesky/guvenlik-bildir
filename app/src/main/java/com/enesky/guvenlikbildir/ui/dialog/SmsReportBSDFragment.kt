@@ -13,10 +13,7 @@ import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.database.entity.SmsReport
 import com.enesky.guvenlikbildir.database.entity.SmsReportStatus
 import com.enesky.guvenlikbildir.databinding.BottomSheetSmsReportBinding
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.makeItGone
-import com.enesky.guvenlikbildir.extensions.makeItVisible
-import com.enesky.guvenlikbildir.extensions.requireLocationPermission
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.SmsAPI
 import com.enesky.guvenlikbildir.others.lastKnownLocation
 import com.enesky.guvenlikbildir.ui.base.BaseBottomSheetDialogFragment
@@ -88,6 +85,7 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             childFragmentManager.executePendingTransactions()
         }
         supportMapFragment?.getMapAsync(this)
+        mapContainer.setViewParent(nsv)
 
         val transition = LayoutTransition()
         transition.setAnimateParentHierarchy(false)
@@ -98,24 +96,28 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             rv_sms_report.makeItVisible()
         } else {
             btn_confirm.setOnClickListener {
-                if (!clicked) {
-                    clicked = true
-                    setAreYouSureDialog(true)
-                    SmsAPI.instance.apply {
-                        setListener(this@SmsReportBSDFragment)
-                        sendSMS(isSafe = isSafeSms)
-                    }
-                    btn_confirm.makeItGone()
-                    ll_sending.makeItVisible()
+                activity!!.requireSendSmsPermission {
+                    if (!clicked) {
+                        clicked = true
 
-                    GlobalScope.launch(Dispatchers.Main) {
-                        smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, true)
-                        smsReportVM.updateSmsReport(smsReport!!)
-                        rv_sms_report.makeItVisible()
-                    }
+                        setAreYouSureDialog(true)
+                        SmsAPI.instance.apply {
+                            setListener(this@SmsReportBSDFragment)
+                            sendSMS(isSafe = isSafeSms)
+                        }
 
-                    googleMap?.uiSettings?.isMyLocationButtonEnabled = false
-                    googleMap?.isMyLocationEnabled = false
+                        btn_confirm.makeItGone()
+                        ll_sending.makeItVisible()
+
+                        GlobalScope.launch(Dispatchers.Main) {
+                            smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, true)
+                            smsReportVM.updateSmsReport(smsReport!!)
+                            rv_sms_report.makeItVisible()
+                        }
+
+                        googleMap?.uiSettings?.isMyLocationButtonEnabled = false
+                        googleMap?.isMyLocationEnabled = false
+                    }
                 }
             }
         }
@@ -145,20 +147,15 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
     }
 
     override fun onStatusChange(contact: Contact?, status: SmsReportStatus) {
-        val isItemUpdated = smsReportVM.smsReportAdapter.value!!.updateItem(contact, status)
-
-        if (isItemUpdated)
-            smsReportVM.smsReportRepository.updateReport(
-                smsReport = smsReport!!,
-                contact = contact,
-                newStatus = status
-            )
+        smsReportVM.smsReportAdapter.value!!.updateItem(contact, status)
     }
 
     override fun processFinished() {
-        setAreYouSureDialog(false)
-        tv_sending.text = getString(R.string.label_sent)
-        dots.makeItGone()
+        if (isVisible) {
+            setAreYouSureDialog(false)
+            tv_sending.text = getString(R.string.label_sent)
+            dots.makeItGone()
+        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {

@@ -38,6 +38,7 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
             behavior = BottomSheetBehavior.from(bottomSheet!!)
             behavior?.state = BottomSheetBehavior.STATE_EXPANDED
             behavior?.skipCollapsed = true
+            behavior?.peekHeight = bottomSheet!!.layoutParams!!.height
 
             bsDialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
@@ -56,16 +57,12 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
             outsideOfSheet?.setOnClickListener {
                 if (dialog!!.isShowing) {
                     activity?.showDialog(
-                        title = "İşlemi iptal et ?",
-                        message = "Sms gönderme işlemi tamamlanmadan çıkmak istiyor musunuz ?",
-                        positiveButtonText = "Devam Et",
+                        title = "Sms gönderme işlemi devam ediyor...",
+                        message = "Gönderme işlemi tamamlanmadan bu ekranı kapatamazsınız.",
+                        positiveButtonText = "Devam ediliyor...",
                         positiveButtonFunction = { },
-                        negativeButtonText = "İptal Et",
-                        negativeButtonFunction = {
-                            SmsAPI.instance.stopProcess()
-                            dismiss()
-                        },
-                        countDownOnNegative = false
+                        countDownOnNegative = false,
+                        isNegativeButtonEnabled = false
                     )
                 }
             }
@@ -76,16 +73,12 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
                     override fun handleOnBackPressed() {
                         if (dialog!!.isShowing) {
                             activity?.showDialog(
-                                title = "İşlemi iptal et ?",
-                                message = "Sms gönderme işlemini iptal edip çıkmak istiyor musunuz?",
-                                positiveButtonText = "Devam Et",
+                                title = "Sms gönderme işlemi devam ediyor...",
+                                message = "Gönderme işlemi tamamlanmadan bu ekranı kapatamazsınız.",
+                                positiveButtonText = "Devam ediliyor...",
                                 positiveButtonFunction = { },
-                                negativeButtonText = "İptal Et",
-                                negativeButtonFunction = {
-                                    SmsAPI.instance.stopProcess()
-                                    dismiss()
-                                },
-                                countDownOnNegative = false
+                                countDownOnNegative = false,
+                                isNegativeButtonEnabled = false
                             )
                         }
                     }

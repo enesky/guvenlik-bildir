@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
@@ -32,12 +31,6 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_sms, container,false)
-        modifySmsVM = getViewModel()
-        binding.apply {
-            viewModel = modifySmsVM
-            lifecycleOwner = this@ModifySMSFragment
-        }
-        modifySmsVM.init(binding)
         return binding.root
     }
 
@@ -46,16 +39,11 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
-        var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
-        if (supportMapFragment == null) {
-            supportMapFragment = SupportMapFragment.newInstance()
-            childFragmentManager.beginTransaction().apply {
-                add(R.id.mapContainer, supportMapFragment, "mapContainer")
-                commit()
-            }
-            childFragmentManager.executePendingTransactions()
-        }
-        supportMapFragment?.getMapAsync(this)
+        modifySmsVM = getViewModel()
+        modifySmsVM.init(binding)
+        binding.viewModel = modifySmsVM
+        binding.lifecycleOwner = this
+
         mapContainer.setViewParent(nsv)
 
         et_safe_sms.setText(safeSms)
@@ -83,6 +71,17 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
+        if (supportMapFragment == null) {
+            supportMapFragment = SupportMapFragment.newInstance()
+            childFragmentManager.beginTransaction().apply {
+                add(R.id.mapContainer, supportMapFragment, "mapContainer")
+                commit()
+            }
+            childFragmentManager.executePendingTransactions()
+        }
+        supportMapFragment?.getMapAsync(this)
 
         Timer().schedule(kotlin.concurrent.timerTask {
             modifySmsVM.lastLocation.postValue(locationMapWithLink)

@@ -65,31 +65,33 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
      * Update report when one sms status changed
      */
     fun updateReport(
-        smsReport: SmsReport,
+        smsReport: SmsReport? = null,
         contact: Contact? = null,
         contactStatus: ContactStatus? = null,
         newStatus: SmsReportStatus
-    ) { //TODO: Debug this out
+    ) {
         GlobalScope.launch(Dispatchers.Default) {
-            var contactStatusIndex = -1
-            smsReport.contactReportList.forEachIndexed { index, cs ->
-                if (cs == contactStatus || cs.contact == contact)
-                    contactStatusIndex = index
-            }
+            val tempSmsReport: SmsReport = smsReport ?: smsReportDao.getAllReports().last()
 
-            smsReport.contactReportList[contactStatusIndex].smsReportStatus = newStatus
-            smsReportDao.update(smsReport)
+            loop@ for ((index: Int, cs: ContactStatus) in tempSmsReport.contactReportList.withIndex()) {
+                if (cs == contactStatus || cs.contact == contact) {
+                    tempSmsReport.contactReportList[index].smsReportStatus = newStatus
+                    smsReportDao.update(tempSmsReport)
+                    break@loop
+                }
+            }
         }
     }
 
     /**
      * Clean up reports
-     * Change in_queue status with failure
+     * Change in_queue and stand_by status with failure
      */
     @SuppressLint("SimpleDateFormat")
     fun cleanUpSmsReports() {
         GlobalScope.launch(Dispatchers.Default) {
             val smsReports = smsReportDao.getAllReports()
+            var changed = false
 
             if (!smsReports.isNullOrEmpty()) {
                 smsReports.forEach { smsReport ->
@@ -97,12 +99,14 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
                         if (contactStatus.smsReportStatus == SmsReportStatus.IN_QUEUE ||
                             contactStatus.smsReportStatus == SmsReportStatus.STAND_BY) {
                             smsReport.contactReportList[index].smsReportStatus = SmsReportStatus.FAILED
+                            changed = true
                         }
                     }
                 }
             }
 
-            smsReportDao.updateAll(smsReports)
+            if (changed)
+                smsReportDao.updateAll(smsReports)
         }
     }
 
