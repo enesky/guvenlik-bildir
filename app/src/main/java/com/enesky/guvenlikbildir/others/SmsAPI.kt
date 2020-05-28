@@ -42,12 +42,11 @@ class SmsAPI(
     private lateinit var deliveredBroadcastReceiver: BroadcastReceiver
     private lateinit var sentPI: PendingIntent
     private lateinit var deliveredPI: PendingIntent
-    private lateinit var smsApiListener: SmsApiListener
     private lateinit var smsReportRepository: SmsReportRepository
+    private var smsApiListener: SmsApiListener? = null
 
     private val SENT = "SMS_SENT"
     private val DELIVERED = "SMS_DELIVERED"
-    private var cancelled = false
     private var lastContact: Contact? = null
 
     fun setReceivers() {
@@ -99,14 +98,14 @@ class SmsAPI(
     }
 
     fun setListener(smsApiListener: SmsApiListener) {
+        if (!::sentBroadcastReceiver.isInitialized && !::deliveredBroadcastReceiver.isInitialized)
+            setReceivers()
         this.smsApiListener = smsApiListener
     }
 
     fun sendSMS(isSafe: Boolean) {
         val selectedContactListLiveData =
             AppDatabase.dbInstance?.contactDao()?.getSelectedContactsFlow()?.asLiveData()
-
-        cancelled = false
 
         selectedContactListLiveData?.observe(activity, Observer { it ->
             activity.requireSendSmsPermission {
@@ -115,49 +114,46 @@ class SmsAPI(
         })
     }
 
-     private fun sendIt(list: List<Contact>?, isSafe: Boolean) {
+    private fun sendIt(list: List<Contact>?, isSafe: Boolean) {
         if (!list.isNullOrEmpty()) {
 
             val text = if (isSafe) safeSms + locationMapWithLink
-                                else unsafeSms + locationMapWithLink
+            else unsafeSms + locationMapWithLink
 
             lastContact = list.last()
 
             try {
                 val smsManager = SmsManager.getDefault()
                 list.forEachIndexed { index, contact ->
-                    if (!cancelled) {
+                    triggerListener(
+                        contact = contact,
+                        status = SmsReportStatus.IN_QUEUE
+                    )
 
-                        triggerListener(
-                            contact = contact,
-                            status = SmsReportStatus.IN_QUEUE
-                        )
+                    val sentIntent = Intent(SENT)
+                    val sentBundle = Bundle()
+                    sentBundle.putParcelable(contactBundle, contact)
+                    sentIntent.putExtra(contactTag, sentBundle)
+                    sentPI = PendingIntent.getBroadcast(
+                        activity, index, sentIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                    )
 
-                        val sentIntent = Intent(SENT)
-                        val sentBundle = Bundle()
-                        sentBundle.putParcelable(contactBundle, contact)
-                        sentIntent.putExtra(contactTag, sentBundle)
-                        sentPI = PendingIntent.getBroadcast(
-                            activity, index, sentIntent, PendingIntent.FLAG_UPDATE_CURRENT
-                        )
+                    val deliverIntent = Intent(DELIVERED)
+                    val deliverBundle = Bundle()
+                    deliverBundle.putParcelable(contactBundle, contact)
+                    deliverIntent.putExtra(contactTag, deliverBundle)
+                    deliveredPI = PendingIntent.getBroadcast(
+                        activity, index, deliverIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                    )
 
-                        val deliverIntent = Intent(DELIVERED)
-                        val deliverBundle = Bundle()
-                        deliverBundle.putParcelable(contactBundle, contact)
-                        deliverIntent.putExtra(contactTag, deliverBundle)
-                        deliveredPI = PendingIntent.getBroadcast(
-                            activity, index, deliverIntent, PendingIntent.FLAG_UPDATE_CURRENT
-                        )
-
-                        smsManager.sendTextMessage(
-                            contact.number,
-                            null,
-                            text,
-                            sentPI,
-                            deliveredPI
-                        )
-                        Timber.tag("Sms Sent to: ").d("%s", contact.number)
-                    }
+                    smsManager.sendTextMessage(
+                        contact.number,
+                        null,
+                        text,
+                        sentPI,
+                        deliveredPI
+                    )
+                    Timber.tag("Sms Sent to: ").d("%s", contact.number)
                 }
             } catch (e: Exception) {
                 activity.showToast("Sms gönderme işlemi başarısız!")
@@ -169,36 +165,36 @@ class SmsAPI(
         }
     }
 
-    fun stopProcess() {
-        cancelled = true
-    }
+    private fun triggerListener(
+        intent: Intent? = null,
+        contact: Contact? = null,
+        status: SmsReportStatus
+    ) {
 
-    private fun triggerListener(intent: Intent? = null,
-                                contact: Contact? = null,
-                                status: SmsReportStatus) {
-        if (::smsApiListener.isInitialized) {
-            val tempContact: Contact? =
-                if (intent != null) intent.getBundleExtra(contactTag)?.getParcelable(contactBundle)
-                else contact
-            smsApiListener.onStatusChange(tempContact, status)
-            smsReportRepository.updateReport(
-                contact = tempContact,
-                newStatus = status
-            )
+        val tempContact: Contact? =
+            if (intent != null) intent.getBundleExtra(contactTag)?.getParcelable(contactBundle)
+            else contact
+
+        smsReportRepository.updateReport(
+            contact = tempContact,
+            newStatus = status
+        )
+        Timber.tag("SmsAPI").d("${tempContact?.name} -> $status")
+
+        if (smsApiListener != null) {
+            smsApiListener?.onStatusChange(tempContact, status)
 
             if (lastContact != null &&
                 status != SmsReportStatus.IN_QUEUE &&
                 status != SmsReportStatus.DELIVERED &&
                 lastContact == tempContact)
                 processFinished()
-
-            Timber.tag("SmsAPI").d("${tempContact?.name} -> $status")
         }
+
     }
 
     private fun processFinished() {
-        if (::smsApiListener.isInitialized)
-            smsApiListener.processFinished()
+        smsApiListener?.processFinished()
         Timber.tag("SmsAPI").d("processFinished")
     }
 
@@ -206,6 +202,7 @@ class SmsAPI(
         if (::sentBroadcastReceiver.isInitialized && ::deliveredBroadcastReceiver.isInitialized) {
             activity.unregisterReceiver(sentBroadcastReceiver)
             activity.unregisterReceiver(deliveredBroadcastReceiver)
+            smsApiListener = null
         }
     }
 

@@ -15,6 +15,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom">
@@ -23,20 +24,21 @@
             android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:animateLayoutChanges="true"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="1000dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <LinearLayout
-                android:id="@+id/cl_bottom_sheet"
+                android:id="@+id/ll_sheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_dialog"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/default_margin_16"
                 android:paddingTop="@dimen/default_margin_16"
-                android:paddingEnd="@dimen/default_margin_16"
-                app:behavior_hideable="false"
-                app:behavior_peekHeight="0dp"
-                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+                android:paddingEnd="@dimen/default_margin_16">
 
                 <View
                     android:id="@+id/toggle"

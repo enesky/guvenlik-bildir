@@ -111,6 +111,6 @@
     <string name="label_cancel_with_sec">İptal (%d)</string>
     <string name="label_history_sent_sms">Gönderilen SMS:</string>
     <string name="label_location_sent">Gönderilen Konum:</string>
-    <string name="label_sent">Gönderildi.</string>
+    <string name="label_sent">Gönderme işlemi tamamlandı.</string>
 
 </resources>

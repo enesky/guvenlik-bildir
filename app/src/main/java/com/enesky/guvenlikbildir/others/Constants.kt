@@ -53,7 +53,7 @@ object Constants {
     const val map = "map"
 
     //Location
-    const val MIN_TIME_BW_LOCATION_UPDATE = 2000L
+    const val MIN_TIME_BW_LOCATION_UPDATE = 3000L
     const val MIN_DISTANCE_BW_LOCATION_UPDATE = 0f
     const val gpsSetting = "gps"
 
