@@ -58,8 +58,6 @@ class ContactsFragment : BaseFragment() {
         rv_contacts.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(20)
-            isDrawingCacheEnabled = true
-            drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
             rv_contacts.adapter = contactAdapter
         }
 

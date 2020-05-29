@@ -109,14 +109,13 @@ class LocationAPI (
 
         val gpsProvider = LocationManager.GPS_PROVIDER
         val networkProvider = LocationManager.NETWORK_PROVIDER
-        var finalProvider: String? = null
+        var finalProvider: String?
 
-        val isGpsEnabled = locationManager!!.isProviderEnabled(gpsProvider)
         val isNetworkEnabled = locationManager!!.isProviderEnabled(networkProvider)
 
         val gpsLocation: Location? = locationManager!!.getLastKnownLocation(gpsProvider)
         val networkLocation: Location? = locationManager!!.getLastKnownLocation(networkProvider)
-        var lastKnownLoc: Location? = null
+        var lastKnownLoc: Location?
 
         finalProvider = when {
             isNetworkEnabled -> networkProvider

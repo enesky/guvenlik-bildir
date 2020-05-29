@@ -57,8 +57,6 @@ class SmsReportHistoryFragment : BaseFragment() {
             setHasFixedSize(true)
             setItemViewCacheSize(10)
             layoutManager = LinearLayoutManager(view.context)
-            isDrawingCacheEnabled = true
-            drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
             rv_sms_reports.adapter = smsReportHistoryAdapter
         }
 

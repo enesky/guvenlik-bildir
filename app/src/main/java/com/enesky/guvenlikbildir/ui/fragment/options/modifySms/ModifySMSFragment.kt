@@ -1,5 +1,6 @@
 package com.enesky.guvenlikbildir.ui.fragment.options.modifySms
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,7 +45,17 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
         binding.viewModel = modifySmsVM
         binding.lifecycleOwner = this
 
-        mapContainer.setViewParent(nsv)
+        var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
+        if (supportMapFragment == null) {
+            supportMapFragment = SupportMapFragment.newInstance()
+            childFragmentManager.beginTransaction().apply {
+                add(R.id.mapContainer, supportMapFragment, "mapContainer")
+                commit()
+            }
+            childFragmentManager.executePendingTransactions()
+            mapContainer.setViewParent(nsv_sheet)
+        }
+        supportMapFragment?.getMapAsync(this)
 
         et_safe_sms.setText(safeSms)
         et_unsafe_sms.setText(unsafeSms)
@@ -72,17 +83,6 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
-        if (supportMapFragment == null) {
-            supportMapFragment = SupportMapFragment.newInstance()
-            childFragmentManager.beginTransaction().apply {
-                add(R.id.mapContainer, supportMapFragment, "mapContainer")
-                commit()
-            }
-            childFragmentManager.executePendingTransactions()
-        }
-        supportMapFragment?.getMapAsync(this)
-
         Timer().schedule(kotlin.concurrent.timerTask {
             modifySmsVM.lastLocation.postValue(locationMapWithLink)
 
@@ -94,12 +94,15 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
                     googleMap!!.addMarker(MarkerOptions().position(loc))
                 }
             }
-        }, 0,Constants.MIN_TIME_BW_LOCATION_UPDATE)
+        }, 0, Constants.MIN_TIME_BW_LOCATION_UPDATE)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap?) {
         googleMap = p0
         if (googleMap == null) return
+
+        pb_loading.makeItGone()
 
         val latlng = lastKnownLocation!!.split(",")
         val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())

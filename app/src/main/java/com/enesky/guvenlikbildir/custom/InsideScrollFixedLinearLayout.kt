@@ -28,14 +28,14 @@ class InsideScrollFixedLinearLayout : LinearLayout {
         when(ev?.action) {
 
             MotionEvent.ACTION_UP -> {
-                if (null == viewParent)
+                if (!::viewParent.isInitialized)
                     parent.requestDisallowInterceptTouchEvent(false)
                 else
                     viewParent.requestDisallowInterceptTouchEvent(false)
             }
 
             MotionEvent.ACTION_DOWN -> {
-                if (null == viewParent)
+                if (!::viewParent.isInitialized)
                     parent.requestDisallowInterceptTouchEvent(true)
                 else
                     viewParent.requestDisallowInterceptTouchEvent(true)

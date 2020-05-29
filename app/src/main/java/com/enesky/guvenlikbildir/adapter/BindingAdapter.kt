@@ -66,8 +66,6 @@ fun bindRecyclerViewAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>
         setHasFixedSize(true)
         layoutManager = LinearLayoutManager(view.context)
         setItemViewCacheSize(15)
-        isDrawingCacheEnabled = true
-        drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         setAdapter(adapter)
     }
 }

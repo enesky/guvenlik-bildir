@@ -43,7 +43,7 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
         val smsReport = SmsReport(
             isSafeSms = isSafeSms,
             sendingDate = sendingDate,
-            sentSms = sentSms + locationMapWithLink,
+            sentSms = sentSms + "\n" +locationMapWithLink,
             lastKnownLocation = lastKnownLocation!!
         )
 

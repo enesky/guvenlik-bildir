@@ -74,6 +74,8 @@ fun View.setBackground(@ColorRes color: Int) = setBackgroundColor(context.getCol
 
 fun View.getBackgorund() = (background as ColorDrawable).color
 
+fun getColor(@ColorRes color: Int) = App.mInstance.getColorCompat(color)
+
 fun View.setBackgroundTint(@ColorRes color: Int) {
     backgroundTintList = ContextCompat.getColorStateList(context, color)
 }
