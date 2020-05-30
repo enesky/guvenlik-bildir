@@ -8,9 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_dialog"
-        android:paddingBottom="@dimen/default_margin_24"
-        android:paddingStart="@dimen/default_margin_24"
-        android:paddingEnd="@dimen/default_margin_24"
+        android:padding="@dimen/default_margin_8"
         android:layout_gravity="bottom">
 
         <View
@@ -44,6 +42,7 @@
             android:layout_height="wrap_content"
             android:theme="@style/seekBarStyle"
             android:layout_marginStart="@dimen/default_margin_8"
+            android:layout_marginEnd="@dimen/default_margin_16"
             app:layout_constraintStart_toEndOf="@id/tv_mag"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_mag"
@@ -65,11 +64,11 @@
             android:id="@+id/switcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_16"
             app:layout_constraintStart_toEndOf="@id/tv_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_info"
-            app:layout_constraintBottom_toBottomOf="@id/tv_info"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/tv_info" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

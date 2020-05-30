@@ -94,7 +94,7 @@ fun removeFromContactList(contact: Contact, function: () -> Unit) {
         }
 }
 
-fun getUserInfo(uid: String?): User? {
+fun getUserInfo(): User? {
     var user: User? = null
     App.mFirestore.collection(Constants.usersCollection)
         .document(App.mAuth.currentUser!!.uid)

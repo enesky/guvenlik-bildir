@@ -2,7 +2,6 @@ package com.enesky.guvenlikbildir.ui.fragment.options.login.verify
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
@@ -40,7 +39,7 @@ class VerifyCodeFragment: BaseFragment() {
         //verification = intent.getStringExtra("verificationId")
         //resendingToken = intent.getParcelableExtra("token")
 
-        if (BuildConfig.DEBUG && phoneNumber == Constants.testUserPhoneNumber)
+        if (BuildConfig.LOG_ENABLED && phoneNumber == Constants.testUserPhoneNumber)
             et_verify_code.setText(Constants.testUserVerifyCode)
 
         startCountDown()
@@ -72,31 +71,33 @@ class VerifyCodeFragment: BaseFragment() {
         }
 
         et_verify_code.apply {
-            setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE)
-                    verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
+            setOnEditorActionListener { _, _, _ ->
+                //if (actionId == EditorInfo.IME_ACTION_DONE)
+                  //  verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
                 false
             }
         }
 
         btn_sign_in.setOnClickListener {
-            verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
+            //verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
         }
 
         btn_resend_code.setOnClickListener {
             if (resendingToken != null)
                 resendVerificationCode(phoneNumber!!, resendingToken)
-            else if (BuildConfig.DEBUG)
+            else if (BuildConfig.LOG_ENABLED)
                 verifyCodeViewModel.setInputsEnabled(true)
         }
 
     }
 
+    /*
     private fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
         verifyCodeViewModel.setInputsEnabled(false)
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
-        //signInWithPhoneAuthCredential(credential)
+        signInWithPhoneAuthCredential(credential)
     }
+    */
 
     private fun resendVerificationCode(phoneNumber: String, token: PhoneAuthProvider.ForceResendingToken?) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(

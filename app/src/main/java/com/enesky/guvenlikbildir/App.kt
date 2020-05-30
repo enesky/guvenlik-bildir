@@ -1,5 +1,6 @@
 package com.enesky.guvenlikbildir
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.Notification
 import android.app.NotificationChannel
@@ -8,8 +9,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import androidx.work.*
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.others.CrashReportingTree
 import com.enesky.guvenlikbildir.others.isWorkerStarted
 import com.enesky.guvenlikbildir.worker.NotifierWorker
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -98,8 +101,10 @@ class App : Application() {
         workManager = WorkManager.getInstance(this)
         AndroidThreeTen.init(this)
 
-        if(BuildConfig.DEBUG)
+        if(BuildConfig.LOG_ENABLED)
             Timber.plant(DebugTree())
+        else
+            Timber.plant(CrashReportingTree())
 
         createNotificationChannel()
         Locale.setDefault(Locale("tr"))

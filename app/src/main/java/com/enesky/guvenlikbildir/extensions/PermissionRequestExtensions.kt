@@ -91,15 +91,3 @@ fun Context.permissionsPermanentlyDenied(req: QuickPermissionsRequest) {
         .setCancelable(false)
         .show()
 }
-
-fun Context.whenPermAreDenied(req: QuickPermissionsRequest) {
-    // handle something when permissions are not granted and the request method cannot be called
-    /*MaterialAlertDialogBuilder(this)
-        .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
-        .setTitle("İzinleri reddettiniz.")
-        .setMessage("İzinlerin ${req.deniedPermissions.size}/${req.permissions.size} 'i reddedildi.\n" +
-                    "Bazı fonksiyonlardan mahrum kalacaksınız :/" )
-        .setPositiveButton("Tamam") { _, _ -> }
-        .setCancelable(false)
-        .show()*/
-}

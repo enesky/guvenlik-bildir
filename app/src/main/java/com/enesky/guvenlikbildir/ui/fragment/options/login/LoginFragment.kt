@@ -76,7 +76,7 @@ class LoginFragment : BaseFragment() {
                 verification = verificationId
                 resendingToken = token
 
-                if (BuildConfig.DEBUG && et_phone_number.text.toString() == Constants.testUserPhoneNumber)
+                if (BuildConfig.LOG_ENABLED && et_phone_number.text.toString() == Constants.testUserPhoneNumber)
                     activity!!.openVerifyCodeActivity(Constants.testUserPhoneNumber, verificationId, token)
             }
         }
