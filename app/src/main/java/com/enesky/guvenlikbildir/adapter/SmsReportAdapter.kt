@@ -13,8 +13,11 @@ import com.enesky.guvenlikbildir.databinding.ItemSmsReportBinding
  * Created by Enes Kamil YILMAZ on 19.05.2020
  */
 
-class SmsReportAdapter(private var contactStatusList: MutableList<ContactStatus> = mutableListOf())
-: RecyclerView.Adapter<SmsReportAdapter.SmsReportViewHolder>() {
+class SmsReportAdapter(
+    private var contactStatusList: MutableList<ContactStatus> = mutableListOf()
+) : RecyclerView.Adapter<SmsReportAdapter.SmsReportViewHolder>() {
+
+    var itemHeight = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmsReportViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,6 +34,11 @@ class SmsReportAdapter(private var contactStatusList: MutableList<ContactStatus>
         fun bind() {
             binding.contactStatus = contactStatusList[adapterPosition]
             binding.executePendingBindings()
+
+            binding.clReportItem.viewTreeObserver.addOnGlobalLayoutListener {
+                if (binding.clReportItem.height > itemHeight)
+                    itemHeight = binding.clReportItem.height
+            }
         }
     }
 
@@ -41,9 +49,9 @@ class SmsReportAdapter(private var contactStatusList: MutableList<ContactStatus>
         notifyDataSetChanged()
     }
 
-    fun updateItem(contact: Contact?, status: SmsReportStatus): Boolean {
+    fun updateItem(contact: Contact?, status: SmsReportStatus): Int {
 
-        if (contact == null) return false
+        if (contact == null) return -1
 
         var updatedItemIndex = -1
         contactStatusList.forEachIndexed { index, contactStatus ->
@@ -55,9 +63,9 @@ class SmsReportAdapter(private var contactStatusList: MutableList<ContactStatus>
 
         return if (updatedItemIndex != -1) {
                     notifyItemChanged(updatedItemIndex)
-                    true
+                    updatedItemIndex
                } else
-                    false
+                    -1
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -20,30 +21,41 @@
 
         <TextView
             android:id="@+id/tv_contact_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{contactStatus.contact.name}"
             tools:text="Sample Contact Name"
             android:textSize="@dimen/default_text_14"
             android:textColor="@android:color/white"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/default_text_14"
+            app:autoSizeMinTextSize="@dimen/default_text_12"
+            app:autoSizeTextType="uniform"
             android:layout_marginStart="@dimen/default_margin_16"
             android:layout_marginTop="@dimen/default_margin_8"
+            android:layout_marginEnd="@dimen/default_margin_24"
             app:layout_constraintBottom_toTopOf="@id/tv_contact_number"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_status"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_contact_number"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{contactStatus.contact.number}"
             tools:text="+0987654321"
             android:textSize="@dimen/default_text_14"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/default_text_14"
+            app:autoSizeMinTextSize="@dimen/default_text_12"
+            app:autoSizeTextType="uniform"
             android:textColor="@android:color/white"
+            android:layout_marginEnd="@dimen/default_margin_24"
             app:layout_constraintTop_toBottomOf="@id/tv_contact_name"
             app:layout_constraintBottom_toTopOf="@id/line_bottom"
             app:layout_constraintStart_toStartOf="@id/tv_contact_name"
-            />
+            app:layout_constraintEnd_toStartOf="@id/iv_status"/>
 
         <ImageView
             android:id="@+id/iv_status"

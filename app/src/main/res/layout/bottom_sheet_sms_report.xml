@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="smsReport"
             type="com.enesky.guvenlikbildir.database.entity.SmsReport" />
@@ -14,178 +13,171 @@
             type="com.enesky.guvenlikbildir.ui.fragment.options.smsReports.SmsReportVM" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/cl_bottom_sheet"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/rounded_dialog"
+        android:paddingTop="@dimen/default_margin_8"
+        android:paddingBottom="@dimen/default_margin_16"
+        android:paddingHorizontal="@dimen/default_margin_16"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nsv"
+        <View
+            android:id="@+id/toggle"
+            android:layout_width="@dimen/toolbar_height"
+            android:layout_height="@dimen/default_margin_8"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_radius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title_sms_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:animateLayoutChanges="true"
-            app:behavior_hideable="false"
-            app:behavior_peekHeight="1000dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_16"
+            android:text="@string/label_sms_preview"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/default_text_14"
+            app:layout_constraintTop_toBottomOf="@id/toggle"
+            app:layout_constraintBottom_toTopOf="@id/cv_sms_preview"/>
 
-            <LinearLayout
-                android:id="@+id/ll_sheet"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_sms_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_8"
+            android:backgroundTint="@color/colorPrimary"
+            android:minHeight="75dp"
+            app:cardCornerRadius="@dimen/default_radius"
+            app:strokeColor="@android:color/white"
+            app:strokeWidth="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_sms_preview"
+            app:layout_constraintBottom_toTopOf="@id/tv_title_last_known_loc">
+
+            <TextView
+                android:id="@+id/tv_safe_sms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_dialog"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/default_margin_16"
-                android:paddingTop="@dimen/default_margin_16"
-                android:paddingEnd="@dimen/default_margin_16">
+                android:layout_margin="@dimen/default_margin_16"
+                android:autoLink="web|map"
+                android:background="@null"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@{smsReport.sentSms}"
+                android:textColor="@android:color/white"
+                android:textColorLink="@android:color/white"
+                android:textSize="@dimen/default_text_14"
+                tools:text="Güvendeyim. \nBulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
 
-                <View
-                    android:id="@+id/toggle"
-                    android:layout_width="@dimen/toolbar_height"
-                    android:layout_height="@dimen/default_margin_8"
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tv_title_last_known_loc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_16"
+            android:text="@string/label_last_known_loc"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/default_text_14"
+            app:layout_constraintTop_toBottomOf="@id/cv_sms_preview"
+            app:layout_constraintBottom_toTopOf="@id/cv_map"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_map"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_8"
+            android:backgroundTint="@android:color/white"
+            app:cardCornerRadius="@dimen/default_margin_16"
+            app:strokeColor="@android:color/white"
+            app:strokeWidth="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_last_known_loc"
+            app:layout_constraintBottom_toTopOf="@id/cv_confirm">
+
+            <com.enesky.guvenlikbildir.custom.InsideScrollFixedLinearLayout
+                android:id="@+id/mapContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:orientation="vertical" />
+
+            <ProgressBar
+                android:id="@+id/pb_map"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/colorPrimary" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_16"
+            android:backgroundTint="@color/colorAccent"
+            app:cardCornerRadius="@dimen/default_margin_8"
+            app:cornerRadius="@dimen/default_margin_8"
+            app:layout_constraintBottom_toTopOf="@id/rv_sms_report"
+            app:layout_constraintTop_toBottomOf="@id/cv_map" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/default_margin_8"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_sending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/default_margin_8"
-                    android:background="@drawable/bg_radius" />
-
-                <TextView
-                    android:id="@+id/tv_title_sms_preview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_8"
-                    android:layout_marginEnd="@dimen/default_margin_16"
-                    android:text="@string/label_sms_preview"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_sms_preview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_8"
-                    android:layout_marginEnd="@dimen/default_margin_16"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:minHeight="75dp"
-                    app:cardCornerRadius="@dimen/default_radius"
-                    app:strokeColor="@android:color/white"
-                    app:strokeWidth="2dp">
-
-                    <TextView
-                        android:id="@+id/tv_safe_sms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/default_margin_16"
-                        android:autoLink="web|map"
-                        android:background="@null"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:text="@{smsReport.sentSms}"
-                        android:textColor="@android:color/white"
-                        android:textColorLink="@android:color/white"
-                        android:textSize="@dimen/default_text_14"
-                        tools:text="Güvendeyim. \nBulunduğum Konum: https://www.google.com/maps/place/41.01844,28.9941283" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <TextView
-                    android:id="@+id/tv_title_last_known_loc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_8"
-                    android:layout_marginEnd="@dimen/default_margin_16"
-                    android:text="@string/label_last_known_loc"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/default_text_14" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginTop="@dimen/default_margin_8"
-                    android:layout_marginEnd="@dimen/default_margin_16"
-                    android:backgroundTint="@android:color/white"
-                    app:cardCornerRadius="@dimen/default_margin_16"
-                    app:strokeColor="@android:color/white"
-                    app:strokeWidth="2dp">
-
-                    <com.enesky.guvenlikbildir.custom.InsideScrollFixedLinearLayout
-                        android:id="@+id/mapContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="2dp"
-                        android:orientation="vertical" />
-
-                    <ProgressBar
-                        android:id="@+id/pb_map"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center"
-                        android:indeterminateTint="@color/colorPrimary" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_confirm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/default_margin_16"
-                    android:layout_marginVertical="@dimen/default_margin_8"
-                    android:backgroundTint="@color/colorAccent"
                     android:text="@string/label_confirm_location_and_send"
-                    android:textAllCaps="false"
                     android:textColor="@android:color/white"
-                    android:visibility="visible"
-                    app:cornerRadius="@dimen/default_margin_8" />
+                    android:textSize="@dimen/default_text_14" />
 
-                <LinearLayout
-                    android:id="@+id/ll_sending"
-                    android:layout_width="match_parent"
+                <pl.tajchert.waitingdots.DotsTextView
+                    android:id="@+id/dots"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/default_margin_8"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/tv_sending"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/label_sending"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/default_text_14" />
-
-                    <pl.tajchert.waitingdots.DotsTextView
-                        android:id="@+id/dots"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/default_text_16"
-                        app:autoplay="true"
-                        app:period="800" />
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_sms_report"
-                    style="@style/scrollbar_style"
-                    setAdapter="@{viewModel.smsReportAdapter}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin_16"
-                    android:layout_marginEnd="@dimen/default_margin_16"
-                    android:layout_marginBottom="@dimen/default_margin_16"
-                    android:nestedScrollingEnabled="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/default_text_16"
                     android:visibility="gone"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_sms_report" />
+                    app:autoplay="true"
+                    app:period="800" />
 
             </LinearLayout>
 
+        </com.google.android.material.card.MaterialCardView>
 
-        </androidx.core.widget.NestedScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_sms_report"
+            style="@style/scrollbar_style"
+            setAdapter="@{viewModel.smsReportAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_16"
+            android:nestedScrollingEnabled="true"
+            android:visibility="gone"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_max="150dp"
+            app:layout_constraintHeight_min="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_confirm"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_sms_report" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

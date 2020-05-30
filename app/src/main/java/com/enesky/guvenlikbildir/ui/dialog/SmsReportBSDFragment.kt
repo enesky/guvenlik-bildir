@@ -1,6 +1,6 @@
 package com.enesky.guvenlikbildir.ui.dialog
 
-import android.animation.LayoutTransition
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,11 +33,11 @@ import kotlinx.coroutines.launch
  * Created by Enes Kamil YILMAZ on 18.05.2020
  */
 
-private const val isSafeSmsTag = "isSafeSmsTag"
-private const val isHistoryTag = "isHistoryTag"
+private const val SAFE_SMS = "isSafeSmsTag"
+private const val HISTORY_TAG = "isHistoryTag"
+private const val VISIBLE_RECYCLER_VIEW_ITEM = 3
 
-class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback,
-    SmsAPI.SmsApiListener {
+class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback, SmsAPI.SmsApiListener {
 
     private lateinit var binding: BottomSheetSmsReportBinding
     private lateinit var smsReportVM: SmsReportVM
@@ -53,23 +53,21 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_sms_report, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_sms_report, container, false)
         smsReportVM = getViewModel()
         binding.lifecycleOwner = this@SmsReportBSDFragment
         binding.viewModel = smsReportVM
         smsReportVM.init(binding)
 
         if (arguments != null) {
-            isSafeSms = arguments!!.getBoolean(isSafeSmsTag)
-            isHistory = arguments!!.getBoolean(isHistoryTag)
+            isSafeSms = arguments!!.getBoolean(SAFE_SMS)
+            isHistory = arguments!!.getBoolean(HISTORY_TAG)
             GlobalScope.launch(Dispatchers.Main) {
                 if (isHistory && smsReportVM.smsReport.value != null) {
                     smsReport = smsReportVM.smsReport.value
                     smsReportVM.smsReportAdapter.value?.update(smsReport!!)
                 } else {
-                    smsReport =
-                        smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, false)
+                    smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, false)
                 }
                 binding.smsReport = smsReport
             }
@@ -79,12 +77,12 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         return binding.root
     }
 
+    @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         App.mAnalytics.setCurrentScreen(activity!!, "bottom_sheet", this.javaClass.simpleName)
 
-        var supportMapFragment =
-            childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
+        var supportMapFragment = childFragmentManager.findFragmentById(R.id.mapContainer) as SupportMapFragment?
         if (supportMapFragment == null) {
             supportMapFragment = SupportMapFragment.newInstance()
             childFragmentManager.beginTransaction().apply {
@@ -94,15 +92,16 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             childFragmentManager.executePendingTransactions()
         }
         supportMapFragment?.getMapAsync(this)
-        mapContainer.setViewParent(ll_sheet)
+        mapContainer.setViewParent(cl_sheet)
 
         if (isHistory) {
-            btn_confirm.makeItGone()
-            rv_sms_report.makeItVisible()
+            cv_confirm.makeItGone()
+            setRecyclerViewHeight(true)
         } else {
-            btn_confirm.setOnClickListener {
+            cv_confirm.setOnClickListener {
+                cv_confirm.isEnabled = false
                 activity!!.requireSendSmsPermission {
-                    setUncancelable(true)
+                    setUncancellable(true)
                     SmsAPI.instance.apply {
                         setListener(this@SmsReportBSDFragment)
                         sendSMS(isSafe = isSafeSms)
@@ -111,14 +110,15 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
                     GlobalScope.launch(Dispatchers.Main) {
                         smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, true)
                         smsReportVM.updateSmsReport(smsReport!!)
-                        rv_sms_report.makeItVisible()
                     }
 
                     googleMap?.uiSettings?.isMyLocationButtonEnabled = false
-                    btn_confirm.makeItGone()
-                    ll_sending.makeItVisible()
-                    refreshUi()
+                    googleMap?.isMyLocationEnabled = false
+                    tv_sending.text = getString(R.string.label_sending)
+                    dots.makeItVisible()
+                    setRecyclerViewHeight(true)
                 }
+                refreshUi()
             }
         }
 
@@ -131,6 +131,7 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             if (it != null && !isHistory) {
                 smsReport = it
                 binding.smsReport = it
+                setRecyclerViewHeight(false)
             }
         })
 
@@ -138,9 +139,8 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             GlobalScope.launch(Dispatchers.Main) {
                 if (!isHistory) {
                     contactList = it
-                    smsReport =
-                        smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, false)
-                    smsReportVM.smsReportAdapter.value!!.update(smsReport!!)
+                    smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, false)
+                    smsReportVM.smsReportAdapter.value?.update(smsReport!!)
                 }
             }
         })
@@ -148,14 +148,16 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
     }
 
     override fun onStatusChange(contact: Contact?, status: SmsReportStatus) {
-        smsReportVM.smsReportAdapter.value!!.updateItem(contact, status)
+        val index = smsReportVM.smsReportAdapter.value?.updateItem(contact, status)
+        if (index != null && index != -1 && status == SmsReportStatus.DELIVERED)
+            rv_sms_report?.smoothScrollToPosition(index)
     }
 
     override fun processFinished() {
         if (isVisible) {
-            setUncancelable(false)
-            tv_sending.text = getString(R.string.label_sent)
-            dots.makeItGone()
+            setUncancellable(false)
+            tv_sending?.text = getString(R.string.label_sent)
+            dots?.makeItGone()
             refreshUi()
         }
     }
@@ -165,6 +167,7 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         SmsAPI.instance.onDestroy()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap?) {
         googleMap = p0
         if (googleMap == null) return
@@ -203,13 +206,23 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         googleMap!!.setOnMapClickListener { }
     }
 
+    private fun setRecyclerViewHeight(makeItVisible : Boolean) {
+        val list = smsReportVM.smsReport.value?.contactReportList
+        val itemHeight = smsReportVM.smsReportAdapter.value?.itemHeight
+
+        if (itemHeight != 0 && list != null && list.size > VISIBLE_RECYCLER_VIEW_ITEM)
+            rv_sms_report.layoutParams.height = itemHeight!! * VISIBLE_RECYCLER_VIEW_ITEM
+        if (makeItVisible)
+            rv_sms_report.makeItVisible()
+    }
+
     companion object {
         fun newInstance(isHistory: Boolean, isSafeSms: Boolean? = null) =
             SmsReportBSDFragment().apply {
                 arguments = Bundle().apply {
                     if (isSafeSms != null)
-                        putBoolean(isSafeSmsTag, isSafeSms)
-                    putBoolean(isHistoryTag, isHistory)
+                        putBoolean(SAFE_SMS, isSafeSms)
+                    putBoolean(HISTORY_TAG, isHistory)
                 }
             }
     }

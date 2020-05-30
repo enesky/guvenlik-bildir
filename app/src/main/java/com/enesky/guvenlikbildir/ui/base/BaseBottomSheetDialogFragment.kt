@@ -7,10 +7,12 @@ import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.extensions.getColor
 import com.enesky.guvenlikbildir.extensions.showDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+
 /**
  * Created by Enes Kamil YILMAZ on 30.04.2020
  */
@@ -34,7 +36,9 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
 
             behavior = BottomSheetBehavior.from(bottomSheet!!)
             behavior?.isFitToContents = true
+            behavior?.isHideable = false
             behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior?.halfExpandedRatio = 0.99f
 
             bsDialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
@@ -44,17 +48,20 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                                                         View.SYSTEM_UI_FLAG_FULLSCREEN
-        dialog?.window?.statusBarColor = resources.getColor(R.color.transparent)
+        dialog?.window?.statusBarColor = getColor(R.color.transparent)
     }
 
+    /**
+     * This should be used when sheet goes to collapse state after ui change
+     * Simply it makes sheet fully expanded again
+     */
     fun refreshUi() {
-        //behavior?.peekHeight = 750
-        behavior?.setPeekHeight(1000, false)
-        behavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+        behavior?.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        behavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    fun setUncancelable(isUncancelable: Boolean) {
-        if (isUncancelable) {
+    fun setUncancellable(isUncancellable: Boolean) {
+        if (isUncancellable) {
             outsideOfSheet?.setOnClickListener {
                 if (dialog!!.isShowing) {
                     activity?.showDialog(
