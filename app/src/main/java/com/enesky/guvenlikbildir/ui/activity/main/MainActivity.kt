@@ -93,7 +93,7 @@ class MainActivity : BaseActivity(),
             GlobalScope.launch(Dispatchers.Main) {
                 if (response != null && response is Result<*>) {
                     when (response.status) {
-                        Status.SUCCESS -> ""
+                        Status.SUCCESS -> return@launch
                         Status.FAILURE -> showToast(response.data.toString())
                     }
                 }

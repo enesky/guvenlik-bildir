@@ -31,10 +31,10 @@ class StatefulRecyclerView : RecyclerView {
         return bundle
     }
 
-    override fun onRestoreInstanceState(state: Parcelable) {
-        var state: Parcelable? = state
+    override fun onRestoreInstanceState(restoredState: Parcelable) {
+        var state: Parcelable? = restoredState
         if (state is Bundle) {
-            val bundle = (state).also {
+            state.also {
                 mLayoutManagerSavedState = it.getParcelable(SAVED_LAYOUT_MANAGER)
                 state = it.getParcelable(SAVED_SUPER_STATE)
             }

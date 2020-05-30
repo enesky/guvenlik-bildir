@@ -1,8 +1,8 @@
-package com.enesky.guvenlikbildir.ui.activity.login
+package com.enesky.guvenlikbildir.ui.fragment.options.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
+import com.enesky.guvenlikbildir.databinding.FragmentLoginBinding
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 class LoginVM : BaseViewModel() {
@@ -12,7 +12,7 @@ class LoginVM : BaseViewModel() {
     }
     val inputsEnabled: LiveData<Boolean> = _inputsEnabled
 
-    fun init(binding: ActivityLoginBinding) {
+    fun init(binding: FragmentLoginBinding) {
         setViewDataBinding(binding)
     }
 

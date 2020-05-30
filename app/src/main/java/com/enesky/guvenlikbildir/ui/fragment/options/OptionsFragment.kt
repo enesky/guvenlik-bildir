@@ -13,7 +13,7 @@ import com.enesky.guvenlikbildir.adapter.OptionAdapter
 import com.enesky.guvenlikbildir.databinding.FragmentOptionsBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
-import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
+import com.enesky.guvenlikbildir.ui.fragment.options.login.LoginFragment
 import com.enesky.guvenlikbildir.ui.dialog.AboutBSDFragment
 import com.enesky.guvenlikbildir.ui.dialog.NotificationSettingsBSDFragment
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
@@ -60,7 +60,7 @@ class OptionsFragment: BaseFragment() {
                 9 -> {
                     App.mAuth.signOut()
                     App.stopWorker()
-                    startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    startActivity(Intent(requireActivity(), LoginFragment::class.java))
                     requireActivity().finishAffinity()
                 }
             }

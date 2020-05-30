@@ -137,7 +137,7 @@ fun bindFormattedDate(view: TextView, formattedDate: String) {
 @SuppressLint("SimpleDateFormat", "SetTextI18n")
 @BindingAdapter("stringKey", "dateText", "timeText")
 fun bindFormattedDate(view: TextView, stringKey: String, dateText: String?, timeText:String?) {
-    var formattedDateTimeText = ""
+    val formattedDateTimeText: String
     if (dateText == null || timeText == null) {
         view.text = ""
     } else {
@@ -157,30 +157,9 @@ fun setText(view: TextView, text: Number) {
     view.text = text.toString()
 }
 
-@BindingAdapter("onBackPressed")
-fun onBackPressed(view: View, fragment: Fragment) {
-    view.setOnClickListener { fragment.activity!!.onBackPressed() }
-}
-
-@BindingAdapter("onBackPressed")
-fun dismiss(view: EditText, dismiss: Boolean) {
-    view.setOnClickListener {
-        (view.context as Fragment).requireActivity().onBackPressed()
-    }
-}
-
 @BindingAdapter("setImage")
 fun setImage(view: ImageView, imageId: Int) {
     view.setImageResource(imageId)
-}
-
-@SuppressLint("ResourceAsColor")
-@BindingAdapter("setColor")
-fun setColor(view: TextView, isColorWhite: Boolean) {
-    if (isColorWhite)
-        view.setTextColor(android.R.color.white)
-    else
-        view.setTextColor(R.color.colorPrimary)
 }
 
 @SuppressLint("SetTextI18n")

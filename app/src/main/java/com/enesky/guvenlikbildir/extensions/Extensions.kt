@@ -29,8 +29,8 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.others.lastKnownLocation
-import com.enesky.guvenlikbildir.ui.activity.login.LoginActivity
-import com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeActivity
+import com.enesky.guvenlikbildir.ui.fragment.options.login.LoginFragment
+import com.enesky.guvenlikbildir.ui.fragment.options.login.verify.VerifyCodeFragment
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -114,15 +114,9 @@ private fun cancelScaleAnimation(view: View) {
 // Context Extensions
 fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 
-fun Context.checkInternet(): Boolean {
-    val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo = cm.activeNetworkInfo
-    return networkInfo != null && networkInfo.isConnected
-}
-
 fun Context.showToast(message: String?, isDurationLong: Boolean = true) {
     val layout = LayoutInflater.from(this).inflate(R.layout.default_toast, null, false)
-    val textView = layout.findViewById<TextView>(R.id.toast_tv).apply {
+    layout.findViewById<TextView>(R.id.toast_tv).apply {
         gravity = Gravity.CENTER
         text = message
     }
@@ -132,7 +126,7 @@ fun Context.showToast(message: String?, isDurationLong: Boolean = true) {
     else
         Toast.LENGTH_SHORT
 
-    val toast = Toast(this).apply {
+    Toast(this).apply {
         duration = mDuration
         view = layout
         setGravity(Gravity.BOTTOM, 0, 200)
@@ -185,7 +179,7 @@ fun Activity.openMainActivity() {
 }
 
 fun Activity.openLoginActivity() {
-    startActivity(Intent(this, LoginActivity::class.java))
+    startActivity(Intent(this, LoginFragment::class.java))
     finishAffinity()
 }
 
@@ -216,7 +210,7 @@ fun Fragment.openGoogleMaps(latlng: String, title: String) {
 fun Activity.openVerifyCodeActivity(phoneNumber: String,
                                     verificationId: String,
                                     token: PhoneAuthProvider.ForceResendingToken) {
-    val intent = Intent(this, VerifyCodeActivity::class.java)
+    val intent = Intent(this, VerifyCodeFragment::class.java)
     intent.putExtra("phoneNumber", phoneNumber)
     intent.putExtra("verificationId", verificationId)
     intent.putExtra("token", token)

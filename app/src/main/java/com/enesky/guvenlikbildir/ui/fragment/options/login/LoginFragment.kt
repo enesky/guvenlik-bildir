@@ -1,4 +1,4 @@
-package com.enesky.guvenlikbildir.ui.activity.login
+package com.enesky.guvenlikbildir.ui.fragment.options.login
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -7,23 +7,22 @@ import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.BuildConfig
 import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.databinding.ActivityLoginBinding
-import com.enesky.guvenlikbildir.ui.base.BaseActivity
+import com.enesky.guvenlikbildir.databinding.FragmentLoginBinding
 import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
+import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.redmadrobot.inputmask.MaskedTextChangedListener
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-//TODO: Make it fragment and start when user login required.
-class LoginActivity : BaseActivity() {
+class LoginFragment : BaseFragment() {
 
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: FragmentLoginBinding
     private var verification: String? = null
     private var resendingToken: PhoneAuthProvider.ForceResendingToken? = null
     private val loginVM by lazy {
@@ -33,10 +32,10 @@ class LoginActivity : BaseActivity() {
     @SuppressLint("TimberArgCount")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
+        binding = DataBindingUtil.setContentView<FragmentLoginBinding>(activity!!, R.layout.fragment_login)
                 .apply {
                     viewModel = loginVM
-                    lifecycleOwner = this@LoginActivity
+                    lifecycleOwner = this@LoginFragment
                 }
         loginVM.init(binding)
 
@@ -44,16 +43,16 @@ class LoginActivity : BaseActivity() {
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                Timber.tag("LoginActivity").d( "onVerificationCompleted: %s", credential)
+                Timber.tag("LoginFragment").d( "onVerificationCompleted: %s", credential)
 
                 if (credential.smsCode != null) {
                     Timber.tag("onVerificationCompleted").d("Kodu havada yakaladın. -> %s", credential.smsCode)
-                    showToast(getString(R.string.label_code_caught))
-                    signInWithPhoneAuthCredential(credential)
+                    context!!.showToast(getString(R.string.label_code_caught))
+                    //signInWithPhoneAuthCredential(credential)
                 } else {
                     if (et_phone_number.text.toString().isPhoneNumberValid()) {
                         loginVM.setInputsEnabled(false)
-                        openVerifyCodeActivity(et_phone_number.text.toString(), verification!!, resendingToken!!)
+                        //openVerifyCodeActivity(et_phone_number.text.toString(), verification!!, resendingToken!!)
                     } else {
                         loginVM.setInputsEnabled(true)
                         til_phone_number.error = getString(R.string.label_invalid_phone_number)
@@ -64,8 +63,8 @@ class LoginActivity : BaseActivity() {
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                Timber.tag("LoginActivity").w("onVerificationFailed: %s", e.message)
-                showToast(e.message)
+                Timber.tag("LoginFragment").w("onVerificationFailed: %s", e.message)
+                context!!.showToast(e.message)
                 loginVM.setInputsEnabled(true)
             }
 
@@ -73,12 +72,12 @@ class LoginActivity : BaseActivity() {
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                Timber.tag("LoginActivity").d("onCodeSent: %1s, token: %2s", verification, token)
+                Timber.tag("LoginFragment").d("onCodeSent: %1s, token: %2s", verification, token)
                 verification = verificationId
                 resendingToken = token
 
                 if (BuildConfig.DEBUG && et_phone_number.text.toString() == Constants.testUserPhoneNumber)
-                    openVerifyCodeActivity(Constants.testUserPhoneNumber, verificationId, token)
+                    activity!!.openVerifyCodeActivity(Constants.testUserPhoneNumber, verificationId, token)
             }
         }
 
@@ -98,19 +97,19 @@ class LoginActivity : BaseActivity() {
         }
 
         tv_continue.setOnClickListener {
-            if (checkInternet()) {
-                App.mAuth.signInAnonymously().addOnCompleteListener(this) { task ->
+           /*if (activity!!.checkInternet()) {
+                App.mAuth.signInAnonymously().addOnCompleteListener(activity!!) { task ->
                     if (task.isSuccessful) {
-                        Timber.tag("LoginActivity").d("signInAnonymously:success")
-                        openMainActivity()
+                        Timber.tag("LoginFragment").d("signInAnonymously:success")
+                        activity!!.openMainActivity()
                     } else {
-                        Timber.tag("LoginActivity").d(task.exception, "signInAnonymously:failure: %s")
-                        showToast(getString(R.string.label_login_failed))
+                        Timber.tag("LoginFragment").d(task.exception, "signInAnonymously:failure: %s")
+                        activity!!.showToast(getString(R.string.label_login_failed))
                     }
                 }
             } else {
-                showToast(getString(R.string.label_connection_not_found))
-            }
+                activity!!.showToast(getString(R.string.label_connection_not_found))
+            }*/
         }
 
     }
@@ -118,7 +117,7 @@ class LoginActivity : BaseActivity() {
     private fun startPhoneNumberVerification(phoneNumber: String) {
         if (phoneNumber.isPhoneNumberValid()) {
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber, 60, TimeUnit.SECONDS, this, callbacks
+                phoneNumber, 60, TimeUnit.SECONDS, activity!!, callbacks
             )
             loginVM.setInputsEnabled(false)
         } else {

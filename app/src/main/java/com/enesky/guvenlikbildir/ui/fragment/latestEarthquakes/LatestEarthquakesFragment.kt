@@ -101,7 +101,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             GlobalScope.launch(Dispatchers.Main) {
                 if (response != null && response is Result<*>) {
                     when (response) {
-                        Status.SUCCESS -> ""
+                        Status.SUCCESS -> return@launch
                         Status.FAILURE -> requireContext().showToast(response.data.toString())
                     }
                 }

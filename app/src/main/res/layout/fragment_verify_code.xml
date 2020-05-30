@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.enesky.guvenlikbildir.ui.activity.login.verify.VerifyCodeVM" />
+            type="com.enesky.guvenlikbildir.ui.fragment.options.login.verify.VerifyCodeVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.activity.login.verify.VerifyCodeActivity">
+        tools:context=".ui.fragment.options.login.verify.VerifyCodeFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_verify_code"

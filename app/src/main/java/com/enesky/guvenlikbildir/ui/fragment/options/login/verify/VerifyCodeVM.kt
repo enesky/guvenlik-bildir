@@ -1,8 +1,8 @@
-package com.enesky.guvenlikbildir.ui.activity.login.verify
+package com.enesky.guvenlikbildir.ui.fragment.options.login.verify
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.enesky.guvenlikbildir.databinding.ActivityVerifyCodeBinding
+import com.enesky.guvenlikbildir.databinding.FragmentVerifyCodeBinding
 import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 class VerifyCodeVM : BaseViewModel() {
@@ -12,7 +12,7 @@ class VerifyCodeVM : BaseViewModel() {
     }
     val inputsEnabled: LiveData<Boolean> = _inputsEnabled
 
-    fun init(binding: ActivityVerifyCodeBinding) {
+    fun init(binding: FragmentVerifyCodeBinding) {
         setViewDataBinding(binding)
     }
 
