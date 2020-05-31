@@ -37,6 +37,7 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
             behavior = BottomSheetBehavior.from(bottomSheet!!)
             behavior?.isFitToContents = true
             behavior?.isHideable = false
+            behavior?.isDraggable = false
             behavior?.state = BottomSheetBehavior.STATE_EXPANDED
             behavior?.halfExpandedRatio = 0.99f
 

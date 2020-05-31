@@ -7,9 +7,7 @@ import com.enesky.guvenlikbildir.viewModel.BaseViewModel
 
 class VerifyCodeVM : BaseViewModel() {
 
-    private val _inputsEnabled = MutableLiveData<Boolean>().apply {
-        value = true
-    }
+    private val _inputsEnabled = MutableLiveData(true)
     val inputsEnabled: LiveData<Boolean> = _inputsEnabled
 
     fun init(binding: FragmentVerifyCodeBinding) {

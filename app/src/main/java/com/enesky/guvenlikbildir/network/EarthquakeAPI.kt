@@ -55,8 +55,6 @@ class EarthquakeAPI {
                 }
             }
 
-            //Log.i("EarthquakeAPI - earthquakeList", earthquakeList.toString())
-
             return earthquakeList.toList()
         }
 

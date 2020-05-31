@@ -62,6 +62,7 @@ class LocationAPI (
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun requestLocationUpdatesWithGoogleApi() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
 

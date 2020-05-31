@@ -10,9 +10,7 @@ import com.hadilq.liveevent.LiveEvent
 
 class LatestEarthquakesVM : BaseViewModel(), EarthquakePagingAdapter.EarthquakeItemListener{
 
-    val filterIndex = MutableLiveData<Int>().apply {
-        value = 0
-    }
+    val filterIndex = MutableLiveData(0)
 
     val whereTo = LiveEvent<Any>()
     val onFilterIndexChange = LiveEvent<Int>()

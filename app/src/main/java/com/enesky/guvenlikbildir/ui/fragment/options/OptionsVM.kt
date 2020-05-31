@@ -13,12 +13,10 @@ import com.hadilq.liveevent.LiveEvent
 
 class OptionsVM : BaseViewModel(), OptionAdapter.OptionListListener {
 
-    val notificationResIdLive = MutableLiveData<Int>().apply {
-        value = notificationIconResId
-    }
+    val notificationResIdLive = MutableLiveData(notificationIconResId)
 
-    val optionList = MutableLiveData<List<OptionItem>>().apply {
-        value = listOf(
+    val optionList = MutableLiveData(
+        listOf(
             OptionItem(R.drawable.ic_contact, getString(R.string.item_option_0)),
             OptionItem(R.drawable.ic_feedback, getString(R.string.item_option_1)),
             OptionItem(R.drawable.ic_report_24dp, getString(R.string.label_sms_report_history)),
@@ -32,7 +30,7 @@ class OptionsVM : BaseViewModel(), OptionAdapter.OptionListListener {
             OptionItem(R.drawable.ic_about, getString(R.string.item_option_8))
             //OptionItem(R.drawable.ic_exit_to_app, getString(R.string.item_option_9))
         )
-    }
+    )
 
     private val _optionListAdapter = MutableLiveData<OptionAdapter>()
     val optionAdapter: LiveData<OptionAdapter> = _optionListAdapter

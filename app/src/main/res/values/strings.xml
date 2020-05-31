@@ -1,16 +1,35 @@
 <resources>
 
+    <!-- General Strings -->
+    <string name="label_latest_earthquakes">Son Depremler</string>
+    <string name="label_notify">Güvenlik Bildir</string>
+    <string name="label_options">Seçenekler</string>
+    <string name="label_google_maps">Google Maps\'e Yönlendiriliyorsunuz…</string>
+    <string name="link_github">https://github.com/EnesKy/guvenlik-bildir</string>
+    <string name="email">eneskamilyilmaz@gmail.com</string>
+    <string name="label_mail_header">Güvenlik Bildir: Görüş - Öneri</string>
+    <string name="label_mail_body">Görüş ve önerilerinizi buraya yazınız…</string>
+    <string name="label_save">Kaydet</string>
+    <string name="label_no_gps_connection_found">Konum bilgisine erişilemiyor. \n Lütfen Konum servislerini (GPS) aktif hale getiriniz.</string>
+    <string name="label_permission_granted">İzin alındı.</string>
+    <string name="label_permission_denied">İzin reddedildi.</string>
+    <string name="label_denied_permission_found">Reddettiğiniz izinler bulundu.</string>
+    <string name="label_require_permission">İlgili fonksiyonları kullanabilmeniz için izniniz gerekiyor.</string>
+    <string name="label_grant_permission">İzin ver</string>
+    <string name="label_deny_permission">İzin verme</string>
+    <string name="label_all_permissions_granted">İzinler tamamen reddedildi.</string>
+    <string name="label_pls_grant_permission">İlgili fonksiyonları kullanabilmek için lütfen ayarlardaki izinler sekmesinde bulunan izinlere onay veriniz.</string>
+    <string name="label_open_app_settings">Uygulama Ayarlarını Aç</string>
+    <string name="label_cancel">İptal</string>
+    <string name="label_default_safe_sms">Güvendeyim.</string>
+    <string name="label_default_unsafe_sms">Güvende hissetmiyorum.\nLütfen yardımcı olun.</string>
+    <string name="label_map_link">"\nBilinen Son Konum: \nhttps://www.google.com/maps/place/%s</string>
+
+    <!-- Login - VerifyCode Fragment Strings -->
     <string name="action_sign_in_short">Giriş Yap</string>
     <string name="welcome">"Hoşgeldin !"</string>
     <string name="invalid_phone_number">Geçersiz telefon numarası</string>
     <string name="login_failed">"Giriş başarısız"</string>
-
-    <string name="title_activity_main">MainActivity</string>
-
-    <string name="label_latest_earthquakes">Son Depremler</string>
-    <string name="label_notify">Güvenlik Bildir</string>
-    <string name="label_options">Seçenekler</string>
-
     <string name="label_time_up">Süre doldu.</string>
     <string name="hint_phone_number">Telefon numarası</string>
     <string name="hint_password">Parola</string>
@@ -21,6 +40,28 @@
     <string name="label_max_time">60</string>
     <string name="label_resend_code">Kodu tekrar gönder</string>
     <string name="label_waiting_info">Doğrulama kodu bekleniyor…</string>
+    <string name="label_login_failed">Giriş başarısız.</string>
+    <string name="label_invalid_phone_number">Geçersiz telefon numarası</string>
+    <string name="label_empty_input">Lütfen giriş yapınız.</string>
+    <string name="label_connection_not_found">İnternet bağlantısı bulunamadı.\nLütfen tekrar deneyiniz.</string>
+    <string name="label_code_caught">Doğrulama kodu yakalandı.</string>
+
+    <!-- LatestEarthquakesFragment Strings -->
+    <string name="label_filter_all">Hepsi</string>
+    <string name="label_filter_second">0 – 3</string>
+    <string name="label_filter_third">3 – 4.5</string>
+    <string name="label_filter_fourth"><![CDATA[> 4.5]]></string>
+    <string name="label_earthquake_placeholder">Kriterlere uygun deprem bulunamadı.</string>
+    <string name="label_location">Yer: </string>
+    <string name="label_depth">Derinlik: </string>
+    <string name="label_date">Tarih: </string>
+    <string name="label_kilometer">km</string>
+    <string name="label_felt_it">Hissettim.</string>
+    <string name="label_not_felt_it">Hissetmedim.</string>
+    <string name="label_share">Paylaş</string>
+    <string name="label_copy">Panoya Kopyala</string>
+
+    <!-- NotifyFragment Strings -->
     <string name="label_calling_155">155 - Polis Aranıyor…</string>
     <string name="label_calling_112">112 - Acil Aranıyor…</string>
     <string name="label_calling_110">110 - İftaiye Aranıyor…</string>
@@ -31,11 +72,10 @@
     <string name="label_title_acil">Acil Durum Telefon Numaraları</string>
     <string name="label_im_safe">Güvendeyim.</string>
     <string name="label_im_not_safe">Güvende değilim.</string>
-    <string name="label_google_maps">Google Maps\'e Yönlendiriliyorsunuz…</string>
+    <string name="label_pls_add_contact">Lütfen sms göndermek için kişi ekleyiniz.</string>
+    <string name="label_cancel_with_sec">İptal (%d)</string>
 
-    <string name="link_github">https://github.com/EnesKy/guvenlik-bildir</string>
-    <string name="email">eneskamilyilmaz@gmail.com</string>
-
+    <!-- OptionsFragment Strings -->
     <string name="item_option_0">Kimlere SMS göndereceğini seç</string>
     <string name="item_option_1">Gönderilecek SMS\'leri düzenle</string>
     <string name="item_option_2">Afetler Hakkında Bilgilendirmeler</string>
@@ -47,70 +87,37 @@
     <string name="item_option_8">Uygulama Hakkında</string>
     <string name="item_option_9">Oturumu Kapat</string>
     <string name="item_option_10">Bildirim Ayarları</string>
-    <string name="label_mail_header">Güvenlik Bildir: Görüş - Öneri</string>
-    <string name="label_mail_body">Görüş ve önerilerinizi buraya yazınız…</string>
-    <string name="label_save">Kaydet</string>
-    <string name="title_unsafe_sms">Güvende değilsen gönderilecek SMS :</string>
-    <string name="title_safe_sms">Güvendeysen gönderilecek SMS :</string>
+    <string name="label_about">Uygulama Hakkında</string>
+    <string name="label_notification_info">Büyüklüğü %s ve üstü olan depremler hakkında bildirim almak istiyorum.</string>
+
+    <!-- AddContacts - Contacts Fragment Strings -->
     <string name="label_no_contact_found">Kayıtlı kişi bulunamadı.</string>
     <string name="label_saved_contacts">Kayıtlı Kişiler</string>
     <string name="label_add_contact">Kişi Ekle</string>
-    <string name="label_add_contact_with_number">Ekle (%d)</string>
-    <string name="label_no_contact_in_device">Rehberinizde kayıtlı kişi bulunamadı.</string>
-
-    <string name="label_location">Yer: </string>
-    <string name="label_depth">Derinlik: </string>
-    <string name="label_date">Tarih: </string>
-    <string name="label_kilometer">km</string>
-    <string name="label_felt_it">Hissettim</string>
-    <string name="label_not_felt_it">Hissetmedim</string>
-    <string name="label_share">Paylaş</string>
-    <string name="label_copy">Panoya Kopyala</string>
-
-    <string name="label_about">Uygulama Hakkında\nYapım aşamasındadır.</string>
-    <string name="label_filter_all">Hepsi</string>
-    <string name="label_filter_second">0 – 3</string>
-    <string name="label_filter_third">3 – 4.5</string>
-    <string name="label_filter_fourth"><![CDATA[> 4.5]]></string>
-
-    <string name="label_earthquake_placeholder">Kriterlere uygun deprem bulunamadı.</string>
-
-    <string name="label_login_failed">Giriş başarısız.</string>
-    <string name="label_invalid_phone_number">Geçersiz telefon numarası</string>
-    <string name="label_empty_input">Lütfen giriş yapınız.</string>
-    <string name="label_connection_not_found">İnternet bağlantısı bulunamadı.\nLütfen tekrar deneyiniz.</string>
-    <string name="label_code_caught">Doğrulama kodu yakalandı.</string>
-    <string name="label_notification_info">Büyüklüğü %s ve üstü olan depremler hakkında bildirim almak istiyorum.</string>
-
-    <string name="label_no_gps_connection_found">Konum bilgisine erişilemiyor. \n Lütfen Konum servislerini (GPS) aktif hale getiriniz.</string>
-    <string name="label_permission_granted">Izin alındı.</string>
-    <string name="label_permission_denied">Izin reddedildi.</string>
-    <string name="label_denied_permission_found">Reddettiğiniz izinler bulundu.</string>
-    <string name="label_require_permission">İlgili fonksiyonları kullanabilmeniz için izniniz gerekiyor.</string>
-    <string name="label_grant_permission">İzin ver</string>
-    <string name="label_deny_permission">İzin verme</string>
-    <string name="label_all_permissions_granted">İzinler tamamen reddedildi.</string>
-    <string name="label_pls_grant_permission">İlgili fonksiyonları kullanabilmek için lütfen ayarlardaki izinler sekmesinde bulunan izinlere onay veriniz.</string>
-    <string name="label_open_app_settings">Uygulama Ayarlarını Aç</string>
-    <string name="label_cancel">İptal</string>
     <string name="label_nothing_found_in_contacts">Rehberinizde kayıtlı kişi bulunamadı.</string>
     <string name="label_add_new_contact">Ekle (0)</string>
-    <string name="label_last_known_loc">Bilinen Son Konum :</string>
-    <string name="label_modify_sms">Sms\'leri Düzenle</string>
-    <string name="label_sms_preview">Gönderilecek SMS :</string>
-    <string name="label_confirm_location_and_send">Konumu Doğrula ve Gönder</string>
+    <string name="label_add_contact_with_number">Ekle (%d)</string>
 
+    <!-- ModifySmsFragment Strings -->
+    <string name="label_modify_sms">Sms\'leri Düzenle</string>
+    <string name="title_unsafe_sms">Güvende değilsen gönderilecek SMS:</string>
+    <string name="title_safe_sms">Güvendeysen gönderilecek SMS:</string>
+
+    <!-- SmsReportHistoryFragment Strings -->
     <string name="label_sms_report_history">Geçmiş Sms Raporları</string>
     <string name="label_no_sms_report_found">Kayıtlı sms raporu bulunamadı.</string>
     <string name="label_sms_history_count">%d sms raporu bulundu.</string>
-    <string name="label_sending">Gönderiliyor</string>
     <string name="label_sms_report_success_rate">Başarı Oranı: %</string>
     <string name="label_report_date">Gönderme Tarihi: %s</string>
     <string name="label_sms_report_type">Rapor Tipi: %s</string>
-    <string name="label_pls_add_contact">Lütfen sms göndermek için kişi ekleyiniz.</string>
-    <string name="label_cancel_with_sec">İptal (%d)</string>
-    <string name="label_history_sent_sms">Gönderilen SMS:</string>
-    <string name="label_location_sent">Gönderilen Konum:</string>
+
+    <!-- SmsReportBSDFragment Strings -->
+    <string name="label_sms_preview">Gönderilecek Sms:</string>
+    <string name="label_last_known_loc">Bilinen Son Konum:</string>
+    <string name="label_confirm_location_and_send">Konumu Doğrula ve Gönder</string>
     <string name="label_sent">Gönderme işlemi tamamlandı.</string>
+    <string name="label_sent_sms_preview">Gönderilen Sms:</string>
+    <string name="label_location_sent">Gönderilen Konum:</string>
+    <string name="label_sending">Gönderiliyor</string>
 
 </resources>

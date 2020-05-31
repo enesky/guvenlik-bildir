@@ -38,12 +38,13 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
             else SmsReportStatus.STAND_BY
 
         val currentDate: Date = Calendar.getInstance().time
-        val sendingDate: String = SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(currentDate)
+        val sendingDate: String =
+            SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(currentDate)
 
         val smsReport = SmsReport(
             isSafeSms = isSafeSms,
             sendingDate = sendingDate,
-            sentSms = sentSms + "\n" +locationMapWithLink,
+            sentSms = sentSms + "\n" + locationMapWithLink,
             lastKnownLocation = lastKnownLocation!!
         )
 
@@ -71,15 +72,21 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
         newStatus: SmsReportStatus
     ) {
         GlobalScope.launch(Dispatchers.Default) {
-            val tempSmsReport: SmsReport = smsReport ?: smsReportDao.getAllReports().last()
+            val tempSmsReport: SmsReport =
+                if (smsReport != null) {
+                    smsReport
+                } else {
+                    val allReports = smsReportDao.getAllReports()
+                    if (!allReports.isNullOrEmpty()) smsReportDao.getAllReports().last()
+                    else return@launch
+                }
 
-            loop@ for ((index: Int, cs: ContactStatus) in tempSmsReport.contactReportList.withIndex()) {
+            loop@ for ((index: Int, cs: ContactStatus) in tempSmsReport.contactReportList.withIndex())
                 if (cs == contactStatus || cs.contact == contact) {
                     tempSmsReport.contactReportList[index].smsReportStatus = newStatus
                     smsReportDao.update(tempSmsReport)
                     break@loop
                 }
-            }
         }
     }
 
@@ -97,8 +104,10 @@ class SmsReportRepository(private val smsReportDao: SmsReportDao) {
                 smsReports.forEach { smsReport ->
                     smsReport.contactReportList.forEachIndexed { index, contactStatus ->
                         if (contactStatus.smsReportStatus == SmsReportStatus.IN_QUEUE ||
-                            contactStatus.smsReportStatus == SmsReportStatus.STAND_BY) {
-                            smsReport.contactReportList[index].smsReportStatus = SmsReportStatus.FAILED
+                            contactStatus.smsReportStatus == SmsReportStatus.STAND_BY
+                        ) {
+                            smsReport.contactReportList[index].smsReportStatus =
+                                SmsReportStatus.FAILED
                             changed = true
                         }
                     }

@@ -35,9 +35,9 @@ class MainVM (appDatabase: AppDatabase) : BaseViewModel(),
     private val _responseHandler = ResponseHandler()
     val responseHandler: ResponseHandler = _responseHandler
 
-    var filterText = MutableLiveData<String>().apply { value = "" }
-    var minMag = MutableLiveData<Double>().apply { value = 0.0 }
-    var maxMag = MutableLiveData<Double>().apply { value = 12.0 }
+    var filterText = MutableLiveData("")
+    var minMag = MutableLiveData(0.0)
+    var maxMag = MutableLiveData(12.0)
 
     val isViewsLoaded = MutableLiveData<Boolean>()
     val onClick = LiveEvent<Any>()

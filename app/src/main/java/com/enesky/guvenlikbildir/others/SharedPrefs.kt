@@ -20,17 +20,15 @@ var lastKnownLocation: String?
     set(value) = App.mPrefs.edit { putString(Constants.lastKnownLocation,  value) }
 
 var safeSms: String?
-    get() = App.mPrefs.getString(Constants.safeSms, "Güvendeyim.")
+    get() = App.mPrefs.getString(Constants.safeSms, App.mInstance.getString(R.string.label_default_safe_sms))
     set(value) = App.mPrefs.edit { putString(Constants.safeSms, value) }
 
 var unsafeSms: String?
-    get() = App.mPrefs.getString(Constants.unsafeSms, "Güvende hissetmiyorum.\n" + "Lütfen yardımcı olun.")
+    get() = App.mPrefs.getString(Constants.unsafeSms, App.mInstance.getString(R.string.label_default_unsafe_sms))
     set(value) = App.mPrefs.edit { putString(Constants.unsafeSms, value) }
 
 var locationMapWithLink: String?
-    get() = App.mPrefs.getString(
-        Constants.locationMapLink, "\nBilinen Son Konum: \n" +
-                    "https://www.google.com/maps/place/$lastKnownLocation")
+    get() = App.mPrefs.getString(Constants.locationMapLink, App.mInstance.getString(R.string.label_map_link, lastKnownLocation))
     set(value) = App.mPrefs.edit { putString(Constants.locationMapLink, value) }
 
 var lastLoadedEarthquake: Earthquake?
