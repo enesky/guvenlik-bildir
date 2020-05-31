@@ -165,7 +165,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_sms_report"
-            style="@style/scrollbar_style"
+            style="@style/scrollbarStyle"
             setAdapter="@{viewModel.smsReportAdapter}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

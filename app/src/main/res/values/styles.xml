@@ -75,19 +75,8 @@
         <item name="rippleColor">@color/colorPrimary</item>
     </style>
 
-    <style name="Scrollbar_Grey_Track">
-        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
-        <item name="android:scrollbarStyle">outsideOverlay</item>
-        <item name="android:scrollbars">vertical</item>
-        <item name="android:fadeScrollbars">true</item>
-        <item name="android:scrollbarSize">8dp</item>
-        <item name="android:scrollbarFadeDuration">1000</item>
-        <item name="android:scrollbarDefaultDelayBeforeFade">500</item>
-        <item name="android:scrollbarThumbVertical">@drawable/bg_scrollbar_thumb</item>
-        <item name="android:scrollbarTrackVertical">@drawable/bg_scrollbar_track</item>
-    </style>
 
-    <style name="Scrollbar_White_Track">
+    <style name="scrollbarStyle">
         <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
         <item name="android:scrollbarStyle">outsideOverlay</item>
         <item name="android:scrollbars">vertical</item>
@@ -96,7 +85,7 @@
         <item name="android:scrollbarFadeDuration">1000</item>
         <item name="android:scrollbarDefaultDelayBeforeFade">500</item>
         <item name="android:scrollbarThumbVertical">@drawable/bg_scrollbar_thumb</item>
-        <item name="android:scrollbarTrackVertical">@drawable/bg_scrollbar_track</item>
+        <item name="android:scrollbarTrackVertical">@null</item>
     </style>
 
 </resources>

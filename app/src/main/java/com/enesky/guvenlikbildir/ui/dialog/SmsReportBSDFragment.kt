@@ -225,14 +225,10 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         val list = smsReportVM.smsReport.value?.contactReportList
         val itemHeight = smsReportVM.smsReportAdapter.value?.itemHeight
 
-        if (itemHeight != 0 && list != null && list.size > VISIBLE_RECYCLER_VIEW_ITEM) {
-            rv_sms_report.layoutParams.height = itemHeight!! * VISIBLE_RECYCLER_VIEW_ITEM
-            rv_sms_report.isVerticalScrollBarEnabled = true
-        } else {
-            rv_sms_report.isVerticalScrollBarEnabled = false
-        }
+        if (itemHeight != 0 && list != null && list.size > VISIBLE_RECYCLER_VIEW_ITEM)
+            rv_sms_report?.layoutParams?.height = itemHeight!! * VISIBLE_RECYCLER_VIEW_ITEM
         if (makeItVisible)
-            rv_sms_report.makeItVisible()
+            rv_sms_report?.makeItVisible()
     }
 
     companion object {
