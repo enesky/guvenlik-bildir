@@ -123,7 +123,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
         latestEarthquakesVM.whereTo.observe(viewLifecycleOwner, Observer {
             if (it is Earthquake)
                 EarthquakeItemOptionsBSDFragment.newInstance(it)
-                    .show(parentFragmentManager,"EarthquakeItemOptionsBSDFragment")
+                    .show(activity!!.supportFragmentManager,"EarthquakeItemOptionsBSDFragment")
         })
 
         latestEarthquakesVM.onFilterIndexChange.observe(viewLifecycleOwner, Observer {

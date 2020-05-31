@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_sms_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Created by Enes Kamil YILMAZ on 18.05.2020
@@ -174,6 +175,22 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             dots?.makeItGone()
             refreshUi()
         }
+        if (smsReport != null) {
+            val successCount = 0
+            for (contactStatus in smsReport!!.contactReportList)
+                if (contactStatus.smsReportStatus == SmsReportStatus.SUCCESS ||
+                        contactStatus.smsReportStatus == SmsReportStatus.DELIVERED)
+                    successCount.inc()
+
+            val data = Bundle().apply {
+                putInt("sent_sms_count", smsReport!!.contactReportList.size)
+                putInt("sent_sms_status_success", successCount)
+            }
+            App.mAnalytics.logEvent("SmsReport", data)
+            Timber.tag("SmsReportBSDFragment")
+                .d("SmsReport -> Count: $smsReport!!.contactReportList.size, SuccessCount: $successCount")
+        }
+
     }
 
     override fun dismiss() {

@@ -1,6 +1,9 @@
 package com.enesky.guvenlikbildir.ui.fragment.notify
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +14,7 @@ import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.database.AppDatabase
 import com.enesky.guvenlikbildir.database.entity.Contact
 import com.enesky.guvenlikbildir.databinding.FragmentNotifyBinding
-import com.enesky.guvenlikbildir.extensions.getViewModel
-import com.enesky.guvenlikbildir.extensions.requireReadContactsPermission
-import com.enesky.guvenlikbildir.extensions.setTouchAnimation
-import com.enesky.guvenlikbildir.extensions.showDialog
+import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
@@ -45,30 +45,54 @@ class NotifyFragment : BaseFragment() {
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
         cl_polis.setTouchAnimation {
-            openInfoCountDownDialog(Constants.polis)
+            activity!!.showDialog(
+                title = getString(R.string.label_calling_155),
+                message = getString(R.string.label_redirecting),
+                negativeButtonFunction = {
+                    call(Constants.polis)
+                },
+                isNegativeButtonEnabled = true,
+                autoInvoke = true
+            )
         }
 
         cl_yardım.setTouchAnimation {
-            openInfoCountDownDialog(Constants.acilYardım)
+            activity!!.showDialog(
+                title = getString(R.string.label_calling_112),
+                message = getString(R.string.label_redirecting),
+                negativeButtonFunction = {
+                    call(Constants.acil)
+                },
+                isNegativeButtonEnabled = true,
+                autoInvoke = true
+            )
         }
 
         cl_iftaiye.setTouchAnimation {
-            openInfoCountDownDialog(Constants.itfaiye)
+            activity!!.showDialog(
+                title = getString(R.string.label_calling_110),
+                message = getString(R.string.label_redirecting),
+                negativeButtonFunction = {
+                    call(Constants.itfaiye)
+                },
+                isNegativeButtonEnabled = true,
+                autoInvoke = true
+            )
         }
 
         iv_safe.setTouchAnimation {
             if (selectedContactList.isNullOrEmpty())
-                showInfo()
+                showNoContactsFoundDialog()
             else
-                SmsReportBSDFragment.newInstance(
-                    isHistory = false,
-                    isSafeSms = true
-                ).show(activity!!.supportFragmentManager,"")
+               SmsReportBSDFragment.newInstance(
+                   isHistory = false,
+                   isSafeSms = true
+               ).show(activity!!.supportFragmentManager,"")
         }
 
         iv_unsafe.setTouchAnimation {
             if (selectedContactList.isNullOrEmpty())
-                showInfo()
+                showNoContactsFoundDialog()
             else
                 SmsReportBSDFragment.newInstance(
                     isHistory = false,
@@ -80,14 +104,24 @@ class NotifyFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         mainVM.getSelectedContactList().observe(viewLifecycleOwner, Observer { it ->
             selectedContactList = it
         })
-
     }
 
-    private fun showInfo() {
+    private fun call(phoneNumber: String) {
+        activity!!.requireCallPhonePermission {
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneNumber"))
+            startActivity(intent)
+
+            val params = Bundle().apply {
+                putString("dialed_number", phoneNumber)
+            }
+            App.mAnalytics.logEvent("calling_event", params)
+        }
+    }
+
+    private fun showNoContactsFoundDialog() {
         activity!!.showDialog(
             title = getString(R.string.label_no_contact_found),
             message = getString(R.string.label_pls_add_contact),
@@ -97,6 +131,18 @@ class NotifyFragment : BaseFragment() {
                     multipleStackNavigator!!.start(AddContactsFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
                 }
             }
+        )
+    }
+
+    private fun showGpsNotAvailableDialog() {
+        activity!!.showDialog(
+            title = com.enesky.guvenlikbildir.extensions.getString(R.string.label_no_gps_connection_found),
+            message = com.enesky.guvenlikbildir.extensions.getString(R.string.label_redirecting_to_gps_settings),
+            negativeButtonFunction = {
+                activity!!.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            },
+            isNegativeButtonEnabled = true,
+            autoInvoke = true
         )
     }
 

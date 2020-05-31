@@ -215,7 +215,7 @@ class MainActivity : BaseActivity(),
                 putDouble("earthquake_mag", earthquake.magML)
                 putString("earthquake_date", earthquake.dateTime)
             }
-            App.mAnalytics.logEvent("MainActivity_clicked2notification", params)
+            App.mAnalytics.logEvent("notification_click", params)
         }
     }
 

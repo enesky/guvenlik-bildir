@@ -10,7 +10,7 @@
     <string name="label_mail_header">Güvenlik Bildir: Görüş - Öneri</string>
     <string name="label_mail_body">Görüş ve önerilerinizi buraya yazınız…</string>
     <string name="label_save">Kaydet</string>
-    <string name="label_no_gps_connection_found">Konum bilgisine erişilemiyor. \n Lütfen Konum servislerini (GPS) aktif hale getiriniz.</string>
+    <string name="label_no_gps_connection_found">Konum servisine (GPS) erişilemiyor.</string>
     <string name="label_permission_granted">İzin alındı.</string>
     <string name="label_permission_denied">İzin reddedildi.</string>
     <string name="label_denied_permission_found">Reddettiğiniz izinler bulundu.</string>
@@ -24,6 +24,11 @@
     <string name="label_default_safe_sms">Güvendeyim.</string>
     <string name="label_default_unsafe_sms">Güvende hissetmiyorum.\nLütfen yardımcı olun.</string>
     <string name="label_map_link">"\nBilinen Son Konum: \nhttps://www.google.com/maps/place/%s</string>
+    <string name="label_sending_in_progress">Sms gönderme işlemi devam ediyor…</string>
+    <string name="label_cant_close">Gönderme işlemi tamamlanmadan bu ekranı kapatamazsınız.</string>
+    <string name="label_continuing">Devam ediliyor…</string>
+    <string name="label_redirecting">Arama ekranına yönlendiriliyorsunuz…</string>
+    <string name="label_redirecting_to_gps_settings">Konum servisi ayarları ekranına yönlendiriliyorsunuz…</string>
 
     <!-- Login - VerifyCode Fragment Strings -->
     <string name="action_sign_in_short">Giriş Yap</string>

@@ -66,9 +66,9 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
             outsideOfSheet?.setOnClickListener {
                 if (dialog!!.isShowing) {
                     activity?.showDialog(
-                        title = "Sms gönderme işlemi devam ediyor...",
-                        message = "Gönderme işlemi tamamlanmadan bu ekranı kapatamazsınız.",
-                        positiveButtonText = "Devam ediliyor...",
+                        title = getString(R.string.label_sending_in_progress),
+                        message = getString(R.string.label_cant_close),
+                        positiveButtonText = getString(R.string.label_continuing),
                         positiveButtonFunction = { },
                         countDownOnNegative = false,
                         isNegativeButtonEnabled = false
@@ -82,9 +82,9 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
                     override fun handleOnBackPressed() {
                         if (dialog!!.isShowing) {
                             activity?.showDialog(
-                                title = "Sms gönderme işlemi devam ediyor...",
-                                message = "Gönderme işlemi tamamlanmadan bu ekranı kapatamazsınız.",
-                                positiveButtonText = "Devam ediliyor...",
+                                title = getString(R.string.label_sending_in_progress),
+                                message = getString(R.string.label_cant_close),
+                                positiveButtonText = getString(R.string.label_continuing),
                                 positiveButtonFunction = { },
                                 countDownOnNegative = false,
                                 isNegativeButtonEnabled = false

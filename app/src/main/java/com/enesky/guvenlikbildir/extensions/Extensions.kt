@@ -3,17 +3,20 @@ package com.enesky.guvenlikbildir.extensions
 import android.animation.ObjectAnimator
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.Handler
+import android.provider.Settings
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.*
@@ -29,9 +32,9 @@ import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.others.Constants
 import com.enesky.guvenlikbildir.others.lastKnownLocation
+import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.enesky.guvenlikbildir.ui.fragment.options.login.LoginFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.login.verify.VerifyCodeFragment
-import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.PhoneAuthProvider
@@ -80,6 +83,7 @@ fun View.setBackgroundTint(@ColorRes color: Int) {
     backgroundTintList = ContextCompat.getColorStateList(context, color)
 }
 
+@SuppressLint("ClickableViewAccessibility")
 fun View.setTouchAnimation(function: (() -> Unit)?) {
     this.setOnTouchListener { p0, p1 ->
         when (p1?.action) {
@@ -238,6 +242,7 @@ fun String.isPhoneNumberValid(): Boolean {
     return Patterns.PHONE.matcher(this).matches()
 }
 
+@SuppressLint("SimpleDateFormat")
 fun String.formatDateTime(): String {
     val date = SimpleDateFormat(Constants.DEFAULT_K_DATE_TIME_FORMAT).parse(this)
     return SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT).format(date!!)
@@ -360,24 +365,25 @@ fun calculateExecutionTime(function: () -> Any) {
 fun Context.showDialog(
     title: String,
     message: String,
-    positiveButtonText: String,
-    positiveButtonFunction: () -> Any?,
+    positiveButtonText: String = "",
+    positiveButtonFunction: (() -> Any?)? = { },
     negativeButtonText: String = getString(R.string.label_cancel),
-    negativeButtonFunction: (() -> Any?)? = null,
+    negativeButtonFunction: (() -> Any?)? = { },
     countDownOnNegative: Boolean = true,
-    isNegativeButtonEnabled: Boolean = true
+    isPositiveButtonEnabled: Boolean = true,
+    isNegativeButtonEnabled: Boolean = true,
+    autoInvoke: Boolean = false
 ) {
     val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
         .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(positiveButtonText) { dialog, _ ->
-                    positiveButtonFunction()
-                    dialog.dismiss()
+            positiveButtonFunction?.invoke()
+            dialog.dismiss()
         }
         .setNegativeButton(negativeButtonText) { dialog, _ ->
-            if (negativeButtonFunction != null)
-                negativeButtonFunction()
+            negativeButtonFunction?.invoke()
             dialog.dismiss()
         }
         .setCancelable(true)
@@ -389,10 +395,14 @@ fun Context.showDialog(
         val text = if (countDownOnNegative || isNegativeButtonEnabled) negativeButtonText
                             else positiveButtonText
 
+        if (!isPositiveButtonEnabled)
+            positiveButton.makeItGone()
+
         if (!isNegativeButtonEnabled)
             negativeButton.makeItGone()
 
         val timer = object: CountDownTimer(3200, 1000) {
+            @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 if (countDownOnNegative || isNegativeButtonEnabled)
                     negativeButton.text = "$text (${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)})"
@@ -400,12 +410,33 @@ fun Context.showDialog(
                     positiveButton.text = "$text (${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)})"
             }
             override fun onFinish() {
-                if (materialAlertDialogBuilder.isShowing)
+                if (materialAlertDialogBuilder.isShowing) {
+                    if (autoInvoke) {
+                        if (isPositiveButtonEnabled)
+                            positiveButtonFunction?.invoke()
+                        if (isNegativeButtonEnabled)
+                            negativeButtonFunction?.invoke()
+                    }
                     materialAlertDialogBuilder.dismiss()
+                }
             }
         }
         timer.start()
     }
 
     materialAlertDialogBuilder.show()
+}
+
+fun Context.isLocationEnabled(): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        lm != null && lm.isLocationEnabled
+    } else {
+        val mode: Int = Settings.Secure.getInt(
+            contentResolver,
+            Settings.Secure.LOCATION_MODE,
+            Settings.Secure.LOCATION_MODE_OFF
+        )
+        mode != Settings.Secure.LOCATION_MODE_OFF
+    }
 }

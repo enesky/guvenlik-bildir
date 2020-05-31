@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.ui.activity.main.MainActivity
-import com.enesky.guvenlikbildir.ui.dialog.InfoCountDownDialog
 import com.trendyol.medusalib.navigator.MultipleStackNavigator
 
 abstract class BaseFragment: Fragment() {
@@ -24,10 +23,6 @@ abstract class BaseFragment: Fragment() {
     private fun initStackNavigator(context: Context?) {
         if (context is MainActivity && multipleStackNavigator == null)
             multipleStackNavigator = context.navigator
-    }
-
-    fun openInfoCountDownDialog(tag: String) {
-        InfoCountDownDialog().show(parentFragmentManager, tag)
     }
 
 }

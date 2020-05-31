@@ -86,7 +86,7 @@ class SmsReportHistoryFragment : BaseFragment() {
             if (it != null) {
                 SmsReportBSDFragment.newInstance(
                     isHistory = true
-                ).show(childFragmentManager, "SmsReportBSDFragment")
+                ).show(activity!!.supportFragmentManager, "SmsReportBSDFragment")
             }
         })
 

@@ -46,7 +46,7 @@ object Constants {
 
     //Numbers
     const val polis = "155"
-    const val acilYardım = "112"
+    const val acil = "112"
     const val itfaiye = "110"
 
     const val defaultAnimationDuration = 250L

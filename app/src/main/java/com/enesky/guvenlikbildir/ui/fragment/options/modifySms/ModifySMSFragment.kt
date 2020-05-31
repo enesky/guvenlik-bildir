@@ -9,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import com.enesky.guvenlikbildir.App
 import com.enesky.guvenlikbildir.R
 import com.enesky.guvenlikbildir.databinding.FragmentModifySmsBinding
-import com.enesky.guvenlikbildir.extensions.*
+import com.enesky.guvenlikbildir.extensions.getViewModel
+import com.enesky.guvenlikbildir.extensions.makeItGone
+import com.enesky.guvenlikbildir.extensions.requireLocationPermission
 import com.enesky.guvenlikbildir.others.*
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -59,14 +61,6 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
 
         et_safe_sms.setText(safeSms)
         et_unsafe_sms.setText(unsafeSms)
-
-        tv_safe_location.setOnClickListener {
-            openInfoCountDownDialog(Constants.locationMapLink)
-        }
-
-        tv_unsafe_location.setOnClickListener {
-            openInfoCountDownDialog(Constants.locationMapLink)
-        }
 
         btn_save.setOnClickListener {
             safeSms = et_safe_sms.text.toString()

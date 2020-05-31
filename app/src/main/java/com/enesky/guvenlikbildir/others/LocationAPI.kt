@@ -2,13 +2,17 @@ package com.enesky.guvenlikbildir.others
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
-import com.enesky.guvenlikbildir.ui.dialog.InfoCountDownDialog
+import com.enesky.guvenlikbildir.R
+import com.enesky.guvenlikbildir.extensions.getString
+import com.enesky.guvenlikbildir.extensions.showDialog
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.*
@@ -104,19 +108,27 @@ class LocationAPI (
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
             override fun onProviderEnabled(provider: String?) {}
             override fun onProviderDisabled(provider: String?) {
-                InfoCountDownDialog().show(activity.supportFragmentManager, Constants.gpsSetting)
+                activity.showDialog(
+                    title = getString(R.string.label_no_gps_connection_found),
+                    message = getString(R.string.label_redirecting_to_gps_settings),
+                    negativeButtonFunction = {
+                        activity.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                    },
+                    isNegativeButtonEnabled = true,
+                    autoInvoke = true
+                )
             }
         }
 
         val gpsProvider = LocationManager.GPS_PROVIDER
         val networkProvider = LocationManager.NETWORK_PROVIDER
-        var finalProvider: String?
+        val finalProvider: String?
 
         val isNetworkEnabled = locationManager!!.isProviderEnabled(networkProvider)
 
         val gpsLocation: Location? = locationManager!!.getLastKnownLocation(gpsProvider)
         val networkLocation: Location? = locationManager!!.getLastKnownLocation(networkProvider)
-        var lastKnownLoc: Location?
+        val lastKnownLoc: Location?
 
         finalProvider = when {
             isNetworkEnabled -> networkProvider
