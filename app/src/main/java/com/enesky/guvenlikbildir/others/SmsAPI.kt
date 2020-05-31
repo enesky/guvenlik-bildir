@@ -43,7 +43,9 @@ class SmsAPI(
     private lateinit var sentPI: PendingIntent
     private lateinit var deliveredPI: PendingIntent
     private lateinit var smsReportRepository: SmsReportRepository
+    private var smsManager: SmsManager? = null
     private var smsApiListener: SmsApiListener? = null
+    private var selectedContactList: List<Contact>? = null
 
     private val SENT = "SMS_SENT"
     private val DELIVERED = "SMS_DELIVERED"
@@ -95,35 +97,40 @@ class SmsAPI(
         activity.registerReceiver(deliveredBroadcastReceiver, IntentFilter(DELIVERED))
 
         smsReportRepository = SmsReportRepository(AppDatabase.dbInstance!!.smsReportDao())
+
+        AppDatabase.dbInstance?.contactDao()?.getSelectedContactsFlow()?.asLiveData()?.
+            observe(activity, Observer { it ->
+                selectedContactList = it
+        })
+
     }
 
-    fun setListener(smsApiListener: SmsApiListener) {
+    private fun setListener(smsApiListener: SmsApiListener) {
         if (!::sentBroadcastReceiver.isInitialized && !::deliveredBroadcastReceiver.isInitialized)
             setReceivers()
+        if (smsManager == null)
+            smsManager = SmsManager.getDefault()
         this.smsApiListener = smsApiListener
     }
 
-    fun sendSMS(isSafe: Boolean) {
-        val selectedContactListLiveData =
-            AppDatabase.dbInstance?.contactDao()?.getSelectedContactsFlow()?.asLiveData()
-
-        selectedContactListLiveData?.observe(activity, Observer { it ->
+    fun sendSMS(isSafe: Boolean, smsApiListener: SmsApiListener) {
+        if (!selectedContactList.isNullOrEmpty())
             activity.requireSendSmsPermission {
-                sendIt(it, isSafe)
+                setListener(smsApiListener)
+                sendIt(selectedContactList, isSafe)
             }
-        })
     }
 
     private fun sendIt(list: List<Contact>?, isSafe: Boolean) {
         if (!list.isNullOrEmpty()) {
 
-            val text = if (isSafe) safeSms + locationMapWithLink
-            else unsafeSms + locationMapWithLink
+            val text =
+                if (isSafe) safeSms + "\n" + locationMapWithLink
+                else unsafeSms + "\n" + locationMapWithLink
 
             lastContact = list.last()
 
             try {
-                val smsManager = SmsManager.getDefault()
                 list.forEachIndexed { index, contact ->
                     triggerListener(
                         contact = contact,
@@ -146,7 +153,7 @@ class SmsAPI(
                         activity, index, deliverIntent, PendingIntent.FLAG_UPDATE_CURRENT
                     )
 
-                    smsManager.sendTextMessage(
+                    smsManager?.sendTextMessage(
                         contact.number,
                         null,
                         text,
@@ -202,6 +209,7 @@ class SmsAPI(
         if (::sentBroadcastReceiver.isInitialized && ::deliveredBroadcastReceiver.isInitialized) {
             activity.unregisterReceiver(sentBroadcastReceiver)
             activity.unregisterReceiver(deliveredBroadcastReceiver)
+            smsManager = null
             smsApiListener = null
         }
     }

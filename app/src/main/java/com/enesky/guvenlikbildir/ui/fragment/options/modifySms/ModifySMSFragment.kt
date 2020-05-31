@@ -113,6 +113,7 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
         }
 
         googleMap!!.setOnMapClickListener {}
+        googleMap!!.setOnMarkerClickListener { true }
 
         googleMap!!.setOnMapLoadedCallback {
             googleMap!!.addMarker(MarkerOptions().position(loc))

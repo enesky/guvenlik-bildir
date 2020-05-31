@@ -67,7 +67,7 @@
             android:id="@+id/placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_no_contact_in_device"
+            android:text="@string/label_nothing_found_in_contacts"
             android:textColor="@color/black56"
             android:textSize="@dimen/default_text_16"
             android:visibility="gone"

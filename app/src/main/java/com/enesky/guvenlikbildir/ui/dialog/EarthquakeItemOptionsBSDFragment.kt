@@ -154,6 +154,7 @@ class EarthquakeItemOptionsBSDFragment :
         googleMap.addCircle(circleOptions)
 
         googleMap.setOnMapClickListener {}
+        googleMap.setOnMarkerClickListener { true }
 
         googleMap.setOnMapLoadedCallback {
             googleMap.addMarker(MarkerOptions().position(loc))

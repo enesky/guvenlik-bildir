@@ -1,6 +1,9 @@
 package com.enesky.guvenlikbildir.ui.dialog
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -94,22 +97,33 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         supportMapFragment?.getMapAsync(this)
         mapContainer.setViewParent(cl_sheet)
 
+        cv_sms_preview.setOnLongClickListener {
+            val myClipboard = context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val myClip: ClipData = ClipData.newPlainText(getString(R.string.app_name), smsReport?.sentSms)
+            myClipboard.setPrimaryClip(myClip)
+            context!!.showToast("Panoya Kopyalandı.", false)
+            true
+        }
+
         if (isHistory) {
-            cv_confirm.makeItGone()
             setRecyclerViewHeight(true)
+            cv_confirm.makeItGone()
+            tv_title_sms_preview.text = getString(R.string.label_sent_sms_preview)
+            tv_title_last_known_loc.text = getString(R.string.label_location_sent)
         } else {
             cv_confirm.setOnClickListener {
                 cv_confirm.isEnabled = false
                 activity!!.requireSendSmsPermission {
                     setUncancellable(true)
-                    SmsAPI.instance.apply {
-                        setListener(this@SmsReportBSDFragment)
-                        sendSMS(isSafe = isSafeSms)
-                    }
 
                     GlobalScope.launch(Dispatchers.Main) {
                         smsReport = smsReportVM.smsReportRepository.createReport(isSafeSms, contactList, true)
                         smsReportVM.updateSmsReport(smsReport!!)
+
+                        SmsAPI.instance.sendSMS(
+                            isSafe = isSafeSms,
+                            smsApiListener = this@SmsReportBSDFragment
+                        )
                     }
 
                     googleMap?.uiSettings?.isMyLocationButtonEnabled = false
@@ -204,14 +218,19 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         }
 
         googleMap!!.setOnMapClickListener { }
+        googleMap!!.setOnMarkerClickListener { true }
     }
 
     private fun setRecyclerViewHeight(makeItVisible : Boolean) {
         val list = smsReportVM.smsReport.value?.contactReportList
         val itemHeight = smsReportVM.smsReportAdapter.value?.itemHeight
 
-        if (itemHeight != 0 && list != null && list.size > VISIBLE_RECYCLER_VIEW_ITEM)
+        if (itemHeight != 0 && list != null && list.size > VISIBLE_RECYCLER_VIEW_ITEM) {
             rv_sms_report.layoutParams.height = itemHeight!! * VISIBLE_RECYCLER_VIEW_ITEM
+            rv_sms_report.isVerticalScrollBarEnabled = true
+        } else {
+            rv_sms_report.isVerticalScrollBarEnabled = false
+        }
         if (makeItVisible)
             rv_sms_report.makeItVisible()
     }
