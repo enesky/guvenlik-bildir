@@ -1,8 +1,8 @@
-# guvenlik-bildir
+# Güvenlik Bildir
 
-**Güvenlik Bildir**; doğal afet veya diğer acil durumlarda sevdiklerinize güvende olup olmadığınızı bulunduğunuz konum ile beraber, hızlı bir şekilde bildirmenizi sağlar.
+Doğal afet veya diğer acil durumlarda sevdiklerinize güvende olup olmadığınızı bulunduğunuz konum ile beraber, hızlı bir şekilde bildirmenizi sağlar.
 
-**- Güvenlik Bildir uygulamasının amacı:**
+**- Uygulamanın amacı:**
 
 Afet durumunda kişilerin arama yapmaları veya mobil veri ile sosyal medya kullanmaları sebebiyle oluşan aşırı yoğunluktan dolayı kullanılamaz hale gelen GSM şebekelerindeki aksaklıklara çözüm olarak, hazır çoklu SMS fonksiyonu ile iletişimin hızlı bir şekilde sağlanmasını amaçlar.
 
