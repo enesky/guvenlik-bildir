@@ -92,7 +92,6 @@
     <string name="item_option_8">Uygulama Hakkında</string>
     <string name="item_option_9">Oturumu Kapat</string>
     <string name="item_option_10">Bildirim Ayarları</string>
-    <string name="label_about">Uygulama Hakkında</string>
     <string name="label_notification_info">Büyüklüğü %s ve üstü olan depremler hakkında bildirim almak istiyorum.</string>
 
     <!-- AddContacts - Contacts Fragment Strings -->
@@ -125,5 +124,14 @@
     <string name="label_location_sent">Gönderilen Konum:</string>
     <string name="label_sending">Gönderiliyor</string>
     <string name="label_pls_open_gps">Konum bilginizi iyileştirmek için GPS ayarlarını açınız.</string>
+
+    <!-- AboutBSDFragment Strings -->
+    <string name="label_about">Uygulama Hakkında</string>
+    <string name="about">
+        Güvenlik Bildir; doğal afet veya diğer acil durumlarda sevdiklerinize güvende olup olmadığınızı bulunduğunuz konum ile beraber, hızlı bir şekilde bildirmenizi sağlar.
+        \n\n- Uygulamanın amacı:\nAfet durumunda kişilerin arama yapmaları veya mobil veri ile sosyal medya kullanmaları sebebiyle oluşan aşırı yoğunluktan dolayı kullanılamaz hale gelen GSM şebekelerindeki aksaklıklara çözüm olarak, hazır çoklu SMS fonksiyonu ile iletişimin hızlı bir şekilde sağlanmasıdır.
+        \n\n- Uygulamanın önemi:\nHerhangi bir doğal afet veya acil durum anında aynı bölgede bulunan çok sayıda insan  bu durumdan etkilendiği için telefon ve internet hatlarında kilitlenmeler yaşanabilmektedir. \nBu durum güvende olsanız dahi durumunuzu sevdiklerinize iletememenize ve sevdiklerinizin sizin güvende olup olmadığı hakkında bilgi sahibi olamamasına yol açabilmektedir. \nGüvenlik Bildir uygulaması sevdiklerinize hızlıca SMS üzerinden otomatik olarak konumunuzu ve durumunuzu iletmenizi sağlar.
+        \n\nGüvenlik Bildir açık kaynak (open source) olarak geliştirilmektedir.
+    </string>
 
 </resources>

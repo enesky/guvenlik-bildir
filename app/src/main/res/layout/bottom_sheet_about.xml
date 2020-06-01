@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/tv_earthquake_details"
+            android:id="@+id/tv_title_about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
@@ -33,7 +33,20 @@
             android:text="@string/label_about"
             android:layout_margin="@dimen/default_margin_16"
             app:layout_constraintTop_toBottomOf="@id/toggle"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toTopOf="@id/tv_about"/>
+
+        <TextView
+            android:id="@+id/tv_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/default_text_14"
+            android:text="@string/about"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginBottom="@dimen/default_margin_16"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_about"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
