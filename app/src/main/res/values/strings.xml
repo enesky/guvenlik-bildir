@@ -24,7 +24,7 @@
     <string name="label_default_safe_sms">Güvendeyim.</string>
     <string name="label_default_unsafe_sms">Güvende hissetmiyorum.\nLütfen yardımcı olun.</string>
     <string name="label_map_link">"\nBilinen Son Konum: \nhttps://www.google.com/maps/place/%s</string>
-    <string name="label_sending_in_progress">Sms gönderme işlemi devam ediyor…</string>
+    <string name="label_sending_in_progress">SMS gönderme işlemi devam ediyor…</string>
     <string name="label_cant_close">Gönderme işlemi tamamlanmadan bu ekranı kapatamazsınız.</string>
     <string name="label_continuing">Devam ediliyor…</string>
     <string name="label_redirecting">Arama ekranına yönlendiriliyorsunuz…</string>
@@ -70,7 +70,7 @@
     <string name="label_calling_155">155 - Polis Aranıyor…</string>
     <string name="label_calling_112">112 - Acil Aranıyor…</string>
     <string name="label_calling_110">110 - İftaiye Aranıyor…</string>
-    <string name="label_sending_sms">Sms gönderme işlemi başlatılıyor…</string>
+    <string name="label_sending_sms">SMS gönderme işlemi başlatılıyor…</string>
     <string name="label_itfaiye">110 - İtfaiye</string>
     <string name="label_acil_yardim">112 - Acil</string>
     <string name="label_polis">155 - Polis</string>
@@ -104,12 +104,12 @@
     <string name="label_add_contact_with_number">Ekle (%d)</string>
 
     <!-- ModifySmsFragment Strings -->
-    <string name="label_modify_sms">Sms\'leri Düzenle</string>
+    <string name="label_modify_sms">SMS\'leri Düzenle</string>
     <string name="title_unsafe_sms">Güvende değilsen gönderilecek SMS:</string>
     <string name="title_safe_sms">Güvendeysen gönderilecek SMS:</string>
 
     <!-- SmsReportHistoryFragment Strings -->
-    <string name="label_sms_report_history">Geçmiş Sms Raporları</string>
+    <string name="label_sms_report_history">Geçmiş SMS Raporları</string>
     <string name="label_no_sms_report_found">Kayıtlı sms raporu bulunamadı.</string>
     <string name="label_sms_history_count">%d sms raporu bulundu.</string>
     <string name="label_sms_report_success_rate">Başarı Oranı: %</string>
@@ -117,12 +117,13 @@
     <string name="label_sms_report_type">Rapor Tipi: %s</string>
 
     <!-- SmsReportBSDFragment Strings -->
-    <string name="label_sms_preview">Gönderilecek Sms:</string>
+    <string name="label_sms_preview">Gönderilecek SMS:</string>
     <string name="label_last_known_loc">Bilinen Son Konum:</string>
     <string name="label_confirm_location_and_send">Konumu Doğrula ve Gönder</string>
     <string name="label_sent">Gönderme işlemi tamamlandı.</string>
-    <string name="label_sent_sms_preview">Gönderilen Sms:</string>
+    <string name="label_sent_sms_preview">Gönderilen SMS:</string>
     <string name="label_location_sent">Gönderilen Konum:</string>
     <string name="label_sending">Gönderiliyor</string>
+    <string name="label_pls_open_gps">Konum bilginizi iyileştirmek için GPS ayarlarını açınız.</string>
 
 </resources>

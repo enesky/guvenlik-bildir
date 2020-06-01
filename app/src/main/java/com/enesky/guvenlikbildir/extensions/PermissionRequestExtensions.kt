@@ -28,7 +28,7 @@ fun Context.requireSendSmsPermission(function: () -> Any) = runWithPermissions(
     Manifest.permission.SEND_SMS,
     options = getQuickPermissionOptions()
 ) {
-    Timber.tag("PermissionRequestExtension").d("requireSendSmsPermission: Send Sms permission granted")
+    Timber.tag("PermissionRequestExtension").d("requireSendSmsPermission: Send SMS permission granted")
     function()
 }
 

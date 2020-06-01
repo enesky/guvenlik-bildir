@@ -137,6 +137,9 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             }
         }
 
+        if (!activity!!.isLocationEnabled())
+            activity!!.showToast(getString(R.string.label_pls_open_gps))
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

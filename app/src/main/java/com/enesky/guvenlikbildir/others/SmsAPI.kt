@@ -61,7 +61,7 @@ class SmsAPI(
                             intent = intent,
                             status = statusSuccess
                         )
-                        Timber.tag("SmsAPI").d("Sms successfully sent.")
+                        Timber.tag("SmsAPI").d("SMS successfully sent.")
                     }
                     else -> {
                         val statusFailed = SmsReportStatus.FAILED
@@ -69,7 +69,7 @@ class SmsAPI(
                             intent = intent,
                             status = statusFailed
                         )
-                        Timber.tag("SmsAPI").d("Sms sending failed.")
+                        Timber.tag("SmsAPI").d("SMS sending failed.")
                     }
                 }
             }
@@ -84,10 +84,10 @@ class SmsAPI(
                             intent = intent,
                             status = statusDelivered
                         )
-                        Timber.tag("SmsAPI").d("Sms delivered.")
+                        Timber.tag("SmsAPI").d("SMS delivered.")
                     }
                     Activity.RESULT_CANCELED -> {
-                        Timber.tag("SmsAPI").d("Sms not delivered.")
+                        Timber.tag("SmsAPI").d("SMS not delivered.")
                     }
                 }
             }
@@ -160,14 +160,14 @@ class SmsAPI(
                         sentPI,
                         deliveredPI
                     )
-                    Timber.tag("Sms Sent to: ").d("%s", contact.number)
+                    Timber.tag("SMS Sent to: ").d("%s", contact.number)
                 }
             } catch (e: Exception) {
-                activity.showToast("Sms gönderme işlemi başarısız!")
+                activity.showToast("SMS gönderme işlemi başarısız!")
                 Timber.tag("SmsAPI").d("Exception: %s", e.message!!)
             }
         } else {
-            activity.showToast("Sms gönderilecek kayıt bulunamadı.")
+            activity.showToast("SMS gönderilecek kayıt bulunamadı.")
             Timber.tag("SmsAPI").d("Contact list empty.")
         }
     }

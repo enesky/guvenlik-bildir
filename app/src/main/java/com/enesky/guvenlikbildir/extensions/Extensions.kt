@@ -138,12 +138,17 @@ fun Context.showToast(message: String?, isDurationLong: Boolean = true) {
     }
 }
 
-fun View.showSnackbar(text: String) {
-    Snackbar.make(rootView, text, Snackbar.LENGTH_LONG).apply {
-        duration = 5000
-        setAction("Tamam") { dismiss() }
-        setBackgroundTint(view.context.getColorCompat(R.color.colorPrimaryDark))
-        setActionTextColor(view.context.getColorCompat(android.R.color.white))
+fun Activity.showSnackbar(
+    text: String,
+    positiveButtonFunction: (() -> Any?)? = { }) {
+    Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG).apply {
+        duration = 3000
+        setAction("Tamam") {
+            positiveButtonFunction?.invoke()
+            dismiss()
+        }
+        setBackgroundTint(getColorCompat(R.color.colorPrimaryDark))
+        setActionTextColor(getColorCompat(android.R.color.white))
         view.findViewById<View>(R.id.snackbar_action).background = null
         view.setPadding(0,0,0,0)
     }.show()
