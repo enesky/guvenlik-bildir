@@ -2,17 +2,7 @@
 
 Doğal afet veya diğer acil durumlarda sevdiklerinize güvende olup olmadığınızı bulunduğunuz konum ile beraber, hızlı bir şekilde bildirmenizi sağlar.
 
-### - Uygulamanın amacı
-
-Afet durumunda kişilerin arama yapmaları veya mobil veri ile sosyal medya kullanmaları sebebiyle oluşan aşırı yoğunluktan dolayı kullanılamaz hale gelen GSM şebekelerindeki aksaklıklara çözüm olarak, hazır çoklu SMS fonksiyonu ile iletişimin hızlı bir şekilde sağlanmasını amaçlar.
-
-### - Uygulamanın önemi
-
-Herhangi bir doğal afet ve acil durum anında aynı bölgede bulunan çok sayıda insan bu durumdan etkilendiği için telefon ve internet hatlarında kilitlenmeler yaşanabilmektedir.
-Bu durumda güvende olsanız dahi durumunuzu sevdiklerinize iletememenize ve sevdiklerinizin sizin güvende olup olmadığı hakkında bilgi sahibi olamamasına yol açabilmektedir. 
-**Güvenlik Bildir** uygulaması sevdiklerinize hızlıca SMS üzerinden otomatik olarak konumunuzu ve durumunuzu iletmenizi sağlar.
-
-### - Uygulama İçi Ekran Görüntüleri
+### Uygulama İçi Ekran Görüntüleri
 
 <p align="center">
   <img src="docs/son_depremler.gif" width="275" alt="Son Depremler Ekranı">
@@ -20,7 +10,17 @@ Bu durumda güvende olsanız dahi durumunuzu sevdiklerinize iletememenize ve sev
   <img src="docs/secenekler.gif" width="275" alt="Seçenekler Ekranı">
 </p>
 
-### Uygulamanın Özellikleri:
+### Uygulamanın amacı
+
+Afet durumunda kişilerin arama yapmaları veya mobil veri ile sosyal medya kullanmaları sebebiyle oluşan aşırı yoğunluktan dolayı kullanılamaz hale gelen GSM şebekelerindeki aksaklıklara çözüm olarak, hazır çoklu SMS fonksiyonu ile iletişimin hızlı bir şekilde sağlanmasını amaçlar.
+
+### Uygulamanın önemi
+
+Herhangi bir doğal afet ve acil durum anında aynı bölgede bulunan çok sayıda insan bu durumdan etkilendiği için telefon ve internet hatlarında kilitlenmeler yaşanabilmektedir.
+Bu durumda güvende olsanız dahi durumunuzu sevdiklerinize iletememenize ve sevdiklerinizin sizin güvende olup olmadığı hakkında bilgi sahibi olamamasına yol açabilmektedir. 
+**Güvenlik Bildir** uygulaması sevdiklerinize hızlıca SMS üzerinden otomatik olarak konumunuzu ve durumunuzu iletmenizi sağlar.
+
+### Uygulamanın Özellikleri
 
 - **Güvenlik Bildir** uygulaması ile, rehberinizden seçmiş olduğunuz kişilere ana ekranda yer alan Güvende Değilim veya Güvendeyim butonlarına kolayca basarak bilgilendirme SMS'ini bilinen son konumunuz ile seçtiğiniz kişilere hızlıca gönderebilirsiniz.
 
