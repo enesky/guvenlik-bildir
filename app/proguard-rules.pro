@@ -14,13 +14,11 @@
 -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
 -optimizationpasses 5
 -allowaccessmodification
--dontpreverify
 
 # The remainder of this file is identical to the non-optimized version
 # of the Proguard configuration file (except that the other file has
 # flags to turn off optimization).
 -dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
 -verbose
 
 # Disable logging
@@ -34,7 +32,7 @@
 }
 
 # For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
--keepclasseswithmembernames class * {
+-keepclasseswithmembernames class ** {
     native <methods>;
 }
 
@@ -55,29 +53,35 @@
 }
 
 # For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
--keepclassmembers enum * {
+-keepclassmembers enum ** {
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+-keep public enum com.enesky.guvenlikbildir.** {
+    **[] $VALUES;
+    public *;
+}
+-keepclassmembers enum com.enesky.guvenlikbildir.** { *; }
+-keepclassmembers enum ** { *; }
 
 # Preventing null reference crashes
--keep class com.enesky.guvenlikbildir.model.* { *; }
+-keep class com.enesky.guvenlikbildir.model.** { *; }
 
 # Keep Data Class
--keepclasseswithmembers class com.enesky.guvenlikbildir.* {
+-keepclasseswithmembers class com.enesky.guvenlikbildir.** {
     public ** component1();
     <fields>;
 }
 
 # Necessary packages
--keep class com.google.firebase.*
--keep class com.squareup.timessquare.*
--keep class com.prolificinteractive.materialcalendarview.*
--keep class ru.rambler.libs.swipe_layout.*
--keep class retrofit2.*
+-keep class com.google.firebase.**
+-keep class com.squareup.timessquare.**
+-keep class com.prolificinteractive.materialcalendarview.**
+-keep class ru.rambler.libs.swipe_layout.**
+-keep class retrofit2.**
 
 #--------------------------------------- GMS CONFIGURATION ----------------------------------------
--keep class com.google.android.gms.*
+-keep class com.google.android.gms.**
 
 # Dont warn unknown classes
 -dontnote android.os.SystemProperties
@@ -85,10 +89,10 @@
 -dontnote com.google.android.gms.dynamite.DynamiteModule
 
 # Fix maps 3.0.0-beta crash:
--keep,allowoptimization class com.google.android.libraries.maps.* { *; }
+-keep,allowoptimization class com.google.android.libraries.maps.** { *; }
 
 # Fix maps 3.0.0-beta marker taps ignored:
--keep,allowoptimization class com.google.android.apps.gmm.renderer.* { *; }
+-keep,allowoptimization class com.google.android.apps.gmm.renderer.** { *; }
 
 # Prevent proguard from stripping interface information from TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
@@ -115,4 +119,6 @@
 -dontnote okhttp3.internal.**
 -dontnote retrofit2.**
 -dontnote com.scottyab.rootbeer.util.Utils
+
+-keep class org.ocpsoft.prettytime.i18n.**
 
