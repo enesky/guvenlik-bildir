@@ -5,16 +5,16 @@ Doğal afet veya diğer acil durumlarda sevdiklerinize güvende olup olmadığı
 ### Uygulama İçi Ekran Görüntüleri
 
 <p align="center">
-  <img src="docs/son_depremler.gif" width="275" alt="Son Depremler Ekranı">
-  <img src="docs/guvenlik_bildir.gif" width="275" alt="Güvenlik Bildir Ekranı">
-  <img src="docs/secenekler.gif" width="275" alt="Seçenekler Ekranı">
+  <img src="docs/son_depremler.gif" width="300" alt="Son Depremler Ekranı">
+  <img src="docs/guvenlik_bildir.gif" width="300" alt="Güvenlik Bildir Ekranı">
+  <img src="docs/secenekler.gif" width="300" alt="Seçenekler Ekranı">
 </p>
 
-### Uygulamanın amacı
+### Uygulamanın Amacı
 
 Afet durumunda kişilerin arama yapmaları veya mobil veri ile sosyal medya kullanmaları sebebiyle oluşan aşırı yoğunluktan dolayı kullanılamaz hale gelen GSM şebekelerindeki aksaklıklara çözüm olarak, hazır çoklu SMS fonksiyonu ile iletişimin hızlı bir şekilde sağlanmasını amaçlar.
 
-### Uygulamanın önemi
+### Uygulamanın Önemi
 
 Herhangi bir doğal afet ve acil durum anında aynı bölgede bulunan çok sayıda insan bu durumdan etkilendiği için telefon ve internet hatlarında kilitlenmeler yaşanabilmektedir.
 Bu durumda güvende olsanız dahi durumunuzu sevdiklerinize iletememenize ve sevdiklerinizin sizin güvende olup olmadığı hakkında bilgi sahibi olamamasına yol açabilmektedir. 
@@ -35,6 +35,6 @@ Bu durumda güvende olsanız dahi durumunuzu sevdiklerinize iletememenize ve sev
 
 - Anlık deprem bildirimleri sayesinde depremin şiddetini filtreleyebilir, belirlediğiniz büyüklüğün üzerinde bir deprem meydana gelmesi durumunda ilgili deprem hakkında hızlıca bilgi sahibi olabilirsiniz.
 
-### Kanban tablom
+### Kanban Tablosu
 
 - [Trello - Güvenlik Bildir](https://trello.com/b/Wo8QHExv/g%C3%BCvenlikbildir)
