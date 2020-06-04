@@ -111,11 +111,10 @@ class LocationAPI (
                 activity.showDialog(
                     title = getString(R.string.label_no_gps_connection_found),
                     message = getString(R.string.label_redirecting_to_gps_settings),
-                    negativeButtonFunction = {
-                        activity.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                    },
                     isNegativeButtonEnabled = true,
-                    autoInvoke = true
+                    autoInvokeFunction = {
+                        activity.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                    }
                 )
             }
         }

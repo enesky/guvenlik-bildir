@@ -377,7 +377,7 @@ fun Context.showDialog(
     countDownOnNegative: Boolean = true,
     isPositiveButtonEnabled: Boolean = true,
     isNegativeButtonEnabled: Boolean = true,
-    autoInvoke: Boolean = false
+    autoInvokeFunction: (() -> Any?)? = { }
 ) {
     val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
         .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_radius))
@@ -416,12 +416,7 @@ fun Context.showDialog(
             }
             override fun onFinish() {
                 if (materialAlertDialogBuilder.isShowing) {
-                    if (autoInvoke) {
-                        if (isPositiveButtonEnabled)
-                            positiveButtonFunction?.invoke()
-                        if (isNegativeButtonEnabled)
-                            negativeButtonFunction?.invoke()
-                    }
+                    autoInvokeFunction?.invoke()
                     materialAlertDialogBuilder.dismiss()
                 }
             }

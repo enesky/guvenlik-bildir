@@ -48,11 +48,10 @@ class NotifyFragment : BaseFragment() {
             activity!!.showDialog(
                 title = getString(R.string.label_calling_155),
                 message = getString(R.string.label_redirecting),
-                negativeButtonFunction = {
-                    call(Constants.polis)
-                },
                 isNegativeButtonEnabled = true,
-                autoInvoke = true
+                autoInvokeFunction = {
+                    call(Constants.polis)
+                }
             )
         }
 
@@ -60,11 +59,10 @@ class NotifyFragment : BaseFragment() {
             activity!!.showDialog(
                 title = getString(R.string.label_calling_112),
                 message = getString(R.string.label_redirecting),
-                negativeButtonFunction = {
-                    call(Constants.acil)
-                },
                 isNegativeButtonEnabled = true,
-                autoInvoke = true
+                autoInvokeFunction = {
+                    call(Constants.acil)
+                }
             )
         }
 
@@ -72,11 +70,10 @@ class NotifyFragment : BaseFragment() {
             activity!!.showDialog(
                 title = getString(R.string.label_calling_110),
                 message = getString(R.string.label_redirecting),
-                negativeButtonFunction = {
-                    call(Constants.itfaiye)
-                },
                 isNegativeButtonEnabled = true,
-                autoInvoke = true
+                autoInvokeFunction = {
+                    call(Constants.itfaiye)
+                }
             )
         }
 
@@ -138,11 +135,10 @@ class NotifyFragment : BaseFragment() {
         activity!!.showDialog(
             title = com.enesky.guvenlikbildir.extensions.getString(R.string.label_no_gps_connection_found),
             message = com.enesky.guvenlikbildir.extensions.getString(R.string.label_redirecting_to_gps_settings),
-            negativeButtonFunction = {
-                activity!!.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-            },
             isNegativeButtonEnabled = true,
-            autoInvoke = true
+            autoInvokeFunction = {
+                activity!!.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
         )
     }
 
