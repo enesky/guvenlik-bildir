@@ -19,7 +19,7 @@ import com.enesky.guvenlikbildir.database.entity.StatusConverter
 
 @Database(
     entities = [Earthquake::class, Contact::class, SmsReport::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(StatusConverter::class)
