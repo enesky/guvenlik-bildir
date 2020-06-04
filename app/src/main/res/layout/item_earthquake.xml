@@ -50,7 +50,7 @@
 
                         <TextView
                             android:id="@+id/tv_mag"
-                            text="@{earthquake.magML}"
+                            text="@{earthquake.mag}"
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:background="@drawable/bg_circle"

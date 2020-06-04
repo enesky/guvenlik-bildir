@@ -48,8 +48,11 @@ class EarthquakeAPI {
             val regex = """<pre>.*</pre>""".toRegex(RegexOption.DOT_MATCHES_ALL)
             regex.find(response)?.value?.let {
                 it.slice(dataIndex until it.length).split("\n").forEachIndexed { index, line ->
-                    if (index < Constants.EARTHQUAKE_LIST_SIZE && line.trim().isNotEmpty() && !line.contains("</pre>"))
-                        earthquakeList.add(parseLine(line))
+                    if (index < Constants.EARTHQUAKE_LIST_SIZE && line.trim().isNotEmpty() && !line.contains("</pre>")) {
+                        val tempEarthquake: Earthquake? = parseLine(line)
+                        if (tempEarthquake != null)
+                            earthquakeList.add(tempEarthquake)
+                    }
                     else
                         return@forEachIndexed
                 }
@@ -58,7 +61,17 @@ class EarthquakeAPI {
             return earthquakeList.toList()
         }
 
-        private fun parseLine(line: String): Earthquake {
+        private fun parseLine(line: String): Earthquake? {
+
+            val magML = line.slice(magMDIndex..magMLIndex).trim()
+            val magMW = line.slice(magMLIndex..magMWIndex).trim()
+            val mag: Double = //magMW is more accurate than magML. So if it's not empty, use it.
+                when {
+                    magMW.isNotEmpty() && magMW != "-.-" -> magMW.toDouble()
+                    magML.isNotEmpty() && magML != "-.-" -> magML.toDouble()
+                    else -> return null
+                }
+
             var locationOuter: String
             var locationInner = ""
 
@@ -78,9 +91,7 @@ class EarthquakeAPI {
                 lat = line.slice(timeIndex..latIndex).trim(),
                 lng = line.slice(latIndex..lngIndex).trim(),
                 depth = line.slice(lngIndex..depthIndex).trim(),
-                magMD = line.slice(depthIndex..magMDIndex).trim(),
-                magML = line.slice(magMDIndex..magMLIndex).trim().toDouble(),
-                magMW = line.slice(magMLIndex..magMWIndex).trim(),
+                mag = mag,
                 locationOuter = locationOuter,
                 locationInner = locationInner,
                 location = "$locationInner $locationOuter",

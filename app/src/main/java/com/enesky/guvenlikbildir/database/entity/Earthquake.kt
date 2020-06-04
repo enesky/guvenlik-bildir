@@ -20,9 +20,9 @@ data class Earthquake(
 	val lat: String,
 	val lng: String,
 	val depth: String,
-	val magMD: String, //duration magnitude (don't use it)
-	val magML: Double, //local (richter) magnitude
-	val magMW: String, //moment magnitude (if it exists use this one)
+	//val magMD: Double, //duration magnitude (don't use it)
+	val mag: Double, //local (richter) magnitude
+	//val magMW: Double, //moment magnitude (if it exists use this one)
 	val locationOuter: String,
 	val locationInner: String,
 	val location: String, // locationInner + locationOuter

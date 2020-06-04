@@ -44,7 +44,7 @@ class NotifierWorker(
                                 break@loop
                             }
 
-                            earthquake.magML >= notificationMagLimit -> {
+                            earthquake.mag >= notificationMagLimit -> {
                                 Timber.tag("NotifierWorker")
                                     .d("earthquake.magML >= 1.5 => ${earthquake.location} - ${earthquake.dateTime}")
                                 FcmService.showLocalNotification(

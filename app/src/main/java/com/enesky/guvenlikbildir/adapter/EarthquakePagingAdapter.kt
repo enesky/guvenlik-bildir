@@ -147,7 +147,7 @@ class EarthquakePagingAdapter(
                     mEarthquake = earthquake
                     binding.earthquake = earthquake
 
-                    setMagBackgroundTint(binding.tvMag, earthquake.magML)
+                    setMagBackgroundTint(binding.tvMag, earthquake.mag)
 
                     setCollapsingProgress(this, adapterPosition)
                     toggleItem(this, false, animate = false)
@@ -255,12 +255,12 @@ class EarthquakePagingAdapter(
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         val color = when {
-            earthquake.magML < 3 -> "#388e3c" to "#66388e3c"
-            (earthquake.magML >= 3) && (earthquake.magML < 4.5) -> "#f9aa33" to "#66f9aa33"
+            earthquake.mag < 3 -> "#388e3c" to "#66388e3c"
+            (earthquake.mag >= 3) && (earthquake.mag < 4.5) -> "#f9aa33" to "#66f9aa33"
             else -> "#e53935" to "#66e53935"
         }
 
-        val circleRadius = earthquake.magML * 10000.0
+        val circleRadius = earthquake.mag * 10000.0
 
         val circleOptions = CircleOptions()
             .center(loc)

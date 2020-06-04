@@ -72,14 +72,14 @@ class EarthquakeItemOptionsBSDFragment :
         earthquakeDetail =
                 "# Deprem - Kandilli Rasathanesi #\n" +
                 "Yer: ${earthquake!!.location}\n" +
-                "Büyüklük: ${earthquake!!.magML}\n" +
+                "Büyüklük: ${earthquake!!.mag}\n" +
                 "Derinlik: ${earthquake!!.depth} km\n" +
                 "Tarih: " + earthquake!!.dateTime.formatDateTime() + " TSİ\n"
 
         earthquakeDetailWithLinks =
                 "# Deprem - Kandilli Rasathanesi #\n" +
                 "Yer: ${earthquake!!.location}\n" +
-                "Büyüklük: ${earthquake!!.magML}\n" +
+                "Büyüklük: ${earthquake!!.mag}\n" +
                 "Derinlik: ${earthquake!!.depth} km\n" +
                 "Tarih: " + earthquake!!.dateTime.formatDateTime() + " TSİ\n" +
                 "https://maps.google.com/maps?q=${earthquake!!.lat},${earthquake!!.lng}&ll=${earthquake!!.lat},${earthquake!!.lng}&&z=8\n" +
@@ -137,12 +137,12 @@ class EarthquakeItemOptionsBSDFragment :
         val loc = LatLng(earthquake!!.lat.toDouble(), earthquake!!.lng.toDouble())
 
         val color = when {
-            earthquake!!.magML < 3 -> "#388e3c" to "#66388e3c"
-            (earthquake!!.magML >= 3) && (earthquake!!.magML < 4.5) -> "#f9aa33" to "#66f9aa33"
+            earthquake!!.mag < 3 -> "#388e3c" to "#66388e3c"
+            (earthquake!!.mag >= 3) && (earthquake!!.mag < 4.5) -> "#f9aa33" to "#66f9aa33"
             else -> "#e53935" to "#66e53935"
         }
 
-        val circleRadius = earthquake!!.magML * 10000.0
+        val circleRadius = earthquake!!.mag * 10000.0
 
         val circleOptions = CircleOptions()
             .center(loc)

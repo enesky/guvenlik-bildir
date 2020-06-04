@@ -55,7 +55,7 @@ class FcmService : FirebaseMessagingService() {
             if (earthquake != null) {
                 val contentTitle = "Deprem oldu!<u> (${earthquake.dateTime.formatDateTime()}) </u>"
                 val styledTitle = Html.fromHtml(contentTitle, FROM_HTML_MODE_LEGACY)
-                val desc = "<b>${earthquake.location}</b> bölgesinde <b><u>${earthquake.magML}</u></b> büyüklüğünde deprem oldu."
+                val desc = "<b>${earthquake.location}</b> bölgesinde <b><u>${earthquake.mag}</u></b> büyüklüğünde deprem oldu."
                 val styledDesc = Html.fromHtml(desc, FROM_HTML_MODE_LEGACY)
 
                 val bigTextStyle = NotificationCompat.BigTextStyle()

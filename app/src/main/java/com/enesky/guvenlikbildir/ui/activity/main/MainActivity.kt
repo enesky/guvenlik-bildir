@@ -212,7 +212,7 @@ class MainActivity : BaseActivity(),
             Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
             val params = Bundle().apply {
                 putString("earthquake_location", earthquake.location)
-                putDouble("earthquake_mag", earthquake.magML)
+                putDouble("earthquake_mag", earthquake.mag)
                 putString("earthquake_date", earthquake.dateTime)
             }
             App.mAnalytics.logEvent("notification_click", params)
