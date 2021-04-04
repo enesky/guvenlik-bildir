@@ -13,7 +13,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity
 data class Earthquake(
-	@PrimaryKey(autoGenerate = true) val id: Int,
+	@PrimaryKey(autoGenerate = true) val earthquakeId: Int,
 	val date: String, // YYYY.MM.dd
 	val time: String, // HH:mm:ss
 	val dateTime: String, // date + time

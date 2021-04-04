@@ -16,7 +16,7 @@ import java.util.*
 @Parcelize
 @Entity
 data class SmsReport(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val smsReportId: Int = 0,
     val isSafeSms: Boolean = true,
     val sendingDate: String = "", //dd/MM/yyyy HH:mm:ss
     val sentSms: String = "",
