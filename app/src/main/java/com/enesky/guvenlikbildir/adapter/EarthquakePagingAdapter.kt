@@ -152,7 +152,7 @@ class EarthquakePagingAdapter(
                     setCollapsingProgress(this, adapterPosition)
                     toggleItem(this, false, animate = false)
 
-                    if (earthquake.id == expandedItemId) {
+                    if (earthquake.earthquakeId == expandedItemId) {
                         map.getMapAsync(this)
                         toggleItem(this, true, animate = false)
                     }
@@ -166,7 +166,7 @@ class EarthquakePagingAdapter(
                                 map.getMapAsync(this)
                             }
                             adapterPosition -> {
-                                if (earthquake.id == expandedItemId) {
+                                if (earthquake.earthquakeId == expandedItemId) {
                                     //collapse clicked item
                                     collapseLastExpandedItem(this)
                                     expandedItemPos = null
@@ -184,7 +184,7 @@ class EarthquakePagingAdapter(
                                 map.getMapAsync(this)
                             }
                         }
-                        expandedItemId = earthquake.id
+                        expandedItemId = earthquake.earthquakeId
                         //earthquakeItemListener.onItemClick(earthquake)
                     }
 
@@ -221,7 +221,7 @@ class EarthquakePagingAdapter(
         super.onViewRecycled(holder)
         // Clear the map and free up resources
         if (holder.mEarthquake != null)
-            if (holder.mEarthquake!!.id != expandedItemId)
+            if (holder.mEarthquake!!.earthquakeId != expandedItemId)
                 if (holder.mGoogleMap != null) {
                     holder.mGoogleMap!!.clear()
                     holder.mGoogleMap!!.mapType = GoogleMap.MAP_TYPE_NONE
@@ -356,12 +356,12 @@ class EarthquakePagingAdapter(
             override fun areItemsTheSame(oldEarthquake: Earthquake,
                                          newEarthquake: Earthquake) =
                 oldEarthquake.dateTime == newEarthquake.dateTime &&
-                        oldEarthquake.id == newEarthquake.id
+                        oldEarthquake.earthquakeId == newEarthquake.earthquakeId
 
             override fun areContentsTheSame(oldEarthquake: Earthquake,
                                             newEarthquake: Earthquake) =
                 oldEarthquake.dateTime == newEarthquake.dateTime &&
-                        oldEarthquake.id == newEarthquake.id
+                        oldEarthquake.earthquakeId == newEarthquake.earthquakeId
         }
     }
 

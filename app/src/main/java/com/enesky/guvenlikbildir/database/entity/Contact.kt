@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity
 data class Contact(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val contactId: Int = 0,
     val name: String,
     val number: String,
     var isSelected: Boolean = false
@@ -26,7 +26,7 @@ data class Contact(
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + id
+        result = 31 * result + contactId
         result = 31 * result + number.hashCode()
         return result
     }

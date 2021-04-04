@@ -48,7 +48,7 @@ interface EarthquakeDao {
     @Query("SELECT * FROM earthquake WHERE locationOuter LIKE '%' || :query || '%' OR locationInner LIKE '%' || :query || '%'")
     fun getEarthquakesWithContainsQuery(query: String?): DataSource.Factory<Int, Earthquake>
 
-    @Query("SELECT * FROM earthquake WHERE id == :id")
+    @Query("SELECT * FROM earthquake WHERE earthquakeId == :id")
     fun getEarthquake(id: Int): Flow<Earthquake>
 
     @ExperimentalCoroutinesApi
