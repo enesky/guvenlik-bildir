@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -19,14 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/default_margin_16"
+            android:layout_marginTop="@dimen/default_margin_8"
             android:backgroundTint="@color/colorPrimary"
             android:foreground="?android:attr/selectableItemBackground"
             android:orientation="vertical"
             app:cardCornerRadius="@dimen/default_margin_16"
             app:cardElevation="0dp"
             app:cardMaxElevation="0dp"
-            tools:layout_margin="@dimen/default_margin_16"
+            tools:layout_marginHorizontal="@dimen/default_margin_16"
             tools:layout_width="match_parent">
 
             <FrameLayout
@@ -54,11 +55,11 @@
                             android:layout_width="56dp"
                             android:layout_height="56dp"
                             android:background="@drawable/bg_circle"
+                            android:fontFamily="@font/signika_light"
                             android:gravity="center"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_32"
                             android:textStyle="bold"
-                            android:fontFamily="@font/signika_light"
                             app:layout_constraintEnd_toStartOf="@id/tv_location"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_location"
@@ -70,20 +71,20 @@
                             android:layout_height="18dp"
                             android:layout_marginStart="@dimen/default_margin_16"
                             android:layout_marginEnd="@dimen/default_margin_8"
+                            android:maxLines="1"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
-                            android:maxLines="1"
-                            tools:text="@string/label_location"
                             app:autoSizeMaxTextSize="@dimen/default_text_14"
                             app:autoSizeMinTextSize="@dimen/default_text_12"
                             app:autoSizeTextType="uniform"
+                            app:layout_constraintEnd_toStartOf="@id/iv_options"
+                            app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:secondStringValue="@{earthquake.locationOuter}"
                             app:stringKey="@{@string/label_location}"
                             app:stringValue="@{earthquake.locationInner}"
-                            app:secondStringValue="@{earthquake.locationOuter}"
-                            app:layout_constraintStart_toEndOf="@id/tv_mag"
-                            app:layout_constraintEnd_toStartOf="@id/iv_options"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            tools:text="@string/label_location" />
 
                         <TextView
                             android:id="@+id/tv_depth"
@@ -92,47 +93,47 @@
                             android:layout_marginStart="@dimen/default_margin_16"
                             android:layout_marginTop="@dimen/default_margin_4"
                             android:layout_marginEnd="@dimen/default_margin_8"
-                            tools:text="@string/label_depth"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@id/iv_options"
+                            app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintTop_toBottomOf="@id/tv_location"
                             app:stringKey="@{@string/label_depth}"
                             app:stringValue="@{earthquake.depth}"
                             app:unitName="@{@string/label_kilometer}"
-                            app:layout_constraintStart_toEndOf="@id/tv_mag"
-                            app:layout_constraintEnd_toStartOf="@id/iv_options"
-                            app:layout_constraintTop_toBottomOf="@id/tv_location" />
+                            tools:text="@string/label_depth" />
 
                         <TextView
                             android:id="@+id/tv_date"
                             android:layout_width="0dp"
                             android:layout_height="18dp"
                             android:layout_marginStart="@dimen/default_margin_16"
-                            android:layout_marginEnd="@dimen/default_margin_8"
                             android:layout_marginTop="@dimen/default_margin_4"
+                            android:layout_marginEnd="@dimen/default_margin_8"
+                            android:maxLines="1"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_14"
                             android:textStyle="bold"
-                            android:maxLines="1"
-                            tools:text="@string/label_date"
                             app:autoSizeMaxTextSize="@dimen/default_text_14"
                             app:autoSizeMinTextSize="@dimen/default_text_12"
                             app:autoSizeTextType="uniform"
-                            app:stringKey="@{@string/label_date}"
                             app:dateText="@{earthquake.date}"
-                            app:timeText="@{earthquake.time}"
-                            app:layout_constraintStart_toEndOf="@id/tv_mag"
                             app:layout_constraintEnd_toStartOf="@id/tv_short_date"
-                            app:layout_constraintTop_toBottomOf="@id/tv_depth" />
+                            app:layout_constraintStart_toEndOf="@id/tv_mag"
+                            app:layout_constraintTop_toBottomOf="@id/tv_depth"
+                            app:stringKey="@{@string/label_date}"
+                            app:timeText="@{earthquake.time}"
+                            tools:text="@string/label_date" />
 
                         <ImageView
                             android:id="@+id/iv_options"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_more_vert"
                             android:padding="@dimen/default_margin_6"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            android:src="@drawable/ic_more_vert"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tv_short_date"
@@ -141,11 +142,11 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/default_text_12"
                             android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_date"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_date"
                             app:shortDateText="@{earthquake.date}"
                             app:shortTimeText="@{earthquake.time}"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_date"
-                            app:layout_constraintTop_toTopOf="@id/tv_date"
-                            app:layout_constraintEnd_toEndOf="parent"
                             tools:text="5 saat önce" />
 
                         <ImageView
@@ -155,7 +156,7 @@
                             android:src="@drawable/ic_arrow"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_date"/>
+                            app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cv_map"
@@ -164,18 +165,18 @@
                             android:layout_marginBottom="@dimen/default_margin_16"
                             android:backgroundTint="@color/colorPrimary"
                             android:visibility="gone"
-                            tools:visibility="visible"
                             app:cardCornerRadius="@dimen/default_margin_16"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/iv_indicator">
+                            app:layout_constraintTop_toBottomOf="@id/iv_indicator"
+                            tools:visibility="visible">
 
                             <com.google.android.gms.maps.MapView
                                 android:id="@+id/map"
                                 android:name="com.google.android.gms.maps.MapFragment"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                app:liteMode="true"
                                 app:cameraZoom="7"
+                                app:liteMode="true"
                                 app:mapType="none" />
 
                             <ProgressBar
