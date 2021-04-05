@@ -1,8 +1,8 @@
 package com.enesky.guvenlikbildir.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * Created by Enes Kamil YILMAZ on 02.02.2020
