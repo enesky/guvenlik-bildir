@@ -2,17 +2,11 @@ package com.enesky.guvenlikbildir.others
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Bundle
 import android.os.Looper
-import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
-import com.enesky.guvenlikbildir.R
-import com.enesky.guvenlikbildir.extensions.getString
-import com.enesky.guvenlikbildir.extensions.showDialog
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.*
@@ -29,7 +23,6 @@ class LocationAPI (
     companion object {
         lateinit var instance: LocationAPI
             private set
-        //setter is private so this way instance cannot assigned from an external class.
     }
 
     init {
@@ -100,23 +93,9 @@ class LocationAPI (
     private fun requestLocationUpdatesWithoutGoogleApi() {
         locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                lastKnownLocation = "${location.latitude},${location.longitude}"
-                Timber.tag("LocationAPI").d("LastKnownLocation: %s", lastKnownLocation)
-            }
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-            override fun onProviderEnabled(provider: String?) {}
-            override fun onProviderDisabled(provider: String?) {
-                activity.showDialog(
-                    title = getString(R.string.label_no_gps_connection_found),
-                    message = getString(R.string.label_redirecting_to_gps_settings),
-                    isNegativeButtonEnabled = true,
-                    autoInvokeFunction = {
-                        activity.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                    }
-                )
-            }
+        locationListener = LocationListener { location ->
+            lastKnownLocation = "${location.latitude},${location.longitude}"
+            Timber.tag("LocationAPI").d("LastKnownLocation: %s", lastKnownLocation)
         }
 
         val gpsProvider = LocationManager.GPS_PROVIDER
@@ -127,14 +106,13 @@ class LocationAPI (
 
         val gpsLocation: Location? = locationManager!!.getLastKnownLocation(gpsProvider)
         val networkLocation: Location? = locationManager!!.getLastKnownLocation(networkProvider)
-        val lastKnownLoc: Location?
 
         finalProvider = when {
             isNetworkEnabled -> networkProvider
             else -> gpsProvider
         }
 
-        lastKnownLoc = if (networkLocation != null && gpsLocation != null) {
+        val lastKnownLoc: Location? = if (networkLocation != null && gpsLocation != null) {
             if (gpsLocation.accuracy > networkLocation.accuracy) //ne kadar küçükse o kadar accurate
                 networkLocation
             else
