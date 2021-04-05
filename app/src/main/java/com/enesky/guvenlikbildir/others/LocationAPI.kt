@@ -44,15 +44,7 @@ class LocationAPI (
 
     fun stopLocationUpdates() {
         if (fusedLocationProviderClient != null) {
-            try {
-                val voidTask = fusedLocationProviderClient!!.removeLocationUpdates(locationCallback)
-                if (voidTask.isSuccessful)
-                    Timber.tag("LocationAPI").d("stopLocationUpdates() -> successful")
-                else
-                    Timber.tag("LocationAPI").d("stopLocationUpdates() -> failed")
-            } catch (exp: SecurityException) {
-                Timber.tag("LocationAPI").d("Security exception while stopLocationUpdates")
-            }
+            fusedLocationProviderClient!!.removeLocationUpdates(locationCallback)
         } else {
             locationManager = null
             locationListener = null
@@ -73,7 +65,6 @@ class LocationAPI (
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-
                 val mLastKnownLocation = locationResult.lastLocation
                 if (mLastKnownLocation != null) {
                     lastKnownLocation = "${mLastKnownLocation.latitude},${mLastKnownLocation.longitude}"
@@ -113,7 +104,7 @@ class LocationAPI (
         }
 
         val lastKnownLoc: Location? = if (networkLocation != null && gpsLocation != null) {
-            if (gpsLocation.accuracy > networkLocation.accuracy) //ne kadar küçükse o kadar accurate
+            if (gpsLocation.accuracy > networkLocation.accuracy)
                 networkLocation
             else
                 gpsLocation
