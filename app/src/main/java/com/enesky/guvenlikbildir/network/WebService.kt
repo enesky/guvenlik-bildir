@@ -15,10 +15,10 @@ interface WebService {
 
     @GET("index.php")
     suspend fun getLastEarthquakesWithDate(@Query("date") date: String,
-                                           @Query("limit") limit: String): Response<GenericResponse<EarthquakeOA>>
+                                           @Query("limit") limit: String): Response<GenericResponse>
 
     @GET("live.php")
-    suspend fun getLastEarthquakes(@Query("limit") limit: String): Response<GenericResponse<EarthquakeOA>>
+    suspend fun getLastEarthquakes(@Query("limit") limit: String): Response<GenericResponse>
 
     @GET("lst1.asp")
     suspend fun getKandilliPost(@Header("accept") type: String): Response<String>
