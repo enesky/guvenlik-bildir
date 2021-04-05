@@ -17,7 +17,6 @@ import com.enesky.guvenlikbildir.others.notificationIconResId
 import com.enesky.guvenlikbildir.others.notificationMagLimit
 import com.enesky.guvenlikbildir.ui.base.BaseBottomSheetDialogFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.OptionsVM
-import kotlinx.android.synthetic.main.bottom_sheet_notification_settings.*
 
 /**
  * Created by Enes Kamil YILMAZ on 09.05.2020
@@ -38,43 +37,44 @@ class NotificationSettingsBSDFragment : BaseBottomSheetDialogFragment() {
         optionsVM = getViewModel()
         App.mAnalytics.setCurrentScreen(activity!!, "bottom_sheet", this.javaClass.simpleName)
 
-        seekbar.max = 55
-        seekbar.progress = ((notificationMagLimit / 0.1) - 25).toInt()
-
         refreshViews(notificationMagLimit.toDouble())
 
-        seekbar.setOnSeekBarChangeListener( object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                refreshViews((p1 + 25) * 0.1)
-            }
-            override fun onStartTrackingTouch(p0: SeekBar?) {}
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-                notificationMagLimit = tv_mag.text.toString().toFloat()
-            }
-        })
-
-        switcher.setChecked(isNotificationsEnabled, true)
-
-        switcher.setOnCheckedChangeListener { isChecked ->
-            isNotificationsEnabled = isChecked
-            notificationIconResId = if (isNotificationsEnabled)
-                                        R.drawable.ic_notifications_active
-                                    else
-                                        R.drawable.ic_notifications_off
-            optionsVM.notificationResIdLive.value = notificationIconResId
-
-            if (isChecked)
-                App.startWorker()
-            else
-                App.stopWorker()
+        binding.seekbar.apply {
+            max = 55
+            progress = ((notificationMagLimit / 0.1) - 25).toInt()
+                setOnSeekBarChangeListener( object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                        refreshViews((p1 + 25) * 0.1)
+                    }
+                    override fun onStartTrackingTouch(p0: SeekBar?) = Unit
+                    override fun onStopTrackingTouch(p0: SeekBar?) {
+                        notificationMagLimit = binding.tvMag.text.toString().toFloat()
+                    }
+                })
         }
 
+        binding.switcher.apply {
+            setChecked(isNotificationsEnabled, true)
+            setOnCheckedChangeListener { isChecked ->
+                isNotificationsEnabled = isChecked
+                notificationIconResId = if (isNotificationsEnabled)
+                    R.drawable.ic_notifications_active
+                else
+                    R.drawable.ic_notifications_off
+                optionsVM.notificationResIdLive.value = notificationIconResId
+
+                if (isChecked)
+                    App.startWorker()
+                else
+                    App.stopWorker()
+            }
+        }
     }
 
     fun refreshViews(currentMag: Double) {
-        tv_mag.text = currentMag.toString().subSequence(0,3)
-        tv_info.text = getString(R.string.label_notification_info, currentMag.toString().subSequence(0,3))
-        setMagBackgroundTint(tv_mag, seekbar, currentMag)
+        binding.tvMag.text = currentMag.toString().subSequence(0,3)
+        binding.tvInfo.text = getString(R.string.label_notification_info, currentMag.toString().subSequence(0,3))
+        setMagBackgroundTint(binding.tvMag, binding.seekbar, currentMag)
     }
 
     private fun setMagBackgroundTint(view: View, seekbar: SeekBar, magnitude: Double) {

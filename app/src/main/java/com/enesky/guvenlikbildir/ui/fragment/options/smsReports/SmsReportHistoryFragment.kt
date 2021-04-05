@@ -18,7 +18,6 @@ import com.enesky.guvenlikbildir.extensions.makeItVisible
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.enesky.guvenlikbildir.ui.dialog.SmsReportBSDFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
-import kotlinx.android.synthetic.main.fragment_sms_report_history.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,7 +43,7 @@ class SmsReportHistoryFragment : BaseFragment() {
 
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
-        pb_loading.makeItVisible()
+        binding.pbLoading.makeItVisible()
 
         smsReportVM = getViewModel()
         smsReportVM.init(binding)
@@ -52,12 +51,12 @@ class SmsReportHistoryFragment : BaseFragment() {
 
         smsReportHistoryAdapter = SmsReportHistoryAdapter(smsReportHistoryListener = smsReportVM)
 
-        GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_sms_reports)
-        rv_sms_reports.apply {
+        binding.rvSmsReports.apply {
+            adapter = smsReportHistoryAdapter
             setHasFixedSize(true)
             setItemViewCacheSize(10)
             layoutManager = LinearLayoutManager(view.context)
-            rv_sms_reports.adapter = smsReportHistoryAdapter
+            GravitySnapHelper(Gravity.TOP).attachToRecyclerView(this)
         }
 
     }
@@ -70,14 +69,14 @@ class SmsReportHistoryFragment : BaseFragment() {
                 smsReportVM.smsReportHistoryList.postValue(it.reversed())
                 smsReportHistoryAdapter.update(it.reversed())
 
-                pb_loading.makeItGone()
+                binding.pbLoading.makeItGone()
 
                 if (it.isNullOrEmpty()) {
-                    placeholder.makeItVisible()
-                    tv_size.makeItGone()
+                    binding.placeholder.makeItVisible()
+                    binding.tvSize.makeItGone()
                 } else {
-                    tv_size.makeItVisible()
-                    placeholder.makeItGone()
+                    binding.tvSize.makeItVisible()
+                    binding.placeholder.makeItGone()
                 }
             }
         })

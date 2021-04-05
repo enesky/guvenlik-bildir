@@ -23,7 +23,6 @@ import com.enesky.guvenlikbildir.ui.dialog.EarthquakeItemOptionsBSDFragment
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_latest_earthquakes.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs
@@ -73,23 +72,23 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
 
         mainVM.earthquakes.observe( viewLifecycleOwner, Observer { earthquakes ->
                 earthquakes?.let {
-                    pb_loading.makeItGone()
+                    binding.pbLoading.makeItGone()
 
                     if (earthquakes.isEmpty())
-                        tv_placeholder.makeItVisible()
+                        binding.tvPlaceholder.makeItVisible()
                     else
-                        tv_placeholder.makeItGone()
+                        binding.tvPlaceholder.makeItGone()
 
-                    rv_earthquakes.adapter = earthquakePagingAdapter
+                    binding.rvEarthquakes.adapter = earthquakePagingAdapter
                     earthquakePagingAdapter.submitList(earthquakes)
 
                     GlobalScope.launch(Dispatchers.Main) {
                         delay(1000)
 
                         if (earthquakes.isNotEmpty()) {
-                            if (((rv_earthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
-                                        (rv_earthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)) {
-                                fab_scroll_to_top.show()
+                            if (((binding.rvEarthquakes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
+                                        (binding.rvEarthquakes.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)) {
+                                binding.fabScrollToTop.show()
                             }
                         }
 
@@ -135,75 +134,75 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
             }
         })
 
-        app_bar_layout.addOnOffsetChangedListener(this)
+        binding.appBarLayout.addOnOffsetChangedListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        GravitySnapHelper(Gravity.TOP).attachToRecyclerView(rv_earthquakes)
+        GravitySnapHelper(Gravity.TOP).attachToRecyclerView(binding.rvEarthquakes)
 
-        rv_earthquakes.updateRecyclerViewAnimDuration()
+        binding.rvEarthquakes.updateRecyclerViewAnimDuration()
 
-        srl_refresh.setOnRefreshListener {
+        binding.srlRefresh.setOnRefreshListener {
             refresh()
         }
 
-        iv_kandilli.setOnClickListener {
+        binding.ivKandilli.setOnClickListener {
             requireActivity().openWebView(Constants.kandilliUrl)
         }
 
-        iv_filter.setOnClickListener {
+        binding.ivFilter.setOnClickListener {
             if (!isAppBarExpanded) {
-                if (app_bar_layout.isVisible)
-                    app_bar_layout.setExpanded(true, true)
+                if (binding.appBarLayout.isVisible)
+                    binding.appBarLayout.setExpanded(true, true)
                 else {
                     GlobalScope.launch(Dispatchers.Main) {
-                        app_bar_layout.makeItVisible()
+                        binding.appBarLayout.makeItVisible()
                         delay(50)
-                        app_bar_layout.setExpanded(true, true)
+                        binding.appBarLayout.setExpanded(true, true)
                     }
                 }
             } else {
-                app_bar_layout.setExpanded(false, true)
+                binding.appBarLayout.setExpanded(false, true)
                 GlobalScope.launch(Dispatchers.Main) {
                     delay(500)
-                    app_bar_layout.makeItGone()
+                    binding.appBarLayout.makeItGone()
                 }
             }
         }
 
-        rv_earthquakes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvEarthquakes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0)
-                    fab_scroll_to_top.show()
+                    binding.fabScrollToTop.show()
                 else
-                    fab_scroll_to_top.hide()
+                    binding.fabScrollToTop.hide()
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if ((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() != 0 ||
                     (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0) {
-                        fab_scroll_to_top.show()
+                        binding.fabScrollToTop.show()
                 }
             }
         })
 
-        fab_scroll_to_top.setOnClickListener {
-            fab_scroll_to_top.makeItGone()
-            rv_earthquakes.smoothScrollToPosition(0)
+        binding.fabScrollToTop.setOnClickListener {
+            binding.fabScrollToTop.makeItGone()
+            binding.rvEarthquakes.smoothScrollToPosition(0)
         }
 
-        sv_earthquake.viewTreeObserver.addOnGlobalLayoutListener(this)
-        sv_earthquake.setOnQueryTextListener(this)
+        binding.svEarthquake.viewTreeObserver.addOnGlobalLayoutListener(this)
+        binding.svEarthquake.setOnQueryTextListener(this)
     }
 
     private fun refresh() {
         GlobalScope.launch(Dispatchers.Main) {
             mainVM.getEarthquakes()
             delay(500)
-            srl_refresh.isRefreshing = false
+            binding.srlRefresh.isRefreshing = false
         }
     }
 
@@ -215,7 +214,7 @@ class LatestEarthquakesFragment : BaseFragment(), CoroutineScope,
     }
 
     override fun onGlobalLayout() {
-        sv_earthquake.viewTreeObserver.removeOnGlobalLayoutListener(this)
+        binding.svEarthquake.viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = false

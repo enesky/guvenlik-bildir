@@ -15,7 +15,6 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.redmadrobot.inputmask.MaskedTextChangedListener
-import kotlinx.android.synthetic.main.fragment_login.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -39,7 +38,7 @@ class LoginFragment : BaseFragment() {
                 }
         loginVM.init(binding)
 
-        val listener = MaskedTextChangedListener("+90 ([000]) [000] [00] [00]", et_phone_number)
+        val listener = MaskedTextChangedListener("+90 ([000]) [000] [00] [00]", binding.etPhoneNumber)
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -50,13 +49,13 @@ class LoginFragment : BaseFragment() {
                     context!!.showToast(getString(R.string.label_code_caught))
                     //signInWithPhoneAuthCredential(credential)
                 } else {
-                    if (et_phone_number.text.toString().isPhoneNumberValid()) {
+                    if (binding.etPhoneNumber.text.toString().isPhoneNumberValid()) {
                         loginVM.setInputsEnabled(false)
                         //openVerifyCodeActivity(et_phone_number.text.toString(), verification!!, resendingToken!!)
                     } else {
                         loginVM.setInputsEnabled(true)
-                        til_phone_number.error = getString(R.string.label_invalid_phone_number)
-                        til_phone_number.isErrorEnabled = true
+                        binding.tilPhoneNumber.error = getString(R.string.label_invalid_phone_number)
+                        binding.tilPhoneNumber.isErrorEnabled = true
                     }
                 }
 
@@ -76,12 +75,12 @@ class LoginFragment : BaseFragment() {
                 verification = verificationId
                 resendingToken = token
 
-                if (BuildConfig.LOG_ENABLED && et_phone_number.text.toString() == Constants.testUserPhoneNumber)
+                if (BuildConfig.LOG_ENABLED && binding.etPhoneNumber.text.toString() == Constants.testUserPhoneNumber)
                     activity!!.openVerifyCodeActivity(Constants.testUserPhoneNumber, verificationId, token)
             }
         }
 
-        et_phone_number.apply {
+        binding.etPhoneNumber.apply {
             addTextChangedListener(listener)
             onFocusChangeListener = listener
 
@@ -92,11 +91,11 @@ class LoginFragment : BaseFragment() {
             }
         }
 
-        btn_send_code.setOnClickListener {
-            startPhoneNumberVerification(et_phone_number.text.toString())
+        binding.btnSendCode.setOnClickListener {
+            startPhoneNumberVerification(binding.etPhoneNumber.text.toString())
         }
 
-        tv_continue.setOnClickListener {
+        binding.tvContinue.setOnClickListener {
            /*if (activity!!.checkInternet()) {
                 App.mAuth.signInAnonymously().addOnCompleteListener(activity!!) { task ->
                     if (task.isSuccessful) {
@@ -126,8 +125,8 @@ class LoginFragment : BaseFragment() {
                     getString(R.string.label_empty_input)
                 else
                     getString(R.string.label_invalid_phone_number)
-            til_phone_number.error = errorMessage
-            til_phone_number.isErrorEnabled = true
+            binding.tilPhoneNumber.error = errorMessage
+            binding.tilPhoneNumber.isErrorEnabled = true
             loginVM.setInputsEnabled(true)
         }
     }

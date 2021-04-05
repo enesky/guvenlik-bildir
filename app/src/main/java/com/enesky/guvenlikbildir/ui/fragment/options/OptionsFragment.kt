@@ -21,7 +21,6 @@ import com.enesky.guvenlikbildir.ui.fragment.options.contacts.ContactsFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.modifySms.ModifySMSFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.smsReports.SmsReportHistoryFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
-import kotlinx.android.synthetic.main.fragment_options.*
 
 const val notificationIndex = 3
 
@@ -66,16 +65,16 @@ class OptionsFragment: BaseFragment() {
             }
         })
 
-        optionsVM.notificationResIdLive.observe(viewLifecycleOwner, Observer {
+        optionsVM.notificationResIdLive.observe(viewLifecycleOwner, {
             optionsVM.optionList.value?.get(notificationIndex)?.imageId = it
-            (rv_options.adapter as OptionAdapter).notifyItemChanged(notificationIndex)
+            (binding.rvOptions.adapter as OptionAdapter).notifyItemChanged(notificationIndex)
         })
 
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        rv_options.scheduleLayoutAnimation()
+        binding.rvOptions.scheduleLayoutAnimation()
     }
 
 }

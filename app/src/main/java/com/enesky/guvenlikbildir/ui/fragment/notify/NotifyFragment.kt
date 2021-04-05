@@ -21,7 +21,6 @@ import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.enesky.guvenlikbildir.ui.dialog.SmsReportBSDFragment
 import com.enesky.guvenlikbildir.ui.fragment.options.contacts.AddContactsFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
-import kotlinx.android.synthetic.main.fragment_notify.*
 
 class NotifyFragment : BaseFragment() {
 
@@ -44,7 +43,7 @@ class NotifyFragment : BaseFragment() {
         mainVM.init(binding)
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
-        cl_polis.setTouchAnimation {
+        binding.clPolis.setTouchAnimation {
             activity!!.showDialog(
                 title = getString(R.string.label_calling_155),
                 message = getString(R.string.label_redirecting),
@@ -55,7 +54,7 @@ class NotifyFragment : BaseFragment() {
             )
         }
 
-        cl_yardım.setTouchAnimation {
+        binding.clYardim.setTouchAnimation {
             activity!!.showDialog(
                 title = getString(R.string.label_calling_112),
                 message = getString(R.string.label_redirecting),
@@ -66,7 +65,7 @@ class NotifyFragment : BaseFragment() {
             )
         }
 
-        cl_iftaiye.setTouchAnimation {
+        binding.clIftaiye.setTouchAnimation {
             activity!!.showDialog(
                 title = getString(R.string.label_calling_110),
                 message = getString(R.string.label_redirecting),
@@ -77,7 +76,7 @@ class NotifyFragment : BaseFragment() {
             )
         }
 
-        iv_safe.setTouchAnimation {
+        binding.ivSafe.setTouchAnimation {
             if (selectedContactList.isNullOrEmpty())
                 showNoContactsFoundDialog()
             else
@@ -87,7 +86,7 @@ class NotifyFragment : BaseFragment() {
                ).show(activity!!.supportFragmentManager,"")
         }
 
-        iv_unsafe.setTouchAnimation {
+        binding.ivUnsafe.setTouchAnimation {
             if (selectedContactList.isNullOrEmpty())
                 showNoContactsFoundDialog()
             else

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -37,7 +38,7 @@
             tools:text="Gönderilecek SMS'leri düzenle."
             android:textSize="@dimen/default_text_16"
             android:textColor="@{ContextCompat.getColor(context, optionItem.colorRes)}"
-            android:layout_margin="@dimen/default_margin_16"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
             android:padding="@dimen/default_margin_16"
             app:layout_constraintBottom_toBottomOf="@id/line_bottom"
             app:layout_constraintStart_toEndOf="@id/iv_option"

@@ -27,7 +27,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.bottom_sheet_sms_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -96,9 +95,9 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
             childFragmentManager.executePendingTransactions()
         }
         supportMapFragment?.getMapAsync(this)
-        mapContainer.setViewParent(cl_sheet)
+        binding.mapContainer.setViewParent(binding.clSheet)
 
-        cv_sms_preview.setOnLongClickListener {
+        binding.cvSmsPreview.setOnLongClickListener {
             val myClipboard = context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val myClip: ClipData = ClipData.newPlainText(getString(R.string.app_name), smsReport?.sentSms)
             myClipboard.setPrimaryClip(myClip)
@@ -108,12 +107,12 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
 
         if (isHistory) {
             setRecyclerViewHeight(true)
-            cv_confirm.makeItGone()
-            tv_title_sms_preview.text = getString(R.string.label_sent_sms_preview)
-            tv_title_last_known_loc.text = getString(R.string.label_location_sent)
+            binding.cvConfirm.makeItGone()
+            binding.tvTitleSmsPreview.text = getString(R.string.label_sent_sms_preview)
+            binding.tvTitleLastKnownLoc.text = getString(R.string.label_location_sent)
         } else {
-            cv_confirm.setOnClickListener {
-                cv_confirm.isEnabled = false
+            binding.cvConfirm.setOnClickListener {
+                binding.cvConfirm.isEnabled = false
                 activity!!.requireSendSmsPermission {
                     setUncancellable(true)
 
@@ -129,8 +128,8 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
 
                     googleMap?.uiSettings?.isMyLocationButtonEnabled = false
                     googleMap?.isMyLocationEnabled = false
-                    tv_sending.text = getString(R.string.label_sending)
-                    dots.makeItVisible()
+                    binding.tvSending.text = getString(R.string.label_sending)
+                    binding.dots.makeItVisible()
                     setRecyclerViewHeight(true)
                 }
                 refreshUi()
@@ -168,14 +167,14 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
     override fun onStatusChange(contact: Contact?, status: SmsReportStatus) {
         val index = smsReportVM.smsReportAdapter.value?.updateItem(contact, status)
         if (index != null && index != -1 && status == SmsReportStatus.DELIVERED)
-            rv_sms_report?.smoothScrollToPosition(index)
+            binding.rvSmsReport.smoothScrollToPosition(index)
     }
 
     override fun processFinished() {
         if (isVisible) {
             setUncancellable(false)
-            tv_sending?.text = getString(R.string.label_sent)
-            dots?.makeItGone()
+            binding.tvSending.text = getString(R.string.label_sent)
+            binding.dots.makeItGone()
             refreshUi()
         }
         if (smsReport != null) {
@@ -206,7 +205,7 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         googleMap = p0
         if (googleMap == null) return
 
-        pb_map.makeItGone()
+        binding.pbMap.makeItGone()
 
         val lastKnownLoc =
             if (isHistory) smsReport!!.lastKnownLocation.split(",")
@@ -246,9 +245,9 @@ class SmsReportBSDFragment : BaseBottomSheetDialogFragment(), OnMapReadyCallback
         val itemHeight = smsReportVM.smsReportAdapter.value?.itemHeight
 
         if (itemHeight != 0 && list != null && list.size > VISIBLE_RECYCLER_VIEW_ITEM)
-            rv_sms_report?.layoutParams?.height = itemHeight!! * VISIBLE_RECYCLER_VIEW_ITEM
+            binding.rvSmsReport.layoutParams?.height = itemHeight!! * VISIBLE_RECYCLER_VIEW_ITEM
         if (makeItVisible)
-            rv_sms_report?.makeItVisible()
+            binding.rvSmsReport.makeItVisible()
     }
 
     companion object {

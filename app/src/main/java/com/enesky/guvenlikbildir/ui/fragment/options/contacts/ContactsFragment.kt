@@ -19,7 +19,6 @@ import com.enesky.guvenlikbildir.extensions.requireReadContactsPermission
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.trendyol.medusalib.navigator.transitionanimation.TransitionAnimationType
-import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -49,19 +48,19 @@ class ContactsFragment : BaseFragment() {
 
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
 
-        placeholder.makeItVisible()
-        pb_loading.makeItVisible()
+        binding.placeholder.makeItVisible()
+        binding.pbLoading.makeItVisible()
 
         contactAdapter = ContactAdapter(listOfNotNull(), mainVM)
         contactAdapter.setHasStableIds(true)
 
-        rv_contacts.apply {
+        binding.rvContacts.apply {
+            adapter = contactAdapter
             setHasFixedSize(true)
             setItemViewCacheSize(20)
-            rv_contacts.adapter = contactAdapter
         }
 
-        fab_add_contact.setOnClickListener {
+        binding.fabAddContact.setOnClickListener {
             requireContext().requireReadContactsPermission {
                 multipleStackNavigator!!.start(AddContactsFragment(), TransitionAnimationType.BOTTOM_TO_TOP)
             }
@@ -80,19 +79,19 @@ class ContactsFragment : BaseFragment() {
 
         mainVM.getSelectedContactList().observe(viewLifecycleOwner, Observer {
             contactAdapter.update(it)
-            pb_loading.makeItGone()
+            binding.pbLoading.makeItGone()
 
             if (it.isNullOrEmpty())
-                placeholder.makeItVisible()
+                binding.placeholder.makeItVisible()
             else
-                placeholder.makeItGone()
+                binding.placeholder.makeItGone()
         })
 
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        rv_contacts.scheduleLayoutAnimation()
+        binding.rvContacts.scheduleLayoutAnimation()
     }
 
 }

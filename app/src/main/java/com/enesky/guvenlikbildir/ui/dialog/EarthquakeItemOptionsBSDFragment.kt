@@ -28,7 +28,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.bottom_sheet_earthquake_options.*
 
 class EarthquakeItemOptionsBSDFragment :
     BaseBottomSheetDialogFragment(),
@@ -86,7 +85,7 @@ class EarthquakeItemOptionsBSDFragment :
                 "# Güvenlik Bildir #\n" +
                 Constants.googlePlayUrl
 
-        tv_earthquake_details.text = earthquakeDetail
+        binding.tvEarthquakeDetails.text = earthquakeDetail
 
         val optionListAdapter = OptionAdapter(
             listOf(
@@ -97,10 +96,10 @@ class EarthquakeItemOptionsBSDFragment :
             ), this
         )
 
-        rv_options.apply {
+        binding.rvOptions.apply {
+            adapter = optionListAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            adapter = optionListAdapter
         }
 
     }

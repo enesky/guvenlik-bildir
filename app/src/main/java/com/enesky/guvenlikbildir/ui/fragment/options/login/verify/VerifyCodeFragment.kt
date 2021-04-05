@@ -12,7 +12,6 @@ import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import kotlinx.android.synthetic.main.fragment_verify_code.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +39,7 @@ class VerifyCodeFragment: BaseFragment() {
         //resendingToken = intent.getParcelableExtra("token")
 
         if (BuildConfig.LOG_ENABLED && phoneNumber == Constants.testUserPhoneNumber)
-            et_verify_code.setText(Constants.testUserVerifyCode)
+            binding.etVerifyCode.setText(Constants.testUserVerifyCode)
 
         startCountDown()
 
@@ -49,7 +48,7 @@ class VerifyCodeFragment: BaseFragment() {
                 Timber.tag("VerifyCodeFragment").d("onVerificationCompleted: %s", credential)
                 if (credential.smsCode != null) {
                     context!!.showToast(getString(R.string.label_code_caught))
-                    et_verify_code.setText(credential.smsCode)
+                    binding.etVerifyCode.setText(credential.smsCode)
                     verifyCodeViewModel.setInputsEnabled(false)
                     //signInWithPhoneAuthCredential(credential)
                 }
@@ -70,7 +69,7 @@ class VerifyCodeFragment: BaseFragment() {
 
         }
 
-        et_verify_code.apply {
+        binding.etVerifyCode.apply {
             setOnEditorActionListener { _, _, _ ->
                 //if (actionId == EditorInfo.IME_ACTION_DONE)
                   //  verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
@@ -78,11 +77,11 @@ class VerifyCodeFragment: BaseFragment() {
             }
         }
 
-        btn_sign_in.setOnClickListener {
+        binding.btnSignIn.setOnClickListener {
             //verifyPhoneNumberWithCode(verification, et_verify_code.text.toString())
         }
 
-        btn_resend_code.setOnClickListener {
+        binding.btnResendCode.setOnClickListener {
             if (resendingToken != null)
                 resendVerificationCode(phoneNumber!!, resendingToken)
             else if (BuildConfig.LOG_ENABLED)
@@ -108,15 +107,15 @@ class VerifyCodeFragment: BaseFragment() {
     }
 
     private fun startCountDown() {
-        tv_timeup.makeItGone()
+        binding.tvTimeup.makeItGone()
         object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                tv_countdown.text = (millisUntilFinished / 1000).toString()
+                binding.tvCountdown.text = (millisUntilFinished / 1000).toString()
             }
 
             override fun onFinish() {
-                tv_countdown.text = "0"
-                tv_timeup.makeItVisible()
+                binding.tvCountdown.text = "0"
+                binding.tvTimeup.makeItVisible()
                 verifyCodeViewModel.setInputsEnabled(false)
             }
         }.start()

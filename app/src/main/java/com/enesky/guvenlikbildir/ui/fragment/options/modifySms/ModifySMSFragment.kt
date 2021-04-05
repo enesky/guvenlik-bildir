@@ -20,7 +20,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_modify_sms.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -55,18 +54,18 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
                 commit()
             }
             childFragmentManager.executePendingTransactions()
-            mapContainer.setViewParent(nsv_sheet)
+            binding.mapContainer.setViewParent(binding.nsvSheet)
         }
         supportMapFragment?.getMapAsync(this)
 
-        et_safe_sms.setText(safeSms)
-        et_unsafe_sms.setText(unsafeSms)
+        binding.etSafeSms.setText(safeSms)
+        binding.etUnsafeSms.setText(unsafeSms)
 
-        btn_save.setOnClickListener {
-            safeSms = et_safe_sms.text.toString()
+        binding.btnSave.setOnClickListener {
+            safeSms = binding.etSafeSms.text.toString()
             modifySmsVM.setSafeSms(safeSms!!)
 
-            unsafeSms = et_unsafe_sms.text.toString()
+            unsafeSms = binding.etUnsafeSms.text.toString()
             modifySmsVM.setUnsafeSms(unsafeSms!!)
 
             activity!!.onBackPressed()
@@ -96,7 +95,7 @@ class ModifySMSFragment: BaseFragment(), OnMapReadyCallback {
         googleMap = p0
         if (googleMap == null) return
 
-        pb_loading.makeItGone()
+        binding.pbLoading.makeItGone()
 
         val latlng = lastKnownLocation!!.split(",")
         val loc = LatLng(latlng[0].toDouble(), latlng[1].toDouble())

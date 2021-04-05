@@ -20,7 +20,6 @@ import com.enesky.guvenlikbildir.extensions.*
 import com.enesky.guvenlikbildir.ui.activity.main.MainVM
 import com.enesky.guvenlikbildir.ui.base.BaseFragment
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
-import kotlinx.android.synthetic.main.fragment_add_contacts.*
 import kotlinx.coroutines.*
 import java.text.Collator
 import java.util.*
@@ -50,19 +49,19 @@ class AddContactsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         App.mAnalytics.setCurrentScreen(activity!!, "fragment", this.javaClass.simpleName)
-        pb_loading.makeItVisible()
+        binding.pbLoading.makeItVisible()
 
         addContactAdapter = AddContactAdapter(contactList, mainVM)
         addContactAdapter.setHasStableIds(true)
 
-        rv_contacts.apply {
+        binding.rvContacts.apply {
+            adapter = addContactAdapter
             addSelectedContactWatcher(selectedMap)
             setHasFixedSize(true)
             setItemViewCacheSize(30)
-            rv_contacts.adapter = addContactAdapter
         }
 
-        tv_save.setOnClickListener {
+        binding.tvSave.setOnClickListener {
             mainVM.contactRepository.selectContacts(selectedMap.values.toList())
             activity!!.onBackPressed()
         }
@@ -83,7 +82,7 @@ class AddContactsFragment : BaseFragment() {
                                 context!!.showToast(getString(R.string.label_nothing_found_in_contacts))
                                 activity!!.onBackPressed()
                             }
-                            pb_loading.makeItGone()
+                            binding.pbLoading.makeItGone()
                         }
                     }
                 }
@@ -105,10 +104,10 @@ class AddContactsFragment : BaseFragment() {
                     selectedMap[it.first as Int] = it.second as Contact
 
                 if (selectedMap.isNotEmpty()) {
-                    tv_save.makeItVisible()
-                    tv_save.text = getString(R.string.label_add_contact_with_number, selectedMap.size)
+                    binding.tvSave.makeItVisible()
+                    binding.tvSave.text = getString(R.string.label_add_contact_with_number, selectedMap.size)
                 } else {
-                    tv_save.makeItGone()
+                    binding.tvSave.makeItGone()
                 }
             }
         })
@@ -118,17 +117,17 @@ class AddContactsFragment : BaseFragment() {
     private fun setupFastScroller() {
         if (!mainVM.isViewsLoaded.value!!) {
             addContactAdapter.update(contactList)
-            rv_contacts.scheduleLayoutAnimation()
-            fastScroller.setupWithRecyclerView(
-                rv_contacts, { position ->
+            binding.rvContacts.scheduleLayoutAnimation()
+            binding.fastScroller.setupWithRecyclerView(
+                binding.rvContacts, { position ->
                     FastScrollItemIndicator.Text(
                         contactList[position].name.substring(0, 1).toUpperCase(Locale.getDefault())
                     )
                 }
             )
-            fastScrollerThumb.setupWithFastScroller(fastScroller)
+            binding.fastScrollerThumb.setupWithFastScroller(binding.fastScroller)
             mainVM.isViewsLoaded.postValue(true)
-            pb_loading.makeItGone()
+            binding.pbLoading.makeItGone()
         }
     }
 

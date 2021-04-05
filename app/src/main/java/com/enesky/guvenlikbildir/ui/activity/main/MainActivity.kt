@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.enesky.guvenlikbildir.App
@@ -27,13 +28,11 @@ import com.trendyol.medusalib.navigator.MultipleStackNavigator
 import com.trendyol.medusalib.navigator.Navigator
 import com.trendyol.medusalib.navigator.NavigatorConfiguration
 import com.trendyol.medusalib.navigator.transaction.NavigatorTransaction
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import timber.log.Timber
 
 class MainActivity : BaseActivity(),
     Navigator.NavigatorListener,
@@ -101,25 +100,23 @@ class MainActivity : BaseActivity(),
         }
 
         if (isNotificationsEnabled) {
-            if (isWorkerStarted) {
-                GlobalScope.launch(Dispatchers.Default) {
+            if (isWorkerStarted)
+                GlobalScope.launch(Dispatchers.IO) {
                     mainVM.getEarthquakes()
                 }
-            } else {
+            else
                 App.startWorker()
-            }
-        } else {
-            GlobalScope.launch(Dispatchers.Default) {
+        } else
+            GlobalScope.launch(Dispatchers.IO) {
                 mainVM.getEarthquakes()
             }
-        }
 
         if (intent?.getParcelableExtra<Earthquake>(Constants.NOTIFICATION_EARTHQUAKE) != null)
             openEarthquakeOption(intent.getParcelableExtra(Constants.NOTIFICATION_EARTHQUAKE))
 
         navigator.initialize(savedInstanceState)
-        bottom_nav.setOnNavigationItemReselectedListener(this)
-        bottom_nav.setOnNavigationItemSelectedListener(this)
+        binding.bottomNav.setOnNavigationItemReselectedListener(this)
+        binding.bottomNav.setOnNavigationItemSelectedListener(this)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -159,10 +156,10 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onTabChanged(tabIndex: Int) {
-        when (tabIndex) {
-            0 -> bottom_nav.selectedItemId = R.id.latest_earthquakes
-            1 -> bottom_nav.selectedItemId = R.id.notify
-            2 -> bottom_nav.selectedItemId = R.id.options
+        binding.bottomNav.selectedItemId = when (tabIndex) {
+            0 -> R.id.latest_earthquakes
+            1 -> R.id.notify
+            else -> R.id.options
         }
     }
 
@@ -172,28 +169,21 @@ class MainActivity : BaseActivity(),
         if (EasyPermissions.hasPermissions(this,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-            )) {
-            Timber.tag("MainActivity").d("ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION granted.")
-           locationAPI.startLocationUpdates()
-        }
+            ))
+            locationAPI.startLocationUpdates()
 
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.READ_CONTACTS)) {
-            Timber.tag("MainActivity").d("READ_CONTACTS granted.")
-            GlobalScope.launch(Dispatchers.Default) {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.READ_CONTACTS))
+            GlobalScope.launch(Dispatchers.IO) {
                 mainVM.contactRepository.refreshContacts(
                     AddContactsFragment.getContactsList(this@MainActivity).toMutableList()
                 )
             }
-        }
 
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)) {
-            Timber.tag("MainActivity").d("SEND_SMS granted.")
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS))
             smsAPI.setReceivers()
-        }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        Timber.tag("MainActivity").d("onPermissionsDenied: $requestCode : ${perms.size}")
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms))
             AppSettingsDialog.Builder(this).build().show()
     }
@@ -209,13 +199,12 @@ class MainActivity : BaseActivity(),
             EarthquakeItemOptionsBSDFragment.newInstance(earthquake)
                 .show(supportFragmentManager,"EarthquakeItemOptionsBSDFragment")
 
-            Timber.tag("MainActivity").d("onNewIntent -> Clicked to notification")
-            val params = Bundle().apply {
-                putString("earthquake_location", earthquake.location)
-                putDouble("earthquake_mag", earthquake.mag)
-                putString("earthquake_date", earthquake.dateTime)
-            }
-            App.mAnalytics.logEvent("notification_click", params)
+            App.mAnalytics.logEvent("notification_click", bundleOf(
+                    "earthquake_location" to earthquake.location,
+                    "earthquake_mag" to earthquake.mag,
+                    "earthquake_date" to earthquake.dateTime
+                )
+            )
         }
     }
 
